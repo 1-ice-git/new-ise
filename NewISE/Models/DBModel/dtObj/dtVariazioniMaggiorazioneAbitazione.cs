@@ -61,7 +61,7 @@ namespace NewISE.Models.DBModel.dtObj
         #endregion
 
 
-        public void VerificaDataInizioValiditaCanoneMAB_Utente(decimal idMab, DateTime ?data, ModelDBISE db)
+        public void VerificaDataInizioValiditaCanoneMAB_Utente(decimal idMab, DateTime? data, ModelDBISE db)
         {
             if (data == null)
             {
@@ -72,7 +72,7 @@ namespace NewISE.Models.DBModel.dtObj
             var pmab = mab.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDPERIODOMAB).ToList().First();
             if (data < pmab.DATAINIZIOMAB)
             {
-               throw new Exception(string.Format("Impossibile inserire la Data Inizio Validità minore della Data Inizio Validità MAB ({0}).", pmab.DATAINIZIOMAB.ToShortDateString()));
+                throw new Exception(string.Format("Impossibile inserire la Data Inizio Validità minore della Data Inizio Validità MAB ({0}).", pmab.DATAINIZIOMAB.ToShortDateString()));
             }
             if (data > pmab.DATAFINEMAB)
             {
@@ -87,10 +87,10 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 throw new Exception("La Data Inizio Validità è obbligatoria.");
             }
-            
+
             var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
-            
+
             //check datafin> rientro
             if (datafin > t.DATARIENTRO)
             {
@@ -114,7 +114,7 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 else
                 {
-                    if (dataini < ultimoPeriodo.DATAFINEMAB && n_periodi>1)
+                    if (dataini < ultimoPeriodo.DATAFINEMAB && n_periodi > 1)
                     {
                         throw new Exception(string.Format("La Data Inizio MAB non può essere inferiore della Data Fine validita della MAB precedente ({0}).", ultimoPeriodo.DATAFINEMAB.ToShortDateString()));
                     }
@@ -148,7 +148,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
 
                 var mab = db.MAB.Find(mvm.idMAB);
-                var att = mab.ATTIVAZIONEMAB.Where(a=>a.ANNULLATO==false).OrderByDescending(a=>a.IDATTIVAZIONEMAB).ToList().First();// GetAttivazioneById(mab.IDATTIVAZIONEMAB, db);
+                var att = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList().First();// GetAttivazioneById(mab.IDATTIVAZIONEMAB, db);
 
                 if (inserimentoMAB == false && datafin == null && att.ATTIVAZIONE)
                 {
@@ -191,7 +191,7 @@ namespace NewISE.Models.DBModel.dtObj
             string periodo = pcprec.DataInizioValidita.ToShortDateString() + " - " + datafinestring;
             string periodoAttiguo = pcAttiguoPrec.DATAINIZIOVALIDITA.ToShortDateString() + " - " + datafineAttiguostring;
 
-            if (pcmvm.chkAggiornaTutti) 
+            if (pcmvm.chkAggiornaTutti)
             {
                 if (pcsucc.Count() == 1)
                 {
@@ -206,9 +206,10 @@ namespace NewISE.Models.DBModel.dtObj
                             throw new Exception(string.Format("Le opzioni selezionate risultano uguali a quelle del periodo precedente attiguo ({0}).", periodo));
                         }
                     }
-                }else
+                }
+                else
                 {
-                    if(pcAttiguoPrec.IDPAGATOCONDIVISO>0)
+                    if (pcAttiguoPrec.IDPAGATOCONDIVISO > 0)
                     {
                         if (pcAttiguoPrec.PAGATO == pcmvm.Pagato && pcAttiguoPrec.CONDIVISO == pcmvm.Condiviso)
                         {
@@ -224,11 +225,11 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     if (pcprec.DataInizioValidita == pcmvm.ut_dataInizioValidita)
                     {
-                        throw new Exception(string.Format("Le opzioni selezionate risultano uguali a quelle già impostate per lo stesso periodo ({0}).",periodo));
+                        throw new Exception(string.Format("Le opzioni selezionate risultano uguali a quelle già impostate per lo stesso periodo ({0}).", periodo));
                     }
                     else
                     {
-                        throw new Exception(string.Format("Le opzioni selezionate risultano uguali a quelle del periodo precedente attiguo ({0}).",periodo));
+                        throw new Exception(string.Format("Le opzioni selezionate risultano uguali a quelle del periodo precedente attiguo ({0}).", periodo));
                     }
                 }
             }
@@ -271,27 +272,54 @@ namespace NewISE.Models.DBModel.dtObj
         {
             try
             {
-                PERCENTUALEMAB p = new PERCENTUALEMAB();
-                List<PERCENTUALEMAB> pl = new List<PERCENTUALEMAB>();
-                UfficiModel um = new UfficiModel();
+                //PERCENTUALEMAB p = new PERCENTUALEMAB();
 
+                List<PERCENTUALEMAB> pl = new List<PERCENTUALEMAB>();
+
+                //UfficiModel um = new UfficiModel();
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
                 var i = t.INDENNITA;
+
+
+
                 var mab = i.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDMAB).First();
                 var pmab = mab.PERIODOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDPERIODOMAB).First();
 
 
                 UFFICI u = t.UFFICI;
-                DIPENDENTI d = t.DIPENDENTI;
-                var l = d.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false).ToList().First();
 
-                um.descUfficio = u.DESCRIZIONEUFFICIO;
+                var livelli =
+                    i.LIVELLIDIPENDENTI.Where(
+                        a =>
+                            a.ANNULLATO == false && a.DATAFINEVALIDITA >= pmab.DATAINIZIOMAB &&
+                            a.DATAINIZIOVALIDITA <= pmab.DATAFINEMAB).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                pl = db.PERCENTUALEMAB.Where(a => a.ANNULLATO == false &&
-                                                    a.DATAINIZIOVALIDITA <= pmab.DATAINIZIOMAB &&
-                                                    a.DATAFINEVALIDITA >= pmab.DATAFINEMAB &&
-                                                    a.IDUFFICIO == u.IDUFFICIO &&
-                                                    a.IDLIVELLO == l.IDLIVELLO).ToList();
+                //DIPENDENTI d = t.DIPENDENTI;
+                //var l = d.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false).ToList().First();
+
+                //um.descUfficio = u.DESCRIZIONEUFFICIO;
+
+                if (livelli?.Any() ?? false)
+                {
+                    foreach (var l in livelli)
+                    {
+                        pl.AddRange(db.PERCENTUALEMAB.Where(a => a.ANNULLATO == false &&
+                                                                 a.DATAINIZIOVALIDITA <= pmab.DATAFINEMAB &&
+                                                                 a.DATAFINEVALIDITA >= pmab.DATAINIZIOMAB &&
+                                                                 a.IDUFFICIO == u.IDUFFICIO &&
+                                                                 a.IDLIVELLO == l.IDLIVELLO)
+                            .OrderBy(a => a.DATAINIZIOVALIDITA)
+                            .ToList());
+
+                    }
+                }
+                else
+                {
+                    throw new Exception("Non sono presenti livelli per l'indennità.");
+                }
+
+
+
                 return pl;
             }
             catch (Exception ex)
@@ -329,12 +357,12 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
-                    var l_ultimaMAB = t.INDENNITA.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.RINUNCIAMAB==false).OrderByDescending(a => a.IDMAB).ToList();
+                    var l_ultimaMAB = t.INDENNITA.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.RINUNCIAMAB == false).OrderByDescending(a => a.IDMAB).ToList();
                     if (l_ultimaMAB?.Any() ?? false)
                     {
                         var ultimaMAB = l_ultimaMAB.First();
                         var aml = ultimaMAB.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList();
-                        if(aml?.Any()??false)
+                        if (aml?.Any() ?? false)
                         {
                             am = aml.First();
 
@@ -377,7 +405,7 @@ namespace NewISE.Models.DBModel.dtObj
                     foreach (var mab in l_MAB)
                     {
                         decimal max_id_att_curr = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList().First().IDATTIVAZIONEMAB;
-                        if(max_id_att_curr>max_id_att)
+                        if (max_id_att_curr > max_id_att)
                         {
                             max_id_att = max_id_att_curr;
                         }
@@ -388,7 +416,7 @@ namespace NewISE.Models.DBModel.dtObj
                     //if (aml?.Any() ?? false)
                     //{
                     am = db.ATTIVAZIONEMAB.Find(max_id_att);
-                    
+
                 }
 
                 return am;
@@ -406,7 +434,7 @@ namespace NewISE.Models.DBModel.dtObj
                 ATTIVAZIONEMAB am = new ATTIVAZIONEMAB();
 
                 var mab = db.MAB.Find(idMab);
-                if (mab.IDMAB>0)
+                if (mab.IDMAB > 0)
                 {
                     var aml = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList();
                     if (aml?.Any() ?? false)
@@ -482,9 +510,9 @@ namespace NewISE.Models.DBModel.dtObj
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
                 lmab = t.INDENNITA.MAB
-                                .Where(a => 
-                                    a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato &&
-                                    a.RINUNCIAMAB==false)
+                                .Where(a =>
+                                    a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                    a.RINUNCIAMAB == false)
                                 .OrderByDescending(a => a.IDMAB)
                                 .ToList();
 
@@ -581,8 +609,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var mab = db.MAB.Find(idMab);
 
-                var lcmab = mab.CANONEMAB.Where(a => a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato &&
-                                                    a.NASCONDI==false)
+                var lcmab = mab.CANONEMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                                    a.NASCONDI == false)
                                 .OrderByDescending(a => a.IDCANONE)
                                 .ToList();
 
@@ -614,7 +642,7 @@ namespace NewISE.Models.DBModel.dtObj
                 MAB mab = new MAB();
 
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                var mabl = t.INDENNITA.MAB.Where(a=> a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a=>a.IDMAB).ToList();
+                var mabl = t.INDENNITA.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDMAB).ToList();
 
                 if (mabl?.Any() ?? false)
                 {
@@ -644,7 +672,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
                 var mabl = t.INDENNITA.MAB
                             .Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                        a.RINUNCIAMAB==false)
+                                        a.RINUNCIAMAB == false)
                             .OrderByDescending(a => a.IDMAB)
                             .ToList();
 
@@ -653,10 +681,10 @@ namespace NewISE.Models.DBModel.dtObj
                     mab = mabl.First();
 
                 }
-                    //else
-                    //{
-                    //    throw new Exception(string.Format("Nessuna MAB trovata."));
-                    //}
+                //else
+                //{
+                //    throw new Exception(string.Format("Nessuna MAB trovata."));
+                //}
 
                 return mab;
 
@@ -781,7 +809,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
 
                         var vmabl = amab.MAB;//.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.RINUNCIAMAB == false).ToList();
-                        if (vmabl.IDMAB>0)
+                        if (vmabl.IDMAB > 0)
                         {
                             esisteMAB = true;
                         }
@@ -814,12 +842,12 @@ namespace NewISE.Models.DBModel.dtObj
                 {
 
                     var mabl = amab.MAB;//.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.RINUNCIAMAB == false).OrderByDescending(a=>a.IDMAB).ToList();
-                    if (mabl.IDMAB>0)
+                    if (mabl.IDMAB > 0)
                     {
                         //se la prima attivazione non è notificata vuol dire che la MAB è stata appena inserita
                         var mab = mabl;
                         var attivazioneMAB = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderBy(a => a.IDATTIVAZIONEMAB).ToList().First();
-                        if(attivazioneMAB.NOTIFICARICHIESTA==false)
+                        if (attivazioneMAB.NOTIFICARICHIESTA == false)
                         {
                             nuovaMAB = true;
                         }
@@ -878,7 +906,7 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void VerificaImportoCanoneMAB(decimal importoCanoneMAB, ModelDBISE db)
         {
-            if (importoCanoneMAB<=0)
+            if (importoCanoneMAB <= 0)
             {
                 throw new Exception(string.Format("il canone MAB inserito ({0}) non è valido.", importoCanoneMAB.ToString()));
             }
@@ -991,47 +1019,47 @@ namespace NewISE.Models.DBModel.dtObj
                     //var am = db.ATTIVAZIONEMAB.Find(am_curr.IDATTIVAZIONEMAB);
                     //if (am.IDATTIVAZIONEMAB > 0)
                     //{
-                        var docl = am_curr.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione || a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
+                    var docl = am_curr.DOCUMENTI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione || a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
 
-                        if (docl?.Any() ?? false)
+                    if (docl?.Any() ?? false)
+                    {
+                        foreach (var doc in docl)
                         {
-                            foreach (var doc in docl)
+                            switch ((EnumTipoDoc)doc.IDTIPODOCUMENTO)
                             {
-                                switch ((EnumTipoDoc)doc.IDTIPODOCUMENTO)
-                                {
-                                    case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
-                                        siDocModulo1 = true;
-                                        idDocModulo1 = doc.IDDOCUMENTO;
-                                        break;
-                                    case EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione:
-                                        siDocModulo2 = true;
-                                        idDocModulo2 = doc.IDDOCUMENTO;
-                                        break;
-                                    case EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore:
-                                        siDocModulo3 = true;
-                                        idDocModulo3 = doc.IDDOCUMENTO;
-                                        break;
-                                    case EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione:
-                                        siDocModulo4 = true;
-                                        idDocModulo4 = doc.IDDOCUMENTO;
-                                        break;
-                                    case EnumTipoDoc.Clausole_Contratto_Alloggio:
-                                        siDocModulo5 = true;
-                                        idDocModulo5 = doc.IDDOCUMENTO;
-                                        break;
-                                    case EnumTipoDoc.Copia_Contratto_Locazione:
-                                        siDocCopiaContratto = true;
-                                        idDocCopiaContratto = doc.IDDOCUMENTO;
-                                        break;
-                                    case EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione:
-                                        siDocCopiaRicevuta = true;
-                                        idDocCopiaRicevuta = doc.IDDOCUMENTO;
-                                        break;
-                                    default:
-                                        break;
-                                }
+                                case EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione:
+                                    siDocModulo1 = true;
+                                    idDocModulo1 = doc.IDDOCUMENTO;
+                                    break;
+                                case EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione:
+                                    siDocModulo2 = true;
+                                    idDocModulo2 = doc.IDDOCUMENTO;
+                                    break;
+                                case EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore:
+                                    siDocModulo3 = true;
+                                    idDocModulo3 = doc.IDDOCUMENTO;
+                                    break;
+                                case EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione:
+                                    siDocModulo4 = true;
+                                    idDocModulo4 = doc.IDDOCUMENTO;
+                                    break;
+                                case EnumTipoDoc.Clausole_Contratto_Alloggio:
+                                    siDocModulo5 = true;
+                                    idDocModulo5 = doc.IDDOCUMENTO;
+                                    break;
+                                case EnumTipoDoc.Copia_Contratto_Locazione:
+                                    siDocCopiaContratto = true;
+                                    idDocCopiaContratto = doc.IDDOCUMENTO;
+                                    break;
+                                case EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione:
+                                    siDocCopiaRicevuta = true;
+                                    idDocCopiaRicevuta = doc.IDDOCUMENTO;
+                                    break;
+                                default:
+                                    break;
                             }
                         }
+                    }
                     //}
                 }
 
@@ -1140,7 +1168,7 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var mab = db.MAB.Find(mabm.idMAB);
-                    var cml = mab.CANONEMAB.Where(X => X.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a=>a.IDCANONE).ToList();
+                    var cml = mab.CANONEMAB.Where(X => X.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).OrderByDescending(a => a.IDCANONE).ToList();
 
                     if (cml?.Any() ?? false)
                     {
@@ -1211,7 +1239,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
                     var mabl = t.INDENNITA.MAB
-                                .Where(a=>a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato && a.RINUNCIAMAB == false)
+                                .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.RINUNCIAMAB == false)
                                 .OrderByDescending(x => x.IDMAB).ToList();
 
                     if (mabl?.Any() ?? false)
@@ -1246,7 +1274,7 @@ namespace NewISE.Models.DBModel.dtObj
             try
             {
 
-                var mab = GetMAB_ByID_var(idMab,db);
+                var mab = GetMAB_ByID_var(idMab, db);
 
                 //var i = t.INDENNITA;
 
@@ -1254,7 +1282,7 @@ namespace NewISE.Models.DBModel.dtObj
                 //        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                 //        a.RINUNCIAMAB == false).ToList();
 
-                if (mab.IDMAB>0)
+                if (mab.IDMAB > 0)
                 {
                     //var idAttivazioneMAB = mab.ATTIVAZIONEMAB.;
 
@@ -1272,7 +1300,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var lCanoneMAB = mab.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione || a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
 
                     //verifica se nuova MAB
-                    var att = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO==false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList().First();
+                    var att = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList().First();
                     bool nuovaMAB = VerificaSeNuovaMAB(att.IDATTIVAZIONEMAB, db);
 
                     //verifica documenti
@@ -1291,7 +1319,7 @@ namespace NewISE.Models.DBModel.dtObj
                     decimal idDocModulo4;
                     decimal idDocModulo5;
 
-                    var ultima_att= GetUltimaAttivazioneMABCorrente(idMab, db);
+                    var ultima_att = GetUltimaAttivazioneMABCorrente(idMab, db);
                     VerificaDocumenti_var(ultima_att,
                             out siDocCopiaContratto,
                             out siDocCopiaRicevuta,
@@ -1360,7 +1388,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var i = t.INDENNITA;
 
                 var mabl = i.MAB.Where(a =>
-                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && 
+                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                         a.RINUNCIAMAB == false).ToList();
 
                 if (mabl?.Any() ?? false)
@@ -1368,8 +1396,8 @@ namespace NewISE.Models.DBModel.dtObj
                     foreach (var mab in mabl)
                     {
                         var pmab = GetPeriodoMABModel(mab.IDMAB, db);
-                        if((pmab.dataInizioMAB<=t.DATARIENTRO && pmab.dataFineMAB>=t.DATARIENTRO) || pmab.dataFineMAB<t.DATARIENTRO)
-                        { 
+                        if ((pmab.dataInizioMAB <= t.DATARIENTRO && pmab.dataFineMAB >= t.DATARIENTRO) || pmab.dataFineMAB < t.DATARIENTRO)
+                        {
                             bool esistonoVariazioni = VerificaVariazioniMAB(mab.IDMAB, db, false);
 
                             if (esistonoVariazioni)
@@ -1413,9 +1441,9 @@ namespace NewISE.Models.DBModel.dtObj
                     //var mal = db.ATTIVAZIONEMAB.Find(amm.idAttivazioneMAB).TRASFERIMENTO.MAGGIORAZIONEABITAZIONE.OrderByDescending(x => x.IDMAB).ToList();
                     var i = t.INDENNITA;
 
-                    var mabl = i.MAB.Where(a => 
+                    var mabl = i.MAB.Where(a =>
                             a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                            a.RINUNCIAMAB==false).ToList();
+                            a.RINUNCIAMAB == false).ToList();
 
                     if (mabl?.Any() ?? false)
                     {
@@ -1481,7 +1509,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var i = db.INDENNITA.Find(m.IDTRASFINDENNITA);
 
                 var lmab_prec = i.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                                                 a.RINUNCIAMAB==false && 
+                                                 a.RINUNCIAMAB == false &&
                                                  a.IDMAB < idMab).OrderByDescending(a => a.IDMAB).ToList();
 
                 if (lmab_prec?.Any() ?? false)
@@ -1540,7 +1568,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
             try
             {
-                
+
                 PERIODOMAB pmab_successivo = new PERIODOMAB();
 
                 var m = db.MAB.Find(idMab);
@@ -1548,10 +1576,10 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var t = m.INDENNITA.TRASFERIMENTO;
                 var lmab = t.INDENNITA.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).ToList();
-                foreach(var mab in lmab)
+                foreach (var mab in lmab)
                 {
-                    var pmab = GetPeriodoMAB(mab.IDMAB,db);
-                    if(pmab.DATAINIZIOMAB>pmab_curr.DATAFINEMAB)
+                    var pmab = GetPeriodoMAB(mab.IDMAB, db);
+                    if (pmab.DATAINIZIOMAB > pmab_curr.DATAFINEMAB)
                     {
                         pmab_successivo = pmab;
                     }
@@ -1626,7 +1654,7 @@ namespace NewISE.Models.DBModel.dtObj
             ATTIVAZIONEMAB attmab = new ATTIVAZIONEMAB();
 
             var t = db.TRASFERIMENTO.Find(idTrasferimento);
-            var lmab = t.INDENNITA.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.RINUNCIAMAB==false).OrderByDescending(a => a.IDMAB).ToList();
+            var lmab = t.INDENNITA.MAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.RINUNCIAMAB == false).OrderByDescending(a => a.IDMAB).ToList();
             if (lmab?.Any() ?? false)
             {
                 var mab = lmab.First();
@@ -1678,20 +1706,20 @@ namespace NewISE.Models.DBModel.dtObj
             if (lcmab?.Any() ?? false)
             {
                 lcmabm = (from e in lcmab
-                        select new CanoneMABModel()
-                        {
-                            idCanone = e.IDCANONE,
-                            IDMAB=e.IDMAB,
-                            IDAttivazioneMAB=e.IDATTIVAZIONEMAB,
-                            idValuta=e.IDVALUTA,
-                            ImportoCanone = e.IMPORTOCANONE,
-                            DataInizioValidita = e.DATAINIZIOVALIDITA,
-                            DataFineValidita = e.DATAFINEVALIDITA,
-                            DataAggiornamento = e.DATAAGGIORNAMENTO,
-                            idStatoRecord = e.IDSTATORECORD,
-                            FK_IDCanone = e.FK_IDCANONE,
-                            nascondi = e.NASCONDI
-                        }).ToList();
+                          select new CanoneMABModel()
+                          {
+                              idCanone = e.IDCANONE,
+                              IDMAB = e.IDMAB,
+                              IDAttivazioneMAB = e.IDATTIVAZIONEMAB,
+                              idValuta = e.IDVALUTA,
+                              ImportoCanone = e.IMPORTOCANONE,
+                              DataInizioValidita = e.DATAINIZIOVALIDITA,
+                              DataFineValidita = e.DATAFINEVALIDITA,
+                              DataAggiornamento = e.DATAAGGIORNAMENTO,
+                              idStatoRecord = e.IDSTATORECORD,
+                              FK_IDCanone = e.FK_IDCANONE,
+                              nascondi = e.NASCONDI
+                          }).ToList();
             }
 
             return lcmabm;
@@ -1715,20 +1743,20 @@ namespace NewISE.Models.DBModel.dtObj
             if (lcmab?.Any() ?? false)
             {
                 lcmabm = (from e in lcmab
-                        select new CanoneMABModel()
-                        {
-                            idCanone = e.IDCANONE,
-                            IDMAB = e.IDMAB,
-                            IDAttivazioneMAB = e.IDATTIVAZIONEMAB,
-                            idValuta = e.IDVALUTA,
-                            ImportoCanone = e.IMPORTOCANONE,
-                            DataInizioValidita = e.DATAINIZIOVALIDITA,
-                            DataFineValidita = e.DATAFINEVALIDITA,
-                            DataAggiornamento = e.DATAAGGIORNAMENTO,
-                            idStatoRecord = e.IDSTATORECORD,
-                            FK_IDCanone = e.FK_IDCANONE,
-                            nascondi = e.NASCONDI
-                        }).ToList();
+                          select new CanoneMABModel()
+                          {
+                              idCanone = e.IDCANONE,
+                              IDMAB = e.IDMAB,
+                              IDAttivazioneMAB = e.IDATTIVAZIONEMAB,
+                              idValuta = e.IDVALUTA,
+                              ImportoCanone = e.IMPORTOCANONE,
+                              DataInizioValidita = e.DATAINIZIOVALIDITA,
+                              DataFineValidita = e.DATAFINEVALIDITA,
+                              DataAggiornamento = e.DATAAGGIORNAMENTO,
+                              idStatoRecord = e.IDSTATORECORD,
+                              FK_IDCanone = e.FK_IDCANONE,
+                              nascondi = e.NASCONDI
+                          }).ToList();
             }
 
             return lcmabm;
@@ -1753,20 +1781,20 @@ namespace NewISE.Models.DBModel.dtObj
             if (lpcmab?.Any() ?? false)
             {
                 lpcmabm = (from e in lpcmab
-                          select new PagatoCondivisoMABModel()
-                          {
-                              idPagatoCondiviso = e.IDPAGATOCONDIVISO,
-                              idMAB = e.IDMAB,
-                              idAttivazioneMAB = e.IDATTIVAZIONEMAB,
-                              idStatoRecord = e.IDSTATORECORD,
-                              Condiviso = e.CONDIVISO,
-                              Pagato = e.PAGATO,
-                              DataInizioValidita = e.DATAINIZIOVALIDITA,
-                              DataFineValidita = e.DATAFINEVALIDITA,
-                              DataAggiornamento = e.DATAAGGIORNAMENTO,
-                              fk_IDPagatoCondiviso = e.FK_IDPAGATOCONDIVISO,
-                              Nascondi = e.NASCONDI
-                          }).ToList();
+                           select new PagatoCondivisoMABModel()
+                           {
+                               idPagatoCondiviso = e.IDPAGATOCONDIVISO,
+                               idMAB = e.IDMAB,
+                               idAttivazioneMAB = e.IDATTIVAZIONEMAB,
+                               idStatoRecord = e.IDSTATORECORD,
+                               Condiviso = e.CONDIVISO,
+                               Pagato = e.PAGATO,
+                               DataInizioValidita = e.DATAINIZIOVALIDITA,
+                               DataFineValidita = e.DATAFINEVALIDITA,
+                               DataAggiornamento = e.DATAAGGIORNAMENTO,
+                               fk_IDPagatoCondiviso = e.FK_IDPAGATOCONDIVISO,
+                               Nascondi = e.NASCONDI
+                           }).ToList();
             }
 
             return lpcmabm;
@@ -1813,20 +1841,20 @@ namespace NewISE.Models.DBModel.dtObj
             if (lpcmab?.Any() ?? false)
             {
                 lpcmabm = (from e in lpcmab
-                          select new PagatoCondivisoMABModel()
-                          {
-                              idPagatoCondiviso = e.IDPAGATOCONDIVISO,
-                              idMAB = e.IDMAB,
-                              idAttivazioneMAB = e.IDATTIVAZIONEMAB,
-                              idStatoRecord = e.IDSTATORECORD,
-                              Condiviso = e.CONDIVISO,
-                              Pagato = e.PAGATO,
-                              DataInizioValidita = e.DATAINIZIOVALIDITA,
-                              DataFineValidita = e.DATAFINEVALIDITA,
-                              DataAggiornamento = e.DATAAGGIORNAMENTO,
-                              fk_IDPagatoCondiviso = e.FK_IDPAGATOCONDIVISO,
-                              Nascondi = e.NASCONDI
-                          }).ToList();
+                           select new PagatoCondivisoMABModel()
+                           {
+                               idPagatoCondiviso = e.IDPAGATOCONDIVISO,
+                               idMAB = e.IDMAB,
+                               idAttivazioneMAB = e.IDATTIVAZIONEMAB,
+                               idStatoRecord = e.IDSTATORECORD,
+                               Condiviso = e.CONDIVISO,
+                               Pagato = e.PAGATO,
+                               DataInizioValidita = e.DATAINIZIOVALIDITA,
+                               DataFineValidita = e.DATAFINEVALIDITA,
+                               DataAggiornamento = e.DATAAGGIORNAMENTO,
+                               fk_IDPagatoCondiviso = e.FK_IDPAGATOCONDIVISO,
+                               Nascondi = e.NASCONDI
+                           }).ToList();
             }
 
             return lpcmabm;
@@ -1842,10 +1870,10 @@ namespace NewISE.Models.DBModel.dtObj
                 item.Collection(a => a.CANONEMAB).Load();
                 CANONEMAB cmab = new CANONEMAB()
                 {
-                    IDMAB=mab.IDMAB,
-                    IDATTIVAZIONEMAB=cmabm.IDAttivazioneMAB,
+                    IDMAB = mab.IDMAB,
+                    IDATTIVAZIONEMAB = cmabm.IDAttivazioneMAB,
                     IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
-                    IDVALUTA=cmabm.idValuta,
+                    IDVALUTA = cmabm.idValuta,
                     IMPORTOCANONE = cmabm.ImportoCanone,
                     DATAINIZIOVALIDITA = cmabm.DataInizioValidita,
                     DATAFINEVALIDITA = cmabm.DataFineValidita,
@@ -1910,8 +1938,8 @@ namespace NewISE.Models.DBModel.dtObj
                     DATAINIZIOVALIDITA = pcmabm.DataInizioValidita,
                     DATAFINEVALIDITA = pcmabm.DataFineValidita,
                     DATAAGGIORNAMENTO = pcmabm.DataAggiornamento,
-                    FK_IDPAGATOCONDIVISO=pcmabm.fk_IDPagatoCondiviso,
-                    NASCONDI=pcmabm.Nascondi
+                    FK_IDPAGATOCONDIVISO = pcmabm.fk_IDPagatoCondiviso,
+                    NASCONDI = pcmabm.Nascondi
                 };
 
                 mab.PAGATOCONDIVISOMAB.Add(pcmab);
@@ -2324,24 +2352,24 @@ namespace NewISE.Models.DBModel.dtObj
                 //}
                 //else
                 //{
-                    cmabmPrecedente = lcmabmPrecedenti.First();
+                cmabmPrecedente = lcmabmPrecedenti.First();
 
-                    if (lcmabmSuccessivi.Count == 0)
-                    { ////
-                        if (cmabmPrecedente.DataInizioValidita == cmabm.DataInizioValidita)
+                if (lcmabmSuccessivi.Count == 0)
+                { ////
+                    if (cmabmPrecedente.DataInizioValidita == cmabm.DataInizioValidita)
+                    {
+                        if (cmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
                         {
-                            if (cmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                            #region edit record
+                            var cmabPrecedente = db.CANONEMAB.Find(cmabmPrecedente.idCanone);
+                            cmabPrecedente.IMPORTOCANONE = cmabm.ImportoCanone;
+                            cmabPrecedente.IDVALUTA = cmabm.idValuta;
+                            cmabPrecedente.DATAFINEVALIDITA = dataFineValiditaMAB;
+                            cmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                            if (db.SaveChanges() <= 0)
                             {
-                                #region edit record
-                                var cmabPrecedente = db.CANONEMAB.Find(cmabmPrecedente.idCanone);
-                                cmabPrecedente.IMPORTOCANONE = cmabm.ImportoCanone;
-                                cmabPrecedente.IDVALUTA = cmabm.idValuta;
-                                cmabPrecedente.DATAFINEVALIDITA = dataFineValiditaMAB;
-                                cmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
-                                if (db.SaveChanges() <= 0)
-                                {
-                                    throw new Exception("Errore durante l'inserimento del canone MAB.");
-                                }
+                                throw new Exception("Errore durante l'inserimento del canone MAB.");
+                            }
                             #endregion
 
                             #region riassocia TFR
@@ -2368,28 +2396,6 @@ namespace NewISE.Models.DBModel.dtObj
                             #endregion
                         }
                         else
-                            {
-                                cmabmPrecedente.NascondiRecord(db);
-
-                                #region replico creo record con periodo dataini - dataIniInput-1
-                                cmabmLav = new CanoneMABModel()
-                                {
-                                    IDMAB=cmabm.IDMAB,
-                                    IDAttivazioneMAB=cmabm.IDAttivazioneMAB,
-                                    idValuta=cmabm.idValuta,
-                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    ImportoCanone = cmabm.ImportoCanone,
-                                    DataInizioValidita = cmabmPrecedente.DataInizioValidita,
-                                    DataFineValidita = dataFineValiditaMAB,
-                                    DataAggiornamento = DateTime.Now,
-                                    FK_IDCanone = cmabm.FK_IDCanone,
-                                    nascondi = false
-                                };
-                                SetCanoneMAB(ref cmabmLav, db);
-                                #endregion
-                            }
-                        }
-                        else
                         {
                             cmabmPrecedente.NascondiRecord(db);
 
@@ -2398,27 +2404,10 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 IDMAB = cmabm.IDMAB,
                                 IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
-                                idValuta = cmabmPrecedente.idValuta,
-                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                ImportoCanone = cmabmPrecedente.ImportoCanone,
-                                DataInizioValidita = cmabmPrecedente.DataInizioValidita,
-                                DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
-                                DataAggiornamento = DateTime.Now,
-                                FK_IDCanone = cmabmPrecedente.FK_IDCanone,
-                                nascondi = false
-                            };
-                            SetCanoneMAB(ref cmabmLav, db);
-                            #endregion
-
-                            #region creo record 
-                            cmabmLav = new CanoneMABModel()
-                            {
-                                IDMAB = cmabm.IDMAB,
-                                IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
                                 idValuta = cmabm.idValuta,
                                 idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                                 ImportoCanone = cmabm.ImportoCanone,
-                                DataInizioValidita = cmabm.DataInizioValidita,
+                                DataInizioValidita = cmabmPrecedente.DataInizioValidita,
                                 DataFineValidita = dataFineValiditaMAB,
                                 DataAggiornamento = DateTime.Now,
                                 FK_IDCanone = cmabm.FK_IDCanone,
@@ -2430,39 +2419,78 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     else
                     {
-                        cmabmSuccessivo = lcmabmSuccessivi.First();
+                        cmabmPrecedente.NascondiRecord(db);
 
-                        if (cmabmPrecedente.DataInizioValidita == cmabm.DataInizioValidita)
+                        #region replico creo record con periodo dataini - dataIniInput-1
+                        cmabmLav = new CanoneMABModel()
                         {
-                            #region annullo i record successivi fino al primo buco temporale o dataRientro
-                            var cont = 1;
-                            //nascondo in ogni caso il primo successivo
-                            cmabmSuccessivo.NascondiRecord(db);
-                            var dataFineCorrente = cmabmSuccessivo.DataFineValidita;
-                            //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
-                            foreach (var cmabmSucc in lcmabmSuccessivi)
-                            {
-                                if (cont > 1 && cmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
-                                {
-                                    dataFineCorrente = cmabmSucc.DataFineValidita;
-                                    cmabmSucc.NascondiRecord(db);
-                                }
-                                cont++;
-                            }
-                            #endregion
-                            if (cmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
-                            {
+                            IDMAB = cmabm.IDMAB,
+                            IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                            idValuta = cmabmPrecedente.idValuta,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                            ImportoCanone = cmabmPrecedente.ImportoCanone,
+                            DataInizioValidita = cmabmPrecedente.DataInizioValidita,
+                            DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
+                            DataAggiornamento = DateTime.Now,
+                            FK_IDCanone = cmabmPrecedente.FK_IDCanone,
+                            nascondi = false
+                        };
+                        SetCanoneMAB(ref cmabmLav, db);
+                        #endregion
 
-                                #region edit record
-                                var cmabPrecedente = db.CANONEMAB.Find(cmabmPrecedente.idCanone);
-                                cmabPrecedente.IMPORTOCANONE = cmabm.ImportoCanone;
-                                cmabPrecedente.IDVALUTA = cmabm.idValuta;
-                                cmabPrecedente.DATAFINEVALIDITA = dataFineCorrente;
-                                cmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
-                                if (db.SaveChanges() <= 0)
-                                {
-                                    throw new Exception("Errore durante l'inserimento del canone.");
-                                }
+                        #region creo record 
+                        cmabmLav = new CanoneMABModel()
+                        {
+                            IDMAB = cmabm.IDMAB,
+                            IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                            idValuta = cmabm.idValuta,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                            ImportoCanone = cmabm.ImportoCanone,
+                            DataInizioValidita = cmabm.DataInizioValidita,
+                            DataFineValidita = dataFineValiditaMAB,
+                            DataAggiornamento = DateTime.Now,
+                            FK_IDCanone = cmabm.FK_IDCanone,
+                            nascondi = false
+                        };
+                        SetCanoneMAB(ref cmabmLav, db);
+                        #endregion
+                    }
+                }
+                else
+                {
+                    cmabmSuccessivo = lcmabmSuccessivi.First();
+
+                    if (cmabmPrecedente.DataInizioValidita == cmabm.DataInizioValidita)
+                    {
+                        #region annullo i record successivi fino al primo buco temporale o dataRientro
+                        var cont = 1;
+                        //nascondo in ogni caso il primo successivo
+                        cmabmSuccessivo.NascondiRecord(db);
+                        var dataFineCorrente = cmabmSuccessivo.DataFineValidita;
+                        //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                        foreach (var cmabmSucc in lcmabmSuccessivi)
+                        {
+                            if (cont > 1 && cmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
+                            {
+                                dataFineCorrente = cmabmSucc.DataFineValidita;
+                                cmabmSucc.NascondiRecord(db);
+                            }
+                            cont++;
+                        }
+                        #endregion
+                        if (cmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                        {
+
+                            #region edit record
+                            var cmabPrecedente = db.CANONEMAB.Find(cmabmPrecedente.idCanone);
+                            cmabPrecedente.IMPORTOCANONE = cmabm.ImportoCanone;
+                            cmabPrecedente.IDVALUTA = cmabm.idValuta;
+                            cmabPrecedente.DATAFINEVALIDITA = dataFineCorrente;
+                            cmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore durante l'inserimento del canone.");
+                            }
                             #endregion
 
                             #region riassocia TFR
@@ -2489,67 +2517,10 @@ namespace NewISE.Models.DBModel.dtObj
                             #endregion
                         }
                         else
-                            {
-                                cmabmPrecedente.NascondiRecord(db);
-
-                                #region replico creo record con periodo dataini - dataFineCorrente
-                                cmabmLav = new CanoneMABModel()
-                                {
-                                    IDMAB=cmabm.IDMAB,
-                                    IDAttivazioneMAB=cmabm.IDAttivazioneMAB,
-                                    idValuta=cmabm.idValuta,
-                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    ImportoCanone = cmabm.ImportoCanone,
-                                    DataInizioValidita = cmabmPrecedente.DataInizioValidita,
-                                    DataFineValidita = dataFineCorrente,
-                                    DataAggiornamento = DateTime.Now,
-                                    FK_IDCanone = cmabm.FK_IDCanone,
-                                    nascondi = false
-                                };
-                                SetCanoneMAB(ref cmabmLav, db);
-                                #endregion
-                            }
-                        }
-                        else
                         {
-
                             cmabmPrecedente.NascondiRecord(db);
 
-                            #region replico creo record con periodo dataini - dataIniInput-1
-                            cmabmLav = new CanoneMABModel()
-                            {
-                                IDMAB = cmabm.IDMAB,
-                                IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
-                                idValuta = cmabmPrecedente.idValuta,
-                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                ImportoCanone = cmabmPrecedente.ImportoCanone,
-                                DataInizioValidita = cmabmPrecedente.DataInizioValidita,
-                                DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
-                                DataAggiornamento = DateTime.Now,
-                                FK_IDCanone = cmabm.FK_IDCanone,
-                                nascondi = false
-                            };
-                            SetCanoneMAB(ref cmabmLav, db);
-                            #endregion
-
-                            #region annullo i record successivi fino al primo buco temporale o dataRientro
-                            var cont = 1;
-                            //nascondo in ogni caso il primo successivo
-                            cmabmSuccessivo.NascondiRecord(db);
-                            var dataFineCorrente = cmabmSuccessivo.DataFineValidita;
-                            //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
-                            foreach (var cmabmSucc in lcmabmSuccessivi)
-                            {
-                                if (cont > 1 && cmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
-                                {
-                                    dataFineCorrente = cmabmSucc.DataFineValidita;
-                                    cmabmSucc.NascondiRecord(db);
-                                }
-                                cont++;
-                            }
-                            #endregion
-
-                            #region creo record
+                            #region replico creo record con periodo dataini - dataFineCorrente
                             cmabmLav = new CanoneMABModel()
                             {
                                 IDMAB = cmabm.IDMAB,
@@ -2557,17 +2528,74 @@ namespace NewISE.Models.DBModel.dtObj
                                 idValuta = cmabm.idValuta,
                                 idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                                 ImportoCanone = cmabm.ImportoCanone,
-                                DataInizioValidita = cmabm.DataInizioValidita,
+                                DataInizioValidita = cmabmPrecedente.DataInizioValidita,
                                 DataFineValidita = dataFineCorrente,
                                 DataAggiornamento = DateTime.Now,
                                 FK_IDCanone = cmabm.FK_IDCanone,
                                 nascondi = false
                             };
-
                             SetCanoneMAB(ref cmabmLav, db);
                             #endregion
                         }
                     }
+                    else
+                    {
+
+                        cmabmPrecedente.NascondiRecord(db);
+
+                        #region replico creo record con periodo dataini - dataIniInput-1
+                        cmabmLav = new CanoneMABModel()
+                        {
+                            IDMAB = cmabm.IDMAB,
+                            IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                            idValuta = cmabmPrecedente.idValuta,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                            ImportoCanone = cmabmPrecedente.ImportoCanone,
+                            DataInizioValidita = cmabmPrecedente.DataInizioValidita,
+                            DataFineValidita = cmabm.DataInizioValidita.AddDays(-1),
+                            DataAggiornamento = DateTime.Now,
+                            FK_IDCanone = cmabm.FK_IDCanone,
+                            nascondi = false
+                        };
+                        SetCanoneMAB(ref cmabmLav, db);
+                        #endregion
+
+                        #region annullo i record successivi fino al primo buco temporale o dataRientro
+                        var cont = 1;
+                        //nascondo in ogni caso il primo successivo
+                        cmabmSuccessivo.NascondiRecord(db);
+                        var dataFineCorrente = cmabmSuccessivo.DataFineValidita;
+                        //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                        foreach (var cmabmSucc in lcmabmSuccessivi)
+                        {
+                            if (cont > 1 && cmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
+                            {
+                                dataFineCorrente = cmabmSucc.DataFineValidita;
+                                cmabmSucc.NascondiRecord(db);
+                            }
+                            cont++;
+                        }
+                        #endregion
+
+                        #region creo record
+                        cmabmLav = new CanoneMABModel()
+                        {
+                            IDMAB = cmabm.IDMAB,
+                            IDAttivazioneMAB = cmabm.IDAttivazioneMAB,
+                            idValuta = cmabm.idValuta,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                            ImportoCanone = cmabm.ImportoCanone,
+                            DataInizioValidita = cmabm.DataInizioValidita,
+                            DataFineValidita = dataFineCorrente,
+                            DataAggiornamento = DateTime.Now,
+                            FK_IDCanone = cmabm.FK_IDCanone,
+                            nascondi = false
+                        };
+
+                        SetCanoneMAB(ref cmabmLav, db);
+                        #endregion
+                    }
+                }
 
                 //}
 
@@ -2750,7 +2778,7 @@ namespace NewISE.Models.DBModel.dtObj
                         //controllo periodo attiguo
                         if (pcmabmPrecedente.DataFineValidita == pcmabmSuccessivo.DataInizioValidita.AddDays(-1))
                         {
-                          
+
                             #region replico record e lo nascondo
                             pcmabmPrecedente.NascondiRecord(db);
 
@@ -2937,47 +2965,25 @@ namespace NewISE.Models.DBModel.dtObj
                 //}
                 //else
                 //{
-                    pcmabmPrecedente = lpcmabmPrecedenti.First();
+                pcmabmPrecedente = lpcmabmPrecedenti.First();
 
-                    if (lpcmabmSuccessivi.Count == 0)
-                    { ////
-                        if (pcmabmPrecedente.DataInizioValidita == pcmabm.DataInizioValidita)
+                if (lpcmabmSuccessivi.Count == 0)
+                { ////
+                    if (pcmabmPrecedente.DataInizioValidita == pcmabm.DataInizioValidita)
+                    {
+                        if (pcmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
                         {
-                            if (pcmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                            #region edit record
+                            var pcmabPrecedente = db.PAGATOCONDIVISOMAB.Find(pcmabmPrecedente.idPagatoCondiviso);
+                            pcmabPrecedente.PAGATO = pcmabm.Pagato;
+                            pcmabPrecedente.CONDIVISO = pcmabm.Condiviso;
+                            pcmabPrecedente.DATAFINEVALIDITA = dataFineValiditaMAB;
+                            pcmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                            if (db.SaveChanges() <= 0)
                             {
-                                #region edit record
-                                var pcmabPrecedente = db.PAGATOCONDIVISOMAB.Find(pcmabmPrecedente.idPagatoCondiviso);
-                                pcmabPrecedente.PAGATO = pcmabm.Pagato;
-                                pcmabPrecedente.CONDIVISO = pcmabm.Condiviso;
-                                pcmabPrecedente.DATAFINEVALIDITA = dataFineValiditaMAB;
-                                pcmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
-                                if (db.SaveChanges() <= 0)
-                                {
-                                    throw new Exception("Errore durante l'inserimento del pagato condiviso MAB.");
-                                }
-                                #endregion
+                                throw new Exception("Errore durante l'inserimento del pagato condiviso MAB.");
                             }
-                            else
-                            {
-                                pcmabmPrecedente.NascondiRecord(db);
-
-                                #region replico creo record con periodo dataini - dataIniInput-1
-                                pcmabmLav = new PagatoCondivisoMABModel()
-                                {
-                                    idMAB = pcmabm.idMAB,
-                                    idAttivazioneMAB = pcmabm.idAttivazioneMAB,
-                                    Pagato = pcmabm.Pagato,
-                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    Condiviso = pcmabm.Condiviso,
-                                    DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
-                                    DataFineValidita = dataFineValiditaMAB,
-                                    DataAggiornamento = DateTime.Now,
-                                    fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
-                                    Nascondi = false
-                                };
-                                SetPagatoCondivisoMAB(ref pcmabmLav, db);
-                                #endregion
-                            }
+                            #endregion
                         }
                         else
                         {
@@ -2988,27 +2994,10 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 idMAB = pcmabm.idMAB,
                                 idAttivazioneMAB = pcmabm.idAttivazioneMAB,
-                                Pagato = pcmabmPrecedente.Pagato,
-                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                Condiviso = pcmabmPrecedente.Condiviso,
-                                DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
-                                DataFineValidita = pcmabm.DataInizioValidita.AddDays(-1),
-                                DataAggiornamento = DateTime.Now,
-                                fk_IDPagatoCondiviso = pcmabmPrecedente.fk_IDPagatoCondiviso,
-                                Nascondi = false
-                            };
-                            SetPagatoCondivisoMAB(ref pcmabmLav, db);
-                            #endregion
-
-                            #region creo record 
-                            pcmabmLav = new PagatoCondivisoMABModel()
-                            {
-                                idMAB = pcmabm.idMAB,
-                                idAttivazioneMAB = pcmabm.idAttivazioneMAB,
                                 Pagato = pcmabm.Pagato,
                                 idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                                 Condiviso = pcmabm.Condiviso,
-                                DataInizioValidita = pcmabm.DataInizioValidita,
+                                DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
                                 DataFineValidita = dataFineValiditaMAB,
                                 DataAggiornamento = DateTime.Now,
                                 fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
@@ -3020,103 +3009,85 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     else
                     {
-                        pcmabmSuccessivo = lpcmabmSuccessivi.First();
+                        pcmabmPrecedente.NascondiRecord(db);
 
-                        if (pcmabmPrecedente.DataInizioValidita == pcmabm.DataInizioValidita)
+                        #region replico creo record con periodo dataini - dataIniInput-1
+                        pcmabmLav = new PagatoCondivisoMABModel()
                         {
-                            #region annullo i record successivi fino al primo buco temporale o dataRientro
-                            var cont = 1;
-                            //nascondo in ogni caso il primo successivo
-                            pcmabmSuccessivo.NascondiRecord(db);
-                            var dataFineCorrente = pcmabmSuccessivo.DataFineValidita;
-                            //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
-                            foreach (var pcmabmSucc in lpcmabmSuccessivi)
+                            idMAB = pcmabm.idMAB,
+                            idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                            Pagato = pcmabmPrecedente.Pagato,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                            Condiviso = pcmabmPrecedente.Condiviso,
+                            DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
+                            DataFineValidita = pcmabm.DataInizioValidita.AddDays(-1),
+                            DataAggiornamento = DateTime.Now,
+                            fk_IDPagatoCondiviso = pcmabmPrecedente.fk_IDPagatoCondiviso,
+                            Nascondi = false
+                        };
+                        SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                        #endregion
+
+                        #region creo record 
+                        pcmabmLav = new PagatoCondivisoMABModel()
+                        {
+                            idMAB = pcmabm.idMAB,
+                            idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                            Pagato = pcmabm.Pagato,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                            Condiviso = pcmabm.Condiviso,
+                            DataInizioValidita = pcmabm.DataInizioValidita,
+                            DataFineValidita = dataFineValiditaMAB,
+                            DataAggiornamento = DateTime.Now,
+                            fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                            Nascondi = false
+                        };
+                        SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                        #endregion
+                    }
+                }
+                else
+                {
+                    pcmabmSuccessivo = lpcmabmSuccessivi.First();
+
+                    if (pcmabmPrecedente.DataInizioValidita == pcmabm.DataInizioValidita)
+                    {
+                        #region annullo i record successivi fino al primo buco temporale o dataRientro
+                        var cont = 1;
+                        //nascondo in ogni caso il primo successivo
+                        pcmabmSuccessivo.NascondiRecord(db);
+                        var dataFineCorrente = pcmabmSuccessivo.DataFineValidita;
+                        //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                        foreach (var pcmabmSucc in lpcmabmSuccessivi)
+                        {
+                            if (cont > 1 && pcmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
                             {
-                                if (cont > 1 && pcmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
-                                {
-                                    dataFineCorrente = pcmabmSucc.DataFineValidita;
-                                    pcmabmSucc.NascondiRecord(db);
-                                }
-                                cont++;
+                                dataFineCorrente = pcmabmSucc.DataFineValidita;
+                                pcmabmSucc.NascondiRecord(db);
+                            }
+                            cont++;
+                        }
+                        #endregion
+                        if (pcmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
+                        {
+
+                            #region edit record
+                            var pcmabPrecedente = db.PAGATOCONDIVISOMAB.Find(pcmabmPrecedente.idPagatoCondiviso);
+                            pcmabPrecedente.PAGATO = pcmabm.Pagato;
+                            pcmabPrecedente.CONDIVISO = pcmabm.Condiviso;
+                            pcmabPrecedente.DATAFINEVALIDITA = dataFineCorrente;
+                            pcmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
+                            if (db.SaveChanges() <= 0)
+                            {
+                                throw new Exception("Errore durante l'inserimento di pagato condiviso.");
                             }
                             #endregion
-                            if (pcmabmPrecedente.idStatoRecord == (decimal)EnumStatoRecord.In_Lavorazione)
-                            {
-
-                                #region edit record
-                                var pcmabPrecedente = db.PAGATOCONDIVISOMAB.Find(pcmabmPrecedente.idPagatoCondiviso);
-                                pcmabPrecedente.PAGATO = pcmabm.Pagato;
-                                pcmabPrecedente.CONDIVISO = pcmabm.Condiviso;
-                                pcmabPrecedente.DATAFINEVALIDITA = dataFineCorrente;
-                                pcmabPrecedente.DATAAGGIORNAMENTO = DateTime.Now;
-                                if (db.SaveChanges() <= 0)
-                                {
-                                    throw new Exception("Errore durante l'inserimento di pagato condiviso.");
-                                }
-                                #endregion
-                            }
-                            else
-                            {
-                                pcmabmPrecedente.NascondiRecord(db);
-
-                                #region replico creo record con periodo dataini - dataFineCorrente
-                                pcmabmLav = new PagatoCondivisoMABModel()
-                                {
-                                    idMAB = pcmabm.idMAB,
-                                    idAttivazioneMAB = pcmabm.idAttivazioneMAB,
-                                    Pagato = pcmabm.Pagato,
-                                    idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                    Condiviso = pcmabm.Condiviso,
-                                    DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
-                                    DataFineValidita = dataFineCorrente,
-                                    DataAggiornamento = DateTime.Now,
-                                    fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
-                                    Nascondi = false
-                                };
-                                SetPagatoCondivisoMAB(ref pcmabmLav, db);
-                                #endregion
-                            }
                         }
                         else
                         {
-
                             pcmabmPrecedente.NascondiRecord(db);
 
-                            #region replico creo record con periodo dataini - dataIniInput-1
-                            pcmabmLav = new PagatoCondivisoMABModel()
-                            {
-                                idMAB = pcmabm.idMAB,
-                                idAttivazioneMAB = pcmabm.idAttivazioneMAB,
-                                Pagato = pcmabmPrecedente.Pagato,
-                                idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
-                                Condiviso = pcmabmPrecedente.Condiviso,
-                                DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
-                                DataFineValidita = pcmabm.DataInizioValidita.AddDays(-1),
-                                DataAggiornamento = DateTime.Now,
-                                fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
-                                Nascondi = false
-                            };
-                            SetPagatoCondivisoMAB(ref pcmabmLav, db);
-                            #endregion
-
-                            #region annullo i record successivi fino al primo buco temporale o dataRientro
-                            var cont = 1;
-                            //nascondo in ogni caso il primo successivo
-                            pcmabmSuccessivo.NascondiRecord(db);
-                            var dataFineCorrente = pcmabmSuccessivo.DataFineValidita;
-                            //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
-                            foreach (var pcmabmSucc in lpcmabmSuccessivi)
-                            {
-                                if (cont > 1 && pcmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
-                                {
-                                    dataFineCorrente = pcmabmSucc.DataFineValidita;
-                                    pcmabmSucc.NascondiRecord(db);
-                                }
-                                cont++;
-                            }
-                            #endregion
-
-                            #region creo record
+                            #region replico creo record con periodo dataini - dataFineCorrente
                             pcmabmLav = new PagatoCondivisoMABModel()
                             {
                                 idMAB = pcmabm.idMAB,
@@ -3124,17 +3095,74 @@ namespace NewISE.Models.DBModel.dtObj
                                 Pagato = pcmabm.Pagato,
                                 idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
                                 Condiviso = pcmabm.Condiviso,
-                                DataInizioValidita = pcmabm.DataInizioValidita,
+                                DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
                                 DataFineValidita = dataFineCorrente,
                                 DataAggiornamento = DateTime.Now,
                                 fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
                                 Nascondi = false
                             };
-
                             SetPagatoCondivisoMAB(ref pcmabmLav, db);
                             #endregion
                         }
                     }
+                    else
+                    {
+
+                        pcmabmPrecedente.NascondiRecord(db);
+
+                        #region replico creo record con periodo dataini - dataIniInput-1
+                        pcmabmLav = new PagatoCondivisoMABModel()
+                        {
+                            idMAB = pcmabm.idMAB,
+                            idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                            Pagato = pcmabmPrecedente.Pagato,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                            Condiviso = pcmabmPrecedente.Condiviso,
+                            DataInizioValidita = pcmabmPrecedente.DataInizioValidita,
+                            DataFineValidita = pcmabm.DataInizioValidita.AddDays(-1),
+                            DataAggiornamento = DateTime.Now,
+                            fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                            Nascondi = false
+                        };
+                        SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                        #endregion
+
+                        #region annullo i record successivi fino al primo buco temporale o dataRientro
+                        var cont = 1;
+                        //nascondo in ogni caso il primo successivo
+                        pcmabmSuccessivo.NascondiRecord(db);
+                        var dataFineCorrente = pcmabmSuccessivo.DataFineValidita;
+                        //annullo solo i successivi record attigui e leggo l'ultima datafine del periodo
+                        foreach (var pcmabmSucc in lpcmabmSuccessivi)
+                        {
+                            if (cont > 1 && pcmabmSucc.DataInizioValidita == dataFineCorrente.AddDays(1))
+                            {
+                                dataFineCorrente = pcmabmSucc.DataFineValidita;
+                                pcmabmSucc.NascondiRecord(db);
+                            }
+                            cont++;
+                        }
+                        #endregion
+
+                        #region creo record
+                        pcmabmLav = new PagatoCondivisoMABModel()
+                        {
+                            idMAB = pcmabm.idMAB,
+                            idAttivazioneMAB = pcmabm.idAttivazioneMAB,
+                            Pagato = pcmabm.Pagato,
+                            idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione,
+                            Condiviso = pcmabm.Condiviso,
+                            DataInizioValidita = pcmabm.DataInizioValidita,
+                            DataFineValidita = dataFineCorrente,
+                            DataAggiornamento = DateTime.Now,
+                            fk_IDPagatoCondiviso = pcmabm.fk_IDPagatoCondiviso,
+                            Nascondi = false
+                        };
+
+                        SetPagatoCondivisoMAB(ref pcmabmLav, db);
+                        #endregion
+                    }
+                }
 
                 //}
 
@@ -3155,7 +3183,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var mab = db.MAB.Find(idMAB);
 
-                if (mab.IDMAB>0)
+                if (mab.IDMAB > 0)
                 {
                     mabm = new MABModel()
                     {
@@ -3521,7 +3549,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     UpdateStatoCanoneMAB(cmab.IDCANONE, EnumStatoRecord.Attivato, db);
                                     dtd.DataInizioRicalcoliDipendente(idTrasferimento, cmab.DATAINIZIOVALIDITA, db, true);
-                            
+
                                 }
                                 //annullo i record attivi nascosti  (relativi alla mab perche potrbbero avere idattivazione diverso)
                                 cmabl = mab_corrente.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.NASCONDI).OrderBy(a => a.IDCANONE).ToList();
@@ -3618,7 +3646,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
                 var mabl = t.INDENNITA.MAB
-                            .Where(a => a.RINUNCIAMAB == false && a.IDSTATORECORD!=(decimal)EnumStatoRecord.Annullato)
+                            .Where(a => a.RINUNCIAMAB == false && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                             .OrderBy(a => a.IDMAB)
                             .ToList();
 
@@ -3650,7 +3678,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                 }
                 return amm;
-                
+
             }
             catch (Exception ex)
             {
@@ -3679,7 +3707,7 @@ namespace NewISE.Models.DBModel.dtObj
                     List<DOCUMENTI> ld_old = new List<DOCUMENTI>();
                     List<PAGATOCONDIVISOMAB> old_pc_l = new List<PAGATOCONDIVISOMAB>();
 
-                    
+
 
 
 
@@ -4239,7 +4267,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     UpdateStatoPeriodoMAB(pmab.IDPERIODOMAB, EnumStatoRecord.Da_Attivare, db);
                                 }
 
-                                var cmabl = am.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.NASCONDI==false).OrderBy(a => a.IDCANONE).ToList();
+                                var cmabl = am.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.NASCONDI == false).OrderBy(a => a.IDCANONE).ToList();
                                 foreach (var cmab in cmabl)
                                 {
                                     UpdateStatoCanoneMAB(cmab.IDCANONE, EnumStatoRecord.Da_Attivare, db);
@@ -4258,7 +4286,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
 
                                 var dmabl = am.DOCUMENTI
-                                            .Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && 
+                                            .Where(a => a.MODIFICATO == false && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione &&
                                                             (
                                                             a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
                                                             a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
@@ -4278,10 +4306,10 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 //elimina da CANONE e PAGATOCONDIVISO gli eventuali record con nascondi=true e stato=in lavorazione
                                 cmabl = am.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && a.NASCONDI == true).ToList();
-                                foreach(var cmab in cmabl)
+                                foreach (var cmab in cmabl)
                                 {
                                     db.CANONEMAB.Remove(cmab);
-                                    if (db.SaveChanges()<=0)
+                                    if (db.SaveChanges() <= 0)
                                     {
                                         throw new Exception("Errore in fase di notifica MAB.");
                                     }
@@ -4372,9 +4400,9 @@ namespace NewISE.Models.DBModel.dtObj
                         #endregion
 
                         #region attivazione
-                        if(att.IDATTIVAZIONEMAB>0==false)
+                        if (att.IDATTIVAZIONEMAB > 0 == false)
                         {
-                            att=CreaAttivazioneMAB_var(newmab.IDMAB, db);
+                            att = CreaAttivazioneMAB_var(newmab.IDMAB, db);
                         }
                         #endregion
 
@@ -4393,9 +4421,9 @@ namespace NewISE.Models.DBModel.dtObj
                             IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
                             IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
                             DATAINIZIOMAB = mvm.dataInizioMAB,
-                            DATAFINEMAB=mvm.dataFineMAB,
-                            DATAAGGIORNAMENTO=DateTime.Now,
-                            FK_IDPERIODOMAB=null
+                            DATAFINEMAB = mvm.dataFineMAB,
+                            DATAAGGIORNAMENTO = DateTime.Now,
+                            FK_IDPERIODOMAB = null
                         };
                         db.PERIODOMAB.Add(new_pm);
                         if (db.SaveChanges() <= 0)
@@ -4438,7 +4466,7 @@ namespace NewISE.Models.DBModel.dtObj
                         #region associa maggiorazione annuale
                         var ma = GetMaggiorazioneAnnuale_var(mvm, db);
                         if (mvm.anticipoAnnuale)
-                        { 
+                        {
                             if (ma.IDMAGANNUALI > 0)
                             {
                                 Associa_MAB_MaggiorazioniAnnuali_var(newmab.IDMAB, ma.IDMAGANNUALI, db);
@@ -4446,9 +4474,9 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         #endregion
 
-                            //mvm.idAttivazioneMAB = amab.IDATTIVAZIONEMAB;
+                        //mvm.idAttivazioneMAB = amab.IDATTIVAZIONEMAB;
                         mvm.dataAggiornamento = DateTime.Now;
-                            //mvm.idMAB = newmab.IDMAB;
+                        //mvm.idMAB = newmab.IDMAB;
 
                         #region crea CANONE
                         var ultimaMab = GetUltimaMABAttiva(idTrasferimento, db);
@@ -4456,7 +4484,8 @@ namespace NewISE.Models.DBModel.dtObj
                         if (ultimaMab.IDMAB > 0)
                         {
                             vm = GetUltimaValutaInseritaModel(ultimaMab.IDMAB, db);
-                        }else
+                        }
+                        else
                         {
                             using (dtValute dtv = new dtValute())
                             {
@@ -4492,7 +4521,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         SetPagatoCondivisoMAB(ref pcm, db); //associa anche percentuale condivisione
                         #endregion
-                       
+
                     }
 
                     db.Database.CurrentTransaction.Commit();
@@ -4521,131 +4550,131 @@ namespace NewISE.Models.DBModel.dtObj
         //    //{
         //    //    db.Database.BeginTransaction();
 
-            //    //    try
-            //    //    {
-            //    //        #region ATTIVAZIONE MAB
-            //    //        var amm = this.GetAttivazioneMAB_var(idTrasferimento);
-            //    //        if (amm != null && amm.idAttivazioneMAB > 0)
-            //    //        {
-            //    //            mvm.idAttivazioneMAB = amm.idAttivazioneMAB;
-            //    //        }
-            //    //        else
-            //    //        {
-            //    //            var am = this.CreaAttivazioneMAB_var(idTrasferimento, db);
-            //    //            amm = new AttivazioneMABModel()
-            //    //            {
-            //    //                Annullato = am.ANNULLATO,
-            //    //                Attivazione = am.ATTIVAZIONE,
-            //    //                dataAggiornamento = am.DATAAGGIORNAMENTO,
-            //    //                dataAttivazione = am.DATAATTIVAZIONE,
-            //    //                dataNotificaRichiesta = am.DATANOTIFICARICHIESTA,
-            //    //                dataVariazione = am.DATAVARIAZIONE,
-            //    //                idAttivazioneMAB = am.IDATTIVAZIONEMAB,
-            //    //                idTrasferimento = am.IDTRASFERIMENTO,
-            //    //                notificaRichiesta = am.NOTIFICARICHIESTA
-            //    //            };
-            //    //        }
-            //    //        #endregion
+        //    //    try
+        //    //    {
+        //    //        #region ATTIVAZIONE MAB
+        //    //        var amm = this.GetAttivazioneMAB_var(idTrasferimento);
+        //    //        if (amm != null && amm.idAttivazioneMAB > 0)
+        //    //        {
+        //    //            mvm.idAttivazioneMAB = amm.idAttivazioneMAB;
+        //    //        }
+        //    //        else
+        //    //        {
+        //    //            var am = this.CreaAttivazioneMAB_var(idTrasferimento, db);
+        //    //            amm = new AttivazioneMABModel()
+        //    //            {
+        //    //                Annullato = am.ANNULLATO,
+        //    //                Attivazione = am.ATTIVAZIONE,
+        //    //                dataAggiornamento = am.DATAAGGIORNAMENTO,
+        //    //                dataAttivazione = am.DATAATTIVAZIONE,
+        //    //                dataNotificaRichiesta = am.DATANOTIFICARICHIESTA,
+        //    //                dataVariazione = am.DATAVARIAZIONE,
+        //    //                idAttivazioneMAB = am.IDATTIVAZIONEMAB,
+        //    //                idTrasferimento = am.IDTRASFERIMENTO,
+        //    //                notificaRichiesta = am.NOTIFICARICHIESTA
+        //    //            };
+        //    //        }
+        //    //        #endregion
 
-            //    //        mvm.dataAggiornamento = DateTime.Now;
+        //    //        mvm.dataAggiornamento = DateTime.Now;
 
-            //    //        #region nuova MAB
-            //    //        decimal new_idMAB = this.SetMaggiorazioneAbitazione_var(ref mvm, db, amm.idAttivazioneMAB);
-            //    //        #endregion
+        //    //        #region nuova MAB
+        //    //        decimal new_idMAB = this.SetMaggiorazioneAbitazione_var(ref mvm, db, amm.idAttivazioneMAB);
+        //    //        #endregion
 
-            //    //        //DateTime dtIni = mvm.dataInizioMAB;
-            //    //        DateTime dtFin = mvm.ut_dataFineMAB == null ? Utility.DataFineStop() : mvm.ut_dataFineMAB.Value;
-            //    //        //mvm.dataFineMAB = dtFin;
-            //    //        mvm.idMAB = new_idMAB;
+        //    //        //DateTime dtIni = mvm.dataInizioMAB;
+        //    //        DateTime dtFin = mvm.ut_dataFineMAB == null ? Utility.DataFineStop() : mvm.ut_dataFineMAB.Value;
+        //    //        //mvm.dataFineMAB = dtFin;
+        //    //        mvm.idMAB = new_idMAB;
 
-            //    //        #region anticipo annuale
-            //    //        //da fare
-            //    //        //if (mvm.AnticipoAnnuale)
-            //    //        //{
+        //    //        #region anticipo annuale
+        //    //        //da fare
+        //    //        //if (mvm.AnticipoAnnuale)
+        //    //        //{
 
-            //    //        //    var mann = this.GetMaggiorazioneAnnuale_var(mvm, db);
+        //    //        //    var mann = this.GetMaggiorazioneAnnuale_var(mvm, db);
 
-            //    //        //    if (mann.idMagAnnuali > 0)
-            //    //        //    {
-            //    //        //        mvm.AnticipoAnnuale = mann.annualita;
-            //    //        //        //associa MAB a MaggiorazioniAnnuali se esiste
-            //    //        //        this.Associa_MAB_MaggiorazioniAnnuali_var(new_idMAB, mann.idMagAnnuali, db);
-            //    //        //    }
-            //    //        //    else
-            //    //        //    {
-            //    //        //        mvm.AnticipoAnnuale = false;
-            //    //        //    }
+        //    //        //    if (mann.idMagAnnuali > 0)
+        //    //        //    {
+        //    //        //        mvm.AnticipoAnnuale = mann.annualita;
+        //    //        //        //associa MAB a MaggiorazioniAnnuali se esiste
+        //    //        //        this.Associa_MAB_MaggiorazioniAnnuali_var(new_idMAB, mann.idMagAnnuali, db);
+        //    //        //    }
+        //    //        //    else
+        //    //        //    {
+        //    //        //        mvm.AnticipoAnnuale = false;
+        //    //        //    }
 
-            //    //        //}
-            //    //        #endregion
+        //    //        //}
+        //    //        #endregion
 
-            //    //        #region associa MAB a tutte le percentuali MAB trovate
-            //    //        var lista_perc = this.GetListaPercentualeMAB_var(idTrasferimento, db);
-            //    //        if (lista_perc?.Any() ?? false)
-            //    //        {
-            //    //            foreach (var perc in lista_perc)
-            //    //            {
-            //    //                this.Associa_MAB_PercenualeMAB_var(new_idMAB, perc.IDPERCMAB, db);
-            //    //            }
-            //    //        }
-            //    //        #endregion
+        //    //        #region associa MAB a tutte le percentuali MAB trovate
+        //    //        var lista_perc = this.GetListaPercentualeMAB_var(idTrasferimento, db);
+        //    //        if (lista_perc?.Any() ?? false)
+        //    //        {
+        //    //            foreach (var perc in lista_perc)
+        //    //            {
+        //    //                this.Associa_MAB_PercenualeMAB_var(new_idMAB, perc.IDPERCMAB, db);
+        //    //            }
+        //    //        }
+        //    //        #endregion
 
-            //    //        #region inserisci CANONE
-            //    //        CANONEMAB c = this.SetCanoneMAB_var(mvm, db);
-            //    //        #endregion
+        //    //        #region inserisci CANONE
+        //    //        CANONEMAB c = this.SetCanoneMAB_var(mvm, db);
+        //    //        #endregion
 
-            //    //        #region associa canone MAB a TFR
-            //    //        using (dtTFR dtt = new dtTFR())
-            //    //        {
-            //    //            using (dtTrasferimento dttrasf = new dtTrasferimento())
-            //    //            {
-            //    //                var t = dttrasf.GetTrasferimentoById(idTrasferimento);
-            //    //                var ltfr = dtt.GetListaTfrByValuta_RangeDate(t.idUfficio, mvm.id_Valuta, dtIni, dtFin, db);
+        //    //        #region associa canone MAB a TFR
+        //    //        using (dtTFR dtt = new dtTFR())
+        //    //        {
+        //    //            using (dtTrasferimento dttrasf = new dtTrasferimento())
+        //    //            {
+        //    //                var t = dttrasf.GetTrasferimentoById(idTrasferimento);
+        //    //                var ltfr = dtt.GetListaTfrByValuta_RangeDate(t.idUfficio, mvm.id_Valuta, dtIni, dtFin, db);
 
-            //    //                if (ltfr?.Any() ?? false)
-            //    //                {
-            //    //                    foreach (var tfr in ltfr)
-            //    //                    {
-            //    //                        this.Associa_TFR_CanoneMAB_var(tfr.idTFR, c.IDCANONE, db);
-            //    //                    }
-            //    //                }
-            //    //            }
-            //    //        }
-            //    //        #endregion
+        //    //                if (ltfr?.Any() ?? false)
+        //    //                {
+        //    //                    foreach (var tfr in ltfr)
+        //    //                    {
+        //    //                        this.Associa_TFR_CanoneMAB_var(tfr.idTFR, c.IDCANONE, db);
+        //    //                    }
+        //    //                }
+        //    //            }
+        //    //        }
+        //    //        #endregion
 
-            //    //        #region inserisce eventuale pagato condiviso
-            //    //        if (mvm.canone_condiviso)
-            //    //        {
-            //    //            PAGATOCONDIVISOMAB pc = this.SetPagatoCondivisoMAB_var(mvm, db);
+        //    //        #region inserisce eventuale pagato condiviso
+        //    //        if (mvm.canone_condiviso)
+        //    //        {
+        //    //            PAGATOCONDIVISOMAB pc = this.SetPagatoCondivisoMAB_var(mvm, db);
 
-            //    //            #region associa percentuale condivisione
-            //    //            var lpercCond = this.GetListaPercentualeCondivisione_var(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
-            //    //            if (lpercCond?.Any() ?? false)
-            //    //            {
-            //    //                foreach (var percCond in lpercCond)
-            //    //                {
-            //    //                    this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
-            //    //                }
-            //    //            }
-            //    //            else
-            //    //            {
-            //    //                throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
-            //    //            }
-            //    //            #endregion
+        //    //            #region associa percentuale condivisione
+        //    //            var lpercCond = this.GetListaPercentualeCondivisione_var(pc.DATAINIZIOVALIDITA, pc.DATAFINEVALIDITA, db);
+        //    //            if (lpercCond?.Any() ?? false)
+        //    //            {
+        //    //                foreach (var percCond in lpercCond)
+        //    //                {
+        //    //                    this.Associa_PagatoCondivisoMAB_PercentualeCondivisione_var(pc.IDPAGATOCONDIVISO, percCond.IDPERCCOND, db);
+        //    //                }
+        //    //            }
+        //    //            else
+        //    //            {
+        //    //                throw new Exception("Non è stata trovata la percentuale condivisione della maggiorazione abitazione per il periodo richiesto.");
+        //    //            }
+        //    //            #endregion
 
-            //    //        }
-            //    //        #endregion
+        //    //        }
+        //    //        #endregion
 
-            //    //        db.Database.CurrentTransaction.Commit();
+        //    //        db.Database.CurrentTransaction.Commit();
 
-            //    //    }
-            //    //    catch (Exception ex)
-            //    //    {
-            //    //        db.Database.CurrentTransaction.Rollback();
-            //    //        throw ex;
-            //    //    }
-            //    //}
-            //}
+        //    //    }
+        //    //    catch (Exception ex)
+        //    //    {
+        //    //        db.Database.CurrentTransaction.Rollback();
+        //    //        throw ex;
+        //    //    }
+        //    //}
+        //}
 
         public void AggiornaMAB_var(MABViewModel mabvm, decimal idTrasferimento, decimal idMAB)
         {
@@ -4671,7 +4700,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                             if (amab != null && amab.IDATTIVAZIONEMAB > 0)
                             {
-                                mabvm.idAttivazioneMAB = amab.IDATTIVAZIONEMAB;                                
+                                mabvm.idAttivazioneMAB = amab.IDATTIVAZIONEMAB;
                             }
                             else
                             {
@@ -4777,8 +4806,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
 
                                     //nascondo tutti i canoni precedenti
-                                    var lperiodicanoneMAB = mab.CANONEMAB.Where(a => 
-                                                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && 
+                                    var lperiodicanoneMAB = mab.CANONEMAB.Where(a =>
+                                                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                                             a.NASCONDI == false &&
                                                             a.DATAFINEVALIDITA <= dtIni)
                                                             .ToList();
@@ -4835,7 +4864,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     //nascondo tutti i pagatocondiviso precedenti
                                     var lperiodipagatocondivisoMAB = mab.PAGATOCONDIVISOMAB.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.NASCONDI == false &&
-                                                                                  a.DATAFINEVALIDITA<=dtIni).ToList();
+                                                                                  a.DATAFINEVALIDITA <= dtIni).ToList();
                                     foreach (var periodipagatocondivisoMAB in lperiodipagatocondivisoMAB)
                                     {
                                         periodipagatocondivisoMAB.NASCONDI = true;
@@ -5095,12 +5124,12 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     var ant_ann_new = new ANTICIPOANNUALEMAB()
                                     {
-                                        IDMAB=mabvm.idMAB,
-                                        IDATTIVAZIONEMAB=amab.IDATTIVAZIONEMAB,
-                                        IDSTATORECORD=(decimal)EnumStatoRecord.In_Lavorazione,
-                                        ANTICIPOANNUALE= mabvm.anticipoAnnuale,
-                                        DATAAGGIORNAMENTO=DateTime.Now,
-                                        FK_IDANTICIPOANNUALEMAB=ant_ann.IDANTICIPOANNUALEMAB
+                                        IDMAB = mabvm.idMAB,
+                                        IDATTIVAZIONEMAB = amab.IDATTIVAZIONEMAB,
+                                        IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
+                                        ANTICIPOANNUALE = mabvm.anticipoAnnuale,
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        FK_IDANTICIPOANNUALEMAB = ant_ann.IDANTICIPOANNUALEMAB
                                     };
                                     db.ANTICIPOANNUALEMAB.Add(ant_ann_new);
                                     if (db.SaveChanges() <= 0)
@@ -5147,16 +5176,16 @@ namespace NewISE.Models.DBModel.dtObj
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
                     var lmab = t.INDENNITA.MAB
-                                        .Where(a => 
-                                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && 
-                                            a.RINUNCIAMAB==false)
+                                        .Where(a =>
+                                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                            a.RINUNCIAMAB == false)
                                         .OrderBy(a => a.IDMAB)
                                         .ToList();
-                    foreach(var mab in lmab)
+                    foreach (var mab in lmab)
                     {
 
                         var pmab = GetPeriodoMAB(mab.IDMAB, db);
-                        if (pmab.DATAINIZIOMAB>dtFineTrasf)
+                        if (pmab.DATAINIZIOMAB > dtFineTrasf)
                         {
                             #region annullo MAB
                             mab.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
@@ -5175,7 +5204,7 @@ namespace NewISE.Models.DBModel.dtObj
                             #endregion
 
                             #region annullo canoni associati attivi
-                            var lcmab =mab.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDMAB).ToList();
+                            var lcmab = mab.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderByDescending(a => a.IDMAB).ToList();
                             foreach (var cmab in lcmab)
                             {
                                 cmab.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
@@ -5253,7 +5282,7 @@ namespace NewISE.Models.DBModel.dtObj
                             // da fare appena MAB => DOCUMENTI
                             foreach (var attmab in l_attmab)
                             {
-                                var ldoc = attmab.DOCUMENTI.Where(a => 
+                                var ldoc = attmab.DOCUMENTI.Where(a =>
                                         a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione ||
                                         a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare).ToList();
                                 foreach (var doc in ldoc)
@@ -5270,9 +5299,9 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            if(pmab.DATAFINEMAB>dtFineTrasf)
-                            {                           
-                       
+                            if (pmab.DATAFINEMAB > dtFineTrasf)
+                            {
+
                                 #region allineo i periodi PERIODOMAB e riassocio percentuali
                                 var lperiodoMAB_curr = mab.PERIODOMAB
                                                             .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
@@ -5624,9 +5653,9 @@ namespace NewISE.Models.DBModel.dtObj
                         mab.CANONEMAB.Where(
                             a =>
                                 a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo && 
-                                a.NASCONDI==false && 
-                                ((a.DATAINIZIOVALIDITA<=t.DATARIENTRO&&a.DATAFINEVALIDITA>=t.DATARIENTRO)||a.DATAFINEVALIDITA<t.DATARIENTRO))
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo &&
+                                a.NASCONDI == false &&
+                                ((a.DATAINIZIOVALIDITA <= t.DATARIENTRO && a.DATAFINEVALIDITA >= t.DATARIENTRO) || a.DATAFINEVALIDITA < t.DATARIENTRO))
                             .OrderBy(a => a.DATAINIZIOVALIDITA)
                             .ToList();
 
@@ -5636,13 +5665,13 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         var cmm = new CanoneMABModel()
                         {
-                            idCanone=cm.IDCANONE,
+                            idCanone = cm.IDCANONE,
                             IDMAB = cm.IDMAB,
                             IDAttivazioneMAB = cm.IDATTIVAZIONEMAB,
-                            idValuta=cm.IDVALUTA,
+                            idValuta = cm.IDVALUTA,
                             DataInizioValidita = cm.DATAINIZIOVALIDITA,
-                            DataFineValidita = cm.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:cm.DATAFINEVALIDITA,
-                            ImportoCanone=cm.IMPORTOCANONE,
+                            DataFineValidita = cm.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : cm.DATAFINEVALIDITA,
+                            ImportoCanone = cm.IMPORTOCANONE,
                             DataAggiornamento = cm.DATAAGGIORNAMENTO,
                             idStatoRecord = cm.IDSTATORECORD,
                             FK_IDCanone = cm.FK_IDCANONE
@@ -5679,7 +5708,7 @@ namespace NewISE.Models.DBModel.dtObj
                             a =>
                                 a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                 a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo &&
-                                ((a.DATAINIZIOVALIDITA<=t.DATARIENTRO && a.DATAFINEVALIDITA>=t.DATARIENTRO)||a.DATAFINEVALIDITA<t.DATARIENTRO) &&
+                                ((a.DATAINIZIOVALIDITA <= t.DATARIENTRO && a.DATAFINEVALIDITA >= t.DATARIENTRO) || a.DATAFINEVALIDITA < t.DATARIENTRO) &&
                                 a.NASCONDI == false)
                             .OrderBy(a => a.DATAINIZIOVALIDITA)
                             .ToList();
@@ -5695,12 +5724,12 @@ namespace NewISE.Models.DBModel.dtObj
                             idAttivazioneMAB = pcmab.IDATTIVAZIONEMAB,
                             idStatoRecord = pcmab.IDSTATORECORD,
                             DataInizioValidita = pcmab.DATAINIZIOVALIDITA,
-                            DataFineValidita = pcmab.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:pcmab.DATAFINEVALIDITA,
+                            DataFineValidita = pcmab.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : pcmab.DATAFINEVALIDITA,
                             Pagato = pcmab.PAGATO,
-                            Condiviso=pcmab.CONDIVISO,
+                            Condiviso = pcmab.CONDIVISO,
                             DataAggiornamento = pcmab.DATAAGGIORNAMENTO,
                             fk_IDPagatoCondiviso = pcmab.FK_IDPAGATOCONDIVISO,
-                            Nascondi= pcmab.NASCONDI
+                            Nascondi = pcmab.NASCONDI
                         };
                         lpcmabm.Add(pcmabm);
                     }
@@ -5918,7 +5947,7 @@ namespace NewISE.Models.DBModel.dtObj
                     else
                     {
                         var mab = db.MAB.Find(pm.IDMAB);
-                        
+
                         Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica PERIODOMAB", "PERIODOMAB", db,
                             mab.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO, pm.IDPERIODOMAB);
                     }

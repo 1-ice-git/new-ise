@@ -874,7 +874,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                                 a =>
                                     a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
                                     dataRientro <= a.DATAFINEVALIDITA && a.IDTIPOCOEFFICIENTERICHIAMO ==
-                                    (decimal) EnumTipoCoefficienteRichiamo.CoefficienteMaggiorazione)
+                                    (decimal)EnumTipoCoefficienteRichiamo.CoefficienteMaggiorazione)
                             .OrderByDescending(a => a.DATAINIZIOVALIDITA)
                             .ToList();
 
@@ -903,7 +903,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                                     a =>
                                         a.ANNULLATO == false && dataRientro >= a.DATAINIZIOVALIDITA &&
                                         dataRientro <= a.DATAFINEVALIDITA && a.IDTIPOCOEFFICIENTERICHIAMO ==
-                                        (decimal) EnumTipoCoefficienteRichiamo.CoefficienteRichiamo)
+                                        (decimal)EnumTipoCoefficienteRichiamo.CoefficienteRichiamo)
                                 .OrderByDescending(a => a.DATAINIZIOVALIDITA)
                                 .ToList();
 
@@ -918,9 +918,9 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                             var comodo1 = maggiorazione + _indennitaDiBase;
 
-                            var comodo2 = (maggiorazione + _maggiorazioniFimailiri) * _coefficenteIndennitaRichiamo;
+                            var comodo2 = (comodo1 * _coefficenteIndennitaRichiamo) + _maggiorazioniFimailiri;
 
-                            
+
 
                             if (_percentualeRiduzioneRichiamo > 0)
                             {
@@ -936,7 +936,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         {
                             throw new Exception("Il coefficiente di richiamo non è presente.");
                         }
-                        
+
                     }
                     else
                     {
