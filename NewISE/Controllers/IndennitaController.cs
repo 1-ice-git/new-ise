@@ -2144,10 +2144,9 @@ namespace NewISE.Controllers
                                                         valutaMAB = ci.ValutaMAB.DESCRIZIONEVALUTA,
                                                         TassoFissoRagguaglio = ci.TassoCambio,
                                                         ImportoMABMaxMensile = ci.ImportoMABMaxMensile
-                                           
 
 
-                                                    };
+                                        };
                                                 rpt.Add(rpts);
                                             }
                                         }
