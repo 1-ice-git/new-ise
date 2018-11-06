@@ -1672,6 +1672,33 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public TRASFERIMENTO UpdateTrasferimento(TrasferimentoModel trm, ModelDBISE db)
+        {
+            TRASFERIMENTO tr = db.TRASFERIMENTO.Find(trm.idTrasferimento);
+
+            if (tr != null && tr.IDTRASFERIMENTO > 0)
+            {
+                tr.IDTIPOTRASFERIMENTO = trm.idTipoTrasferimento > 0 ? trm.idTipoTrasferimento : tr.IDTIPOTRASFERIMENTO;
+                tr.IDUFFICIO = trm.idUfficio > 0 ? trm.idUfficio : tr.IDUFFICIO;
+                tr.IDSTATOTRASFERIMENTO = Convert.ToDecimal(trm.idStatoTrasferimento) > 0 ? (decimal)trm.idStatoTrasferimento : tr.IDSTATOTRASFERIMENTO;
+                tr.IDDIPENDENTE = trm.idDipendente > 0 ? trm.idDipendente : tr.IDDIPENDENTE;
+                tr.IDTIPOCOAN = trm.idTipoCoan > 0 ? trm.idTipoCoan : tr.IDTIPOCOAN;
+                tr.DATAPARTENZA = trm.dataPartenza > DateTime.MinValue ? trm.dataPartenza : tr.DATAPARTENZA;
+                tr.DATARIENTRO = trm.dataRientro ?? tr.DATARIENTRO;
+                tr.COAN = trm.coan ?? tr.COAN;
+                tr.PROTOCOLLOLETTERA = trm.protocolloLettera ?? tr.PROTOCOLLOLETTERA;
+                tr.DATALETTERA = trm.dataLettera ?? tr.DATALETTERA;
+                tr.DATAAGGIORNAMENTO = trm.dataAggiornamento > DateTime.MinValue ? trm.dataAggiornamento : tr.DATAAGGIORNAMENTO;
+
+
+                if (db.SaveChanges() > 0)
+                {
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Modifica, "Modifica del trasferimento.", "Trasferimento", db, tr.IDTRASFERIMENTO, tr.IDTRASFERIMENTO);
+                }
+
+            }
+            return tr;
+        }
         public TrasferimentoModel GetTrasferimentoOldPrimaDiTrasfAnnullato(decimal idTrasfAnnullato)
         {
             TrasferimentoModel trm = new TrasferimentoModel();

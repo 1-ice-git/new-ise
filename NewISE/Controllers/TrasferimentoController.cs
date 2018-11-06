@@ -648,6 +648,7 @@ namespace NewISE.Controllers
                             {
                                 var fkm = dtfkm.GetFasciaKmByTrasf(trm.idTrasferimento, trm.dataPartenza);
                                 trm.idFKM = fkm.idFKM;
+                                ViewBag.idFKM = fkm.idFKM;
                             }
 
                             using (dtDocumenti dtd = new dtDocumenti())
@@ -667,6 +668,7 @@ namespace NewISE.Controllers
 
                         case EnumStatoTraferimento.Da_Attivare:
                             ViewBag.ListTipoTrasferimento = lTipoTrasferimento.Where(a => a.Value == trm.idTipoTrasferimento.ToString());
+                            ViewBag.ListUfficio = lUffici.Where(a => a.Value == trm.idUfficio.ToString());
 
                             using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                             {
@@ -676,13 +678,19 @@ namespace NewISE.Controllers
                                 trm.idRuoloUfficio = rdm.RuoloUfficio.idRuoloUfficio;
                             }
 
+                            ViewBag.ListRuolo = lRuoloUfficio.Where(a => a.Value == trm.idRuoloUfficio.ToString());
+
                             using (dtFasciaKm dtfkm = new dtFasciaKm())
                             {
 
                                 var fkm = dtfkm.GetFasciaKmByTrasf(trm.idTrasferimento, trm.dataPartenza);
 
                                 trm.idFKM = fkm.idFKM;
+                                ViewBag.idFKM = fkm.idFKM;
+
                             }
+
+                            ViewBag.ListFasciaKM = lFasciaKM.Where(a => a.Value == trm.idFKM.ToString());
 
                             using (dtDocumenti dtd = new dtDocumenti())
                             {
@@ -723,6 +731,8 @@ namespace NewISE.Controllers
                                 var fkm = dtfkm.GetFasciaKmByTrasf(trm.idTrasferimento, trm.dataPartenza);
 
                                 trm.idFKM = fkm.idFKM;
+                                ViewBag.idFKM = fkm.idFKM;
+
                             }
                             using (dtDocumenti dtd = new dtDocumenti())
                             {
@@ -753,7 +763,7 @@ namespace NewISE.Controllers
 
         }
 
-        public ActionResult ConfermaModificaTrasferimento(TrasferimentoModel trm, int matricola, decimal idRuoloDipendente, bool ricaricaInfoTrasf = false)
+        public ActionResult ConfermaModificaTrasferimento(TrasferimentoModel trm, int matricola, decimal idRuoloDipendente, decimal idFasciaKM, bool ricaricaInfoTrasf = false)
         {
             try
             {
@@ -769,7 +779,8 @@ namespace NewISE.Controllers
                             {
                                 db.Database.BeginTransaction();
 
-                                dttr.EditTrasferimento(trm, db);
+                                TRASFERIMENTO tr = dttr.UpdateTrasferimento(trm, db);
+
                                 using (dtIndennita dti = new dtIndennita())
                                 {
                                     IndennitaModel im = dti.GetIndennitaByIdTrasferimento(trm.idTrasferimento, db);
@@ -783,6 +794,7 @@ namespace NewISE.Controllers
                                             ? trm.dataRientro.Value
                                             : Utility.DataFineStop();
 
+                                    #region commento indennita
                                     //using (dtLivelliDipendente dtld = new dtLivelliDipendente())
                                     //{
 
@@ -814,6 +826,7 @@ namespace NewISE.Controllers
                                     //    }
                                     //}
 
+                                    #endregion
 
 
                                     using (dtLivelliDipendente dtld = new dtLivelliDipendente())
@@ -899,6 +912,7 @@ namespace NewISE.Controllers
 
 
 
+                                    #region commento TFR                                  
                                     //using (dtTFR dttfr = new dtTFR())
                                     //{
                                     //    dttfr.RimuoviAssociaTFR_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
@@ -913,13 +927,14 @@ namespace NewISE.Controllers
                                     //        throw new Exception("Non risulta il tasso fisso di ragguaglio per l'ufficio interessato.");
                                     //    }
                                     //}
+                                    #endregion
 
                                     using (dtTFR dttfr = new dtTFR())
                                     {
                                         dttfr.RimuoviAsscoiazioniTFR_Indennita(trm.idTrasferimento, trm.dataPartenza, dataRientro, db);
 
                                         List<TFRModel> ltfrm =
-                                            dttfr.GetTfrIndennitaByRangeDate(trm.idUfficio, trm.dataPartenza,
+                                            dttfr.GetTfrIndennitaByRangeDate(tr.IDUFFICIO, trm.dataPartenza,
                                                 dataRientro, db).ToList();
 
                                         if (ltfrm?.Any() ?? false)
@@ -936,6 +951,7 @@ namespace NewISE.Controllers
 
                                     }
 
+                                    #region commento perc disagio
                                     //using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
                                     //{
                                     //    dtpd.RimuoviAssociaPercentualeDisagio_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
@@ -952,12 +968,14 @@ namespace NewISE.Controllers
                                     //    }
                                     //}
 
+                                    #endregion
+
                                     using (dtPercentualeDisagio dtpd = new dtPercentualeDisagio())
                                     {
                                         dtpd.RimuoviAssociazioniPercentualeDisagio_Indennita(trm.idTrasferimento, trm.dataPartenza, dataRientro, db);
 
                                         List<PercentualeDisagioModel> lpdm =
-                                            dtpd.GetPercentualeDisagioIndennitaByRange(trm.idUfficio,
+                                            dtpd.GetPercentualeDisagioIndennitaByRange(tr.IDUFFICIO,
                                                 trm.dataPartenza, dataRientro, db).ToList();
 
 
@@ -977,6 +995,7 @@ namespace NewISE.Controllers
                                     }
 
 
+                                    #region commento perc sede
                                     //using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
                                     //{
                                     //    dtcs.RimuoviAssociaCoefficenteSede_Indennita(trm.idTrasferimento, trm.dataPartenza, db);
@@ -990,14 +1009,15 @@ namespace NewISE.Controllers
                                     //    {
                                     //        throw new Exception("Non risulta il valore di coefficente di sede per l'ufficio interessato.");
                                     //    }
-                                    //}
+                                    //} 
+                                    #endregion
 
                                     using (dtCoefficenteSede dtcs = new dtCoefficenteSede())
                                     {
                                         dtcs.RimuoviCoefficientiSede_Indennita(trm.idTrasferimento, trm.dataPartenza, dataRientro, db);
 
                                         List<CoefficientiSedeModel> lcsm =
-                                            dtcs.GetCoefficenteSedeIndennitaByRangeDate(trm.idUfficio,
+                                            dtcs.GetCoefficenteSedeIndennitaByRangeDate(tr.IDUFFICIO,
                                                 trm.dataPartenza, dataRientro, db).ToList();
 
                                         if (lcsm?.Any() ?? false)
@@ -1014,6 +1034,7 @@ namespace NewISE.Controllers
 
                                     }
 
+                                    #region commento ruolo
                                     //using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                                     //{
 
@@ -1078,6 +1099,8 @@ namespace NewISE.Controllers
 
                                     //}
                                     //-------------------------------------------------
+                                    #endregion
+
                                     using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
                                     {
                                         RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteById(idRuoloDipendente);
@@ -1097,7 +1120,7 @@ namespace NewISE.Controllers
 
                                         using (dtPrimaSistemazione dtps = new dtPrimaSistemazione())
                                         {
-                                            var pfkmm = dtfkm.GetPercentualeFKM(trm.idFKM, trm.dataPartenza, db);
+                                            var pfkmm = dtfkm.GetPercentualeFKM(idFasciaKM, trm.dataPartenza, db);
                                             var psm = dtps.GetPrimaSistemazioneBtIdTrasf(trm.idTrasferimento, db);
 
                                             if (pfkmm?.idPFKM > 0)

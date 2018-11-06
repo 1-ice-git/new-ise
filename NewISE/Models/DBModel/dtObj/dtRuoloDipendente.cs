@@ -356,7 +356,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             if (rd != null && rd.IDRUOLODIPENDENTE > 0)
             {
-                rd.IDRUOLO = trm.idRuoloUfficio;
+                //rd.IDRUOLO = trm.idRuoloUfficio;
                 rd.IDTRASFERIMENTO = trm.idTrasferimento;
                 rd.DATAINZIOVALIDITA = trm.dataPartenza;
                 rd.DATAFINEVALIDITA = trm.dataRientro.HasValue == true ? trm.dataRientro.Value : Utility.DataFineStop();
