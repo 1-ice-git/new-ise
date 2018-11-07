@@ -142,16 +142,20 @@
                 @Html.LabelFor(model => model.dataPartenza, htmlAttributes: new { @class = "control-label col-xs-3" })
                 <div class="col-xs-9 form-inline">
 
-                @*@if (abilitaSalva || abilitaNuovoTrasferimento)
+                @if (abilitaSalva || abilitaNuovoTrasferimento || (abilitaNotifica==false && abilitaSalva==false))
                 {
-                    <input type="text" maxlength="10" id="dataPartenza" value="@Model.dataPartenza" class="form-control " style="text-align: left;max-width:200px;" />
+                    @*@Html.TextBoxFor(model => model.dataPartenza, "{0:dd/MM/yyyy}", new { @class = "form-control", disabled="disabled", style = "max-width:200px;" })
+                    <input type="text" hidden maxlength="10" name="dataPartenza" value="@Model.dataPartenza" class="form-control " disabled style="text-align: left;max-width:200px;" />*@
+
+                    <input type="text" id="dataPartenza" value="@Model.dataPartenza.ToString("dd/MM/yyyy")" readonly disabled class="form-control col-xs-2 text-left" />
+                    <input type="hidden" value="@Model.dataPartenza" name="dataPartenza" />
 
                 }
                 else
-                {*@
+                {
                     @Html.TextBoxFor(model => model.dataPartenza, "{0:dd/MM/yyyy}", new { @class = "form-control", style = "max-width:200px;" })
                     @Html.ValidationMessageFor(model => model.dataPartenza, "", new { @class = "text-danger" })
-               @* }*@
+                }
 
 
                 </div>
@@ -330,12 +334,14 @@
     @if(ricaricaTrasferimenti)
     {
          @:ElencoTrasferimento();
-                                                                                                                }
+    }
 
 
 
     LetturaParametriGestioneTrasferimento();
-    AbilitaDisabilitaCoan();
+
+    //AbilitaDisabilitaCoan();
+    
 
 
     function LetturaParametriGestioneTrasferimento() {
@@ -351,10 +357,10 @@
         var rotta = "/Trasferimento/LetturaParametriGestioneTrasferimento";
 
         $.ajax({
-            type: "POST",
+        type: "POST",
             url: rotta,
             data: {
-                idTrasferimento: idTrasferimento
+            idTrasferimento: idTrasferimento
             },
             dataType: 'json',
             async: false,
@@ -539,7 +545,7 @@
         var idTrasferimento = parseInt($("#idTrasferimento").val());
 
         $.ajax({
-            url: rotta,
+        url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
             data: { idTrasferimento: idTrasferimento },
             dataType: 'html',
@@ -569,7 +575,7 @@
 
 
     $("#idTipoTrasferimento").select2({
-        placeholder: "Seleziona il tipo trasferimento",
+    placeholder: "Seleziona il tipo trasferimento",
         allowClear: true,
         language: "it",
         width: '350'
@@ -577,7 +583,7 @@
     });
 
     $("#idUfficio").select2({
-        placeholder: "Seleziona l'ufficio",
+    placeholder: "Seleziona l'ufficio",
         allowClear: true,
         language: "it",
         width: '250'
@@ -585,7 +591,7 @@
     });
 
     $("#idRuoloUfficio").select2({
-        placeholder: "Seleziona il ruolo",
+    placeholder: "Seleziona il ruolo",
         allowClear: true,
         language: "it",
         width: '200'
@@ -593,7 +599,7 @@
     });
 
     $("#idTipoCoan").select2({
-        placeholder: "Seleziona la tipologia del coan",
+    placeholder: "Seleziona la tipologia del coan",
         allowClear: true,
         language: "it",
         width: '200'
@@ -601,7 +607,7 @@
     });
 
     $("#idFKM").select2({
-        placeholder: "Seleziona la fascia chilometrica",
+    placeholder: "Seleziona la fascia chilometrica",
         allowClear: true,
         language: "it",
         width: '200'
@@ -611,8 +617,8 @@
 
 
     $('#dataPartenza').datepicker({
-        //showButtonPanel: true,
-        showAnim: "slide",
+    //showButtonPanel: true,
+    showAnim: "slide",
         changeMonth: true,
         changeYear: true,
     });
@@ -652,10 +658,10 @@
         var idTrasferimento = parseInt($("#idTrasferimento").val());
 
         $.ajax({
-            type: "POST",
+        type: "POST",
             url: rotta,
             data: {
-                idTrasferimento: idTrasferimento
+            idTrasferimento: idTrasferimento
             },
             dataType: 'json',
             async: false,
@@ -729,7 +735,7 @@
         var idRuoloDipendente = @idRuoloDipendente;
 
         $.ajax({
-            url: rotta,
+        url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
             data: { idTrasferimento: idTrasferimento, matricola: matricola, idRuoloDipendente: idRuoloDipendente, ricaricaInfoTrasf: ricaricaInfoTrasf },
             dataType: 'html',

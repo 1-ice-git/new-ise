@@ -365,6 +365,10 @@ namespace NewISE.Controllers
                                         adffm.residente = true;
                                         adffm.studente = false;
                                         break;
+                                    case EnumTipologiaFiglio.NonResidente:
+                                        adffm.residente = false;
+                                        adffm.studente = false;
+                                        break;
                                     case EnumTipologiaFiglio.StudenteResidente:
                                         adffm.studente = true;
                                         adffm.residente = true;

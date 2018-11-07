@@ -56,6 +56,16 @@ namespace NewISE.Models.DBModel.dtObj
                                         vr = ValidationResult.Success;
                                     }
                                     break;
+                                case EnumTipologiaFiglio.NonResidente:
+                                    if (eta > 18)
+                                    {
+                                        vr = new ValidationResult(string.Format("Impossibile inserire il figlio non residente ({0}) con età superiore a 18 anni.", f.COGNOME + " " + f.NOME));
+                                    }
+                                    else
+                                    {
+                                        vr = ValidationResult.Success;
+                                    }
+                                    break;
                                 case EnumTipologiaFiglio.StudenteResidente:
                                     if (eta > 26)
                                     {
@@ -126,7 +136,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     idAltriDatiFam = adf.IDALTRIDATIFAM,
                                     idFigli = f.IDFIGLI,
                                     dataNascita = adf.DATANASCITA,
-                                    capNascita = adf.CAPNASCITA,
+                                    //capNascita = adf.CAPNASCITA,
                                     comuneNascita = adf.COMUNENASCITA,
                                     provinciaNascita = adf.PROVINCIANASCITA,
                                     nazionalita = adf.NAZIONALITA,
@@ -156,6 +166,10 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 switch ((EnumTipologiaFiglio)adfm.Figli.idTipologiaFiglio)
                                 {
+                                    case EnumTipologiaFiglio.NonResidente:
+                                        adfm.residente = false;
+                                        adfm.studente = false;
+                                        break;
                                     case EnumTipologiaFiglio.Residente:
                                         adfm.residente = true;
                                         adfm.studente = false;
@@ -324,7 +338,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 idAltriDatiFam = adf.IDALTRIDATIFAM,
                                 dataNascita = adf.DATANASCITA,
-                                capNascita = adf.CAPNASCITA,
+                                //capNascita = adf.CAPNASCITA,
                                 comuneNascita = adf.COMUNENASCITA,
                                 provinciaNascita = adf.PROVINCIANASCITA,
                                 nazionalita = adf.NAZIONALITA,
@@ -498,7 +512,7 @@ namespace NewISE.Models.DBModel.dtObj
                             adfm.indirizzoResidenza != adf.INDIRIZZORESIDENZA ||
                             adfm.nazionalita != adf.NAZIONALITA ||
                             adfm.provinciaResidenza != adf.PROVINCIARESIDENZA ||
-                            adfm.capNascita != adf.CAPNASCITA ||
+                            //adfm.capNascita != adf.CAPNASCITA ||
                             adfm.comuneNascita != adf.COMUNENASCITA ||
                             adfm.dataNascita != adf.DATANASCITA ||
                             adfm.provinciaNascita != adf.PROVINCIANASCITA)
@@ -510,7 +524,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 adf.INDIRIZZORESIDENZA = adfm.indirizzoResidenza;
                                 adf.NAZIONALITA = adfm.nazionalita;
                                 adf.PROVINCIARESIDENZA = adfm.provinciaResidenza;
-                                adf.CAPNASCITA = adfm.capNascita;
+                                //adf.CAPNASCITA = adfm.capNascita;
                                 adf.COMUNENASCITA = adfm.comuneNascita;
                                 adf.DATANASCITA = adfm.dataNascita.Value;
                                 adf.PROVINCIANASCITA = adfm.provinciaNascita;
@@ -560,7 +574,8 @@ namespace NewISE.Models.DBModel.dtObj
                     var adf = new ALTRIDATIFAM
                     {
                         DATANASCITA = adfm.dataNascita.Value,
-                        CAPNASCITA = adfm.capNascita,
+                        //CAPNASCITA = adfm.capNascita,
+                        CAPNASCITA = "0",
                         COMUNENASCITA = adfm.comuneNascita,
                         PROVINCIANASCITA = adfm.provinciaNascita,
                         NAZIONALITA = adfm.nazionalita,

@@ -21,10 +21,10 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
         //[CustomValidation(typeof(dtAltriDatiFamiliari), "VerificaEtaFiglio")]
         public DateTime? dataNascita { get; set; }
-        [Required(ErrorMessage = "Il cap della città di nascita è richiesto.")]
-        [StringLength(10, ErrorMessage = "Per il cap sono richiesti un massimo di 10 caratteri.")]
-        [Display(Name = "CAP Nascita")]
-        public string capNascita { get; set; }
+        //[Required(ErrorMessage = "Il cap della città di nascita è richiesto.")]
+        //[StringLength(10, ErrorMessage = "Per il cap sono richiesti un massimo di 10 caratteri.")]
+        //[Display(Name = "CAP Nascita")]
+        //public string capNascita { get; set; }
         [Required(ErrorMessage = "Il comune di nascita è richiesto.")]
         [StringLength(60, ErrorMessage = "Per il comune di nascita sono richiesti un massimo di 60 caratteri.")]
         [Display(Name = "Comune di nascita")]

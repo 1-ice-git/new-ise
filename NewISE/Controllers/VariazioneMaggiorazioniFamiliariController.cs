@@ -964,6 +964,10 @@ namespace NewISE.Controllers
                         {
                             switch (f.idTipologiaFiglio)
                             {
+                                case EnumTipologiaFiglio.NonResidente:
+                                    adf.residente = false;
+                                    adf.studente = false;
+                                    break;
                                 case EnumTipologiaFiglio.Residente:
                                     adf.residente = true;
                                     adf.studente = false;

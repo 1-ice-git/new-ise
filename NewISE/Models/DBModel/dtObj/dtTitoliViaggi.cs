@@ -413,7 +413,7 @@ namespace NewISE.Models.DBModel.dtObj
                         indirizzoResidenza = adff.INDIRIZZORESIDENZA,
                         nazionalita = adff.NAZIONALITA,
                         provinciaResidenza = adff.PROVINCIARESIDENZA,
-                        capNascita = adff.CAPNASCITA,
+                        //capNascita = adff.CAPNASCITA,
                         comuneNascita = adff.COMUNENASCITA,
                         dataNascita = adff.DATANASCITA,
                         provinciaNascita = adff.PROVINCIANASCITA

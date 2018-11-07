@@ -2370,30 +2370,30 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 throw new Exception("Errore durante l'inserimento del canone MAB.");
                             }
-                            #endregion
+                                #endregion
 
-                            #region riassocia TFR
-                            using (dtTrasferimento dtt = new dtTrasferimento())
-                            {
-                                var mab = db.MAB.Find(cmabPrecedente.IDMAB);
-                                var t = mab.INDENNITA.TRASFERIMENTO;
-                                var trm = dtt.GetTrasferimentoById(t.IDTRASFERIMENTO);
-
-                                List<TFRModel> ltfrm = new List<TFRModel>();
-
-                                using (dtTFR dtTfr = new dtTFR())
+                                #region riassocia TFR
+                                using (dtTrasferimento dtt = new dtTrasferimento())
                                 {
-                                    ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(trm, cmabPrecedente.IDVALUTA, cmabPrecedente.DATAINIZIOVALIDITA, cmabPrecedente.DATAFINEVALIDITA, db);
-                                }
+                                    var mab = db.MAB.Find(cmabPrecedente.IDMAB);
+                                    var t = mab.INDENNITA.TRASFERIMENTO;
+                                    var trm = dtt.GetTrasferimentoById(t.IDTRASFERIMENTO);
 
-                                RimuoviAssociazioneCanoneMAB_TFR_var(cmabPrecedente.IDCANONE, db);
+                                    List<TFRModel> ltfrm = new List<TFRModel>();
+    
+                                    using (dtTFR dtTfr = new dtTFR())
+                                    {
+                                        ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(trm, cmabPrecedente.IDVALUTA, cmabPrecedente.DATAINIZIOVALIDITA, cmabPrecedente.DATAFINEVALIDITA, db);
+                                    }
 
-                                foreach (var tfrm in ltfrm)
-                                {
-                                    Associa_TFR_CanoneMAB_var(tfrm.idTFR, cmabPrecedente.IDCANONE, db);
+                                    RimuoviAssociazioneCanoneMAB_TFR_var(cmabPrecedente.IDCANONE, db);
+
+                                    foreach (var tfrm in ltfrm)
+                                    {
+                                        Associa_TFR_CanoneMAB_var(tfrm.idTFR, cmabPrecedente.IDCANONE, db);
+                                    }
                                 }
-                            }
-                            #endregion
+                                #endregion
                         }
                         else
                         {
