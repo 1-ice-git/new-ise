@@ -17,7 +17,7 @@ namespace NewISE.Models.DBModel
 
         public string ev_altridati;
         public string ev_datanascita;
-        public string ev_capnascita;
+        //public string ev_capnascita;
         public string ev_comunenascita;
         public string ev_provincianascita { get; set; }
         public string ev_nazionalita { get; set; }

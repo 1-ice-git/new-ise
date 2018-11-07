@@ -1467,7 +1467,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 nazionalita = adff.NAZIONALITA,
                                 dataNascita = adff.DATANASCITA,
                                 comuneNascita = adff.COMUNENASCITA,
-                                capNascita = adff.CAPNASCITA,
+                                //capNascita = adff.CAPNASCITA,
                                 provinciaNascita = adff.PROVINCIANASCITA,
                                 indirizzoResidenza = adff.INDIRIZZORESIDENZA,
                                 capResidenza = adff.CAPRESIDENZA,
@@ -1513,7 +1513,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 nazionalita = adff.NAZIONALITA,
                                 dataNascita = adff.DATANASCITA,
                                 comuneNascita = adff.COMUNENASCITA,
-                                capNascita = adff.CAPNASCITA,
+                                //capNascita = adff.CAPNASCITA,
                                 provinciaNascita = adff.PROVINCIANASCITA,
                                 indirizzoResidenza = adff.INDIRIZZORESIDENZA,
                                 capResidenza = adff.CAPRESIDENZA,
@@ -1684,7 +1684,8 @@ namespace NewISE.Models.DBModel.dtObj
                             var adfNew = new ALTRIDATIFAM
                             {
                                 DATANASCITA = adfm.dataNascita.Value,
-                                CAPNASCITA = adfm.capNascita,
+                                //CAPNASCITA = adfm.capNascita,
+                                CAPNASCITA = "0",
                                 COMUNENASCITA = adfm.comuneNascita,
                                 PROVINCIANASCITA = adfm.provinciaNascita,
                                 NAZIONALITA = adfm.nazionalita,
@@ -1716,7 +1717,7 @@ namespace NewISE.Models.DBModel.dtObj
                         else
                         {
                             adf.DATANASCITA = adfm.dataNascita.Value;
-                            adf.CAPNASCITA = adfm.capNascita;
+                            //adf.CAPNASCITA = adfm.capNascita;
                             adf.COMUNENASCITA = adfm.comuneNascita;
                             adf.PROVINCIANASCITA = adfm.provinciaNascita;
                             adf.NAZIONALITA = adfm.nazionalita;
@@ -3718,7 +3719,7 @@ namespace NewISE.Models.DBModel.dtObj
                         idAltriDatiFam = adff.IDALTRIDATIFAM,
                         nazionalita = adff.NAZIONALITA,
                         dataNascita = adff.DATANASCITA,
-                        capNascita = adff.CAPNASCITA,
+                        //capNascita = adff.CAPNASCITA,
                         comuneNascita = adff.COMUNENASCITA,
                         provinciaNascita = adff.PROVINCIANASCITA,
                         indirizzoResidenza = adff.INDIRIZZORESIDENZA,
@@ -3941,8 +3942,8 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 dataNascita = adff.DATANASCITA,
                                 ev_datanascita = (adff.DATANASCITA != adff_new.DATANASCITA) ? evidenzia : "",
-                                capNascita = adff.CAPNASCITA,
-                                ev_capnascita = (adff.CAPNASCITA != adff_new.CAPNASCITA) ? evidenzia : "",
+                                //capNascita = adff.CAPNASCITA,
+                                //ev_capnascita = (adff.CAPNASCITA != adff_new.CAPNASCITA) ? evidenzia : "",
                                 comuneNascita = adff.COMUNENASCITA.ToUpper(),
                                 ev_comunenascita = (adff.COMUNENASCITA != adff_new.COMUNENASCITA) ? evidenzia : "",
                                 provinciaNascita = adff.PROVINCIANASCITA,
@@ -3960,7 +3961,7 @@ namespace NewISE.Models.DBModel.dtObj
                             };
 
                             vadffm.ev_altridati = (vadffm.ev_datanascita != "" ||
-                                vadffm.ev_capnascita != "" ||
+                                //vadffm.ev_capnascita != "" ||
                                 vadffm.ev_comunenascita != "" ||
                                 vadffm.ev_provincianascita != "" ||
                                 vadffm.ev_nazionalita != "" ||
@@ -5587,7 +5588,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     idAltriDatiFam = adf.IDALTRIDATIFAM,
                                     idFigli = f.IDFIGLI,
                                     dataNascita = adf.DATANASCITA,
-                                    capNascita = adf.CAPNASCITA,
+                                    //capNascita = adf.CAPNASCITA,
                                     comuneNascita = adf.COMUNENASCITA,
                                     provinciaNascita = adf.PROVINCIANASCITA,
                                     nazionalita = adf.NAZIONALITA,
@@ -5617,6 +5618,10 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 switch ((EnumTipologiaFiglio)adfm.Figli.idTipologiaFiglio)
                                 {
+                                    case EnumTipologiaFiglio.NonResidente:
+                                        adfm.residente = false;
+                                        adfm.studente = false;
+                                        break;
                                     case EnumTipologiaFiglio.Residente:
                                         adfm.residente = true;
                                         adfm.studente = false;

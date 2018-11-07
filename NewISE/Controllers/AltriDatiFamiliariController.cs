@@ -70,6 +70,10 @@ namespace NewISE.Controllers
                                 adf.residente = true;
                                 adf.studente = false;
                                 break;
+                            case EnumTipologiaFiglio.NonResidente:
+                                adf.residente = false;
+                                adf.studente = false;
+                                break;
                             case EnumTipologiaFiglio.StudenteResidente:
                                 adf.studente = true;
                                 adf.residente = true;
@@ -193,6 +197,10 @@ namespace NewISE.Controllers
                         {
                             case EnumTipologiaFiglio.Residente:
                                 adf.residente = true;
+                                adf.studente = false;
+                                break;
+                            case EnumTipologiaFiglio.NonResidente:
+                                adf.residente = false;
                                 adf.studente = false;
                                 break;
                             case EnumTipologiaFiglio.StudenteResidente:
