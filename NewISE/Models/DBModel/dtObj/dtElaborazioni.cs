@@ -1225,7 +1225,7 @@
                 {
                     throw ex;
                 }
-            } 
+            }
             #endregion
         }
 
@@ -3200,8 +3200,8 @@
                             a =>
                                 a.ANNULLATO == false && a.INSERIMENTOMANUALE == false &&
                                 a.ELABORATO == true && a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO &&
-                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal) EnumTipoLiquidazione.Contabilità &&
-                                a.VOCI.IDVOCI == (decimal) EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
                                 a.ELABINDSISTEMAZIONE.ANNULLATO == false && a.ELABINDSISTEMAZIONE.SALDO == true);
 
                         if (saldoContabilitaPercepito == false)
@@ -3242,7 +3242,7 @@
                             }
                         }
 
-                        
+
                     }
                 }
             }
@@ -4241,7 +4241,7 @@
                         }
                         else
                         {
-                            if(dataInizioElaborazione > dtIni)
+                            if (dataInizioElaborazione > dtIni)
                                 dataInizioElaborazione = dtIni;
                         }
 
@@ -4882,9 +4882,9 @@
                                         }
 
 
-                                        if (!lDateVariazioni.Contains(dataFineCiclo))
+                                        if (!lDateVariazioni.Contains(dataFineElaborazione))
                                         {
-                                            lDateVariazioni.Add(dataFineCiclo);
+                                            lDateVariazioni.Add(dataFineElaborazione);
                                         }
                                     }
 
@@ -4917,9 +4917,9 @@
                                                     dvSucc = dvSucc.AddDays(-1);
                                                 }
 
-                                                if (dvSucc > dataFineCiclo)
+                                                if (dvSucc > dataFineElaborazione)
                                                 {
-                                                    dvSucc = dataFineCiclo;
+                                                    dvSucc = dataFineElaborazione;
                                                 }
 
                                                 decimal annoMeseVariazione =
@@ -4930,6 +4930,10 @@
                                                     Convert.ToDecimal(
                                                         dvSucc.Year.ToString() + dvSucc.Month.ToString()
                                                             .PadLeft(2, Convert.ToChar("0")));
+
+
+
+
 
                                                 if (annoMeseVariazione == annoMeseVariazioneSucc)
                                                 {
@@ -4999,7 +5003,7 @@
                                                 }
                                                 else
                                                 {
-                                                    throw new Exception("Errore nel ciclo di elaborazione della MAB.");
+                                                    //throw new Exception("Errore nel ciclo di elaborazione della MAB.");
                                                 }
                                             }
                                         }
@@ -5853,7 +5857,7 @@
             {
                 lm.tipoInserimento = EnumTipoInserimento.Software;
             }
-            
+
 
             return lm;
         }
@@ -5941,7 +5945,7 @@
             return lLm;
         }
 
-        
+
 
         /// <summary>
         /// Netto della prima sistemazione
@@ -6798,7 +6802,7 @@
 
             DateTime dataInizioTrasferimento = trasferimento.DATAPARTENZA;
             DateTime dataFineTrasferimento = trasferimento.DATARIENTRO;
-            
+
             DateTime dataInizioRicalcoli = dip.DATAINIZIORICALCOLI;
 
             DateTime dataInizioElaborazione = dataInizioRicalcoli;
@@ -7789,7 +7793,7 @@
                         decimal sumImportoOld = 0;
                         decimal sumGiorniOld = 0;
 
-                        
+
 
                         var lTeoriciOld =
                             db.TEORICI.Where(
@@ -7808,7 +7812,7 @@
                             sumImportoOld = lTeoriciOld.Where(a => a.ELABORATO == true).Sum(a => a.IMPORTO);
                             sumGiorniOld = lTeoriciOld.Where(a => a.ELABORATO == true).Sum(a => a.GIORNI);
 
-                            
+
                         }
 
                         decimal sumImportoNew = 0;
@@ -9371,10 +9375,10 @@
                                                                                        b.ANNULLATO == false &&
                                                                                        b.ELABORATO == true &&
                                                                                        b.VOCI.IDTIPOLIQUIDAZIONE ==
-                                                                                       (decimal) EnumTipoLiquidazione
+                                                                                       (decimal)EnumTipoLiquidazione
                                                                                            .Contabilità &&
                                                                                        b.IDVOCI ==
-                                                                                       (decimal) EnumVociContabili
+                                                                                       (decimal)EnumVociContabili
                                                                                            .Ind_Richiamo_IRI)).ToList();
 
                                     if (leir?.Any() ?? false)
@@ -9540,7 +9544,7 @@
 
                                     if (importoOld > 0)
                                     {
-                                        
+
                                         decimal importoGiornoOld = importoOld / giorniOld;
                                         decimal importoNew = importoGiornoOld * giorniNew;
 

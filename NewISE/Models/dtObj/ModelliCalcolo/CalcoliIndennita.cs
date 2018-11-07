@@ -512,7 +512,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
             if (_canoneMab > 0)
             {
-                _canoneInEuro = _canoneMab * _tassoCambio;
+                _canoneInEuro = _canoneMab / _tassoCambio;
 
                 if (_importoMABMaxMensile > _canoneInEuro)
                 {
