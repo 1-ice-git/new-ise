@@ -4181,10 +4181,6 @@
             }
 
 
-
-
-
-
             if (dataInizioTrasferimento < dataInizioElaborazione)
             {
                 using (GiorniRateo gr = new GiorniRateo(dataInizioTrasferimento, dataInizioElaborazione))
