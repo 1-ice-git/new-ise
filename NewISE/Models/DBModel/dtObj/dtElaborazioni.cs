@@ -4161,10 +4161,17 @@
             DateTime dataInizioTrasferimento = trasferimento.DATAPARTENZA;
             DateTime dataFineTrasferimento = trasferimento.DATARIENTRO;
 
+            decimal annoMeseIniTrasf =
+                Convert.ToDecimal(dataInizioTrasferimento.Year.ToString() +
+                                  dataInizioTrasferimento.Month.ToString().PadLeft(2, '0'));
 
             DateTime dataInizioElaborazione =
                 Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString("00") + "/" + meseAnnoElaborazione.ANNO);
             DateTime dataFineElaborazione = Utility.GetDtFineMese(dataInizioElaborazione);
+
+            decimal annoMeseIniElab =
+                Convert.ToDecimal(meseAnnoElaborazione.ANNO.ToString() +
+                                  meseAnnoElaborazione.MESE.ToString().PadLeft(2, '0'));
 
             int giorniElabMese = 0;
 
@@ -4172,6 +4179,11 @@
             {
                 dataFineElaborazione = dataFineTrasferimento;
             }
+
+
+
+
+
 
             if (dataInizioTrasferimento < dataInizioElaborazione)
             {
@@ -4882,9 +4894,9 @@
                                         }
 
 
-                                        if (!lDateVariazioni.Contains(dataFineElaborazione))
+                                        if (!lDateVariazioni.Contains(dataFineCiclo))
                                         {
-                                            lDateVariazioni.Add(dataFineElaborazione);
+                                            lDateVariazioni.Add(dataFineCiclo);
                                         }
                                     }
 
