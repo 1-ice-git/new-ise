@@ -100,7 +100,7 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                                     var importo = lteorici.Sum(a => a.IMPORTO);
                                     var descLivello = livdip.LIVELLI.LIVELLO;
 
-                                    RptSpeseAvvicendamentoNewModel rptsam = SetSpeseAvvicendamento(matricola, cognome, nome, descLivello, ufficio, idVoci, dataPartenza, idVoci, db);
+                                    RptSpeseAvvicendamentoNewModel rptsam = SetSpeseAvvicendamento(matricola, cognome, nome, descLivello, ufficio, idVoci, dataPartenza, importo, db);
 
                                     lrptsam.Add(rptsam);
 
