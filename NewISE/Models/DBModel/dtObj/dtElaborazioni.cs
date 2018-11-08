@@ -4236,7 +4236,7 @@
                                          a.ANNORIFERIMENTO == dtSucc.Year &&
                                          a.MESERIFERIMENTO == dtSucc.Month &&
                                          a.ELABORATO == true &&
-                                         a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
+                                         a.IDVOCI == (decimal)EnumVociContabili.MAB &&
                                          a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO);
 
 
@@ -4532,8 +4532,7 @@
 
 
                                     bool verificaElaborazioneMese =
-                                        this.VeririficaElaborazioneMAB(indennita, dataIniCiclo,
-                                            dataFineCiclo);
+                                        this.VeririficaElaborazioneMAB(indennita, dataIniCiclo, dataFineCiclo);
 
 
                                     if (verificaElaborazioneMese)
@@ -4795,8 +4794,8 @@
                                                 cl.TFR.Where(
                                                         a =>
                                                             a.ANNULLATO == false && a.IDVALUTA == cl.IDVALUTA &&
-                                                            a.DATAFINEVALIDITA >= cl.DATAINIZIOVALIDITA &&
-                                                            a.DATAINIZIOVALIDITA <= cl.DATAFINEVALIDITA)
+                                                            a.DATAFINEVALIDITA >= dataIniCiclo &&
+                                                            a.DATAINIZIOVALIDITA <= dataFineCiclo)
                                                     .OrderBy(a => a.DATAINIZIOVALIDITA)
                                                     .ToList();
                                             foreach (var tfr in ltfr)
@@ -4858,8 +4857,8 @@
                                                             pc.PERCENTUALECONDIVISIONE.Where(
                                                                     a =>
                                                                         a.ANNULLATO == false &&
-                                                                        a.DATAFINEVALIDITA >= pc.DATAINIZIOVALIDITA &&
-                                                                        a.DATAINIZIOVALIDITA <= pc.DATAFINEVALIDITA)
+                                                                        a.DATAFINEVALIDITA >= dataIniCiclo &&
+                                                                        a.DATAINIZIOVALIDITA <= dataFineCiclo)
                                                                 .OrderBy(a => a.DATAINIZIOVALIDITA)
                                                                 .ToList();
 
@@ -7204,10 +7203,11 @@
                                         cl.TFR.Where(
                                                 a =>
                                                     a.ANNULLATO == false && a.IDVALUTA == cl.IDVALUTA &&
-                                                    a.DATAFINEVALIDITA >= cl.DATAINIZIOVALIDITA &&
-                                                    a.DATAINIZIOVALIDITA <= cl.DATAFINEVALIDITA)
+                                                    a.DATAFINEVALIDITA >= dataIniCiclo &&
+                                                    a.DATAINIZIOVALIDITA <= dataFineCiclo)
                                             .OrderBy(a => a.DATAINIZIOVALIDITA)
                                             .ToList();
+
                                     foreach (var tfr in ltfr)
                                     {
                                         DateTime dtVarTfr = new DateTime();
@@ -7267,8 +7267,8 @@
                                                     pc.PERCENTUALECONDIVISIONE.Where(
                                                             a =>
                                                                 a.ANNULLATO == false &&
-                                                                a.DATAFINEVALIDITA >= pc.DATAINIZIOVALIDITA &&
-                                                                a.DATAINIZIOVALIDITA <= pc.DATAFINEVALIDITA)
+                                                                a.DATAFINEVALIDITA >= dataIniCiclo &&
+                                                                a.DATAINIZIOVALIDITA <= dataFineCiclo)
                                                         .OrderBy(a => a.DATAINIZIOVALIDITA)
                                                         .ToList();
 
@@ -7403,8 +7403,7 @@
                             {
                                 foreach (var elabMabNew in lElabMabNew)
                                 {
-                                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO,
-                                        elabMabNew.DAL, db))
+                                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, elabMabNew.DAL, db))
                                     {
                                         indennita.ELABMAB.Add(elabMabNew);
                                         int n = db.SaveChanges();
