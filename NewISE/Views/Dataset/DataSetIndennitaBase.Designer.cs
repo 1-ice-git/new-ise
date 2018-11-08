@@ -285,6 +285,8 @@ namespace NewISE.Views.Dataset {
             
             private global::System.Data.DataColumn columnIndennitaBase;
             
+            private global::System.Data.DataColumn columnDescLivello;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public DataTable1DataTable() {
@@ -344,6 +346,14 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DescLivelloColumn {
+                get {
+                    return this.columnDescLivello;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -379,12 +389,13 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string IndennitaBase) {
+            public DataTable1Row AddDataTable1Row(string DataInizioValidita, string DataFineValidita, string IndennitaBase, string DescLivello) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DataInizioValidita,
                         DataFineValidita,
-                        IndennitaBase};
+                        IndennitaBase,
+                        DescLivello};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -410,6 +421,7 @@ namespace NewISE.Views.Dataset {
                 this.columnDataInizioValidita = base.Columns["DataInizioValidita"];
                 this.columnDataFineValidita = base.Columns["DataFineValidita"];
                 this.columnIndennitaBase = base.Columns["IndennitaBase"];
+                this.columnDescLivello = base.Columns["DescLivello"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -421,6 +433,8 @@ namespace NewISE.Views.Dataset {
                 base.Columns.Add(this.columnDataFineValidita);
                 this.columnIndennitaBase = new global::System.Data.DataColumn("IndennitaBase", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnIndennitaBase);
+                this.columnDescLivello = new global::System.Data.DataColumn("DescLivello", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDescLivello);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -612,6 +626,22 @@ namespace NewISE.Views.Dataset {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string DescLivello {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.DescLivelloColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Il valore della colonna \'DescLivello\' nella tabella \'DataTable1\' è DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.DescLivelloColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDataInizioValiditaNull() {
                 return this.IsNull(this.tableDataTable1.DataInizioValiditaColumn);
             }
@@ -644,6 +674,18 @@ namespace NewISE.Views.Dataset {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetIndennitaBaseNull() {
                 this[this.tableDataTable1.IndennitaBaseColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDescLivelloNull() {
+                return this.IsNull(this.tableDataTable1.DescLivelloColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDescLivelloNull() {
+                this[this.tableDataTable1.DescLivelloColumn] = global::System.Convert.DBNull;
             }
         }
         

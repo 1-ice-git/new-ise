@@ -36,10 +36,10 @@
 <table id="tbIndennitaBase" class="display" cellspacing="0">
     <thead>
         <tr>
-            @*<th class="text-center">
-                @Html.DisplayNameFor(model => model.Livello.DescLivello)
-            </th>
             <th class="text-center">
+                @Html.DisplayNameFor(model => model.DescLivello)
+            </th>
+            @*<th class="text-center">
                 @Html.DisplayNameFor(model => model.RuoloUfficio.DescrizioneRuolo)
             </th>*@
             <th class="text-center">
@@ -82,10 +82,10 @@
         @foreach (var item in Model)
         {
             <tr>
-                @*<td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.Livello.DescLivello)
-                </td>
                 <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.DescLivello)
+                </td>
+                @*<td style="text-align:center;">
                     
                     @Html.DisplayFor(modelItem => item.RuoloUfficio.DescrizioneRuolo)
                 </td>*@

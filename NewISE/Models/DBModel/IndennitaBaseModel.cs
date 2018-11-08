@@ -77,5 +77,10 @@ namespace NewISE.Models.DBModel
             return idIndennitaBase > 0 ? true : false;
         }
 
+        [Display(Name = "Livello")]
+        public string DescLivello { get; set; }
+
+
+
     }
 }

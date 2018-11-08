@@ -11,7 +11,7 @@ namespace NewISE.Models.DBModel
         public string DataInizioValidita { get; set; }
         public string DataFineValidita { get; set; }
         public decimal IndennitaBase { get; set; }
-
+        public string DescLivello { get; set; }
 
     }
 }
