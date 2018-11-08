@@ -512,7 +512,15 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
             if (_canoneMab > 0)
             {
-                _canoneInEuro = _canoneMab / _tassoCambio;
+
+                if (_tassoCambio > 0)
+                {
+                    _canoneInEuro = _canoneMab / _tassoCambio;
+                }
+                else
+                {
+                    throw new Exception("Impossibile effettuare il calcolo con tasso valuta a zero.");
+                }
 
                 if (_importoMABMaxMensile > _canoneInEuro)
                 {
