@@ -2370,30 +2370,30 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 throw new Exception("Errore durante l'inserimento del canone MAB.");
                             }
-                                #endregion
+                            #endregion
 
-                                #region riassocia TFR
-                                using (dtTrasferimento dtt = new dtTrasferimento())
+                            #region riassocia TFR
+                            using (dtTrasferimento dtt = new dtTrasferimento())
+                            {
+                                var mab = db.MAB.Find(cmabPrecedente.IDMAB);
+                                var t = mab.INDENNITA.TRASFERIMENTO;
+                                var trm = dtt.GetTrasferimentoById(t.IDTRASFERIMENTO);
+
+                                List<TFRModel> ltfrm = new List<TFRModel>();
+
+                                using (dtTFR dtTfr = new dtTFR())
                                 {
-                                    var mab = db.MAB.Find(cmabPrecedente.IDMAB);
-                                    var t = mab.INDENNITA.TRASFERIMENTO;
-                                    var trm = dtt.GetTrasferimentoById(t.IDTRASFERIMENTO);
-
-                                    List<TFRModel> ltfrm = new List<TFRModel>();
-    
-                                    using (dtTFR dtTfr = new dtTFR())
-                                    {
-                                        ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(trm, cmabPrecedente.IDVALUTA, cmabPrecedente.DATAINIZIOVALIDITA, cmabPrecedente.DATAFINEVALIDITA, db);
-                                    }
-
-                                    RimuoviAssociazioneCanoneMAB_TFR_var(cmabPrecedente.IDCANONE, db);
-
-                                    foreach (var tfrm in ltfrm)
-                                    {
-                                        Associa_TFR_CanoneMAB_var(tfrm.idTFR, cmabPrecedente.IDCANONE, db);
-                                    }
+                                    ltfrm = dtTfr.GetListaTfrByValuta_RangeDate(trm, cmabPrecedente.IDVALUTA, cmabPrecedente.DATAINIZIOVALIDITA, cmabPrecedente.DATAFINEVALIDITA, db);
                                 }
-                                #endregion
+
+                                RimuoviAssociazioneCanoneMAB_TFR_var(cmabPrecedente.IDCANONE, db);
+
+                                foreach (var tfrm in ltfrm)
+                                {
+                                    Associa_TFR_CanoneMAB_var(tfrm.idTFR, cmabPrecedente.IDCANONE, db);
+                                }
+                            }
+                            #endregion
                         }
                         else
                         {
