@@ -538,14 +538,14 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="dtRientro">
+                    <Textbox Name="DataFineValidita">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!dtRientro.Value</Value>
+                              <Value>=FormatDateTime(Fields!DataFineValidita.Value, DateFormat.ShortDate)</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -554,7 +554,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>dtRientro</rd:DefaultName>
+                      <rd:DefaultName>DataFineValidita</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -801,7 +801,7 @@
         <Top>5.39432cm</Top>
         <Left>0.47361cm</Left>
         <Height>1.2cm</Height>
-        <Width>23.69886cm</Width>
+        <Width>23.69885cm</Width>
         <ZIndex>8</ZIndex>
         <Style>
           <Border>
@@ -868,7 +868,7 @@
         <ZIndex>9</ZIndex>
         <Style>
           <Border>
-            <Style>None</Style>
+            <Style>Solid</Style>
           </Border>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingRight>2pt</PaddingRight>
