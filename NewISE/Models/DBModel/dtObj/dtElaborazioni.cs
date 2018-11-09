@@ -4161,17 +4161,17 @@
             DateTime dataInizioTrasferimento = trasferimento.DATAPARTENZA;
             DateTime dataFineTrasferimento = trasferimento.DATARIENTRO;
 
-            decimal annoMeseIniTrasf =
-                Convert.ToDecimal(dataInizioTrasferimento.Year.ToString() +
-                                  dataInizioTrasferimento.Month.ToString().PadLeft(2, '0'));
+            //decimal annoMeseIniTrasf =
+            //    Convert.ToDecimal(dataInizioTrasferimento.Year.ToString() +
+            //                      dataInizioTrasferimento.Month.ToString().PadLeft(2, '0'));
 
             DateTime dataInizioElaborazione =
                 Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString("00") + "/" + meseAnnoElaborazione.ANNO);
             DateTime dataFineElaborazione = Utility.GetDtFineMese(dataInizioElaborazione);
 
-            decimal annoMeseIniElab =
-                Convert.ToDecimal(meseAnnoElaborazione.ANNO.ToString() +
-                                  meseAnnoElaborazione.MESE.ToString().PadLeft(2, '0'));
+            //decimal annoMeseIniElab =
+            //    Convert.ToDecimal(meseAnnoElaborazione.ANNO.ToString() +
+            //                      meseAnnoElaborazione.MESE.ToString().PadLeft(2, '0'));
 
             int giorniElabMese = 0;
 
