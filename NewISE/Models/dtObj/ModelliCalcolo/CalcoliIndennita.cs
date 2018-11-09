@@ -54,6 +54,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private decimal _maggiorazioneFigli = 0;
         private decimal _maggiorazioniFimailiri = 0;
         private decimal _indennitaPersonale = 0;
+        private decimal _indennitaPersonaleInValuta = 0;
         private decimal _coefficienteIndennitaSistemazione = 0;
         private decimal _indennitaSistemazione = 0;
         private decimal _percentualeRiduzionePrimaSistemazione = 0;
@@ -153,6 +154,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal MaggiorazioniFamiliari => _maggiorazioniFimailiri;
         [ReadOnly(true)]
         public decimal IndennitaPersonale => _indennitaPersonale;
+        [ReadOnly(true)]
+        public decimal IndennitaPersonaleInValuta => _indennitaPersonaleInValuta;
         [ReadOnly(true)]
         public decimal CoefficienteIndennitaSistemazione => _coefficienteIndennitaSistemazione;
         [ReadOnly(true)]
@@ -336,6 +339,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 this.CalcolaIndennitaDiServizio();
                 this.CalcolaMaggiorazioneFamiliare();
                 this.CalcolaIndennitaPersonale();
+                this.CalcolaIndennitaPersonaleInValuta();
                 this.CalcolaPrimaSistemazione();
                 this.CalcolaContributoOmniComprensivoPartenza();
                 this.CalcolaRichiamo();
@@ -861,6 +865,42 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
             _indennitaPersonale = Math.Round(_indennitaDiServizio + _maggiorazioniFimailiri, 8);
 
         }
+
+
+        private void CalcolaIndennitaPersonaleInValuta()
+        {
+
+            var ltfr =
+                _indennita.TFR.Where(
+                    a =>
+                        a.ANNULLATO == false && _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                        _dtDatiParametri <= a.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+            if (ltfr?.Any() ?? false)
+            {
+                var tfr = ltfr.Last();
+
+                decimal tassoCambio = tfr.TASSOCAMBIO;
+
+                _indennitaPersonale = Math.Round(_indennitaDiServizio + _maggiorazioniFimailiri, 8);
+
+                if (tassoCambio > 0)
+                {
+                    _indennitaPersonaleInValuta = _indennitaPersonale / tassoCambio;
+                }
+                else
+                {
+                    _indennitaPersonaleInValuta = 0;
+                }
+
+
+            }
+
+
+
+
+        }
+
 
         private void CalcolaRichiamo()
         {

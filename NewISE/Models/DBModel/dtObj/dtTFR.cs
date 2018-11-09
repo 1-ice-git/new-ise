@@ -101,6 +101,7 @@ namespace NewISE.Models.DBModel.dtObj
                         v.TFR.Where(
                             a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAINIZIOVALIDITA <= dtFin)
                             .OrderBy(a => a.DATAINIZIOVALIDITA);
+
                     if (ltfr?.Any() ?? false)
                     {
                         ltfrm = (from tfr in ltfr

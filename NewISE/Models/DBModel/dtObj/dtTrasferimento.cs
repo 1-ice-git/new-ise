@@ -2273,9 +2273,6 @@ namespace NewISE.Models.DBModel.dtObj
                 }
 
 
-
-
-
                 #endregion
 
                 #region legge indennita
@@ -2286,12 +2283,14 @@ namespace NewISE.Models.DBModel.dtObj
                 using (dtLivelliDipendente dtld = new dtLivelliDipendente())
                 {
                     var lld = i.LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false).ToList();
+
                     foreach (var ld in lld)
                     {
                         i.LIVELLIDIPENDENTI.Remove(ld);
                     }
                     var lldm =
                         dtld.GetLivelliDipendentiByRangeDate(t.IDDIPENDENTE, t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
+
                     if (lldm?.Any() ?? false)
                     {
                         foreach (var ldm in lldm)
@@ -2326,8 +2325,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                 }
 
-                                libm =
-                                    dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio, dataFine, db).ToList();
+                                libm = dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio, dataFine, db).ToList();
 
                                 if (libm?.Any() ?? false)
                                 {
@@ -2363,8 +2361,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     List<TFRModel> ltfrm =
-                        dttfr.GetTfrIndennitaByRangeDate(t.IDUFFICIO, t.DATAPARTENZA,
-                            t.DATARIENTRO, db).ToList();
+                        dttfr.GetTfrIndennitaByRangeDate(t.IDUFFICIO, t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
 
                     if (ltfrm?.Any() ?? false)
                     {
@@ -2444,21 +2441,30 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         var psm = dtps.GetPrimaSistemazioneBtIdTrasf(t.IDTRASFERIMENTO, db);
                         var ps = db.PRIMASITEMAZIONE.Find(psm.idPrimaSistemazione);
-                        var lpfk = ps.PERCENTUALEFKM.Where(a => a.ANNULLATO == false).ToList();
+
+                        var lpfk = ps.PERCENTUALEFKM.Where(a => a.ANNULLATO == false && t.DATAPARTENZA >= a.DATAINIZIOVALIDITA && t.DATAPARTENZA <= a.DATAFINEVALIDITA).ToList();
+
                         foreach (var pfk in lpfk)
                         {
                             ps.PERCENTUALEFKM.Remove(pfk);
                         }
 
-                        var pfkmm = dtfkm.GetPercentualeFKM(lpfk.First().IDFKM, t.DATAPARTENZA, db);
-                        if (pfkmm?.idPFKM > 0)
+                        foreach (var pfk in lpfk)
                         {
-                            dtfkm.AssociaPercentualeFKMPrimaSistemazione(psm.idPrimaSistemazione, pfkmm.idPFKM, db);
+                            var pfkmm = dtfkm.GetPercentualeFKM(pfk.IDFKM, t.DATAPARTENZA, db);
+
+                            if (pfkmm?.idPFKM > 0)
+                            {
+                                dtfkm.AssociaPercentualeFKMPrimaSistemazione(psm.idPrimaSistemazione, pfkmm.idPFKM, db);
+                            }
+                            else
+                            {
+                                throw new Exception("Non risulta il valore della percentuale fascia chilometrica.");
+                            }
                         }
-                        else
-                        {
-                            throw new Exception("Non risulta il valore della percentuale fascia chilometrica.");
-                        }
+
+
+
                     }
                 }
                 #endregion
@@ -2472,6 +2478,7 @@ namespace NewISE.Models.DBModel.dtObj
                     a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato
                     //&& a.DATAINIZIOVALIDITA<t.DATAPARTENZA
                     ).ToList();
+
                 if (lc?.Any() ?? false)
                 {
                     foreach (var c in lc)
@@ -2480,6 +2487,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             //elimina le associazioni perc magg coniuge
                             var lpmc = c.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false).ToList();
+
                             foreach (var pmc in lpmc)
                             {
                                 c.PERCENTUALEMAGCONIUGE.Remove(pmc);
@@ -2511,6 +2519,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                 #region Riassocia perc magg figli e perc primo segretario
                 var lf = mf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
+
                 if (lf?.Any() ?? false)
                 {
                     foreach (var f in lf)
@@ -3333,6 +3342,13 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                     AllineaDateIni_Trasferimento(t, dataPartenzaOriginale, db);
                                 }
+                                else
+                                {
+                                    ///Riassocio i dati per l'indennità per rinfrescare eventuali variazioni parametriche 
+                                    /// effettuate tra la fase di notifica del trasferimento e attivazione.
+                                    RiassociaIndennitaTrasferimento(t, db);
+
+                                }
 
                                 using (dtDipendenti dtd = new dtDipendenti())
                                 {
@@ -3402,12 +3418,6 @@ namespace NewISE.Models.DBModel.dtObj
                                     throw new Exception("Errore nella fase di invio prima sistemazione saldo/unica soluzione, attività non trovata.");
                                 }
 
-                                //using (dtElaborazioni dte = new dtElaborazioni())
-                                //{
-                                //    dte.InviaAnticipoPrimaSistemazioneContabilita(idAttivitaAnticipi, db);
-                                //}
-
-                                //this.EmailAttivaTrasf(t.IDTRASFERIMENTO, db);
 
                             }
                         }
