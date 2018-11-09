@@ -2261,7 +2261,8 @@ namespace NewISE.Models.DBModel.dtObj
                 #endregion
 
                 #region allinea data ruolo dipendente
-                var rd = t.RUOLODIPENDENTE.First();
+                var rd = t.RUOLODIPENDENTE.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAINZIOVALIDITA).First();
+
                 if (rd.DATAINZIOVALIDITA != t.DATAPARTENZA)
                 {
                     rd.DATAINZIOVALIDITA = t.DATAPARTENZA;
@@ -2270,6 +2271,11 @@ namespace NewISE.Models.DBModel.dtObj
                         throw new Exception("Errore di correzione data inizio validita ruolo dipendente da " + rd.DATAINZIOVALIDITA + " a " + t.DATAPARTENZA);
                     }
                 }
+
+
+
+
+
                 #endregion
 
                 #region legge indennita
@@ -2285,14 +2291,12 @@ namespace NewISE.Models.DBModel.dtObj
                         i.LIVELLIDIPENDENTI.Remove(ld);
                     }
                     var lldm =
-                        dtld.GetLivelliDipendentiByRangeDate(t.IDDIPENDENTE, t.DATAPARTENZA,
-                            t.DATARIENTRO, db).ToList();
+                        dtld.GetLivelliDipendentiByRangeDate(t.IDDIPENDENTE, t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
                     if (lldm?.Any() ?? false)
                     {
                         foreach (var ldm in lldm)
                         {
-                            dtld.AssociaLivelloDipendente_Indennita(t.IDTRASFERIMENTO,
-                                ldm.idLivDipendente, db);
+                            dtld.AssociaLivelloDipendente_Indennita(t.IDTRASFERIMENTO, ldm.idLivDipendente, db);
 
                             using (dtIndennitaBase dtib = new dtIndennitaBase())
                             {
@@ -2307,7 +2311,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
                                 else
                                 {
-                                    dataInizio = t.DATAPARTENZA;
+                                    dataInizio = ldm.dataInizioValdita;
                                 }
 
                                 if (ldm.dataFineValidita.HasValue)
@@ -2323,8 +2327,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
 
                                 libm =
-                                    dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio,
-                                        dataFine, db).ToList();
+                                    dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio, dataFine, db).ToList();
 
                                 if (libm?.Any() ?? false)
                                 {
@@ -2505,7 +2508,6 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                 }
                 #endregion
-
 
                 #region Riassocia perc magg figli e perc primo segretario
                 var lf = mf.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).ToList();
