@@ -55,7 +55,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                             a.DATAINIZIOVALIDITA != null &&
                                             a.DATAFINEVALIDITA != Utility.DataFineStop() &&
-                                            a.DATAFINEVALIDITA < cm.dataInizio
+                                            a.DATAFINEVALIDITA >= cm.dataInizio
                                             ).OrderByDescending(a => a.IDCONIUGE).ToList();
                         }
                         if (lc_prec?.Any() ?? false)

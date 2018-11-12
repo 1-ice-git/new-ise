@@ -2453,6 +2453,8 @@ namespace NewISE.Controllers
                     {
                         using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                         {
+                            //dtvmf.VerificaModificaDataInizioConiuge(cm);
+
                             dtvmf.VerificaDataInizioConiuge(idMaggiorazioniFamiliari, cm.dataInizio.Value);
                     
                             dtvmf.InserisciConiugeVarMagFam(cm, idMaggiorazioniFamiliari, idAttivazioneMagFam);

@@ -1377,17 +1377,26 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (dit.statoTrasferimento == EnumStatoTraferimento.Attivo || dit.statoTrasferimento == EnumStatoTraferimento.Da_Attivare || dit.statoTrasferimento == EnumStatoTraferimento.Terminato)
                         {
+                            using (CalcoliIndennita ci_partenza = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza))
+                            {
+                                dit.indennitaBasePartenza = ci_partenza.IndennitaDiBase;
+                                dit.primaSitemazione = ci_partenza.IndennitaSistemazioneAnticipabileLorda;
+                                dit.contributoOmnicomprensivo = ci_partenza.TotaleContributoOmnicomprensivoPartenza;
+                                dit.primaSitemazioneMF = ci_partenza.IndennitaSistemazioneLorda;
+                            }
+
                             using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
                             {
                                 dit.indennitaBase = ci.IndennitaDiBase;
                                 dit.indennitaServizio = ci.IndennitaDiServizio;
                                 dit.maggiorazioniFamiliari = ci.MaggiorazioniFamiliari;
                                 dit.indennitaPersonale = ci.IndennitaPersonale;
-                                dit.primaSitemazione = ci.IndennitaSistemazioneAnticipabileLorda;
-                                dit.contributoOmnicomprensivo = ci.TotaleContributoOmnicomprensivoPartenza;
+                                //dit.primaSitemazione = ci.IndennitaSistemazioneAnticipabileLorda;
+                                //dit.contributoOmnicomprensivo = ci.TotaleContributoOmnicomprensivoPartenza;
                                 dit.mabMensile = ci.ImportoMABMaxMensile;
-                                dit.primaSitemazioneMF = ci.IndennitaSistemazioneLorda;
+                                //dit.primaSitemazioneMF = ci.IndennitaSistemazioneLorda;
                             }
+
                         }
                     }
                 }

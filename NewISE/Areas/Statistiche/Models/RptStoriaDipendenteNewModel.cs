@@ -93,6 +93,7 @@ namespace NewISE.Areas.Statistiche.Models
 
         public DateTime dataVariazione { get; set; }
 
+        public decimal ordinamento { get; set; }
 
     }
 }

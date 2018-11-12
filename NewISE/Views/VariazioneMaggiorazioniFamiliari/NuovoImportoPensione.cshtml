@@ -36,7 +36,7 @@
                     @if (Model != null)
                     {
                         @*@Html.TextBoxFor(model => model.importoPensione, string.Format("{0:N2}", Model.importoPensione), new { @class = "form-control text-right" })*@
-                        <input type="text" id="importoPensioneUI" class="form-control text-right ignore" value="@Model.importoPensione.ToString("N2")" />
+                        <input type="text" id="importoPensioneUI" class="form-control text-right ignore" value="@Model.importoPensione.ToString("0:00")" />
                         <input type="hidden" id="importoPensione" name="importoPensione" />
                     }
                     else
@@ -153,7 +153,22 @@
     //    aSign: ''
     //});
 
-    importoPensione = new AutoNumeric('#importoPensioneUI', autoNumericOptionsEuroOttoDec);
+
+    //var autoNumericOptionsEuroDueDec = {
+    //    digitGroupSeparator: '.',
+    //    decimalCharacter: ',',
+    //    decimalCharacterAlternative: '.',
+    //    eDec: 2,
+    //    decimalPlacesShownOnBlur: 2
+    //    //currencySymbol: '\u202f€',
+    //    //currencySymbolPlacement: AutoNumeric.options.currencySymbolPlacement.suffix,
+    //    //roundingMethod: AutoNumeric.options.roundingMethod.halfUpSymmetric,
+    //};
+
+
+    $.culture = Globalize.culture("it-IT");
+
+    importoPensione = new AutoNumeric('#importoPensioneUI', autoNumericOptionsEuro);
 
     $("#importoPensioneUI").blur(function () {
         //debugger;
@@ -161,7 +176,7 @@
         $("#importoPensione").val(val.toString().replace(".", ","));
     });
 
-    $.culture = Globalize.culture("it-IT");
+    
 
     $.validator.methods.number = function (value, element) {
         return this.optional(element) || !isNaN(Globalize.parseFloat(value));

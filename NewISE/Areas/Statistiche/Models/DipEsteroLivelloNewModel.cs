@@ -27,7 +27,7 @@ namespace NewISE.Areas.Statistiche.Models
         public string sede { get; set; }
              
         [Display(Name = "Data Trasferimento")]
-        public string data_trasferimento { get; set; }
+        public DateTime data_trasferimento { get; set; }
 
         [Display(Name = "Data Rientro")]
         public string data_rientro { get; set; }

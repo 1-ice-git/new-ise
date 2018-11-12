@@ -161,11 +161,37 @@ namespace NewISE.Models.DBModel.dtObj
                 AnticipiViewModel avm = new AnticipiViewModel();
                 ANTICIPI a = new ANTICIPI();
 
-                var idTrasferimento = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi).PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO;
+                var t = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi).PRIMASITEMAZIONE.TRASFERIMENTO;
+                var idTrasferimento = t.IDTRASFERIMENTO;
 
-                using (CalcoliIndennita ci = new CalcoliIndennita(idTrasferimento))
+                using (CalcoliIndennita ci = new CalcoliIndennita(idTrasferimento,t.DATAPARTENZA))
                 {
-                    var importoPrevisto = Math.Round(ci.IndennitaSistemazioneAnticipabileLorda, 2);
+                    //verifica se è l'importo è stato gia pagato
+
+                    var lteorici = t.TEORICI.Where(x =>
+                                          x.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                          //x.ELABORATO &&
+                                          x.DIRETTO &&
+                                          x.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                          x.INSERIMENTOMANUALE == false &&
+                                          x.ANNULLATO == false &&
+                                          x.ELABINDSISTEMAZIONE.CONGUAGLIO == false &&
+                                          x.ELABINDSISTEMAZIONE.ANTICIPO &&
+                                          x.ANNORIFERIMENTO==t.DATAPARTENZA.Year &&
+                                          x.MESERIFERIMENTO==t.DATAPARTENZA.Month)
+                                      .ToList();
+
+                    decimal importoPrevisto = 0;
+                    if (lteorici?.Any() ?? false)
+                    {
+                        var teorici = lteorici.First();
+                        importoPrevisto = teorici.IMPORTOLORDO;
+                    }
+                    else
+                    {
+
+                        importoPrevisto = Math.Round(ci.IndennitaSistemazioneAnticipabileLorda, 2);
+                    }
 
                     var al = db.ANTICIPI.Where(x => x.IDATTIVITAANTICIPI == idAttivitaAnticipi).ToList();
 
@@ -220,11 +246,34 @@ namespace NewISE.Models.DBModel.dtObj
 
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    var idTrasferimento = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi).PRIMASITEMAZIONE.TRASFERIMENTO.IDTRASFERIMENTO;
+                    var t = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi).PRIMASITEMAZIONE.TRASFERIMENTO;
+                    var idTrasferimento = t.IDTRASFERIMENTO;
 
-                    using (CalcoliIndennita ci = new CalcoliIndennita(idTrasferimento))
+                    using (CalcoliIndennita ci = new CalcoliIndennita(idTrasferimento, t.DATAPARTENZA))
                     {
-                        var importoPrevisto = ci.IndennitaSistemazioneAnticipabileLorda;
+                        var lteorici = t.TEORICI.Where(x =>
+                                       x.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                       //x.ELABORATO &&
+                                       x.DIRETTO &&
+                                       x.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS &&
+                                       x.INSERIMENTOMANUALE == false &&
+                                       x.ANNULLATO == false &&
+                                       x.ELABINDSISTEMAZIONE.CONGUAGLIO == false &&
+                                       x.ELABINDSISTEMAZIONE.ANTICIPO &&
+                                       x.ANNORIFERIMENTO == t.DATAPARTENZA.Year &&
+                                       x.MESERIFERIMENTO == t.DATAPARTENZA.Month)
+                                   .ToList();
+
+                        decimal importoPrevisto = 0;
+                        if (lteorici?.Any() ?? false)
+                        {
+                            importoPrevisto = lteorici.First().IMPORTOLORDO;
+                        }
+                        else
+                        {
+
+                            importoPrevisto = ci.IndennitaSistemazioneAnticipabileLorda;
+                        }
 
                         importoPercepito = Math.Round((importoPrevisto * (percRichiesta / 100)), 2);
 

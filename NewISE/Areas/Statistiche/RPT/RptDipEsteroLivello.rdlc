@@ -288,6 +288,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -643,7 +644,7 @@
                           <Group Name="Dettagli" />
                           <SortExpressions>
                             <SortExpression>
-                              <Value>=Fields!data_trasferimento.Value</Value>
+                              <Value>=Fields!ordinamento.Value</Value>
                             </SortExpression>
                           </SortExpressions>
                         </TablixMember>
@@ -658,7 +659,7 @@
         <DataSetName>DataSetDipEsteroLivello</DataSetName>
         <Top>2.2987cm</Top>
         <Height>1.2cm</Height>
-        <Width>29.56971cm</Width>
+        <Width>29.56969cm</Width>
         <ZIndex>4</ZIndex>
         <Style>
           <Border>
@@ -962,10 +963,14 @@
           <DataField>ruolo_dipendente</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="ordinamento">
+          <DataField>ordinamento</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>DataSetDipEsteroLivello</rd:DataSetName>
-        <rd:SchemaPath>C:\Users\UTENTE\Documents\Visual Studio 2015\Projects\NewISE\NewISE\Areas\Statistiche\RPTDataSet\DataSetDipEsteroLivello.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\Users\essenthia2\Documents\Visual Studio 2015\Projects\NewISE\NewISE\Areas\Statistiche\RPTDataSet\DataSetDipEsteroLivello.xsd</rd:SchemaPath>
         <rd:TableName>DataTable1</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

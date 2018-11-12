@@ -30,6 +30,10 @@ namespace NewISE.Models
 
         [Display(Name = "Indennità di Base")]
         [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
+        public decimal indennitaBasePartenza { get; set; }
+
+        [Display(Name = "Indennità di Base")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "0:F2")]
         public decimal indennitaBase { get; set; }
 
         [Display(Name = "Indennità di Servizio")]

@@ -29,5 +29,7 @@ namespace NewISE.Areas.Statistiche.Models
         [Display(Name = "Ruolo Dipendente")]
         public string ruolo_dipendente { get; set; }
 
+        public decimal ordinamento { get; set; }
+
     }
 }

@@ -22,14 +22,17 @@ namespace NewISE.Models.DBModel.dtObj
             List<DipEsteroLivelloNewModel> rim = new List<DipEsteroLivelloNewModel>();
 
 
-            var ltrasf = db.TRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-                                               a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Da_Attivare &&
-                                               a.DATARIENTRO >= dtIni &&
-                                               a.DATAPARTENZA <= dtFin &&
-                                               a.INDENNITA.LIVELLIDIPENDENTI.Any(b => b.ANNULLATO == false &&
-                                                                                      b.DATAFINEVALIDITA >= dtIni &&
-                                                                                      b.DATAINIZIOVALIDITA <= dtFin &&
-                                                                                      b.IDLIVELLO == idLivello)).ToList();
+            var ltrasf = db.TRASFERIMENTO.Where(a => 
+                                                    a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                                    a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Da_Attivare &&
+                                                    a.DATARIENTRO >= dtIni &&
+                                                    a.DATAPARTENZA <= dtFin &&
+                                                    a.INDENNITA.LIVELLIDIPENDENTI.Any(b => 
+                                                                                            b.ANNULLATO == false &&
+                                                                                            b.DATAFINEVALIDITA >= dtIni &&
+                                                                                            b.DATAINIZIOVALIDITA <= dtFin &&
+                                                                                            b.IDLIVELLO == idLivello))
+                                        .ToList();
 
 
             var qualifica = db.LIVELLI.Find(idLivello).LIVELLO;
@@ -53,7 +56,7 @@ namespace NewISE.Models.DBModel.dtObj
                     DipEsteroLivelloNewModel ldvm = new DipEsteroLivelloNewModel()
                     {
                         nominativo = d.COGNOME + " " + d.NOME + " (" + d.MATRICOLA + ")",
-                        data_trasferimento = Convert.ToDateTime(trasf.DATAPARTENZA).ToShortDateString(),
+                        data_trasferimento = trasf.DATAPARTENZA,
                         data_rientro = (trasf.DATARIENTRO < Utility.DataFineStop()) ? Convert.ToDateTime(trasf.DATARIENTRO).ToShortDateString() : null,
                         sede = ufficio,
                         qualifica = qualifica,

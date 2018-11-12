@@ -104,11 +104,46 @@ namespace NewISE.Controllers
 
                             var tm = dtt.GetTrasferimentoByIdTEPartenza(idTEPartenza);
 
-                            CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+                            var t = dtt.GetTrasferimento(tm.idTrasferimento, db);
 
-                            vtepm.indennitaPrimaSistemazione = Math.Round(ci.IndennitaSistemazioneLorda, 2);
-                            vtepm.percKM = ci.PercentualeFKMPartenza;
-                            vtepm.contributoLordo = Math.Round(ci.TotaleContributoOmnicomprensivoPartenza, 2);
+                            //legge indennita PS su TEORICI
+                            var lteorici = t.TEORICI.Where(x =>
+                                           x.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                                           //x.ELABORATO &&
+                                           x.DIRETTO == false &&
+                                           x.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
+                                           x.INSERIMENTOMANUALE == false &&
+                                           x.ANNULLATO == false &&
+                                           x.ELABTRASPEFFETTI.CONGUAGLIO == false &&
+                                           x.ELABTRASPEFFETTI.SALDO &&
+                                           x.ELABTRASPEFFETTI.IDTEPARTENZA > 0 &&
+                                           x.ANNORIFERIMENTO == t.DATAPARTENZA.Year &&
+                                           x.MESERIFERIMENTO == t.DATAPARTENZA.Month)
+                                       .ToList();
+
+                            decimal indennitaPS = 0;
+                            decimal percentualeFKMPartenza = 0;
+                            decimal contributoLordo = 0;
+
+                            if (lteorici?.Any() ?? false)
+                            {
+                                var teorici = lteorici.First();
+                                indennitaPS = teorici.IMPORTOLORDO;
+                                percentualeFKMPartenza = teorici.ELABTRASPEFFETTI.PERCENTUALEFK;
+                                contributoLordo = indennitaPS * percentualeFKMPartenza;
+                            }
+                            else
+                            {
+                                CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+
+                                indennitaPS = ci.IndennitaSistemazioneLorda;
+                                percentualeFKMPartenza = ci.PercentualeFKMPartenza;
+                                contributoLordo = ci.TotaleContributoOmnicomprensivoPartenza;
+                            }
+
+                            vtepm.indennitaPrimaSistemazione = Math.Round(indennitaPS, 2);
+                            vtepm.percKM = percentualeFKMPartenza;
+                            vtepm.contributoLordo = Math.Round(contributoLordo, 2);
                             vtepm.anticipoPercepito = anticipoPercepito;
                             vtepm.saldo = Math.Round(vtepm.contributoLordo - vtepm.anticipoPercepito, 2);
 
@@ -119,17 +154,6 @@ namespace NewISE.Controllers
                                 vtepm.anticipoPercepito = 0;
                                 vtepm.saldo = 0;
                             }
-
-                            ////TEST (anche su gestione pulsanti)
-                            //siAnticipo = true;
-                            //if (siAnticipo)
-                            //{
-                            //    var PercentualeAnticipoTE = dtvte.GetPercentualeAnticipoTEPartenza(idTEPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
-                            //    var percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
-                            //    vtepm.anticipoPercepito = Math.Round(percAnticipo * vtepm.contributoLordo / 100, 2);
-                            //    vtepm.saldo = Math.Round(vtepm.contributoLordo - vtepm.anticipoPercepito, 2);
-                            //}
-                            ////FINE TEST
 
                             vtepm.siAnticipo = siAnticipo;
 
@@ -185,11 +209,46 @@ namespace NewISE.Controllers
 
                             var tm = dtt.GetTrasferimentoByIdTERientro(idTERientro);
 
-                            CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+                            var t = dtt.GetTrasferimento(tm.idTrasferimento, db);
 
-                            vterm.indennitaRichiamo = Math.Round(ci.IndennitaRichiamoLordo, 2);
-                            vterm.percKM = ci.PercentualeFKMRientro;
-                            vterm.contributoLordo = Math.Round(ci.TotaleContributoOmnicomprensivoRientro, 2);
+                            //legge indennita PS su TEORICI
+                            var lteorici = t.TEORICI.Where(x =>
+                                           x.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                                           //x.ELABORATO &&
+                                           x.DIRETTO == false &&
+                                           x.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
+                                           x.INSERIMENTOMANUALE == false &&
+                                           x.ANNULLATO == false &&
+                                           x.ELABTRASPEFFETTI.CONGUAGLIO == false &&
+                                           x.ELABTRASPEFFETTI.SALDO &&
+                                           x.ELABTRASPEFFETTI.IDTERIENTRO > 0 &&
+                                           x.ANNORIFERIMENTO == t.DATAPARTENZA.Year &&
+                                           x.MESERIFERIMENTO == t.DATAPARTENZA.Month)
+                                       .ToList();
+
+                            decimal percentualeFKMRientro = 0;
+                            decimal contributoLordo = 0;
+                            decimal indennitaRichiamo = 0;
+
+                            if (lteorici?.Any() ?? false)
+                            {
+                                var teorici = lteorici.First();
+                                indennitaRichiamo = teorici.IMPORTOLORDO;
+                                percentualeFKMRientro = teorici.ELABTRASPEFFETTI.PERCENTUALEFK;
+                                contributoLordo = indennitaRichiamo * percentualeFKMRientro;
+                            }
+                            else
+                            {
+                                CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+
+                                indennitaRichiamo = ci.IndennitaRichiamoLordo;
+                                percentualeFKMRientro = ci.PercentualeFKMRientro;
+                                contributoLordo = ci.TotaleContributoOmnicomprensivoRientro;
+                            }
+
+                            vterm.indennitaRichiamo = Math.Round(indennitaRichiamo, 2);
+                            vterm.percKM = percentualeFKMRientro;
+                            vterm.contributoLordo = Math.Round(contributoLordo, 2);
                             vterm.anticipoPercepito = anticipoPercepito;
                             vterm.saldo = Math.Round(vterm.contributoLordo - vterm.anticipoPercepito, 2);
 

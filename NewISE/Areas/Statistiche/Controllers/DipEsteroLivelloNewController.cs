@@ -71,22 +71,26 @@ namespace NewISE.Areas.Statistiche.Controllers
                 {
                     using (dtDipEsteroLivello dtd = new dtDipEsteroLivello())
                     {
-                        rim = dtd.DipEsteroLivelloNew(dtIni, dtFin, idLivello, db).ToList();
+                        rim = dtd.DipEsteroLivelloNew(dtIni, dtFin, idLivello, db).ToList().OrderBy(a=>a.nominativo).ThenBy(a=>a.data_trasferimento).ToList();
                     }
 
                     if (rim?.Any() ?? false)
                     {
+                        decimal ordinamento = 0;
                         foreach (var lm in rim)
                         {
+                            ordinamento++;
+
                             RptDipEsteroLivelloNewModel rptds = new RptDipEsteroLivelloNewModel()
                             {
-                                
+
                                 nominativo = lm.nominativo,
-                                data_trasferimento = lm.data_trasferimento,
+                                data_trasferimento = lm.data_trasferimento.ToShortDateString(),
                                 data_rientro = lm.data_rientro,
                                 sede = lm.sede,
                                 qualifica = lm.qualifica,
-                                ruolo_dipendente = lm.ruolo_dipendente
+                                ruolo_dipendente = lm.ruolo_dipendente,
+                                ordinamento = ordinamento
                             };
 
 

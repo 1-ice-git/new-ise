@@ -44,6 +44,18 @@ var autoNumericOptionsEuro = {
     //roundingMethod: AutoNumeric.options.roundingMethod.halfUpSymmetric,
 };
 
+
+//var autoNumericOptionsEuroDueDec = {
+//    digitGroupSeparator: '.',
+//    decimalCharacter: ',',
+//    decimalCharacterAlternative: '.',
+//    eDec: 2,
+//    decimalPlacesShownOnBlur: 2
+//    //currencySymbol: '\u202f€',
+//    //currencySymbolPlacement: AutoNumeric.options.currencySymbolPlacement.suffix,
+//    //roundingMethod: AutoNumeric.options.roundingMethod.halfUpSymmetric,
+//};
+
 var autoNumericOptionsEuroTreDec = {
     digitGroupSeparator: '.',
     decimalCharacter: ',',

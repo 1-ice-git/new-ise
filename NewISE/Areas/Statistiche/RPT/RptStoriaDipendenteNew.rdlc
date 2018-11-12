@@ -2331,7 +2331,7 @@
               </Group>
               <SortExpressions>
                 <SortExpression>
-                  <Value>=Fields!dataPartenza.Value</Value>
+                  <Value>=Fields!ordinamento.Value</Value>
                 </SortExpression>
               </SortExpressions>
               <TablixMembers>
@@ -2391,6 +2391,7 @@
                           <PaddingBottom>2pt</PaddingBottom>
                         </Style>
                       </Textbox>
+                      <rd:Selected>true</rd:Selected>
                     </CellContents>
                   </TablixHeader>
                   <KeepWithGroup>After</KeepWithGroup>
@@ -2452,6 +2453,7 @@
                           <PaddingBottom>2pt</PaddingBottom>
                         </Style>
                       </Textbox>
+                      <rd:Selected>true</rd:Selected>
                     </CellContents>
                   </TablixHeader>
                   <KeepWithGroup>After</KeepWithGroup>
@@ -2513,6 +2515,7 @@
                           <PaddingBottom>2pt</PaddingBottom>
                         </Style>
                       </Textbox>
+                      <rd:Selected>true</rd:Selected>
                     </CellContents>
                   </TablixHeader>
                   <KeepWithGroup>After</KeepWithGroup>
@@ -2574,6 +2577,7 @@
                           <PaddingBottom>2pt</PaddingBottom>
                         </Style>
                       </Textbox>
+                      <rd:Selected>true</rd:Selected>
                     </CellContents>
                   </TablixHeader>
                   <KeepWithGroup>After</KeepWithGroup>
@@ -2610,6 +2614,7 @@
                           <PaddingBottom>2pt</PaddingBottom>
                         </Style>
                       </Textbox>
+                      <rd:Selected>true</rd:Selected>
                     </CellContents>
                   </TablixHeader>
                   <TablixMembers>
@@ -2653,6 +2658,7 @@
                           <PaddingBottom>2pt</PaddingBottom>
                         </Style>
                       </Textbox>
+                      <rd:Selected>true</rd:Selected>
                     </CellContents>
                   </TablixHeader>
                   <TablixMembers>
@@ -2703,6 +2709,7 @@
                           <PaddingBottom>2pt</PaddingBottom>
                         </Style>
                       </Textbox>
+                      <rd:Selected>true</rd:Selected>
                     </CellContents>
                   </TablixHeader>
                   <TablixMembers>
@@ -3115,6 +3122,10 @@
         </Field>
         <Field Name="ValutaUfficio">
           <DataField>ValutaUfficio</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ordinamento">
+          <DataField>ordinamento</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
