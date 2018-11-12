@@ -74,9 +74,7 @@ namespace NewISE.Controllers
                             var tm = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
 
                             var t = dtt.GetTrasferimento(tm.idTrasferimento, db);
-
-                            CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
-
+                        
                             //legge indennita PS su TEORICI
                             var lteorici = t.TEORICI.Where(x =>
                                            x.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
@@ -106,6 +104,8 @@ namespace NewISE.Controllers
                             }
                             else
                             {
+                                CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+
                                 indennitaPS = ci.IndennitaSistemazioneLorda;
                                 percentualeFKMPartenza = ci.PercentualeFKMPartenza;
                                 contributoLordo = ci.TotaleContributoOmnicomprensivoPartenza;
@@ -143,43 +143,83 @@ namespace NewISE.Controllers
         {
             try
             {
-                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
                     {
-                        bool richiestaTER = false;
-                        bool attivazioneTER = false;
-                        bool DocContributo = false;
-                        bool trasfAnnullato = false;
-                        bool rinunciaTERientro = false;
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            bool richiestaTER = false;
+                            bool attivazioneTER = false;
+                            bool DocContributo = false;
+                            bool trasfAnnullato = false;
+                            bool rinunciaTERientro = false;
 
-                        TrasportoEffettiRientroModel term = new TrasportoEffettiRientroModel();
+                            TrasportoEffettiRientroModel term = new TrasportoEffettiRientroModel();
 
-                        var atep = dtte.GetUltimaAttivazioneTERientro(idTERientro);
+                            var atep = dtte.GetUltimaAttivazioneTERientro(idTERientro);
 
-                        dtte.SituazioneTERientro(idTERientro,
-                                                    out richiestaTER, out attivazioneTER,
-                                                    out DocContributo,
-                                                    out trasfAnnullato, out rinunciaTERientro);
+                            dtte.SituazioneTERientro(idTERientro,
+                                                        out richiestaTER, out attivazioneTER,
+                                                        out DocContributo,
+                                                        out trasfAnnullato, out rinunciaTERientro);
 
-                        var tm = dtt.GetTrasferimentoByIdTERientro(idTERientro);
+                            var tm = dtt.GetTrasferimentoByIdTERientro(idTERientro);
 
-                        CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+                            var t = dtt.GetTrasferimento(tm.idTrasferimento, db);
 
-                        term.indennitaRichiamo = Math.Round(ci.IndennitaRichiamoLordo, 2);
-                        term.percKM = ci.PercentualeFKMPartenza;
-                        term.contributoLordo = Math.Round(ci.TotaleContributoOmnicomprensivoRientro, 2);
-                        var PercentualeAnticipoTE = dtte.GetPercentualeAnticipoTERientro(idTERientro, (decimal)EnumTipoAnticipoTE.Rientro);
-                        term.percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
-                        term.anticipo = Math.Round(term.percAnticipo * term.contributoLordo / 100, 2);
+                            //legge indennita PS su TEORICI
+                            var lteorici = t.TEORICI.Where(x =>
+                                           x.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                                           //x.ELABORATO &&
+                                           x.DIRETTO == false &&
+                                           x.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
+                                           x.INSERIMENTOMANUALE == false &&
+                                           x.ANNULLATO == false &&
+                                           x.ELABTRASPEFFETTI.CONGUAGLIO == false &&
+                                           x.ELABTRASPEFFETTI.ANTICIPO &&
+                                           x.ELABTRASPEFFETTI.IDTERIENTRO > 0 &&
+                                           x.ANNORIFERIMENTO == t.DATAPARTENZA.Year &&
+                                           x.MESERIFERIMENTO == t.DATAPARTENZA.Month)
+                                       .ToList();
 
-                        ViewData.Add("rinunciaTERientro", rinunciaTERientro);
-                        ViewData.Add("richiestaTER", richiestaTER);
-                        ViewData.Add("attivazioneTER", attivazioneTER);
-                        ViewData.Add("DocContributo", DocContributo);
-                        ViewData.Add("idTERientro", idTERientro);
+                            decimal indennitaRichiamo = 0;
+                            decimal percentualeFKMRientro = 0;
+                            decimal percentualeAnticipoTE = 0;
+                            decimal contributoLordo = 0;
 
-                        return PartialView(term);
+                            if (lteorici?.Any() ?? false)
+                            {
+                                var teorici = lteorici.First();
+                                indennitaRichiamo = teorici.IMPORTOLORDO;
+                                percentualeFKMRientro = teorici.ELABTRASPEFFETTI.PERCENTUALEFK;
+                                contributoLordo = indennitaRichiamo * percentualeFKMRientro;
+                                percentualeAnticipoTE = teorici.ELABTRASPEFFETTI.PERCENTUALEANTICIPOSALDO;
+                            }
+                            else
+                            {
+                                CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+
+                                indennitaRichiamo = ci.IndennitaRichiamoLordo;
+                                percentualeFKMRientro = ci.PercentualeFKMRientro;
+                                contributoLordo = ci.TotaleContributoOmnicomprensivoRientro;
+                                percentualeAnticipoTE = dtte.GetPercentualeAnticipoTERientro(idTERientro, (decimal)EnumTipoAnticipoTE.Rientro).PERCENTUALE;
+                            }
+
+                            term.indennitaRichiamo = Math.Round(indennitaRichiamo, 2);
+                            term.percKM = percentualeFKMRientro;
+                            term.contributoLordo = Math.Round(contributoLordo, 2);
+                            term.percAnticipo = percentualeAnticipoTE;
+                            term.anticipo = Math.Round(term.percAnticipo * term.contributoLordo / 100, 2);
+
+                            ViewData.Add("rinunciaTERientro", rinunciaTERientro);
+                            ViewData.Add("richiestaTER", richiestaTER);
+                            ViewData.Add("attivazioneTER", attivazioneTER);
+                            ViewData.Add("DocContributo", DocContributo);
+                            ViewData.Add("idTERientro", idTERientro);
+
+                            return PartialView(term);
+                        }
                     }
                 }
             }
