@@ -9,7 +9,7 @@ namespace NewISE.Models.DBModel
     {
 
         public string DataInizioValidita { get; set; }
-        public string DataFineValidita { get; set; }
+        //public string DataFineValidita { get; set; }
         public decimal IndennitaBase { get; set; }
         public decimal MaggiorazioneFigli { get; set; }
         public decimal MaggiorazioneConiuge { get; set; }
@@ -17,6 +17,10 @@ namespace NewISE.Models.DBModel
         public decimal CoeffIndennitadiRichiamo { get; set; }
         public string dtRientro { get; set; }
         public decimal CoeffMaggIndennitadiRichiamo { get; set; }
+        
+        public DateTime? DataFineValidita { get; set; }
+
+
 
     }
 }

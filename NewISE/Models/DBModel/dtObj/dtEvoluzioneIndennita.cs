@@ -2117,7 +2117,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         #endregion
 
-                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO))
+                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, trasferimento.DATAPARTENZA))
                         {
 
                             EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
@@ -2262,7 +2262,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         #endregion
 
-                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO))
+                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, trasferimento.DATAPARTENZA))
                         {
 
                             EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
@@ -2394,7 +2394,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                         #endregion
 
-                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO))
+                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, trasferimento.DATAPARTENZA))
                         {
 
                             EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
@@ -2666,11 +2666,9 @@ namespace NewISE.Models.DBModel.dtObj
                            trasferimento.RICHIAMO
                            .Where(a => a.ANNULLATO == false)
                            .OrderByDescending(a => a.IDRICHIAMO).ToList();
-
                     
-
-                    string DataRichiamo = null;
-
+                    DateTime DataRichiamo = DateTime.Now;
+                    
                     if (richiamo?.Any() ?? false)
                     {
                         foreach (var ib in richiamo)
@@ -2693,7 +2691,7 @@ namespace NewISE.Models.DBModel.dtObj
                             //    lDateVariazioni.Sort();
                             //}
 
-                            DataRichiamo = ib.DATARICHIAMO.ToShortDateString();
+                            DataRichiamo = ib.DATARICHIAMO;
                         }
                     }
                     #endregion
@@ -2747,12 +2745,12 @@ namespace NewISE.Models.DBModel.dtObj
                                             dvSucc = lDateVariazioni[j + 1];
                                         }
 
-                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, trasferimento.DATARIENTRO, db))
                                         {
                                             EvoluzioneIndennitaModel xx = new EvoluzioneIndennitaModel();
-                                            
 
-                                            xx.dtRientro = DataRichiamo.ToString();
+                                            xx.dataFineValidita = trasferimento.DATARIENTRO;
+                                            //xx.dtRientro = DataRichiamo.ToString();
                                             xx.IndennitaBase = ci.IndennitaDiBase;
                                             xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
                                             xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;

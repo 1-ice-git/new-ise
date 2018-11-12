@@ -2809,9 +2809,10 @@ namespace NewISE.Controllers
 
                     reportViewer.LocalReport.SetParameters(parameterValues);
                     ViewBag.ReportViewer = reportViewer;
+                         
+                }
+                }
 
-                }
-                }
 
 
             }
@@ -2885,7 +2886,8 @@ namespace NewISE.Controllers
                                     .OrderByDescending(a => a.IDRICHIAMO).ToList();
 
 
-                            string DataRichiamo = null;
+                            DateTime DataRichiamo = DateTime.Now;
+
                             if (richiamo?.Any() ?? false)
                             {
                                 foreach (var ib in richiamo)
@@ -2908,7 +2910,7 @@ namespace NewISE.Controllers
                                     //    lDateVariazioni.Sort();
                                     //}
 
-                                    DataRichiamo = ib.DATARICHIAMO.ToShortDateString();
+                                    DataRichiamo = ib.DATARICHIAMO;
                                 }
                             }
                             #endregion
@@ -2959,7 +2961,7 @@ namespace NewISE.Controllers
                                         //DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
                                         DateTime dvSucc = lDateVariazioni[(j + 1)];
 
-                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, trasferimento.DATARIENTRO, db))
                                         {
 
                                             RptIndennitàRichiamoLordaModel rpts = new RptIndennitàRichiamoLordaModel()
@@ -2974,7 +2976,8 @@ namespace NewISE.Controllers
                                                 CoeffIndennitadiRichiamo = ci.CoefficenteIndennitaRichiamo,
                                                 CoeffMaggIndennitadiRichiamo = ci.CoefficenteMaggiorazioneRichiamo,
                                                 IndennitaRichiamo = ci.IndennitaRichiamoLordo,
-                                                dtRientro = DataRichiamo
+                                                //dtRientro = DataRichiamo
+                                                DataFineValidita = trasferimento.DATARIENTRO
 
                                             };
 
