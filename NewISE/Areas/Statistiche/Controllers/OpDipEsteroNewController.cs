@@ -38,7 +38,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                                      Value = t.idUfficio.ToString()
                                  }).ToList();
 
-                            r.Insert(0, new SelectListItem() { Text = "", Value = "" });
+                            r.Insert(0, new SelectListItem() { Text = "(TUTTE LE SEDI)", Value = "0" });
 
                         }
                         ViewBag.UfficiList = r;
@@ -56,7 +56,7 @@ namespace NewISE.Areas.Statistiche.Controllers
             return PartialView();
         }
 
-        public ActionResult RptOpDipEstero(DateTime dtIni, decimal idUfficio)
+        public ActionResult RptOpDipEstero(DateTime dtRif, decimal idUfficio)
         {
             List<OpDipEsteroModel> rim = new List<OpDipEsteroModel>();
             List<RptDipEsteroModel> rpt = new List<RptDipEsteroModel>();
@@ -68,9 +68,10 @@ namespace NewISE.Areas.Statistiche.Controllers
                 {
                     using (dtOpDipEsteroNew dtOpDipEsteroNew = new dtOpDipEsteroNew())
                     {
-                        rim = dtOpDipEsteroNew.GetOpDipEsteroNew(dtIni, idUfficio, db).ToList();
+                        rim = dtOpDipEsteroNew.GetOpDipEsteroNew(dtRif, idUfficio, db).ToList();
                     }
 
+                    string sede = "";
                     if (rim?.Any() ?? false)
                     {
                         foreach (var lm in rim)
@@ -92,8 +93,17 @@ namespace NewISE.Areas.Statistiche.Controllers
                             };
 
                             rpt.Add(rptds);
+
+                            sede = rptds.sede;
                         }
                     }
+
+                   
+                    if(!(idUfficio>0))
+                    {
+                        sede = "TUTTE";
+                    }
+
 
 
 
@@ -119,7 +129,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                     // Nel caso in cui passo il DatePicker
                     ReportParameter[] parameterValues = new ReportParameter[]
                        {
-                            new ReportParameter ("Dal",Convert.ToString(dtIni))
+                            new ReportParameter ("Dal",Convert.ToString(dtRif)),
+                            new ReportParameter ("sede",Convert.ToString(sede))
                        };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);

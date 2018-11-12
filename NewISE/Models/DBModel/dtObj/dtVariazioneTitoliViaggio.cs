@@ -856,13 +856,13 @@ namespace NewISE.Models.DBModel.dtObj
                             var c = lc.First();
                             //if (ctv.IDATTIVAZIONETITOLIVIAGGIO != att_partenza.IDATTIVAZIONETITOLIVIAGGIO)
                             //{
-                            var lDocCartaImbarcoConiuge = atv.DOCUMENTI
+                            var lDocCartaImbarcoConiuge = ctv.DOCUMENTI
                                         .Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco &&
                                                     a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
                                         .OrderByDescending(a=>a.IDDOCUMENTO)
                                         .ToList();
 
-                            var lDocTitoloViaggioConiuge = atv.DOCUMENTI
+                            var lDocTitoloViaggioConiuge = ctv.DOCUMENTI
                                         .Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio &&
                                                     a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione)
                                         .OrderByDescending(a => a.IDDOCUMENTO)
@@ -928,8 +928,8 @@ namespace NewISE.Models.DBModel.dtObj
                             var f = lf.First();
                             //if (ftv.IDATTIVAZIONETITOLIVIAGGIO != att_partenza.IDATTIVAZIONETITOLIVIAGGIO)
                             //{
-                            var lDocCartaImbarcoFigli = atv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderByDescending(a=>a.IDDOCUMENTO).ToList();
-                            var lDocTitoloViaggioFigli = atv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderByDescending(a => a.IDDOCUMENTO).ToList();
+                            var lDocCartaImbarcoFigli = ftv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Carta_Imbarco && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderByDescending(a=>a.IDDOCUMENTO).ToList();
+                            var lDocTitoloViaggioFigli = ftv.DOCUMENTI.Where(a => a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Titolo_Viaggio && a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).OrderByDescending(a => a.IDDOCUMENTO).ToList();
                             decimal idDocCartaImbarcoFigli = 0;
                             if (lDocCartaImbarcoFigli?.Any() ?? false)
                             {
@@ -1236,7 +1236,7 @@ namespace NewISE.Models.DBModel.dtObj
                             //idAttivazioneTitoloViaggio = ftv.IDATTIVAZIONETITOLIVIAGGIO,
                             idTitoloViaggio = ftv.IDTITOLOVIAGGIO,
                             idDocCartaImbarco = idDocCartaImbarcoFigli,
-                            idDoctitoloViaggio = idDocCartaImbarcoFigli,
+                            idDoctitoloViaggio = idDocTitoloViaggioFigli,
                             idConiugeTitoloViaggio = 0,
                             idFigliTitoloViaggio = ftv.IDFIGLITITOLIVIAGGIO
                         };
@@ -2872,14 +2872,15 @@ namespace NewISE.Models.DBModel.dtObj
                     var lctv = atv.CONIUGETITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
 
                     gp.coniugeIncluso = false;
+                    gp.coniugeTV = false;
                     if (lctv?.Any() ?? false)
                     {
-                        gp.coniugeIncluso = true;
+                        gp.coniugeTV = true;
                         foreach (var ctv in lctv)
                         {
-                            if (ctv.RICHIEDITITOLOVIAGGIO == false)
+                            if (ctv.RICHIEDITITOLOVIAGGIO)
                             {
-                                gp.coniugeIncluso = false;
+                                gp.coniugeIncluso = true;
                             }
                             if(verificaDoc==false && ultima_att.IDATTIVAZIONETITOLIVIAGGIO > 0)
                             {
@@ -2902,14 +2903,15 @@ namespace NewISE.Models.DBModel.dtObj
                     var lftv = atv.FIGLITITOLIVIAGGIO.Where(a => a.ANNULLATO == false).ToList();
 
                     gp.figliIncluso = false ;
+                    gp.figliTV = false;
                     if (lftv?.Any() ?? false)
                     {
-                        gp.figliIncluso = true;
+                        gp.figliTV = true;
                         foreach (var ftv in lftv)
                         {
-                            if (ftv.RICHIEDITITOLOVIAGGIO == false)
+                            if (ftv.RICHIEDITITOLOVIAGGIO)
                             {
-                                gp.figliIncluso = false;
+                                gp.figliIncluso = true;
                             }
                             if (verificaDoc==false && ultima_att.IDATTIVAZIONETITOLIVIAGGIO > 0)
                             {

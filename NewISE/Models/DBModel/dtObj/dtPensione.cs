@@ -34,6 +34,17 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     throw new Exception(string.Format("La data d'inizio validità per la pensione non può essere superiore alla data di rientro del trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
                 }
+
+                if (dataInizioPensione < c.DATAINIZIOVALIDITA)
+                {
+                    throw new Exception(string.Format("La data d'inizio validità per la pensione non può essere inferiore alla data inizio validità del coniuge ({0}).", c.DATAINIZIOVALIDITA.ToShortDateString()));
+                }
+
+                if (dataInizioPensione > c.DATAFINEVALIDITA)
+                {
+                    throw new Exception(string.Format("La data inizio validità per la pensione non può essere superiore alla data fine validità del coniuge ({0}).", c.DATAFINEVALIDITA.ToShortDateString()));
+                }
+
                 var lp = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.NASCONDI == false)
                                 .OrderByDescending(a => a.DATAINIZIO)
                                 .ToList();

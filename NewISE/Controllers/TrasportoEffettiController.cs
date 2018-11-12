@@ -50,43 +50,84 @@ namespace NewISE.Controllers
         {
             try
             {
-                using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    using (dtTrasportoEffetti dtte = new dtTrasportoEffetti())
                     {
-                        bool richiestaTE = false;
-                        bool attivazioneTE = false;
-                        bool DocContributo = false;
-                        bool trasfAnnullato = false;
-                        bool rinunciaTEPartenza = false;
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            bool richiestaTE = false;
+                            bool attivazioneTE = false;
+                            bool DocContributo = false;
+                            bool trasfAnnullato = false;
+                            bool rinunciaTEPartenza = false;
 
-                        TrasportoEffettiPartenzaModel tepm = new TrasportoEffettiPartenzaModel();
+                            TrasportoEffettiPartenzaModel tepm = new TrasportoEffettiPartenzaModel();
 
-                        var atep = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
+                            var atep = dtte.GetUltimaAttivazioneTEPartenza(idTrasportoEffettiPartenza);
 
-                        dtte.SituazioneTEPartenza(idTrasportoEffettiPartenza,
-                                                    out richiestaTE, out attivazioneTE,
-                                                    out DocContributo,
-                                                    out trasfAnnullato, out rinunciaTEPartenza);
+                            dtte.SituazioneTEPartenza(idTrasportoEffettiPartenza,
+                                                        out richiestaTE, out attivazioneTE,
+                                                        out DocContributo,
+                                                        out trasfAnnullato, out rinunciaTEPartenza);
 
-                        var tm = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
+                            var tm = dtt.GetTrasferimentoByIdTEPartenza(idTrasportoEffettiPartenza);
 
-                        CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+                            var t = dtt.GetTrasferimento(tm.idTrasferimento, db);
 
-                        tepm.indennitaPrimaSistemazione = Math.Round(ci.IndennitaSistemazioneLorda, 2);
-                        tepm.percKM = ci.PercentualeFKMPartenza;
-                        tepm.contributoLordo = Math.Round(ci.TotaleContributoOmnicomprensivoPartenza, 2);
-                        var PercentualeAnticipoTE = dtte.GetPercentualeAnticipoTEPartenza(idTrasportoEffettiPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
-                        tepm.percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
-                        tepm.anticipo = Math.Round(tepm.percAnticipo * tepm.contributoLordo / 100, 2);
+                            CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
 
-                        ViewData.Add("rinunciaTEPartenza", rinunciaTEPartenza);
-                        ViewData.Add("richiestaTE", richiestaTE);
-                        ViewData.Add("attivazioneTE", attivazioneTE);
-                        ViewData.Add("DocContributo", DocContributo);
-                        ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
+                            //legge indennita PS su TEORICI
+                            var lteorici = t.TEORICI.Where(x =>
+                                           x.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                                           //x.ELABORATO &&
+                                           x.DIRETTO == false &&
+                                           x.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
+                                           x.INSERIMENTOMANUALE == false &&
+                                           x.ANNULLATO == false &&
+                                           x.ELABTRASPEFFETTI.CONGUAGLIO == false &&
+                                           x.ELABTRASPEFFETTI.ANTICIPO &&
+                                           x.ELABTRASPEFFETTI.IDTEPARTENZA>0 &&
+                                           x.ANNORIFERIMENTO == t.DATAPARTENZA.Year &&
+                                           x.MESERIFERIMENTO == t.DATAPARTENZA.Month)
+                                       .ToList();
 
-                        return PartialView(tepm);
+                            decimal indennitaPS = 0;
+                            decimal percentualeFKMPartenza = 0;
+                            decimal contributoLordo = 0;
+                            decimal percentualeAnticipoTE = 0;
+                            if (lteorici?.Any() ?? false)
+                            {
+                                var teorici = lteorici.First();
+                                indennitaPS = teorici.IMPORTOLORDO;
+                                percentualeFKMPartenza = teorici.ELABTRASPEFFETTI.PERCENTUALEFK;
+                                contributoLordo = indennitaPS * percentualeFKMPartenza;
+                                percentualeAnticipoTE = teorici.ELABTRASPEFFETTI.PERCENTUALEANTICIPOSALDO;
+                            }
+                            else
+                            {
+                                indennitaPS = ci.IndennitaSistemazioneLorda;
+                                percentualeFKMPartenza = ci.PercentualeFKMPartenza;
+                                contributoLordo = ci.TotaleContributoOmnicomprensivoPartenza;
+                                percentualeAnticipoTE = dtte.GetPercentualeAnticipoTEPartenza(idTrasportoEffettiPartenza, (decimal)EnumTipoAnticipoTE.Partenza).PERCENTUALE;
+                            }
+
+
+
+                            tepm.indennitaPrimaSistemazione = Math.Round(indennitaPS, 2);
+                            tepm.percKM = percentualeFKMPartenza;
+                            tepm.contributoLordo = Math.Round(contributoLordo, 2);
+                            tepm.percAnticipo = percentualeAnticipoTE;
+                            tepm.anticipo = Math.Round(tepm.percAnticipo * tepm.contributoLordo / 100, 2);
+
+                            ViewData.Add("rinunciaTEPartenza", rinunciaTEPartenza);
+                            ViewData.Add("richiestaTE", richiestaTE);
+                            ViewData.Add("attivazioneTE", attivazioneTE);
+                            ViewData.Add("DocContributo", DocContributo);
+                            ViewData.Add("idTrasportoEffettiPartenza", idTrasportoEffettiPartenza);
+
+                            return PartialView(tepm);
+                        }
                     }
                 }
             }

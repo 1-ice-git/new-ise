@@ -142,7 +142,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 {
                     using (dtStoriaDipendenteNew dtSD = new dtStoriaDipendenteNew())
                     {
-                        rim = dtSD.GetStoriaDipendenteNew(Nominativo, db).ToList();
+                        rim = dtSD.GetStoriaDipendenteNew(Nominativo, db).ToList().OrderBy(a => a.dataPartenza).ToList();
                     }
                     //string nome = "";
                     //string sede = "";
@@ -154,8 +154,11 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                     if (rim?.Any() ?? false)
                     {
+                        decimal ordinamento = 0;
                         foreach (var lm in rim)
                         {
+                            ordinamento++;
+
                             RptStoriaDipendenteNewModel rptds = new RptStoriaDipendenteNewModel()
                             {
                                 nome = lm.nome,
@@ -174,7 +177,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                                 IndennitaServizio = lm.IndennitaServizio,
                                 MaggiorazioniFamiliari = lm.MaggiorazioniFamiliari,
                                 PensioneConiuge = lm.PensioneConiuge,
-                                PrimaSistemazione = lm.PrimaSistemazione
+                                PrimaSistemazione = lm.PrimaSistemazione,
+                                ordinamento = ordinamento                               
                             };
 
                             rpt.Add(rptds);
