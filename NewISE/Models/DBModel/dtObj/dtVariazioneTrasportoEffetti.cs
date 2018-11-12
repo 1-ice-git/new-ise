@@ -106,7 +106,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     vterm = new VariazioneTERientroModel()
                     {
-                        idTERientro= ter.IDTERIENTRO
+                        idTERientro = ter.IDTERIENTRO
                     };
                 }
                 else
@@ -191,7 +191,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         out bool richiestaTE,
                                         out bool attivazioneTE,
                                         out bool DocAttestazione,
-                                        out bool siAnticipo, 
+                                        out bool siAnticipo,
                                         out decimal anticipoPercepito,
                                         out bool rinunciaTEP,
                                         out bool trasfAnnullato)
@@ -276,7 +276,7 @@ namespace NewISE.Models.DBModel.dtObj
                     //leggo il relativo record di rinuncia
                     var t = db.TRASFERIMENTO.Find(idtrasferimento);
                     var l_primaTEPartenza = t.TEPARTENZA.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false && a.IDANTICIPOSALDOTE == (decimal)EnumTipoAnticipoSaldoTE.Anticipo).OrderBy(a => a.IDATEPARTENZA).ToList();
-                    if (l_primaTEPartenza?.Any()??false)
+                    if (l_primaTEPartenza?.Any() ?? false)
                     {
 
                         var primaTEPartenza = l_primaTEPartenza.First();
@@ -1075,8 +1075,8 @@ namespace NewISE.Models.DBModel.dtObj
                         var ldoc_Old =
                                     atep_Old.DOCUMENTI
                                         .Where(
-                                                a => a.MODIFICATO == false && 
-                                                a.IDSTATORECORD==(decimal)EnumStatoRecord.Da_Attivare)
+                                                a => a.MODIFICATO == false &&
+                                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare)
                                         .OrderBy(a => a.DATAINSERIMENTO);
 
                         if (ldoc_Old?.Any() ?? false)
@@ -1269,13 +1269,14 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-        public void AttivaRichiestaVariazioneTEP(decimal idAttivitaTEPartenza,ModelDBISE db)
+        public void AttivaRichiestaVariazioneTEP(decimal idAttivitaTEPartenza, ModelDBISE db)
         {
             db.Database.BeginTransaction();
 
             try
             {
                 var atep = db.ATTIVITATEPARTENZA.Find(idAttivitaTEPartenza);
+
                 if (atep?.IDATEPARTENZA > 0)
                 {
                     if (atep.RICHIESTATRASPORTOEFFETTI == true)

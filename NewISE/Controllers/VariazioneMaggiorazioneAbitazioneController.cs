@@ -46,128 +46,128 @@ namespace NewISE.Controllers
                 {
                     using (dtVariazioniMaggiorazioneAbitazione dtvma = new dtVariazioniMaggiorazioneAbitazione())
                     {
-                        using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+                        //using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
+                        //{
+                        bool soloLettura = false;
+                        bool siDati = false;
+                        bool siModifiche = false;
+                        EnumStatoTraferimento statoTrasferimento = 0;
+                        TrasferimentoModel tm;
+                        using (dtTrasferimento dtt = new dtTrasferimento())
                         {
-                            bool soloLettura = false;
-                            bool siDati = false;
-                            bool siModifiche = false;
-                            EnumStatoTraferimento statoTrasferimento = 0;
-                            TrasferimentoModel tm;
-                            using (dtTrasferimento dtt = new dtTrasferimento())
-                            {
-                                tm = dtt.GetTrasferimentoById(idTrasferimento);
-                            }
+                            tm = dtt.GetTrasferimentoById(idTrasferimento);
+                        }
 
-                            ATTIVAZIONEMAB ultima_att = dtvma.GetUltimaAttivazioneMAB(idTrasferimento, db);
-                            //MAB mab_modificata =  dtvma.GetMAB_ByID_var(ultima_att.IDMAB, db);
-                            //PERIODOMAB periodo_modificato = dtvma.GetPeriodoMAB(mab_modificata.IDMAB,db);
+                        ATTIVAZIONEMAB ultima_att = dtvma.GetUltimaAttivazioneMAB(idTrasferimento, db);
+                        //MAB mab_modificata =  dtvma.GetMAB_ByID_var(ultima_att.IDMAB, db);
+                        //PERIODOMAB periodo_modificato = dtvma.GetPeriodoMAB(mab_modificata.IDMAB,db);
 
-                            var lmabNonAttive = dtvma.GetMABNonAttiveModel(idTrasferimento, db);
-                            if (lmabNonAttive?.Any() ?? false)
+                        var lmabNonAttive = dtvma.GetMABNonAttiveModel(idTrasferimento, db);
+                        if (lmabNonAttive?.Any() ?? false)
+                        {
+                            lmabm = lmabNonAttive;
+                            siModifiche = true;
+                        }
+                        else
+                        {
+                            lmabm = dtvma.GetElencoMABModel(idTrasferimento);
+                            siModifiche = false;
+                        }
+
+                        if (lmabm?.Any() ?? false)
+                        {
+                            foreach (var mabm in lmabm)
                             {
-                                lmabm = lmabNonAttive;
-                                siModifiche = true;
-                            }
-                            else
-                            {
-                                lmabm = dtvma.GetElencoMABModel(idTrasferimento);
-                                siModifiche = false;
-                            }
-                            if (lmabm?.Any() ?? false)
-                            {
-                                foreach (var mabm in lmabm)
+                                bool verificaVariazioni = dtvma.VerificaVariazioniMAB(mabm.idMAB, db, false);
+
+                                var pmm = dtvma.GetPeriodoMABModel(mabm.idMAB, db);
+                                //var att = db.ATTIVAZIONEMAB.Find(pmm.idAttivazioneMAB);
+
+                                var dataFineMAB = pmm.dataFineMAB > tm.dataRientro ? tm.dataRientro.Value : pmm.dataFineMAB;
+
+                                bool modificabile = true;
+                                if (dataFineMAB < Utility.DataFineStop())
                                 {
-
-                                    bool verificaVariazioni = dtvma.VerificaVariazioniMAB(mabm.idMAB, db, false);
-
-                                    var pmm = dtvma.GetPeriodoMABModel(mabm.idMAB, db);
-                                    var att = db.ATTIVAZIONEMAB.Find(pmm.idAttivazioneMAB);
-
-                                    var dataFineMAB = pmm.dataFineMAB > tm.dataRientro ? tm.dataRientro.Value : pmm.dataFineMAB;
-
-                                    bool modificabile = true;
-                                    if (dataFineMAB < Utility.DataFineStop())
+                                    if (ultima_att.NOTIFICARICHIESTA)
                                     {
-                                        if (ultima_att.NOTIFICARICHIESTA)
-                                        {
-                                            modificabile = false;
-                                        }
-
-                                    }
-                                    if (dataFineMAB == Utility.DataFineStop())
-                                    {
-                                        //soloLettura = true;
-                                        if (ultima_att.NOTIFICARICHIESTA && ultima_att.ATTIVAZIONE==false)
-                                        {
-                                            modificabile = false;
-                                        }
-                                    }
-                                    bool annullabile = false;
-
-                                    if (verificaVariazioni && ultima_att.NOTIFICARICHIESTA ==false)
-                                    {
-                                        annullabile = true;
+                                        modificabile = false;
                                     }
 
-                                    if (dataFineMAB == Utility.DataFineStop())
-                                    {
-                                        soloLettura = true;
-                                    }
-
-                                    bool siFormulari = false;
-                                    using (dtDocumenti dtd = new dtDocumenti())
-                                    {
-                                        if(dtd.GetFormulariMaggiorazioniAbitazioneVariazione(mabm.idMAB,db).Count()>0)
-                                        {
-                                            siFormulari = true;
-                                        }
-                                    }
-
-                                    mabvm = new MABViewModel()
-                                    {
-                                        modificabile = modificabile,
-                                        idAttivazioneMAB = mabm.idAttivazioneMAB,
-                                        idMAB = mabm.idMAB,
-                                        dataInizioMAB = pmm.dataInizioMAB,
-                                        dataFineMAB = dataFineMAB,
-                                        anticipoAnnuale = dtvma.AnticipoAnnualeMAB(mabm.idMAB, db),
-                                        annullabile = annullabile,
-                                        esistonoFormulari=siFormulari
-                                    };
-
-                                    lmabvm.Add(mabvm);
-
-                                    siDati = true;
                                 }
-                            }
+                                if (dataFineMAB == Utility.DataFineStop())
+                                {
+                                    //soloLettura = true;
+                                    if (ultima_att.NOTIFICARICHIESTA && ultima_att.ATTIVAZIONE == false)
+                                    {
+                                        modificabile = false;
+                                    }
+                                }
+                                bool annullabile = false;
 
+                                if (verificaVariazioni && ultima_att.NOTIFICARICHIESTA == false)
+                                {
+                                    annullabile = true;
+                                }
 
-                            if (ultima_att.NOTIFICARICHIESTA && ultima_att.ATTIVAZIONE == false)
-                            {
-                                soloLettura = true;
-                            }
-
-                            if(siModifiche)
-                            {
-                                soloLettura = true;
-                            }
-
-
-                            using (dtTrasferimento dtt = new dtTrasferimento())
-                            {
-                                var t = dtt.GetTrasferimentoById(idTrasferimento);
-                                statoTrasferimento = t.idStatoTrasferimento;
-                                if (statoTrasferimento == EnumStatoTraferimento.Annullato)
+                                if (dataFineMAB == Utility.DataFineStop())
                                 {
                                     soloLettura = true;
                                 }
-                            }
 
-                            ViewData.Add("soloLettura", soloLettura);
-                            ViewData.Add("siDati", siDati);
-                            ViewData.Add("idAttivazioneMAB", mabvm.idAttivazioneMAB);
-                            ViewData.Add("idTrasferimento", idTrasferimento);
+                                bool siFormulari = false;
+                                using (dtDocumenti dtd = new dtDocumenti())
+                                {
+                                    if (dtd.GetFormulariMaggiorazioniAbitazioneVariazione(mabm.idMAB, db).Count() > 0)
+                                    {
+                                        siFormulari = true;
+                                    }
+                                }
+
+                                mabvm = new MABViewModel()
+                                {
+                                    modificabile = modificabile,
+                                    idAttivazioneMAB = mabm.idAttivazioneMAB,
+                                    idMAB = mabm.idMAB,
+                                    dataInizioMAB = pmm.dataInizioMAB,
+                                    dataFineMAB = dataFineMAB,
+                                    anticipoAnnuale = dtvma.AnticipoAnnualeMAB(mabm.idMAB, db),
+                                    annullabile = annullabile,
+                                    esistonoFormulari = siFormulari
+                                };
+
+                                lmabvm.Add(mabvm);
+
+                                siDati = true;
+                            }
                         }
+
+
+                        if (ultima_att.NOTIFICARICHIESTA && ultima_att.ATTIVAZIONE == false)
+                        {
+                            soloLettura = true;
+                        }
+
+                        if (siModifiche)
+                        {
+                            soloLettura = true;
+                        }
+
+
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            var t = dtt.GetTrasferimentoById(idTrasferimento);
+                            statoTrasferimento = t.idStatoTrasferimento;
+                            if (statoTrasferimento == EnumStatoTraferimento.Annullato)
+                            {
+                                soloLettura = true;
+                            }
+                        }
+
+                        ViewData.Add("soloLettura", soloLettura);
+                        ViewData.Add("siDati", siDati);
+                        ViewData.Add("idAttivazioneMAB", mabvm.idAttivazioneMAB);
+                        ViewData.Add("idTrasferimento", idTrasferimento);
+                        //}
                     }
                 }
 
@@ -189,7 +189,7 @@ namespace NewISE.Controllers
         }
 
         [HttpPost]
-        public ActionResult NuovoFormularioMAB_TipoDoc(decimal idMab, decimal idTipo=0)
+        public ActionResult NuovoFormularioMAB_TipoDoc(decimal idMab, decimal idTipo = 0)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -216,7 +216,7 @@ namespace NewISE.Controllers
 
                     ldescrizioneTipoDoc = r;
                     ViewBag.ldescrizioneTipoDoc = ldescrizioneTipoDoc;
-                    if(idTipo>0)
+                    if (idTipo > 0)
                     {
                         vdm.idTipoDocumento = idTipo;
                     }
@@ -266,7 +266,7 @@ namespace NewISE.Controllers
                                     List<SelectListItem> lValute = new List<SelectListItem>();
 
                                     CanoneMABViewModel cmabvm = new CanoneMABViewModel();
-                                    
+
                                     EnumStatoTraferimento statoTrasferimento = 0;
 
                                     var mab = dtvma.GetMAB_ByID_var(idMab, db);
@@ -280,7 +280,7 @@ namespace NewISE.Controllers
 
                                     if (amabm != null && amabm.idAttivazioneMAB > 0)
                                     {
-                                        if (amabm.notificaRichiesta && amabm.Attivazione==false)
+                                        if (amabm.notificaRichiesta && amabm.Attivazione == false)
                                         {
                                             soloLettura = true;
                                         }
@@ -304,7 +304,7 @@ namespace NewISE.Controllers
                                                 canonePartenza = cPartenza,
                                                 idCanone = cmabm.idCanone,
                                                 IDMAB = cmabm.IDMAB,
-                                                ImportoCanone=cmabm.ImportoCanone,
+                                                ImportoCanone = cmabm.ImportoCanone,
                                                 DataInizioValidita = cmabm.DataInizioValidita,
                                                 DataFineValidita = cmabm.DataFineValidita,
                                                 idValuta = cmabm.idValuta,
@@ -324,7 +324,7 @@ namespace NewISE.Controllers
                                     #region controllo modifica canoni
                                     var lc_in_lav = db.MAB.Find(idMab).CANONEMAB.Where(a =>
                                             a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione &&
-                                            a.NASCONDI == false && ((a.DATAFINEVALIDITA>=t.dataRientro && a.DATAINIZIOVALIDITA<=t.dataRientro)||a.DATAFINEVALIDITA<t.dataRientro))
+                                            a.NASCONDI == false && ((a.DATAFINEVALIDITA >= t.dataRientro && a.DATAINIZIOVALIDITA <= t.dataRientro) || a.DATAFINEVALIDITA < t.dataRientro))
                                                 .OrderByDescending(a => a.IDCANONE).ToList();
                                     bool canoniModificati = false;
                                     if (lc_in_lav.Count() > 0)
@@ -375,7 +375,7 @@ namespace NewISE.Controllers
                                     bool soloLettura = false;
 
                                     EnumStatoTraferimento statoTrasferimento = 0;
-                                    
+
                                     PAGATOCONDIVISOMAB pcmabPartenza = new PAGATOCONDIVISOMAB();
                                     pcmabPartenza = dtma.GetPagatoCondivisoMABPartenza(idMab, db);
 
@@ -467,12 +467,12 @@ namespace NewISE.Controllers
 
                         lValute = r;
 
-                        pmabm = dtma.GetPeriodoMABModel(idMab,db);
-                        cmabvm.ut_dataInizioValidita=null;
+                        pmabm = dtma.GetPeriodoMABModel(idMab, db);
+                        cmabvm.ut_dataInizioValidita = null;
 
                         var ultimoPeriodoMABInserito = dtma.GetUltimoCanoneMABInserito(idMab, db);
                         bool dataInizioValiditaModificabile = true;
-                        if(ultimoPeriodoMABInserito.IMPORTOCANONE<=0)
+                        if (ultimoPeriodoMABInserito.IMPORTOCANONE <= 0)
                         {
                             dataInizioValiditaModificabile = false;
                             cmabvm.ut_dataInizioValidita = pmabm.dataInizioMAB;
@@ -512,7 +512,8 @@ namespace NewISE.Controllers
                         if (ultimoPagato)
                         {
                             testo = testo + "; Pagato: SI";
-                        }else
+                        }
+                        else
                         {
                             testo = testo + "; Pagato: NO";
                         }
@@ -523,7 +524,7 @@ namespace NewISE.Controllers
                     }
                     pcmabvm.testoUltimaOpzioneSelezionata = testo;
 
-                    pmabm = dtma.GetPeriodoMABModel(idMab,db);
+                    pmabm = dtma.GetPeriodoMABModel(idMab, db);
                     pcmabvm.ut_dataInizioValidita = null;
 
                     pcmabvm.DataInizioValidita = pmabm.dataInizioMAB;
@@ -539,7 +540,7 @@ namespace NewISE.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         [ValidateAntiForgeryToken]
         public ActionResult InserisciImportoCanone(CanoneMABViewModel cmabvm, bool dataInizioValiditaModificabile, decimal idMab, decimal idTrasferimento)
-       {
+        {
             try
             {
 
@@ -561,7 +562,6 @@ namespace NewISE.Controllers
                                         dtma.VerificaImportoCanoneMAB(cmabvm.ImportoCanone, db);
                                         if (dataInizioValiditaModificabile)
                                         {
-                                           
                                             dtma.VerificaDataInizioValiditaCanoneMAB_Utente(cmabvm.IDMAB, cmabvm.ut_dataInizioValidita, db);
                                         }
                                     }
@@ -572,7 +572,7 @@ namespace NewISE.Controllers
 
                                         var r = new List<SelectListItem>();
 
-                                        PeriodoMABModel pmabm = new PeriodoMABModel();
+                                        //PeriodoMABModel pmabm = new PeriodoMABModel();
 
                                         var vm = dtma.GetUltimaValutaInseritaModel(idMab, db);
 
@@ -584,11 +584,11 @@ namespace NewISE.Controllers
                                         if (lv != null && lv.Count > 0)
                                         {
                                             r = (from v in lv
-                                                    select new SelectListItem()
-                                                    {
-                                                        Text = v.DESCRIZIONEVALUTA,
-                                                        Value = v.IDVALUTA.ToString()
-                                                    }).ToList();
+                                                 select new SelectListItem()
+                                                 {
+                                                     Text = v.DESCRIZIONEVALUTA,
+                                                     Value = v.IDVALUTA.ToString()
+                                                 }).ToList();
 
                                             r.Insert(0, new SelectListItem() { Text = "", Value = "" });
                                         }
@@ -618,7 +618,7 @@ namespace NewISE.Controllers
                                     ATTIVAZIONEMAB attmab_aperta = new ATTIVAZIONEMAB();
 
                                     //var attmab_rif = cmabvm.IDAttivazioneMAB;
-                                    var attmab = dtma.GetAttivazioneAperta(idTrasferimento,db);
+                                    var attmab = dtma.GetAttivazioneAperta(idTrasferimento, db);
 
                                     // se non esiste attivazione aperta la creo altrimenti la uso
                                     if (attmab.IDATTIVAZIONEMAB > 0)
@@ -633,7 +633,7 @@ namespace NewISE.Controllers
                                     #endregion
 
                                     #region date
-                                    var dataFineValiditaMAB = dtma.GetPeriodoMABModel(cmabvm.IDMAB,db).dataFineMAB;
+                                    var dataFineValiditaMAB = dtma.GetPeriodoMABModel(cmabvm.IDMAB, db).dataFineMAB;
 
 
                                     //controlla data inserita superiore a dataRientro
@@ -641,7 +641,8 @@ namespace NewISE.Controllers
                                     if (dataInizioValiditaModificabile)
                                     {
                                         dataInizio = cmabvm.ut_dataInizioValidita.Value;
-                                    }else
+                                    }
+                                    else
                                     {
                                         dataInizio = cmabvm.DataInizioValidita;
                                     }
@@ -665,7 +666,7 @@ namespace NewISE.Controllers
                                         DataAggiornamento = cmabvm.DataAggiornamento,
                                         idStatoRecord = cmabvm.idStatoRecord,
                                         FK_IDCanone = cmabvm.FK_IDCanone,
-                                        nascondi=cmabvm.nascondi
+                                        nascondi = cmabvm.nascondi
                                     };
                                     #endregion
 
@@ -709,18 +710,18 @@ namespace NewISE.Controllers
                                 if (lv != null && lv.Count > 0)
                                 {
                                     r = (from v in lv
-                                            select new SelectListItem()
-                                            {
-                                                Text = v.DESCRIZIONEVALUTA,
-                                                Value = v.IDVALUTA.ToString()
-                                            }).ToList();
+                                         select new SelectListItem()
+                                         {
+                                             Text = v.DESCRIZIONEVALUTA,
+                                             Value = v.IDVALUTA.ToString()
+                                         }).ToList();
 
                                     r.Insert(0, new SelectListItem() { Text = "", Value = "" });
                                 }
 
                                 lValute = r;
 
-                                pmabm = dtma.GetPeriodoMABModel(idMab,db);
+                                pmabm = dtma.GetPeriodoMABModel(idMab, db);
                                 cmabvm.ut_dataInizioValidita = pmabm.dataInizioMAB;
 
                                 ViewData.Add("dataInizioValiditaModificabile", dataInizioValiditaModificabile);
@@ -740,9 +741,9 @@ namespace NewISE.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-            
-            
-            return RedirectToAction("ElencoCanoneMAB", new {idTrasferimento=idTrasferimento, idMab = idMab });
+
+
+            return RedirectToAction("ElencoCanoneMAB", new { idTrasferimento = idTrasferimento, idMab = idMab });
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -772,7 +773,7 @@ namespace NewISE.Controllers
                                 catch (Exception ex)
                                 {
 
-                                    PeriodoMABModel pmabm = new PeriodoMABModel();
+                                    //PeriodoMABModel pmabm = new PeriodoMABModel();
 
                                     ModelState.AddModelError("", ex.Message);
                                     ViewData.Add("idMab", idMab);
@@ -788,7 +789,7 @@ namespace NewISE.Controllers
                                 #region attivazione
                                 ATTIVAZIONEMAB attmab_aperta = new ATTIVAZIONEMAB();
 
-                                var attmab_rif = pcmabvm.idAttivazioneMAB;
+                                //var attmab_rif = pcmabvm.idAttivazioneMAB;
                                 var attmab = dtma.GetAttivazioneAperta(idTrasferimento, db);
 
                                 // se non esiste attivazione aperta la creo altrimenti la uso
@@ -804,7 +805,7 @@ namespace NewISE.Controllers
                                 #endregion
 
                                 #region date
-                                var dataFineValiditaMAB = dtma.GetPeriodoMABModel(pcmabvm.idMAB,db).dataFineMAB;
+                                var dataFineValiditaMAB = dtma.GetPeriodoMABModel(pcmabvm.idMAB, db).dataFineMAB;
 
 
                                 //controlla data inserita superiore a dataRientro
@@ -828,7 +829,7 @@ namespace NewISE.Controllers
                                     Condiviso = pcmabvm.Condiviso,
                                     DataInizioValidita = dataInizio,
                                     DataFineValidita = pcmabvm.DataFineValidita,
-                                    Nascondi=pcmabvm.Nascondi,
+                                    Nascondi = pcmabvm.Nascondi,
                                     DataAggiornamento = pcmabvm.DataAggiornamento,
                                     fk_IDPagatoCondiviso = pcmabvm.fk_IDPagatoCondiviso
                                 };
@@ -861,7 +862,7 @@ namespace NewISE.Controllers
 
                             PeriodoMABModel pmabm = new PeriodoMABModel();
 
-                            pmabm = dtma.GetPeriodoMABModel(idMab,db);
+                            pmabm = dtma.GetPeriodoMABModel(idMab, db);
                             pcmabvm.ut_dataInizioValidita = pmabm.dataInizioMAB;
 
                             ViewData.Add("idMab", idMab);
@@ -914,7 +915,7 @@ namespace NewISE.Controllers
 
                             lamab = dtvmab.GetListaAttivazioniMABconDocumentiModel(idMab, db).ToList();
 
-                            if (att_MAB_curr.NOTIFICARICHIESTA && att_MAB_curr.ATTIVAZIONE==false)
+                            if (att_MAB_curr.NOTIFICARICHIESTA && att_MAB_curr.ATTIVAZIONE == false)
                             {
                                 solaLettura = true;
                             }
@@ -939,7 +940,7 @@ namespace NewISE.Controllers
                                             lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString() + " (In Lavorazione)", Value = e.idAttivazioneMAB.ToString() });
                                             solaLettura = false;
                                         }
-                                        if (e.notificaRichiesta && e.Attivazione==false)
+                                        if (e.notificaRichiesta && e.Attivazione == false)
                                         {
                                             lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString() + " (Da Attivare)", Value = e.idAttivazioneMAB.ToString() });
                                         }
@@ -1246,10 +1247,10 @@ namespace NewISE.Controllers
                         //    amm.idAttivazioneMAB = am.IDATTIVAZIONEMAB;
                         //}
 
-                        ATTIVAZIONEMAB att = dtvma.GetUltimaAttivazioneMABCorrente(idMab,db);
-                        if(att.NOTIFICARICHIESTA)
+                        ATTIVAZIONEMAB att = dtvma.GetUltimaAttivazioneMABCorrente(idMab, db);
+                        if (att.NOTIFICARICHIESTA)
                         {
-                            att=dtvma.CreaAttivazione(idMab, db);
+                            att = dtvma.CreaAttivazione(idMab, db);
                         }
 
                         att.DATAVARIAZIONE = DateTime.Now;
@@ -1296,7 +1297,7 @@ namespace NewISE.Controllers
                                     }
 
                                     var idTrasferimento = db.MAB.Find(idMab).INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
-                                    
+
                                     Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento di una nuovo documento (maggiorazione abitazione).", "Documenti", db, idTrasferimento, dm.idDocumenti);
 
                                 }
@@ -1466,7 +1467,7 @@ namespace NewISE.Controllers
                             {
                                 mabvm.idMAB = mab.IDMAB;
 
-                                var att = mab.ATTIVAZIONEMAB.Where(a=>a.ANNULLATO==false).OrderByDescending(a=>a.IDATTIVAZIONEMAB).ToList().First();
+                                var att = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList().First();
                                 //mam.dataPartenza = t.dataPartenza;
                                 mabvm.idTrasferimento = mab.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
                                 mabvm.idAttivazioneMAB = att.IDATTIVAZIONEMAB;
@@ -1484,13 +1485,13 @@ namespace NewISE.Controllers
                                 pm_partenza = dtvma.GetPeriodoMABModel(mab_partenza.idMAB, db);
 
 
-                                if(pmm.dataInizioMAB==pm_partenza.dataInizioMAB)
+                                if (pmm.dataInizioMAB == pm_partenza.dataInizioMAB)
                                 {
                                     mabvm.modificabile = false;
                                 }
 
                                 var att_curr = dtvma.GetAttivazioneById(mabvm.idAttivazioneMAB, db);
-                                if(att_curr.NOTIFICARICHIESTA)
+                                if (att_curr.NOTIFICARICHIESTA)
                                 {
                                     mabvm.modificabile = false;
                                 }
@@ -1499,7 +1500,7 @@ namespace NewISE.Controllers
                                 mabvm.dataFineMAB = pmm.dataFineMAB;
                                 mabvm.ut_dataInizioMAB = pmm.dataInizioMAB;
 
-                                if(pmm.dataFineMAB == Utility.DataFineStop())
+                                if (pmm.dataFineMAB == Utility.DataFineStop())
                                 {
                                     mabvm.ut_dataFineMAB = null;
                                 }
@@ -1516,8 +1517,8 @@ namespace NewISE.Controllers
                                 if (aa.IDMAGANNUALI > 0)
                                 {
                                     mabvm.annualita = true;
-                                    var att_mab=dtvma.GetAttivazioneById(att.IDATTIVAZIONEMAB, db);
-                                    if(att_mab.ATTIVAZIONE==false)
+                                    var att_mab = dtvma.GetAttivazioneById(att.IDATTIVAZIONEMAB, db);
+                                    if (att_mab.ATTIVAZIONE == false)
                                     {
                                         mabvm.annualita_modificabile = true;
                                     }
@@ -1570,7 +1571,7 @@ namespace NewISE.Controllers
                                     }
                                     catch (Exception ex)
                                     {
-                                        return Json(new {ErrorMessage = ex.Message });
+                                        return Json(new { ErrorMessage = ex.Message });
                                     }
 
                                     dtvma.InserisciMAB_var(mabvm, idTrasferimento);
@@ -1640,7 +1641,7 @@ namespace NewISE.Controllers
                 {
                     using (dtVariazioniMaggiorazioneAbitazione dtvma = new dtVariazioniMaggiorazioneAbitazione())
                     {
-                        
+
                         if (ModelState.IsValid)
                         {
                             try
@@ -1648,7 +1649,7 @@ namespace NewISE.Controllers
 
                                 try
                                 {
-                                    dtvma.VerificaDateMAB_Utente(mvm, idTrasferimento, mvm.dataInizioMAB, mvm.ut_dataFineMAB,false, db);
+                                    dtvma.VerificaDateMAB_Utente(mvm, idTrasferimento, mvm.dataInizioMAB, mvm.ut_dataFineMAB, false, db);
                                     //dtvma.VerificaDataFineMAB_Utente(mvm.idMAB, mvm.ut_dataFineMAB, db);
                                 }
                                 catch (Exception ex)
@@ -1706,14 +1707,14 @@ namespace NewISE.Controllers
 
                                     ViewData.Add("idMAB", idMAB);
                                     ViewData.Add("idTrasferimento", idTrasferimento);
-    
+
                                     return PartialView("ModificaMAB_var", mvm);
                                 }
-                                
+
                                 dtvma.AggiornaMAB_var(mvm, idTrasferimento, idMAB);
                             }
                             catch (Exception ex)
-                            {   
+                            {
                                 ModelState.AddModelError("", ex.Message);
 
                                 var mab = dtvma.GetMAB_ByID_var(idMAB, db);
@@ -1760,12 +1761,12 @@ namespace NewISE.Controllers
                                     {
                                         mvm.annualita = true;
                                     }
-                                  
+
                                 }
 
                                 ViewData.Add("idMAB", idMAB);
                                 ViewData.Add("idTrasferimento", idTrasferimento);
-    
+
                                 return PartialView("ModificaMAB_var", mvm);
                             }
                         }
@@ -1775,7 +1776,7 @@ namespace NewISE.Controllers
                             //ModelState.AddModelError("", ex.Message);
 
                             var mab = dtvma.GetMAB_ByID_var(idMAB, db);
-    
+
                             if (mab.IDMAB > 0)
                             {
                                 mvm.idMAB = mab.IDMAB;

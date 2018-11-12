@@ -3610,7 +3610,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                         if (t?.idTrasferimento > 0)
                                         {
-                                            var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                            //var dip = dtd.GetDipendenteByID(t.idDipendente);
                                             var uff = dtu.GetUffici(t.idUfficio);
 
                                             EmailTrasferimento.EmailAttiva(am.MAB.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO,

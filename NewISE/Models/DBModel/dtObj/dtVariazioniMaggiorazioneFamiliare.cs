@@ -741,8 +741,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idAtt = newmf.IDATTIVAZIONEMAGFAM;
                         }
                     }
-                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del coniuge", "CONIUGE", db,
-                        cm.idMaggiorazioniFamiliari, c.IDCONIUGE);
+                    Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento del coniuge", "CONIUGE", db, cm.idMaggiorazioniFamiliari, c.IDCONIUGE);
 
                     using (dtAttivazioniMagFam dtamf = new dtAttivazioniMagFam())
                     {
@@ -2480,10 +2479,10 @@ namespace NewISE.Models.DBModel.dtObj
                 c = db.CONIUGE.Find(idConiuge);
                 var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
-                lp = c.PENSIONE.Where(x => 
+                lp = c.PENSIONE.Where(x =>
                                 x.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                 x.NASCONDI == false &&
-                                ((x.DATAINIZIO<=t.DATARIENTRO && x.DATAFINE>=t.DATARIENTRO) || x.DATAFINE<t.DATARIENTRO)
+                                ((x.DATAINIZIO <= t.DATARIENTRO && x.DATAFINE >= t.DATARIENTRO) || x.DATAFINE < t.DATARIENTRO)
                                 ).OrderByDescending(a => a.IDPENSIONE).ToList();
 
                 if (lp?.Any() ?? false)
@@ -2496,7 +2495,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idPensioneConiuge = p.IDPENSIONE,
                             importoPensione = p.IMPORTOPENSIONE,
                             dataInizioValidita = p.DATAINIZIO,
-                            dataFineValidita = p.DATAFINE>t.DATARIENTRO ? t.DATARIENTRO : p.DATAFINE,
+                            dataFineValidita = p.DATAFINE > t.DATARIENTRO ? t.DATARIENTRO : p.DATAFINE,
                             idStatoRecord = p.IDSTATORECORD,
                             dataAggiornamento = p.DATAAGGIORNAMENTO,
                             FK_idPensione = p.FK_IDPENSIONE,
@@ -2523,7 +2522,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
                 lp = c.PENSIONE
-                        .Where(x => 
+                        .Where(x =>
                                 x.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                 ((x.DATAINIZIO <= t.DATARIENTRO && x.DATAFINE >= t.DATARIENTRO) || x.DATAFINE < t.DATARIENTRO))
                         .ToList();
@@ -2538,7 +2537,7 @@ namespace NewISE.Models.DBModel.dtObj
                             idPensioneConiuge = p.IDPENSIONE,
                             importoPensione = p.IMPORTOPENSIONE,
                             dataInizioValidita = p.DATAINIZIO,
-                            dataFineValidita = p.DATAFINE>t.DATARIENTRO?t.DATARIENTRO:p.DATAFINE,
+                            dataFineValidita = p.DATAFINE > t.DATARIENTRO ? t.DATARIENTRO : p.DATAFINE,
                             idStatoRecord = p.IDSTATORECORD,
                             dataAggiornamento = p.DATAAGGIORNAMENTO,
                             FK_idPensione = p.FK_IDPENSIONE,
@@ -2798,7 +2797,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                                 {
-                                    var tm = dtt.GetTrasferimentoByIdAttMagFam(fm.idAttivazioneMagFam);
+                                    //var tm = dtt.GetTrasferimentoByIdAttMagFam(fm.idAttivazioneMagFam);
 
                                     fm.dataAggiornamento = DateTime.Now;
                                     DateTime dtIni = fm.dataInizio.Value;
@@ -5756,7 +5755,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var tm = dtt.GetTrasferimentoById(idTrasferimento);
                     var t = db.TRASFERIMENTO.Find(idTrasferimento);
-                    var lc = t.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a => 
+                    var lc = t.MAGGIORAZIONIFAMILIARI.CONIUGE.Where(a =>
                                 a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                                 .OrderByDescending(a => a.IDCONIUGE).ToList();
                     if (lc?.Any() ?? false)
@@ -6052,7 +6051,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         a.DATAFINEVALIDITA < Utility.DataFineStop())
                                     .OrderByDescending(a => a.IDCONIUGE)
                                     .ToList();
-                    if (lc_old.Count()>1)
+                    if (lc_old.Count() > 1)
                     {
                         var c_old = lc_old.First();
                         if (dtInizio <= c_old.DATAFINEVALIDITA)
@@ -6075,14 +6074,15 @@ namespace NewISE.Models.DBModel.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(cm.idMaggiorazioniFamiliari);
+
                     var lc_old = mf.CONIUGE.Where(a =>
                                         a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                                        a.DATAFINEVALIDITA < Utility.DataFineStop() && 
-                                        a.IDCONIUGE!=cm.idConiuge &&
-                                        a.IDCONIUGE!=cm.FK_idConiuge)
+                                        a.DATAFINEVALIDITA < Utility.DataFineStop() &&
+                                        a.IDCONIUGE != cm.idConiuge &&
+                                        a.IDCONIUGE != cm.FK_idConiuge)
                                     .OrderByDescending(a => a.IDCONIUGE)
                                     .ToList();
-                    if (lc_old?.Any()??false)
+                    if (lc_old?.Any() ?? false)
                     {
                         var c_old = lc_old.First();
                         if (cm.dataInizio <= c_old.DATAFINEVALIDITA)

@@ -2719,8 +2719,10 @@ namespace NewISE.Models.DBModel.dtObj
                 #endregion
 
                 #region allinea data ruolo dipendente
-                var rd = t.RUOLODIPENDENTE.First();
-                if (rd.DATAINZIOVALIDITA == dataPartenzaOriginale)
+
+                var rd = t.RUOLODIPENDENTE.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAINZIOVALIDITA).First();
+
+                if (rd.DATAINZIOVALIDITA != t.DATAPARTENZA)
                 {
                     rd.DATAINZIOVALIDITA = t.DATAPARTENZA;
                     if (db.SaveChanges() <= 0)
@@ -2728,6 +2730,7 @@ namespace NewISE.Models.DBModel.dtObj
                         throw new Exception("Errore di correzione data inizio validita ruolo dipendente da " + rd.DATAINZIOVALIDITA + " a " + t.DATAPARTENZA);
                     }
                 }
+
                 #endregion
 
                 #region legge indennita
@@ -2743,14 +2746,13 @@ namespace NewISE.Models.DBModel.dtObj
                         i.LIVELLIDIPENDENTI.Remove(ld);
                     }
                     var lldm =
-                        dtld.GetLivelliDipendentiByRangeDate(t.IDDIPENDENTE, t.DATAPARTENZA,
-                            t.DATARIENTRO, db).ToList();
+                        dtld.GetLivelliDipendentiByRangeDate(t.IDDIPENDENTE, t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
+
                     if (lldm?.Any() ?? false)
                     {
                         foreach (var ldm in lldm)
                         {
-                            dtld.AssociaLivelloDipendente_Indennita(t.IDTRASFERIMENTO,
-                                ldm.idLivDipendente, db);
+                            dtld.AssociaLivelloDipendente_Indennita(t.IDTRASFERIMENTO, ldm.idLivDipendente, db);
 
                             using (dtIndennitaBase dtib = new dtIndennitaBase())
                             {
@@ -2781,8 +2783,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 }
 
                                 libm =
-                                    dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio,
-                                        dataFine, db).ToList();
+                                    dtib.GetIndennitaBaseByRangeDate(ldm.idLivello, dataInizio, dataFine, db).ToList();
 
                                 if (libm?.Any() ?? false)
                                 {
@@ -2818,8 +2819,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     List<TFRModel> ltfrm =
-                        dttfr.GetTfrIndennitaByRangeDate(t.IDUFFICIO, t.DATAPARTENZA,
-                            t.DATARIENTRO, db).ToList();
+                        dttfr.GetTfrIndennitaByRangeDate(t.IDUFFICIO, t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
 
                     if (ltfrm?.Any() ?? false)
                     {
@@ -2844,9 +2844,7 @@ namespace NewISE.Models.DBModel.dtObj
                         i.PERCENTUALEDISAGIO.Remove(pd);
                     }
 
-                    List<PercentualeDisagioModel> lpdm =
-                        dtpd.GetPercentualeDisagioIndennitaByRange(t.IDUFFICIO,
-                            t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
+                    List<PercentualeDisagioModel> lpdm = dtpd.GetPercentualeDisagioIndennitaByRange(t.IDUFFICIO, t.DATAPARTENZA, t.DATARIENTRO, db).ToList();
 
 
                     if (lpdm?.Any() ?? false)
@@ -3342,13 +3340,13 @@ namespace NewISE.Models.DBModel.dtObj
                                     }
                                     AllineaDateIni_Trasferimento(t, dataPartenzaOriginale, db);
                                 }
-                                else
-                                {
-                                    ///Riassocio i dati per l'indennità per rinfrescare eventuali variazioni parametriche 
-                                    /// effettuate tra la fase di notifica del trasferimento e attivazione.
-                                    RiassociaIndennitaTrasferimento(t, db);
+                                //else
+                                //{
+                                //    ///Non effettuo l'associazione perchè qualsiasi variazione effettuata nei parametri viene comunque gestita sul trasferimento.
+                                //    /// Solo i trasferimenti annullati non vengono presi in considerazione
+                                //    //RiassociaIndennitaTrasferimento(t, db);
 
-                                }
+                                //}
 
                                 using (dtDipendenti dtd = new dtDipendenti())
                                 {
