@@ -1689,7 +1689,7 @@ namespace NewISE.Models.DBModel.dtObj
                         a =>
                             a.ANNULLATO == false && a.ELABORATO == true &&
                             a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
-                            a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
+                            a.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
                             a.ANNORIFERIMENTO == annoElab &&
                             a.MESERIFERIMENTO == meseElab &&
                             a.ELABTRASPEFFETTI.ANNULLATO == false && a.ELABTRASPEFFETTI.CONGUAGLIO == false &&
@@ -1708,7 +1708,7 @@ namespace NewISE.Models.DBModel.dtObj
                         a =>
                             a.ANNULLATO == false && a.ELABORATO == true &&
                             a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
-                            a.VOCI.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
+                            a.IDVOCI == (decimal)EnumVociCedolino.Trasp_Mass_Partenza_Rientro_162_131 &&
                             a.ANNORIFERIMENTO == annoElab &&
                             a.MESERIFERIMENTO == meseElab &&
                             a.ELABTRASPEFFETTI.ANNULLATO == false && a.ELABTRASPEFFETTI.CONGUAGLIO == false &&
