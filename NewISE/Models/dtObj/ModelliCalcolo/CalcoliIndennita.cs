@@ -988,7 +988,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                     }
                     else
                     {
-                        throw new Exception("Il coefficicnete di maggiorazione per il richiamo non è presente.");
+                        throw new Exception("Il coefficiente di maggiorazione per il richiamo non è presente.");
                     }
                 }
             }

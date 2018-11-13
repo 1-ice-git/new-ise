@@ -222,8 +222,8 @@ namespace NewISE.Controllers
                                            x.ELABTRASPEFFETTI.CONGUAGLIO == false &&
                                            x.ELABTRASPEFFETTI.SALDO &&
                                            x.ELABTRASPEFFETTI.IDTERIENTRO > 0 &&
-                                           x.ANNORIFERIMENTO == t.DATAPARTENZA.Year &&
-                                           x.MESERIFERIMENTO == t.DATAPARTENZA.Month)
+                                           x.ANNORIFERIMENTO == t.DATARIENTRO.Year &&
+                                           x.MESERIFERIMENTO == t.DATARIENTRO.Month)
                                        .ToList();
 
                             decimal percentualeFKMRientro = 0;
@@ -239,7 +239,7 @@ namespace NewISE.Controllers
                             }
                             else
                             {
-                                CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataPartenza);
+                                CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento, tm.dataRientro);
 
                                 indennitaRichiamo = ci.IndennitaRichiamoLordo;
                                 percentualeFKMRientro = ci.PercentualeFKMRientro;
@@ -259,17 +259,6 @@ namespace NewISE.Controllers
                                 vterm.anticipoPercepito = 0;
                                 vterm.saldo = 0;
                             }
-
-                            ////TEST (anche su gestione pulsanti)
-                            //siAnticipo = true;
-                            //if (siAnticipo)
-                            //{
-                            //    var PercentualeAnticipoTE = dtvte.GetPercentualeAnticipoTEPartenza(idTEPartenza, (decimal)EnumTipoAnticipoTE.Partenza);
-                            //    var percAnticipo = PercentualeAnticipoTE.PERCENTUALE;
-                            //    vtepm.anticipoPercepito = Math.Round(percAnticipo * vtepm.contributoLordo / 100, 2);
-                            //    vtepm.saldo = Math.Round(vtepm.contributoLordo - vtepm.anticipoPercepito, 2);
-                            //}
-                            ////FINE TEST
 
                             vterm.siAnticipo = siAnticipo;
 
