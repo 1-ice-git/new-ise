@@ -6475,8 +6475,7 @@
                             .OrderByDescending(a => a.IDELABTRASPEFFETTI)
                             .ToList();
 
-                    using (CalcoliIndennita ci =
-                        new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, trasferimento.DATARIENTRO, db))
+                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, trasferimento.DATARIENTRO, db))
                     {
                         if (lElabTEAnticipo?.Any() ?? false)
                         {
