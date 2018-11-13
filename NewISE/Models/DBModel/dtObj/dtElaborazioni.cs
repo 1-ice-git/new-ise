@@ -3969,13 +3969,13 @@
                         .Where(a => (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
                                      a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                                     &&
-                                    Convert.ToDecimal(string.Concat(a.DATARIENTRO.Year.ToString(),
+                                    (Convert.ToDecimal(string.Concat(a.DATARIENTRO.Year.ToString(),
                                         a.DATARIENTRO.Month.ToString().PadLeft(2, Convert.ToChar("0")))) >=
                                     annoMese
                                     &&
                                     Convert.ToDecimal(string.Concat(a.DATAPARTENZA.Year.ToString(),
                                         a.DATAPARTENZA.Month.ToString().PadLeft(2, Convert.ToChar("0")))) <=
-                                    annoMese
+                                    annoMese) || a.DIPENDENTI.RICALCOLARE == true
                         ).OrderBy(a => a.DATAPARTENZA).ToList();
 
                 if (lTrasferimenti?.Any() ?? false)

@@ -98,7 +98,7 @@ namespace NewISE.Controllers
                         if (trm != null)
                         {
                             var ultimo_trasf = dtt.GetUltimoTrasferimentoValidoByMatricola(trm.Dipendente.matricola.ToString());
-                            if (ultimo_trasf.idTrasferimento>0)
+                            if (ultimo_trasf.idTrasferimento > 0)
                             {
                                 if (ultimo_trasf.idTrasferimento != idTrasferimento)
                                 {
@@ -190,7 +190,7 @@ namespace NewISE.Controllers
                             using (dtRichiamo dtr = new dtRichiamo())
                             {
                                 var rm = dtr.GetRichiamoByIdTrasf(idTrasferimento);
-                                if(rm.IdRichiamo>0)
+                                if (rm.IdRichiamo > 0)
                                 {
                                     tmp = 1;
                                 }
@@ -244,7 +244,7 @@ namespace NewISE.Controllers
             {
                 using (dtRichiamo dtr = new dtRichiamo())
                 {
-                    DateTime dataPartenza = dtr.Restituisci_DataPartenza(idTrasferimento,db);
+                    DateTime dataPartenza = dtr.Restituisci_DataPartenza(idTrasferimento, db);
                     ViewData["dataPartenza"] = dataPartenza;
                 }
             }
@@ -261,7 +261,7 @@ namespace NewISE.Controllers
             {
                 using (dtRichiamo dtr = new dtRichiamo())
                 {
-                    DateTime dataPartenza = dtr.Restituisci_DataPartenza(idTrasferimento,db);
+                    DateTime dataPartenza = dtr.Restituisci_DataPartenza(idTrasferimento, db);
                     DateTime dataRientro = dtr.Restituisci_DataRientro(idTrasferimento, db);
                     ViewData["dataPartenza"] = dataPartenza;
                     ViewData["dataRientro"] = dataRientro;
@@ -304,7 +304,7 @@ namespace NewISE.Controllers
                             decimal idCoeffIndRichiamo = dtric.Restituisci_ID_CoeffIndRichiamo_Da_Data(ri, db);
                             decimal idCoeffMagIndRichiamo = dtric.Restituisci_ID_CoeffMagIndRichiamo_Da_Data(ri, db);
                             decimal IDPFKM = dtric.Restituisci_ID_PercentualeFKM_Da_Data(ri, db);
-                            var r = new List<SelectListItem>();
+                            //var r = new List<SelectListItem>();
                             if (idCoeffIndRichiamo == 0 || IDPFKM == 0 || idCoeffMagIndRichiamo == 0)
                             {
                                 ViewData["errore"] = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
@@ -312,7 +312,7 @@ namespace NewISE.Controllers
                                 throw new Exception("Non esistono coefficenti corrispondenti ai criteri del Richiamo");
                             }
 
-                            
+
 
                             ri.IDPFKM = IDPFKM;
                             DateTime DataRientro = Convert.ToDateTime(dataRichiamo).AddDays(-1);
@@ -424,7 +424,7 @@ namespace NewISE.Controllers
                     CaricaComboFKM(idFasciaFKM, idFasciaFKM);
                     using (dtRichiamo dtric = new dtRichiamo())
                     {
-                        dataPartenza = dtric.Restituisci_DataPartenza(idTrasferimento,db);
+                        dataPartenza = dtric.Restituisci_DataPartenza(idTrasferimento, db);
                     }
                     ViewData["dataPartenza"] = dataPartenza;
                     try
@@ -436,8 +436,8 @@ namespace NewISE.Controllers
                         ri.idTrasferimento = idTrasferimento;
                         using (dtRichiamo dtric = new dtRichiamo())
                         {
-                            decimal idCoeffIndRichiamo = dtric.Restituisci_ID_CoeffIndRichiamo_Da_Data(ri,db);
-                            decimal IDPFKM = dtric.Restituisci_ID_PercentualeFKM_Da_Data(ri,db);
+                            decimal idCoeffIndRichiamo = dtric.Restituisci_ID_CoeffIndRichiamo_Da_Data(ri, db);
+                            decimal IDPFKM = dtric.Restituisci_ID_PercentualeFKM_Da_Data(ri, db);
                             if (idCoeffIndRichiamo == 0 || IDPFKM == 0)
                             {
                                 errore = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
@@ -475,7 +475,7 @@ namespace NewISE.Controllers
 
                                     using (dtDipendenti dtd = new dtDipendenti())
                                     {
-                                        dtd.DataInizioRicalcoliDipendente(idTrasferimento, ri.DataRientro, db,true);
+                                        dtd.DataInizioRicalcoliDipendente(idTrasferimento, ri.DataRientro, db, true);
                                     }
 
                                     string sede = dtric.DeterminaSede(idTrasferimento);
