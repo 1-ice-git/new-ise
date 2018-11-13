@@ -130,7 +130,7 @@ namespace NewISE.Controllers
                                 var teorici = lteorici.First();
                                 indennitaPS = teorici.IMPORTOLORDO;
                                 percentualeFKMPartenza = teorici.ELABTRASPEFFETTI.PERCENTUALEFK;
-                                contributoLordo = indennitaPS * percentualeFKMPartenza;
+                                contributoLordo = indennitaPS * percentualeFKMPartenza / 100;
                             }
                             else
                             {
@@ -138,7 +138,8 @@ namespace NewISE.Controllers
 
                                 indennitaPS = ci.IndennitaSistemazioneLorda;
                                 percentualeFKMPartenza = ci.PercentualeFKMPartenza;
-                                contributoLordo = ci.TotaleContributoOmnicomprensivoPartenza;
+                                //contributoLordo = ci.TotaleContributoOmnicomprensivoPartenza;
+                                contributoLordo = indennitaPS * percentualeFKMPartenza / 100;
                             }
 
                             vtepm.indennitaPrimaSistemazione = Math.Round(indennitaPS, 2);
@@ -235,7 +236,7 @@ namespace NewISE.Controllers
                                 var teorici = lteorici.First();
                                 indennitaRichiamo = teorici.IMPORTOLORDO;
                                 percentualeFKMRientro = teorici.ELABTRASPEFFETTI.PERCENTUALEFK;
-                                contributoLordo = indennitaRichiamo * percentualeFKMRientro;
+                                contributoLordo = indennitaRichiamo * percentualeFKMRientro / 100;
                             }
                             else
                             {
@@ -243,7 +244,8 @@ namespace NewISE.Controllers
 
                                 indennitaRichiamo = ci.IndennitaRichiamoLordo;
                                 percentualeFKMRientro = ci.PercentualeFKMRientro;
-                                contributoLordo = ci.TotaleContributoOmnicomprensivoRientro;
+                                //contributoLordo = ci.TotaleContributoOmnicomprensivoRientro;
+                                contributoLordo = indennitaRichiamo * percentualeFKMRientro / 100;
                             }
 
                             vterm.indennitaRichiamo = Math.Round(indennitaRichiamo, 2);

@@ -99,7 +99,7 @@ namespace NewISE.Controllers
                                 var teorici = lteorici.First();
                                 indennitaPS = teorici.IMPORTOLORDO;
                                 percentualeFKMPartenza = teorici.ELABTRASPEFFETTI.PERCENTUALEFK;
-                                contributoLordo = indennitaPS * percentualeFKMPartenza;
+                                contributoLordo = indennitaPS * percentualeFKMPartenza / 100;
                                 percentualeAnticipoTE = teorici.ELABTRASPEFFETTI.PERCENTUALEANTICIPOSALDO;
                             }
                             else
@@ -194,7 +194,7 @@ namespace NewISE.Controllers
                                 var teorici = lteorici.First();
                                 indennitaRichiamo = teorici.IMPORTOLORDO;
                                 percentualeFKMRientro = teorici.ELABTRASPEFFETTI.PERCENTUALEFK;
-                                contributoLordo = indennitaRichiamo * percentualeFKMRientro;
+                                contributoLordo = indennitaRichiamo * percentualeFKMRientro / 100;
                                 percentualeAnticipoTE = teorici.ELABTRASPEFFETTI.PERCENTUALEANTICIPOSALDO;
                             }
                             else
@@ -203,7 +203,7 @@ namespace NewISE.Controllers
 
                                 indennitaRichiamo = ci.IndennitaRichiamoLordo;
                                 percentualeFKMRientro = ci.PercentualeFKMRientro;
-                                contributoLordo = ci.TotaleContributoOmnicomprensivoRientro;
+                                contributoLordo = indennitaRichiamo * percentualeFKMRientro / 100;
                                 percentualeAnticipoTE = dtte.GetPercentualeAnticipoTERientro(idTERientro, (decimal)EnumTipoAnticipoTE.Rientro).PERCENTUALE;
                             }
 
