@@ -1,19 +1,31 @@
 ﻿<div id="dialog"></div>
 
-
 <div class="row">
     <div class="col-xs-12">
         <div class="form-group">
             <div class="panel panel-default">
-                <div class="panel-heading"><h5><b>Elenco delle Sospensioni effettuate nel periodo</b></h5></div>
-                <div class="panel-body">
+                <div class="panel-heading" style="background-color:lightgrey"><h4><b>Elenco delle Sospensioni effettuate nel periodo</b></h4></div>
+                <div class="panel-body" style="font-size:1.2em">
                     <div class="row">
-                        <h5>
+                        <div class="col-xs-4">
+                            <strong>Data Inizio</strong>
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Data Fine</strong>
+                        </div>
+                        <div class="col-xs-4">
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-xs-4 date">
                             <div class="input-group input-append date">
                                 <input type="text" class="form-control" id="data1" />
                                 <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
+                            <div id="divDataDa" hidden>
+                                <i class="fa fa-asterisk text-danger"></i>
+                                <span class="text-danger">Campo obbligatorio</span>
+                            </div>                                        
                         </div>
 
                         <div class="col-xs-4 date">
@@ -21,6 +33,10 @@
                                 <input type="text" class="form-control" id="data2" />
                                 <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
+                            <div id="divDataA" hidden>
+                                <i class="fa fa-asterisk text-danger"></i>
+                                <span class="text-danger">Campo obbligatorio</span>
+                            </div>                
                         </div>
                         <div class="col-xs-4 date">
                             <button class="btn btn-small btn-success" id="opener">
@@ -28,7 +44,6 @@
                                 Stampa
                             </button>
                         </div>
-                        </h5>
                     </div>
                 </div>
             </div>
@@ -111,7 +126,7 @@
         var valore = $("#mesiAnniElaboratiDa").val();
     }
 
-    $(".form-control:input").datepicker();
+    //$(".form-control:input").datepicker();
 
     var windowWidth = $(window).width();
     var windowHeight = $(window).height();
@@ -134,69 +149,106 @@
         height: windowHeight, width: windowWidth
     });
 
+    function Validazione() {
+        //debugger;
+
+        var ret = false;
+        var c1 = false;
+        var c2 = false;
+
+        var dataDa = $("#data1").val();
+        var dataA = $("#data2").val();
+
+        if (dataDa != "" && dataDa != undefined) {
+            $("#divDataDa").hide();
+            c1 = true;
+        }
+        else {
+            $("#divDataDa").show();
+            c1 = false;
+        }
+
+        if (dataA != "" && dataA != undefined) {
+            $("#divDataA").hide();
+            c2 = true;
+        }
+        else {
+            $("#divDataA").show();
+            c2 = false;
+        }
+
+        if (c1 == false || c2 == false) {
+            ret = false;
+        }
+        else {
+            ret = true;
+        }
+
+        return ret;
+    }
+
     $("#opener").on("click", function () {
         //debugger;
 
-        $('.container').addClass("NoOverflow");
+        if (Validazione()) {
+            $('.container').addClass("NoOverflow");
 
-        $("#dialog").dialog("open");
-        $("#dialog").css("background-color", "#ffffff");
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
 
 
-        var rotta = "/Statistiche/RiepiloghiSospensioni/RptRiepiloghiSospensioni";
+            var rotta = "/Statistiche/RiepiloghiSospensioni/RptRiepiloghiSospensioni";
 
-        var idIni = $("#data1").datepicker().val()
-        var idFin = $("#data2").datepicker().val()
+            var idIni = $("#data1").datepicker().val()
+            var idFin = $("#data2").datepicker().val()
 
-        //var idElabIni = $("#mesiAnniElaboratiDa").val();
-        //var idElabFin = $("#mesiAnniElaboratiA").val();
+            //var idElabIni = $("#mesiAnniElaboratiDa").val();
+            //var idElabFin = $("#mesiAnniElaboratiA").val();
 
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                idIni: idIni,
-                idFin: idFin
-            },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                $("#dialog").empty();
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    idIni: idIni,
+                    idFin: idFin
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#dialog").html(result);
-            },
-            complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+            });
+        }
     });
 
-
-    $("#mesiAnniElaboratiDa").select2({
-        placeholder: "Seleziona la Data Dal",
-        allowClear: true,
-        language: "it",
-        width: '170',
-        allowClear: false
+    $('#data1').datepicker({
+        //showButtonPanel: true,
+        showAnim: "slide",
+        changeMonth: true,
+        changeYear: true,
     });
 
-
-    $("#mesiAnniElaboratiA").select2({
-        placeholder: "Seleziona la Data Al",
-        allowClear: true,
-        language: "it",
-        width: '170',
-        allowClear: false
+    $('#data2').datepicker({
+        //showButtonPanel: true,
+        showAnim: "slide",
+        changeMonth: true,
+        changeYear: true,
     });
+    
 
 
 </script>

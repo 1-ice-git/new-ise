@@ -1,35 +1,46 @@
-﻿<div id="dialog"></div>
+﻿<div id="dialog "></div>
 
 
 <div class="row">
     <div class="col-xs-12">
         <div class="form-group">
             <div class="panel panel-default">
-                <div class="panel-heading"><h5><b>Storia del Dipendente</b></h5></div>
-                <div class="panel-body">
-                    <h5>
-                    <div class="col-xs-4 date">
-                        <div class="input-group input-append date">
-                            @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeNominativo as IEnumerable<SelectListItem>, new { @id = "Nominativo", @class = "form-control select2 select2-select" })
-
+                <div class="panel-heading" style="background-color:lightgrey"><h4><b>Storia del Dipendente</b></h4></div>
+                <div class="panel-body" style="font-size:1.2em">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <strong>Nominativo</strong>
+                        </div>
+                        <div class="col-xs-4">
+                        </div>
+                        <div class="col-xs-4">
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-xs-4 date">
+                            <div class="input-group input-append date">
+                                @Html.DropDownList("matricola", ViewBag.ListDipendentiGepeNominativo as IEnumerable<SelectListItem>, new { @id = "Nominativo", @class = "form-control select2 select2-select" })
+                            </div>
+                            <div id="divNominativo" hidden>
+                                <i class="fa fa-asterisk text-danger"></i>
+                                <span class="text-danger">Campo obbligatorio</span>
+                            </div>         
+                        </div>
 
-                    <div class="col-xs-4 date">
-                        <div class="input-group input-append date">
+                        <div class="col-xs-4 date">
+                            <div class="input-group input-append date">
+                            </div>
+                        </div>
 
+                        <div class="col-xs-4 date">
+                            <div class="input-group input-append date">
+                                <button class="btn btn-small btn-success" id="opener">
+                                    <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+                                    Stampa
+                                </button>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-xs-4 date">
-                        <div class="input-group input-append date">
-                            <button class="btn btn-small btn-success" id="opener">
-                                <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-                                Stampa
-                            </button>
-                        </div>
-                    </div>
-                    </h5>
                 </div>
             </div>
         </div>
@@ -61,53 +72,81 @@
 
     });
 
-    $("#opener").on("click", function () {
+    function Validazione() {
         //debugger;
 
-        $('.container').addClass("NoOverflow");
+        var ret = false;
+        var c1 = false;
 
-        $("#dialog").dialog("open");
-        $("#dialog").css("background-color", "#ffffff");
+        var nominativo = $("#Nominativo").val();
 
+        if (nominativo != "" && nominativo != undefined) {
+            $("#divNominativo").hide();
+            c1 = true;
+        }
+        else {
+            $("#divNominativo").show();
+            c1 = false;
+        }
 
-        var rotta = "/Statistiche/StoriaDipendenteNew/RptStoriaDipendenteNew";
+        if (c1 == false) {
+            ret = false;
+        }
+        else {
+            ret = true;
+        }
 
-        //var data1 = $("#data1").datepicker().val()
-        //var data2 = $("#data2").datepicker().val()
-
-        var Nominativo = $("#Nominativo").val();
-        //var data2 = $("#mesiAnniElaborati1").val();
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                Nominativo: Nominativo
-            },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                $("#dialog").empty();
-
-            },
-            success: function (result) {
-                //debugger;
-                $("#dialog").html(result);
+        return ret;
+    }
 
 
-            },
-            complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
+    $("#opener").on("click", function () {
+        //debugger;
+        if (Validazione()) {
+            $('.container').addClass("NoOverflow");
 
-        });
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
 
+
+            var rotta = "/Statistiche/StoriaDipendenteNew/RptStoriaDipendenteNew";
+
+            //var data1 = $("#data1").datepicker().val()
+            //var data2 = $("#data2").datepicker().val()
+
+            var Nominativo = $("#Nominativo").val();
+            //var data2 = $("#mesiAnniElaborati1").val();
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    Nominativo: Nominativo
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
     });
 
     $("#Nominativo").select2({

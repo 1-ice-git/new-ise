@@ -1312,7 +1312,6 @@ namespace NewISE.Models.DBModel.dtObj
                             dtce.ModificaInCompletatoCalendarioEvento(atep.TEPARTENZA.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaTrasportoEffettiPartenza, db);
                         }
 
-
                         var messaggioAttiva = Resources.msgEmail.MessaggioAttivazioneTrasportoEffettiPartenzaSaldo;
                         var oggettoAttiva = Resources.msgEmail.OggettoAttivazioneTrasportoEffettiPartenzaSaldo;
 
@@ -1375,6 +1374,10 @@ namespace NewISE.Models.DBModel.dtObj
                             dtce.ModificaInCompletatoCalendarioEvento(ater.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaTrasportoEffettiRientro, db);
                         }
 
+                        using (dtDipendenti dtd = new dtDipendenti())
+                        {
+                            dtd.DataInizioRicalcoliDipendente(ater.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO, ater.TERIENTRO.TRASFERIMENTO.DATARIENTRO, db, true);
+                        }
 
                         var messaggioAttiva = Resources.msgEmail.MessaggioAttivazioneTrasportoEffettiRientroSaldo;
                         var oggettoAttiva = Resources.msgEmail.OggettoAttivazioneTrasportoEffettiRientroSaldo;

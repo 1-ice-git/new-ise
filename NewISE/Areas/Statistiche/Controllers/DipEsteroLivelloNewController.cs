@@ -66,7 +66,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             try
             {
-
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     using (dtDipEsteroLivello dtd = new dtDipEsteroLivello())

@@ -1519,14 +1519,17 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             #endregion
 
-
-
                             Utility.SetLogAttivita(EnumAttivitaCrud.Modifica,
                                 "Attivazione trasporto effetti rientro.", "ATTIVITATERIENTRO", db,
                                 ater.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO, ater.IDATERIENTRO);
                             using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                             {
                                 dtce.ModificaInCompletatoCalendarioEvento(ater.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO, EnumFunzioniEventi.RichiestaTrasportoEffettiRientro, db);
+                            }
+
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(ater.TERIENTRO.TRASFERIMENTO.IDTRASFERIMENTO, ater.TERIENTRO.TRASFERIMENTO.DATARIENTRO, db, true);
                             }
 
                             var messaggioAttiva = Resources.msgEmail.MessaggioAttivazioneTrasportoEffettiRientroAnticipo;
