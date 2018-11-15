@@ -19,7 +19,9 @@
 <table class="table table-striped" id="tabElencoFormulariInseriti">
     <thead>
         <tr>
-            
+            <th>
+                @Html.DisplayNameFor(model => model.progressivo)
+            </th>
             <th >
                 @Html.DisplayNameFor(model => model.nomeDocumento)
             </th>
@@ -37,6 +39,20 @@
         @foreach (var item in Model)
         {
             <tr>
+                
+                @if (item.Modificabile)
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.progressivo)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.progressivo)
+                    </td>
+                }
+
                 @if (item.Modificabile)
                 {
                     <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">

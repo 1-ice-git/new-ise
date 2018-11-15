@@ -602,8 +602,9 @@ namespace NewISE.Controllers
             {
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    //ldm = dtd.GetFormulariProvvidenzeScolasticheByIdAttivazione(idTrasfProvScolastiche, idAttivazione).ToList();
-                    ldm = dtd.GetFormulariProvvidenzeScolasticheByIdAttivazioneVariazione(idTrasfProvScolastiche, idProvScolastiche).ToList();
+                    ldm = dtd.GetFormulariProvvidenzeScolasticheByIdAttivazione(idTrasfProvScolastiche, idProvScolastiche).OrderBy(a => a.progressivo).ToList();
+                    //List <VariazioneDocumentiModel> ldm = dtd.GetFormulariProvvidenzeScolasticheByIdAttivazioneVariazione(idTrasfProvScolastiche, idProvScolastiche).OrderBy(a => a.progressivo).ToList();
+
                 }
             }
             catch (Exception ex)
@@ -611,7 +612,10 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
+
             return PartialView("TabFormulariInseriti", ldm);
+            
+            //return PartialView("TabFormulariInseriti");
         }
         public JsonResult GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche(decimal idTrasfProvScolastiche)
         {
