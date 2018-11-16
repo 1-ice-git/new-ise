@@ -137,11 +137,15 @@ namespace NewISE.Controllers
 
         }
 
-        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        [Authorize(Roles = "1 ,2")]
+        //[AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
+        //[Authorize(Roles = "1 ,2")]
         public ActionResult ElencoSospensioni(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
+
+            bool admin = Utility.Amministratore();
+            ViewBag.Amministratore = admin;
+
             try
             {
                 return PartialView();

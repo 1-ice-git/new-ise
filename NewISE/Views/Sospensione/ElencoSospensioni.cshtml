@@ -1,19 +1,30 @@
 ﻿@using NewISE.Models.DBModel
 
 @{
-    
-    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];    
-    bool solaLettura = false;
+
+    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+    //bool solaLettura = false;
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
 }
 
     <p style="padding-left: 15px; margin-top: 10px; padding-right:25px">
-        @if (solaLettura)
+        @*@if (solaLettura)
         {
             <button href="#" class="btn btn-default disabled" distabSospensioniabled="disabled">Nuova Sospensione</button>
         }
         else
         {
             @Ajax.ActionLink("Nuova Sospensione", "NuovaSospensione", "Sospensione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuova Sospensione", @id = "linkNuovaSospensione" })
+        }*@
+
+        @if (admin)
+        {
+            @Ajax.ActionLink("Nuova Sospensione", "NuovaSospensione", "Sospensione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabElencoSospensioni", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci nuova Sospensione", @id = "linkNuovaSospensione" })
+
+        }
+        else
+        {
+            <button href="#" class="btn btn-default disabled" distabSospensioniabled="disabled">Nuova Sospensione</button>
         }
     </p>
 
