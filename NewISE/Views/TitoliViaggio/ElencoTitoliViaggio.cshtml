@@ -1,5 +1,7 @@
 ﻿@using NewISE.Models.DBModel
 @using NewISE.Models.Enumeratori
+@using NewISE.Models.Tools
+
 @model IEnumerable<NewISE.Models.DBModel.ElencoTitoliViaggioModel>
 
 @{
@@ -54,7 +56,7 @@
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => item.dataInizio)
                     </td>
-                    @if (item.dataFine.HasValue && item.dataFine.Value < Convert.ToDateTime("31/12/9999"))
+                    @if (item.dataFine.HasValue && item.dataFine.Value < Utility.DataFineStop())
                     {
                         <td class="text-center">
                             @Html.DisplayFor(modelItem => item.dataFine)

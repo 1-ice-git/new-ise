@@ -1,0 +1,83 @@
+﻿@using NewISE.Models.Tools
+@using NewISE.Models.Enumeratori
+
+@model IEnumerable<NewISE.Models.DBModel.RuoloDipendenteModel>
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idtrasferimento"]);
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+}
+
+
+<div class="row">
+    <div class="col-xs-12" style="text-align:center">
+        <h4><strong>RUOLO DIPENDENTE</strong></h4>
+    </div>
+</div>   
+
+<p style="margin-top: 5px">
+    @if (solaLettura)
+    {
+        <button class="btn btn-default disabled">
+            Inserisci Ruolo
+        </button>
+    }
+    else
+    {
+        <button class="btn btn-success" id="btInserisciRuolo" onclick="InserisciRuolo(@idTrasferimento);">
+            Inserisci Ruolo
+        </button>
+    }
+</p>
+
+<div style="padding-bottom:10px" >
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="divTabElencoFormulari_Var">
+                @Html.Action("TabElencoRuoliDipendente", "RuoloDipendente", new { idTrasferimento = idTrasferimento })
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    InfoTrasferimento(@idTrasferimento);
+
+    function InserisciRuolo(idTrasferimento) {
+            //debugger;
+            var rotta = "/RuoloDipendente/NuovoRuoloDipendente";
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    VerificaAutenticazione();
+                    Blocca();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#divRuoliDipendente").empty();
+                    $("#divRuoliDipendente").html(result);
+                },
+                complete: function () {
+                    //PulsantiNotificaAttivaMagFam();
+                    Sblocca();
+                },
+                error: function (error) {
+                    //debugger;
+                    Sblocca();
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+        }
+
+</script>
+

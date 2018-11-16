@@ -202,9 +202,6 @@
             var idIni = $("#data1").datepicker().val()
             var idFin = $("#data2").datepicker().val()
 
-            //var idElabIni = $("#mesiAnniElaboratiDa").val();
-            //var idElabFin = $("#mesiAnniElaboratiA").val();
-
             $.ajax({
                 type: "POST",
                 url: rotta,
@@ -223,8 +220,6 @@
                     $("#dialog").html(result);
                 },
                 complete: function () {
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    //                $("#Centro").getNiceScroll().resize();
                 },
                 error: function (jqXHR, textStatus, errorThrow) {
                     //debugger;
