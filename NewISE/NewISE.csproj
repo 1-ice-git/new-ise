@@ -5411,6 +5411,7 @@
     <Compile Include="Controllers\IndennitaController.cs" />
     <Compile Include="Controllers\ProvvidenzeScolasticheController.cs" />
     <Compile Include="Controllers\RiepilogoVociController.cs" />
+    <Compile Include="Controllers\RuoloDipendenteController.cs" />
     <Compile Include="Controllers\VariazioneTitoliViaggioController.cs" />
     <Compile Include="Controllers\VariazioneTrasportoEffettiController.cs" />
     <Compile Include="Controllers\VariazionePassaportoController.cs" />
@@ -6214,6 +6215,7 @@
     <Compile Include="Models\ViewModel\LiquidazioniDiretteViewModel.cs" />
     <Compile Include="Models\ViewModel\CanoneMABViewModel.cs" />
     <Compile Include="Models\ViewModel\TrasportoEffettiRientroModel.cs" />
+    <Compile Include="Models\ViewModel\VariazioneRuoloDipendenteModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneTERientroModel.cs" />
     <Compile Include="Models\ViewModel\VariazioneTEPartenzaModel.cs" />
     <Compile Include="Models\ViewModel\TrasportoEffettiPartenzaModel.cs" />
@@ -6761,6 +6763,10 @@
     <Content Include="Views\Indennita\UnicaSoluzioneIndennitadiPrimaSistemazione.cshtml" />
     <Content Include="Views\Indennita\RptUnicaSoluzioneIndennitadiPrimaSistemazione.cshtml" />
     <Content Include="Views\Elaborazioni\DatiTrasferimentoDipendente.cshtml" />
+    <Content Include="Views\Ruolodipendente\RuoloDipendente.cshtml" />
+    <Content Include="Views\Ruolodipendente\ElencoRuoliDipendente.cshtml" />
+    <Content Include="Views\Ruolodipendente\TabElencoRuoliDipendente.cshtml" />
+    <Content Include="Views\Ruolodipendente\NuovoRuoloDipendente.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

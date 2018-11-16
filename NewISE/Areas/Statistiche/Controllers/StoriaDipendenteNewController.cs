@@ -144,13 +144,6 @@ namespace NewISE.Areas.Statistiche.Controllers
                     {
                         rim = dtSD.GetStoriaDipendenteNew(Nominativo, db).ToList().OrderBy(a => a.dataPartenza).ToList();
                     }
-                    //string nome = "";
-                    //string sede = "";
-                    //string DataAssunzione = "";
-                    //string DataPartenza = "";
-                    //string DataRientro = " ";
-                    //string DataLettera = "";
-                    //string valuta = "";
 
                     if (rim?.Any() ?? false)
                     {
@@ -183,15 +176,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                             rpt.Add(rptds);
 
-                            //nome = lm.nome;
-                            //sede = lm.Ufficio;
-                            //DataAssunzione = Convert.ToString(lm.dataAssunzione);
-                            //DataPartenza = Convert.ToString(lm.dataPartenza);
-                            //DataRientro = Convert.ToString(lm.dataRientro);
-                            //DataRientro = (lm.dataRientro < Utility.DataFineStop()) ? Convert.ToDateTime(lm.dataRientro).ToShortDateString() : " ";
-                 
-                            //DataLettera = Convert.ToString(lm.dataLettera);
-                            //valuta = lm.ValutaUfficio;
                         }
                     }
                     
@@ -217,27 +201,6 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetStoriaDipendenteNew", rpt));
                     reportViewer.LocalReport.Refresh();
 
-                    //string NomeMatricola = nome;
-                    //string Sede = sede;
-                    //var Data = DataPartenza;
-                    //var Data1 = DataAssunzione;
-                    //string Data2 = DataRientro;
-                    //var Data3 = DataLettera;
-                    //string Valuta = valuta;
-
-                    //ReportParameter[] parameterValues = new ReportParameter[]
-                    //   {
-                    //    new ReportParameter ("Nominativo",Convert.ToString(Nominativo)),
-                    //    new ReportParameter ("NomeMatricola",NomeMatricola),
-                    //    new ReportParameter ("Data",Data),
-                    //    new ReportParameter ("Data1",Data1),
-                    //    new ReportParameter ("Data2",Data2),
-                    //    new ReportParameter ("Data3",Data3),
-                    //    new ReportParameter ("Sede",Sede),
-                    //    new ReportParameter ("Valuta",Valuta)
-                    //   };
-
-                    //reportViewer.LocalReport.SetParameters(parameterValues);
                     ViewBag.ReportViewer = reportViewer;
 
                 }

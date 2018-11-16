@@ -1,0 +1,46 @@
+﻿@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idtrasferimento"]);
+}
+
+
+<div style="padding-left:15px; padding-right:10px;">
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="divRuoliDipendente">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    ElencoRuoliDipendente(@idTrasferimento);
+
+    function ElencoRuoliDipendente(idTrasferimento) {
+        //debugger;
+        var rotta = "/RuoloDipendente/ElencoRuoliDipendente";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+            },
+            success: function (result) {
+                //debugger;
+                $("#divRuoliDipendente").empty();
+                $("#divRuoliDipendente").html(result);
+            },
+            complete: function () {
+            },
+            error: function (error) {
+                //debugger;
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+</script>

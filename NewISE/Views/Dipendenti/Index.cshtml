@@ -56,6 +56,8 @@
                         <li role="presentation" class="divider"></li>
                         <li role="presentation" class="disabled" id="mnSaldoTrasportoEffetti"><a role="menuitem" tabindex="-1" id="lkSaldoTrasportoEffetti" disabled href="#tabSaldoTrasportoEffetti" data-toggle="tab" style="font-size:1.2rem">Saldo Trasporto Effetti</a></li>
                         <li role="presentation" class="disabled" id="mnMaggiorazioneAbitazione"><a role="menuitem" tabindex="-1" id="lkMaggiorazioneAbitazione" disabled href="#tabMaggiorazioneAbitazione" data-toggle="tab" style="font-size:1.2rem">Maggiorazione Abitazione</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation" class="disabled" id="mnRuoloDipendente"><a role="menuitem" tabindex="-1" id="lkRuoloDipendente" disabled href="#tabRuoloDipendente" data-toggle="tab" style="font-size:1.2rem">Ruolo Dipendente</a></li>
                     </ul>
                 </li>
 
@@ -133,7 +135,7 @@
             <div class="tab-pane" id="tabIndennita"></div>
             <div class="tab-pane" id="tabRiepilogoVoci"></div>
             <div class="tab-pane" id="tabProvvidenzeScolastiche"></div>
-
+            <div class="tab-pane" id="tabRuoloDipendente"></div>
         </div>
     </div>
 </div>
@@ -638,6 +640,39 @@
         });
     }
 
+    function GestioneRuoloDipendente() {
+        //debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/RuoloDipendente/RuoloDipendente";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabRuoloDipendente").empty();
+                $("#tabRuoloDipendente").html(result);
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnRuoloDipendente");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+
+
     function RiepilogoVoci() {
         //debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
@@ -840,12 +875,16 @@
             $("#lkProvvidenzeScolastiche").attr("disabled", "disabled");
             $("#mnProvvidenzeScolastiche").addClass("disabled");
 
+            $("#lkRuoloDipendente").attr("disabled", "disabled");
+            $("#mnRuoloDipendente").addClass("disabled");
+
         }
 
     }
 
     function GestioneAbilitazioneMenu(idTrasferimento) {
         //debugger;
+        var admin = '@admin';
 
         if (MenuGestioneTrasferimento(idTrasferimento) == 1) {
             $("#lkGestioneTrasferimento").removeAttr("disabled");
@@ -1027,6 +1066,19 @@
             $("#lkIndennita").removeAttr("onClick");
         }
 
+        if (MenuRuoloDipendente(idTrasferimento) == 1 && admin=='True') {
+            //debugger;
+            $("#lkRuoloDipendente").removeAttr("disabled");
+            $("#mnRuoloDipendente").removeClass("disabled");
+            $('#lkRuoloDipendente').attr('onClick', 'GestioneRuoloDipendente();');
+        }
+        else {
+            //debugger;
+            $("#lkRuoloDipendente").attr("disabled", "disabled");
+            $("#mnRuoloDipendente").addClass("disabled");
+            $("#lkRuoloDipendente").removeAttr("onClick");
+        }
+
     }
 
     function SvuotaTab() {
@@ -1047,6 +1099,7 @@
         $("#tabIndennita").empty();
         $("#tabRiepilogoVoci").empty();
         $("#tabProvvidenzeScolastiche").empty();
+        $("#tabRuoloDipendente").empty();
 
     }
 
@@ -1193,7 +1246,6 @@
 
         return valoreRitorno;
     }
-
 
     function MenuMaggiorazioneFamiliare(idTrasferimento) {
         //debugger;
@@ -1862,5 +1914,50 @@
 
         return valoreRitorno;
     }
+
+    function MenuRuoloDipendente(idTrasferimento) {
+        //debugger;
+        var rotta = "/RuoloDipendente/VerificaRuoloDipendente";
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.idRuoloDipendente != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                },
+                complete: function () {
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
 
 </script>
