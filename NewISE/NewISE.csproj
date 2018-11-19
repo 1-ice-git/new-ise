@@ -6380,7 +6380,6 @@
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\ElencoDocumenti.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\NuovoDocumentoMagFam.cshtml" />
     <Content Include="Views\VariazioneMaggiorazioniFamiliari\SostituisciDocumento.cshtml" />
-    <Content Include="Views\Sospensione\Index.cshtml" />
     <Content Include="Views\Sospensione\ElencoSospensioni.cshtml" />
     <Content Include="Views\Sospensione\NuovaSospensione_old.cshtml" />
     <Content Include="Views\Sospensione\AttivitaSospensione.cshtml" />

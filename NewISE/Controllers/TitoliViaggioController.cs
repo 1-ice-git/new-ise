@@ -304,16 +304,18 @@ namespace NewISE.Controllers
                 {
                     latvm = dttv.GetListAttivazioniTitoliViaggioByTipoDoc(idTitoliViaggio, idTipoDocumento).OrderBy(a => a.idAttivazioneTitoliViaggio).ToList();
 
+                    var atvm = dttv.GetUltimaAttivazione(idTitoliViaggio);
+
+                    if (dttv.AttivazioneNotificata(atvm.idAttivazioneTitoliViaggio))
+                    {
+                        richiestaNotificata = true;
+                    }
+
                     //var i = latvm.Count();
                     var i = 1;
 
                     foreach (var atv in latvm)
-                    {
-                        if (dttv.AttivazioneNotificata(atv.idAttivazioneTitoliViaggio))
-                        {
-                            richiestaNotificata = true;
-                        }
-
+                    {                       
                         bool inLavorazione = dttv.AttivazioneTitoliViaggioInLavorazione(atv.idAttivazioneTitoliViaggio, idTitoliViaggio);
 
                         if (inLavorazione)

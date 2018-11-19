@@ -1022,6 +1022,44 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
+        public AttivazioneTitoliViaggioModel GetUltimaAttivazione(decimal idTitoliViaggio)
+        {
+            AttivazioneTitoliViaggioModel atvm = new AttivazioneTitoliViaggioModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var tv = db.TITOLIVIAGGIO.Find(idTitoliViaggio);
+                var latv = tv.ATTIVAZIONETITOLIVIAGGIO
+                                .Where(a => 
+                                        (a.ATTIVAZIONERICHIESTA == true && a.NOTIFICARICHIESTA == true) || 
+                                        a.ANNULLATO == false)
+                                .OrderByDescending(a => a.IDATTIVAZIONETITOLIVIAGGIO)
+                                .ToList();
+
+                if (latv?.Any() ?? false)
+                {
+                    var atv = latv.First();
+
+                    var new_atvm = new AttivazioneTitoliViaggioModel()
+                    {
+                        idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO,
+                        idTitoloViaggio = atv.IDTITOLOVIAGGIO,
+                        AttivazioneRichiesta = atv.ATTIVAZIONERICHIESTA,
+                        dataAttivazioneRichiesta = atv.DATAATTIVAZIONERICHIESTA,
+                        notificaRichiesta = atv.ATTIVAZIONERICHIESTA,
+                        dataNotificaRichiesta = atv.DATANOTIFICARICHIESTA,
+                        dataAggiornamento = atv.DATAAGGIORNAMENTO,
+                        Annullato = atv.ANNULLATO
+                    };
+                    atvm = new_atvm;
+
+                }
+            }
+
+            return atvm;
+        }
+
+
         public void SituazioneAttivazioniTitoliViaggio(decimal idAttivazioneTitoliViaggio, out bool notificaRichiesta, out bool attivazioneRichiesta)
         {
             notificaRichiesta = false;

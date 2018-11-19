@@ -45,8 +45,7 @@ namespace NewISE.Controllers
             return PartialView("AttivitaRichiamo");
         }
 
-        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        [Authorize(Roles = "1 ,2")]
+        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]      
         public ActionResult ElencoRichiamo(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -63,7 +62,6 @@ namespace NewISE.Controllers
             }
         }
 
-        [Authorize(Roles = "1 ,2")]
         public ActionResult Richiamo(decimal idTrasferimento, decimal idFKm, string dataRichiamo, decimal nuovo = 0)
         {
             DateTime dataPartenza = new DateTime();
@@ -226,6 +224,7 @@ namespace NewISE.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
+        [Authorize(Roles = "1 ,2")]
         public ActionResult NuovoRichiamo(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -270,6 +269,7 @@ namespace NewISE.Controllers
             return PartialView();
         }
 
+        [Authorize(Roles = "1 ,2")]
         public JsonResult ConfermaInserisciRichiamo(decimal idTrasferimento, decimal idFasciaFKM, string dataRichiamo)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -406,6 +406,8 @@ namespace NewISE.Controllers
             }
             return r;
         }
+
+        [Authorize(Roles = "1 ,2")]
         public JsonResult ConfermaModificaRichiamo(decimal idTrasferimento, decimal idFasciaFKM, string dataRichiamo, decimal idRichiamo)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -528,6 +530,7 @@ namespace NewISE.Controllers
             }
         }
 
+        [Authorize(Roles = "1 ,2")]
         public void InviaMailRichiamo(decimal idTrasferimento, ModelDBISE db, string corpoMessaggio = "", string oggetto = "")
         {
             // UtentiAutorizzatiModel uta = null;

@@ -53,7 +53,7 @@
 
                     if (admin)
                     {
-                        <button class="btn btn-default btn-sm " id="btPraticaConclusaPassaporti" onclick="ModalAttivaRichiestaPassaporti();">
+                        <button class="btn btn-default btn-sm " id="btPraticaConclusaPassaporti" onclick="ModalAttivaRichiestaPassaporti(@Model.idAttivazionePassaporto);">
                             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
                             Completa richiesta
                         </button>
@@ -125,7 +125,7 @@
     }
 
 
-    function ModalAttivaRichiestaPassaporti()
+    function ModalAttivaRichiestaPassaporti(idAttivazionePassaporto)
     {
         //debugger;
         MessaggioAttivaRichiestaPassaporto(idAttivazionePassaporto);

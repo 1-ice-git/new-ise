@@ -78,9 +78,8 @@
                 {
                     <li class="disabled" id="mnSospensione"><a id="lkSospensione" disabled href="#tabSospensione" data-toggle="tab">Sospensione</a></li>
                 }
-                @if (admin)
-                {
-                    @*<li class="disabled" id="mnRichiamo"><a id="lkRichiamo" disabled href="#tabRichiamo" data-toggle="tab" onclick="Richiamo();">Richiamo</a></li>*@
+                @*@if (admin)
+                {*@
                     <li class="dropdown">
                         <button class="btn btn-default dropdown-toggle disabled" disabled type="button" id="ddRientro" data-toggle="dropdown" style="font-size:1.2rem">
                             Rientro
@@ -94,17 +93,16 @@
                             <li role="presentation" class="disabled" id="mnTrasportoEffettiRientroSaldo"><a role="menuitem" tabindex="-1" id="lkTrasportoEffettiRientroSaldo" disabled href="#tabTrasportoEffettiRientroSaldo" data-toggle="tab" style="font-size:1.2rem">Saldo</a></li>
                         </ul>
                     </li>
-                }
+                @*}
                 else
                 {
-                    @*<li class="disabled" id="ddRientro"><a id="lkRientro" disabled href="#tabRichiamo" data-toggle="tab">Rientro</a></li>*@
                     <li class="dropdown">
                         <button class="btn btn-default dropdown-toggle disabled" disabled type="button" id="ddRientro" data-toggle="dropdown" style="font-size:1.2rem">
                             Rientro
                             <span class="caret"></span>
                         </button>
                     </li>
-                }
+                }*@
 
                 <li class="disabled" id="mnIndennita"><a id="lkIndennita" disabled href="#tabIndennita" data-toggle="tab" onclick="GestioneIndennita();">Indennità</a></li>
                 @if (admin)
