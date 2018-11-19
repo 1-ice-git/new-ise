@@ -655,6 +655,16 @@ namespace NewISE.Controllers
                                     {
                                         dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
                                     }
+
+                                    // Inserire Classe per Invio File via ftp
+
+                                    using (dtInvioFileFTP dtFile = new dtInvioFileFTP())
+                                    {
+                                       
+                                      dtFile.FlUpload(idAnnoMeseElaborato, teorico, db);
+                                       
+                                    }
+
                                 }
                                 using (dtDipendenti dtd = new dtDipendenti())
                                 {

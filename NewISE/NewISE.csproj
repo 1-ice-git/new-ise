@@ -5804,6 +5804,7 @@
     <Compile Include="Models\DBModel\dtObj\dtIndennitaPersonale.cs" />
     <Compile Include="Models\DBModel\dtObj\dtIndennitaServizio.cs" />
     <Compile Include="Areas\Statistiche\Models\dtObj\dtCostiCoan.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtInvioFileFTP.cs" />
     <Compile Include="Models\DBModel\dtObj\dtOpDipEsteroNew.cs" />
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
     <Compile Include="Models\DBModel\dtObj\dtReportTrasportoEffetti.cs" />
