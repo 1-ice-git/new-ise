@@ -43,13 +43,13 @@
                 @if (item.Modificabile)
                 {
                     <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
-                        @Html.DisplayFor(modelItem => item.progressivo)
+                        (@Html.DisplayFor(modelItem => item.progressivo))
                     </td>
                 }
                 else
                 {
                     <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
-                        @Html.DisplayFor(modelItem => item.progressivo)
+                        (@Html.DisplayFor(modelItem => item.progressivo))
                     </td>
                 }
 
@@ -189,7 +189,7 @@
 
                 }
         ],
-        "order": [[2,"desc"]]
+        "order": [[0, "desc"], [1, "asc"], [3, "desc"]]
         //dom: 'Bfrtip',
         //buttons: [
         //    {

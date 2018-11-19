@@ -188,16 +188,19 @@ namespace NewISE.Controllers
                                 dtps.SituazioneAttivazioneProvvScolById(e.IDPROVSCOLASTICHE, out richiestaPS,
                                        out attivazionePS, out DocProvvidenzeScolastiche);
                                 
-                                    if (richiestaPS == false && DocProvvidenzeScolastiche)
-                                    {
-                                        lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString() + " (In Lavorazione)", Value = e.IDPROVSCOLASTICHE.ToString() });
-                                        //solaLettura = false;
-                                    }
-                                    if (richiestaPS)
-                                    {
-                                        lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString(), Value = e.IDPROVSCOLASTICHE.ToString() });
-                                    }
+                                if (richiestaPS == false && DocProvvidenzeScolastiche)
+                                {
+                                    lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString() + " (In Lavorazione)", Value = e.IDPROVSCOLASTICHE.ToString() });
                                 }
+                                if (attivazionePS == false && richiestaPS)
+                                {
+                                    lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString() + " (Da Attivare)", Value = e.IDPROVSCOLASTICHE.ToString() });
+                                }
+                                if (richiestaPS && attivazionePS)
+                                {
+                                    lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString(), Value = e.IDPROVSCOLASTICHE.ToString() });
+                                }
+                            }
                             else
                             {
                                 lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString(), Value = e.IDPROVSCOLASTICHE.ToString() });

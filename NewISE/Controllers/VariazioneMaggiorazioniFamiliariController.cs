@@ -719,12 +719,23 @@ namespace NewISE.Controllers
                                         (richiestaAttivazione == false && docFormulario) ||
                                         (richiestaAttivazione == false && siPensioniConiuge))
                                     {
-                                        lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString() + " (In Lavorazione)", Value = e.idAttivazioneMagFam.ToString() });
-                                        solaLettura = false;
+                                        if (e.attivazioneMagFam == false)
+                                        {
+                                            lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString() + " (In Lavorazione)", Value = e.idAttivazioneMagFam.ToString() });
+                                            solaLettura = false;
+                                        }
                                     }
-                                    if (richiestaAttivazione)
+                                    else
                                     {
-                                        lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString(), Value = e.idAttivazioneMagFam.ToString() });
+                                        if (e.attivazioneMagFam == false && e.richiestaAttivazione)
+                                        {
+                                            lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString() + " (Da Attivare)", Value = e.idAttivazioneMagFam.ToString() });
+                                        }
+                                        if (e.attivazioneMagFam && e.richiestaAttivazione)
+                                        {
+                                            lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.dataVariazione.ToString(), Value = e.idAttivazioneMagFam.ToString() });
+                                        }
+                                    
                                     }
                                 }
                                 else
