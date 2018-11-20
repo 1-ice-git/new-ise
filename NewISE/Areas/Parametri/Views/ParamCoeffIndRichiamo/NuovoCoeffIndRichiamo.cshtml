@@ -11,7 +11,8 @@
 @{
 
     //RiduzioniModel lm = (RiduzioniModel)ViewBag.CoeffIndRichiamo;
-    //string CoeffIndRichiamo = lm.idRiduzioni.ToString();
+    string TipoCoeffRichiamo = Convert.ToString(ViewBag.TipoCoeffRichiamo);
+    decimal idTipoCoeffRichiamo = ViewBag.idTipoCoeffRichiamo;
     //decimal idRiduzioni = lm.idRiduzioni;
     var errori = ViewData.ModelState;
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
@@ -24,26 +25,41 @@
     <div class="form-horizontal">
 
         <hr />
+        <div class="row" style="padding-bottom:20px">
+            <div class="col-xs-offset-2 col-xs-4">
+                <h4><strong>Nuovo Coefficiente di Richiamo</strong></h4>
+            </div>
+        </div>
+
+
         <div class="row">
-            <div class="col-xs-offset-2 col-xs-10">
+            <div class="col-xs-offset-2 col-xs-6">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </div>
         </div>
 
 
         <input type="hidden" id="escludiAnnullati" name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
+        <input type="hidden" id="idTipoCoeffRichiamo" name="idTipoCoeffRichiamo" value="@idTipoCoeffRichiamo" />
         <input type="hidden" id="aggiornaTutto" name="aggiornaTutto" />
 
 
+        <div class="form-group ">
+            @Html.Label("Tipo Coefficiente", htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-3">
+                <input type="text" disabled class="form-control ignore" value="@TipoCoeffRichiamo" />
+            </div>
+        </div>
+
         <div class="form-group">
-            @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-5">
+            @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-2">
                 @Html.EditorFor(model => model.dataInizioValidita, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.dataInizioValidita, "", new { @class = "text-danger" })
             </div>
-            <div id="divChkAgg" class="col-xs-5">
+            <div id="divChkAgg" class="col-xs-3">
                 <div style="display: inline-block;">
-                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick=" AggiornaTutto() " />
+                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick="AggiornaTutto();" />
                 </div>
                 <div style="vertical-align: middle; display: inline-block;">
                     <label>Aggiorna tutto</label>
@@ -52,18 +68,19 @@
         </div>
 
         <div class="form-group ">
-            @Html.LabelFor(model => model.coefficienteRichiamo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input type="text" id="coefficienteRichiamoUI" class="form-control ignore" />
+            @Html.LabelFor(model => model.coefficienteRichiamo, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-2">
+                @*<input type="text" id="coefficienteRichiamoUI" class="form-control ignore" />*@
+                @Html.EditorFor(model => model.coefficienteRichiamoUI, new { htmlAttributes = new { @class = "form-control" } })
                 <input type="hidden" id="coefficienteRichiamo" name="coefficienteRichiamo" />
 
-                @Html.ValidationMessageFor(model => model.coefficienteRichiamo, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.coefficienteRichiamoUI, "", new { @class = "text-danger" })
             </div>
         </div>
 
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-2 col-md-4">
                 <input type="submit" value="Inserisci" class="btn btn-default" />
             </div>
         </div>
@@ -71,7 +88,7 @@
 }
 
 <div class="row">
-    <div class="col-xs-offset-2 col-xs-10">
+    <div class="col-xs-offset-2 col-xs-7">
         <a href="#" onclick="TornaElencoIb();">Torna all'elenco dei Coefficienti Indennità di Richiamo.</a>
     </div>
 </div>
@@ -124,17 +141,7 @@
         changeMonth: true,
         changeYear: true,
     });
-    $('#dataFineValidita').datepicker({
-        inline: true,
-        changeMonth: true,
-        changeYear: true,
-    });
-
-    $('#dataAggiornamento').datepicker({
-        inline: true,
-        changeMonth: true,
-        changeYear: true,
-    });
+  
 
     function AggiornaTutto() {
         var chk = false;
@@ -148,7 +155,7 @@
         //  rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamoLivello";
         rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamo";
 
-        var idRiduzioni = 0;// @*parseFloat('@idRiduzioni');*@
+        var idlivello = parseFloat('@idTipoCoeffRichiamo');
         //if (isNaN(idRiduzioni)) {
         //    $("#divPViewParametri").empty();
         //    return false;
@@ -161,7 +168,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idRiduzioni: idRiduzioni, escludiAnnullati: chk },
+            data: { escludiAnnullati: chk, idlivello:idlivello },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

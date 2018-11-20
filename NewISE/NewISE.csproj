@@ -6009,6 +6009,7 @@
     <Compile Include="Models\DBModel\AttivazioniViaggiCongedoModel.cs" />
     <Compile Include="Models\DBModel\ProvvidenzeScolasticheModel.cs" />
     <Compile Include="Models\DBModel\TipoLiquidazioneModel.cs" />
+    <Compile Include="Models\DBModel\TipoCoefficienterichiamoModel.cs" />
     <Compile Include="Models\DBModel\TipoMovimentoModel.cs" />
     <Compile Include="Models\DBModel\TipoVoceModel.cs" />
     <Compile Include="Models\DBModel\ViaggioCongedoModel.cs" />

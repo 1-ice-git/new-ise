@@ -1,7 +1,7 @@
-﻿using NewISE.Areas.Parametri.Models;
-using NewISE.Areas.Parametri.Models.dtObj;
+﻿using NewISE.Areas.Parametri.Models.dtObj;
 using NewISE.Models;
 using NewISE.Models.DBModel;
+using NewISE.Models.Enumeratori;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,20 +17,36 @@ namespace NewISE.Areas.Parametri.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult CoeffIndRichiamo(bool escludiAnnullati, decimal idLivello = 0, decimal idUfficio = 0)
         {
-            //escludiAnnullati: chk, idLivello: idLivello, idUfficio: idUfficio 
-            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
+            List<CoefficienteRichiamoModel> crm = new List<CoefficienteRichiamoModel>();
             List<RiduzioniModel> llm = new List<RiduzioniModel>();
             var r = new List<SelectListItem>();
+            List<TipoCoefficienteRichiamoModel> ltcrm = new List<TipoCoefficienteRichiamoModel>();
+
             ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
-
-                using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
+                using (dtParCoeffIndRichiamo dtpcir = new dtParCoeffIndRichiamo())
                 {
-                    //    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoeffIndRichiamoPrimoNonAnnullato(idLivello);
-                    //    libm = dtib.getListCoeffIndRichiamo(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoeffIndRichiamoPrimoNonAnnullato();
-                    libm = dtib.getListCoeffIndRichiamo(escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    ltcrm = dtpcir.ListTipoCoeffIndRichiamo().ToList();
+
+                    if (ltcrm != null && ltcrm.Count > 0)
+                    {
+                        r = (from tcrm in ltcrm
+                             select new SelectListItem()
+                             {
+                                 Text = tcrm.descrizione,
+                                 Value = tcrm.idTipoCoefficienteRichiamo.ToString()
+                             }).ToList();
+                    }
+
+                    ViewBag.TipoCoeffRichiamoList = r;
+
+                    decimal idTipoCoeffRichiamo = idLivello > 0 ? idLivello : (decimal)EnumTipoCoefficienteRichiamo.CoefficienteMaggiorazione;
+
+                    ViewBag.idTipoCoeffRichiamo = idTipoCoeffRichiamo;
+                    ViewBag.idMinimoNonAnnullato = dtpcir.Get_Id_CoeffIndRichiamoPrimoNonAnnullato(idTipoCoeffRichiamo);
+
+                    crm = dtpcir.GetListCoeffRichiamo_x_Tipo(idTipoCoeffRichiamo, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
             catch (Exception ex)
@@ -38,71 +54,69 @@ namespace NewISE.Areas.Parametri.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
             ViewBag.escludiAnnullati = escludiAnnullati;
-            return PartialView(libm);
+            return PartialView(crm);
         }
 
         [HttpPost]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult CoeffIndRichiamoLivello(decimal idRiduzioni, bool escludiAnnullati)
+        public ActionResult CoeffTipoRichiamo(decimal idTipoCoeffRichiamo, bool escludiAnnullati)
         {
-            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
+            List<CoefficienteRichiamoModel> lcrm = new List<CoefficienteRichiamoModel>();
             var r = new List<SelectListItem>();
-            List<RiduzioniModel> llm = new List<RiduzioniModel>();
+            List<TipoCoefficienteRichiamoModel> ltcrm = new List<TipoCoefficienteRichiamoModel>();
+
             ViewBag.escludiAnnullati = escludiAnnullati;
+
+            ViewBag.idTipoCoeffRichiamo = idTipoCoeffRichiamo;
             try
             {
-                using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
+                using (dtParCoeffIndRichiamo dtpcir = new dtParCoeffIndRichiamo())
                 {
-                    llm = dtl.GetCoeffRiduzioni().OrderBy(a => a.percentuale).ToList();
+                    ltcrm = dtpcir.ListTipoCoeffIndRichiamo().ToList();
 
-                    if (llm != null && llm.Count > 0)
+                    if (ltcrm != null && ltcrm.Count > 0)
                     {
-                        r = (from t in llm
+                        r = (from tcrm in ltcrm
                              select new SelectListItem()
                              {
-                                 Text = t.percentuale.ToString(),
-                                 Value = t.idRiduzioni.ToString()
+                                 Text = tcrm.descrizione,
+                                 Value = tcrm.idTipoCoefficienteRichiamo.ToString()
                              }).ToList();
-                        r.Where(a => a.Value == idRiduzioni.ToString()).First().Selected = true;
                     }
-                    ViewBag.CoeffIndRichiamo = r;
-                }
 
-                using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
-                {
-                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoeffIndRichiamoPrimoNonAnnullato();
-                    libm = dtib.getListCoeffIndRichiamo(escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    ViewBag.TipoCoeffRichiamoList = r;
+
+                    lcrm = dtpcir.GetListCoeffRichiamo_x_Tipo(idTipoCoeffRichiamo, escludiAnnullati)
+                                                    .OrderBy(a => a.dataInizioValidita)
+                                                    .ThenBy(a => a.dataFineValidita)
+                                                    .ToList();
+
+                    ViewBag.idMinimoNonAnnullato = dtpcir.Get_Id_CoeffIndRichiamoPrimoNonAnnullato(idTipoCoeffRichiamo);
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-            ViewBag.escludiAnnullati = escludiAnnullati;
 
-            return PartialView("CoeffIndRichiamo", libm);
+            return PartialView("CoeffIndRichiamo", lcrm);
         }
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult NuovoCoeffIndRichiamo(decimal idRiduzioni, bool escludiAnnullati)
+        public ActionResult NuovoCoeffIndRichiamo(decimal idTipoCoeffRichiamo, bool escludiAnnullati)
         {
-            //var r = new List<SelectListItem>();
-            //CoefficienteRichiamoModel ibm = new CoefficienteRichiamoModel();
-
             try
             {
-                //using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
-                //{
-                //    var lm = dtl.GetCoeffRiduzioni(idRiduzioni);
-                //    ViewBag.CoeffIndRichiamo = lm;
-                //}
-
                 ViewBag.escludiAnnullati = escludiAnnullati;
-                using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
+                using (dtParCoeffIndRichiamo dtpcir = new dtParCoeffIndRichiamo())
                 {
-                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoeffIndRichiamoPrimoNonAnnullato();
+                    ViewBag.idMinimoNonAnnullato = dtpcir.Get_Id_CoeffIndRichiamoPrimoNonAnnullato(idTipoCoeffRichiamo);
+                    var tcr = dtpcir.GetTipoCoeffRichiamo(idTipoCoeffRichiamo);
+                    ViewBag.TipoCoeffRichiamo = tcr.DESCRIZIONE;
+                    ViewBag.idTipoCoeffRichiamo = tcr.IDTIPOCOEFFICIENTERICHIAMO;
                 }
+
                 return PartialView();
             }
             catch (Exception ex)
@@ -111,70 +125,9 @@ namespace NewISE.Areas.Parametri.Controllers
             }
         }
 
-
-        //[HttpPost]
-        //[Authorize(Roles = "1, 2")]
-        //public ActionResult InserisciCoeffIndRichiamo(CoefficienteRichiamoModel ibm, bool escludiAnnullati = true)
-        //{
-        //    var libm = new List<CoefficienteRichiamoModel>();
-        //    List<RiduzioniModel> llm = new List<RiduzioniModel>();
-        //    ViewBag.escludiAnnullati = escludiAnnullati;
-        //    var r = new List<SelectListItem>();
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            using (dtCoefficienteRichiamo dtib = new dtCoefficienteRichiamo())
-        //            {
-        //                dtib.SetCoefficienteRichiamo(ibm);
-        //            }
-        //            using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
-        //            {
-        //                llm = dtl.GetCoeffRiduzioni().OrderBy(a => a.percentuale).ToList();
-
-        //                if (llm != null && llm.Count > 0)
-        //                {
-        //                    r = (from t in llm
-        //                         select new SelectListItem()
-        //                         {
-        //                             Text = t.percentuale.ToString(),
-        //                             Value = t.idRiduzioni.ToString()
-        //                         }).ToList();
-        //                    r.Where(a => a.Value == ibm.idRiduzioni.ToString()).First().Selected = true;
-        //                }
-        //                ViewBag.CoeffIndRichiamo = r;
-        //            }
-        //            using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
-        //            {
-        //                libm = dtib.getListCoeffIndRichiamo(ibm.idRiduzioni, escludiAnnullati).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-        //            }
-        //            return PartialView("CoeffIndRichiamo",libm);
-        //           // return RedirectToAction("CoeffIndRichiamo", new { escludiAnnullati = escludiAnnullati, idRiduzioni = ibm.idRiduzioni });
-        //        }
-        //        else
-        //        {
-        //            using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
-        //            {
-        //                var lm = dtl.GetCoeffRiduzioni(ibm.idRiduzioni);
-        //                ViewBag.CoeffIndRichiamo = lm;
-        //            }
-        //            ViewBag.escludiAnnullati = escludiAnnullati;
-        //            using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
-        //            {
-        //                libm = dtib.getListCoeffIndRichiamo(ibm.idRiduzioni, escludiAnnullati).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-        //            }
-        //            return PartialView("NuovoCoeffIndRichiamo", ibm);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-        //    }
-        //}
-
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult EliminaCoeffIndRichiamo(bool escludiAnnullati, decimal idRiduzioni, decimal idCoeffIndRichiamo)
+        public ActionResult EliminaCoeffIndRichiamo(bool escludiAnnullati, decimal idCoeffIndRichiamo, decimal idTipoCoeffIndRichiamo)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
             List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
@@ -182,17 +135,38 @@ namespace NewISE.Areas.Parametri.Controllers
             var r = new List<SelectListItem>();
             try
             {
-                using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
+                using (dtParCoeffIndRichiamo dtpcir = new dtParCoeffIndRichiamo())
                 {
-                    dtib.DelCoefficienteRichiamo(idCoeffIndRichiamo);
-                }
-                using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
-                {
-                    ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoeffIndRichiamoPrimoNonAnnullato();
-                    libm = dtib.getListCoeffIndRichiamo(escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    dtpcir.DelCoefficienteRichiamo(idCoeffIndRichiamo);
+
+                    List<TipoCoefficienteRichiamoModel> ltcrm = new List<TipoCoefficienteRichiamoModel>();
+
+                    ViewBag.escludiAnnullati = escludiAnnullati;
+
+                    ltcrm = dtpcir.ListTipoCoeffIndRichiamo().ToList();
+
+                    if (ltcrm != null && ltcrm.Count > 0)
+                    {
+                        r = (from tcrm in ltcrm
+                             select new SelectListItem()
+                             {
+                                 Text = tcrm.descrizione,
+                                 Value = tcrm.idTipoCoefficienteRichiamo.ToString()
+                             }).ToList();
+                    }
+
+                    ViewBag.TipoCoeffRichiamoList = r;
+
+                    ViewBag.idTipoCoeffRichiamo = idTipoCoeffIndRichiamo;
+
+                    ViewBag.idMinimoNonAnnullato = dtpcir.Get_Id_CoeffIndRichiamoPrimoNonAnnullato(idTipoCoeffIndRichiamo);
+
+                    libm = dtpcir.GetListCoeffRichiamo_x_Tipo(idTipoCoeffIndRichiamo, escludiAnnullati)
+                                        .OrderBy(a => a.dataInizioValidita)
+                                        .ThenBy(a => a.dataFineValidita)
+                                        .ToList();
                 }
                 return PartialView("CoeffIndRichiamo", libm);
-                // return RedirectToAction("CoeffIndRichiamo", new { escludiAnnullati = escludiAnnullati, idRiduzioni = idRiduzioni });
             }
             catch (Exception ex)
             {
@@ -203,41 +177,58 @@ namespace NewISE.Areas.Parametri.Controllers
         [HttpPost]
         [Authorize(Roles = "1, 2")]
         [ValidateAntiForgeryToken]
-        public ActionResult InserisciCoeffIndRichiamo(CoefficienteRichiamoModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
+        public ActionResult InserisciCoeffIndRichiamo(CoefficienteRichiamoModel ibm, decimal idTipoCoeffRichiamo, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             var libm = new List<CoefficienteRichiamoModel>();
-            //List<RiduzioniModel> llm = new List<RiduzioniModel>();
             ViewBag.escludiAnnullati = escludiAnnullati;
-            //var r = new List<SelectListItem>();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
+                    using (dtParCoeffIndRichiamo dtpcir = new dtParCoeffIndRichiamo())
                     {
-                        dtib.SetCoefficienteRichiamo(ibm, aggiornaTutto);
-                    }
+                        dtpcir.SetCoefficienteRichiamo(ibm, idTipoCoeffRichiamo, aggiornaTutto);
 
-                    using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
-                    {
-                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_CoeffIndRichiamoPrimoNonAnnullato();
-                        libm = dtib.getListCoeffIndRichiamo(escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                        var r = new List<SelectListItem>();
+                        List<TipoCoefficienteRichiamoModel> ltcrm = new List<TipoCoefficienteRichiamoModel>();
+
+                        ViewBag.escludiAnnullati = escludiAnnullati;
+
+                        ltcrm = dtpcir.ListTipoCoeffIndRichiamo().ToList();
+
+                        if (ltcrm != null && ltcrm.Count > 0)
+                        {
+                            r = (from tcrm in ltcrm
+                                 select new SelectListItem()
+                                 {
+                                     Text = tcrm.descrizione,
+                                     Value = tcrm.idTipoCoefficienteRichiamo.ToString()
+                                 }).ToList();
+                        }
+
+                        ViewBag.TipoCoeffRichiamoList = r;
+
+                        ViewBag.idMinimoNonAnnullato = dtpcir.Get_Id_CoeffIndRichiamoPrimoNonAnnullato(idTipoCoeffRichiamo);
+                        libm = dtpcir.GetListCoeffRichiamo_x_Tipo(idTipoCoeffRichiamo, escludiAnnullati)
+                                                                .OrderBy(a => a.dataInizioValidita)
+                                                                .ThenBy(a => a.dataFineValidita)
+                                                                .ToList();
+
+                        ViewBag.idTipoCoeffRichiamo = idTipoCoeffRichiamo;
                     }
                     return PartialView("CoeffIndRichiamo", libm);
-                    // return RedirectToAction("CoeffIndRichiamo", new { escludiAnnullati = escludiAnnullati, idRiduzioni = ibm.idRiduzioni });
                 }
                 else
                 {
-                    //using (dtParCoeffRiduzioni dtl = new dtParCoeffRiduzioni())
-                    //{
-                    //    var lm = dtl.GetCoeffRiduzioni(ibm.idRiduzioni);
-                    //    ViewBag.CoeffIndRichiamo = lm;
-                    //}
                     ViewBag.escludiAnnullati = escludiAnnullati;
-                    //using (dtParCoeffIndRichiamo dtib = new dtParCoeffIndRichiamo())
-                    //{
-                    //  //  libm = dtib.getListCoeffIndRichiamo(ibm.idRiduzioni, escludiAnnullati).OrderBy(a => a.idRiduzioni).ThenBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    //}
+                    using (dtParCoeffIndRichiamo dtpcir = new dtParCoeffIndRichiamo())
+                    {
+                        ViewBag.idMinimoNonAnnullato = dtpcir.Get_Id_CoeffIndRichiamoPrimoNonAnnullato(idTipoCoeffRichiamo);
+                        var tcr = dtpcir.GetTipoCoeffRichiamo(idTipoCoeffRichiamo);
+                        ViewBag.TipoCoeffRichiamo = tcr.DESCRIZIONE;
+                        ViewBag.idTipoCoeffRichiamo = tcr.IDTIPOCOEFFICIENTERICHIAMO;
+                    }
+
                     return PartialView("NuovoCoeffIndRichiamo", ibm);
                 }
             }

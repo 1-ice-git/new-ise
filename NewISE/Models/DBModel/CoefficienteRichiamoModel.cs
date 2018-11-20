@@ -31,6 +31,8 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Coefficiente Indennita di Richiamo")]
         public decimal coefficienteRichiamo { get; set; }
 
+        [Required(ErrorMessage = "Il coefficiente è richiesto.")]
+        public decimal coefficienteRichiamoUI { get; set; }
 
         // [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [DataType(DataType.Date)]

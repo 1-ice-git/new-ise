@@ -1156,9 +1156,7 @@ namespace NewISE.Models.dtObj
                         {
                             dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                         }
-
                     }
-
                 }
 
                 int i = db.SaveChanges();

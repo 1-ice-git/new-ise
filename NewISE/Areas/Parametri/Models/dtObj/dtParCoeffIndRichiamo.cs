@@ -18,429 +18,423 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo()
-        {
-            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
+        //public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo()
+        //{
+        //    List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
-            try
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var lib = db.COEFFICIENTEINDRICHIAMO.OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
+        //    try
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
+        //        {
+        //            var lib = db.COEFFICIENTEINDRICHIAMO.OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
 
-                    libm = (from e in lib
-                            select new CoefficienteRichiamoModel()
-                            {
-                                idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                // dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
-                                dataFineValidita = e.DATAFINEVALIDITA,
-                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                            }).ToList();
-                }
+        //            libm = (from e in lib
+        //                    select new CoefficienteRichiamoModel()
+        //                    {
+        //                        idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
+        //                        dataInizioValidita = e.DATAINIZIOVALIDITA,
+        //                        dataFineValidita = e.DATAFINEVALIDITA,
+        //                        coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+        //                        dataAggiornamento = e.DATAAGGIORNAMENTO,
+        //                        annullato = e.ANNULLATO,
+        //                    }).ToList();
+        //        }
 
-                return libm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //        return libm;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
-        public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(decimal idRiduzioni)
-        {
-            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
-            try
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
+        //public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(decimal idRiduzioni)
+        //{
+        //    List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
+        //    try
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
+        //        {
+        //            var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
 
-                    libm = (from e in lib
-                            select new CoefficienteRichiamoModel()
-                            {
-                                idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                //dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
-                                dataFineValidita = e.DATAFINEVALIDITA,
-                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                            }).ToList();
-                }
-                return libm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public bool CoeffIndRichiamoAnnullato(CoefficienteRichiamoModel ibm)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                return db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == ibm.idCoefIndRichiamo).First().ANNULLATO == true ? true : false;
-            }
-        }
-        public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(bool escludiAnnullati = false)
-        {
-            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
-            try
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    List<COEFFICIENTEINDRICHIAMO> lib = new List<COEFFICIENTEINDRICHIAMO>();
-                    if (escludiAnnullati == true)
-                        lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
-                    else
-                        lib = db.COEFFICIENTEINDRICHIAMO.OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
+        //            libm = (from e in lib
+        //                    select new CoefficienteRichiamoModel()
+        //                    {
+        //                        idCoefIndRichiamo = e.COEFFICIENTERICHIAMO,
+        //                        dataInizioValidita = e.DATAINIZIOVALIDITA,
+        //                        dataFineValidita = e.DATAFINEVALIDITA,
+        //                        coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+        //                        dataAggiornamento = e.DATAAGGIORNAMENTO,
+        //                        annullato = e.ANNULLATO,
+        //                    }).ToList();
+        //        }
+        //        return libm;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+        //public bool CoeffIndRichiamoAnnullato(CoefficienteRichiamoModel ibm)
+        //{
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        return db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == ibm.idCoefIndRichiamo).First().ANNULLATO == true ? true : false;
+        //    }
+        //}
+        //public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(bool escludiAnnullati = false)
+        //{
+        //    List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
+        //    try
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
+        //        {
+        //            List<COEFFICIENTEINDRICHIAMO> lib = new List<COEFFICIENTEINDRICHIAMO>();
+        //            if (escludiAnnullati == true)
+        //                lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
+        //            else
+        //                lib = db.COEFFICIENTEINDRICHIAMO.OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
 
-                    libm = (from e in lib
-                            select new CoefficienteRichiamoModel()
-                            {
-                                idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA,
-                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                            }).ToList();
-                }
-                return libm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //            libm = (from e in lib
+        //                    select new CoefficienteRichiamoModel()
+        //                    {
+        //                        idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
+        //                        dataInizioValidita = e.DATAINIZIOVALIDITA,
+        //                        dataFineValidita = e.DATAFINEVALIDITA,
+        //                        coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+        //                        dataAggiornamento = e.DATAAGGIORNAMENTO,
+        //                        annullato = e.ANNULLATO,
+        //                    }).ToList();
+        //        }
+        //        return libm;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
-        public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(decimal idRiduzioni, bool escludiAnnullati = false)
-        {
-            List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
+        //public IList<CoefficienteRichiamoModel> getListCoeffIndRichiamo(decimal idRiduzioni, bool escludiAnnullati = false)
+        //{
+        //    List<CoefficienteRichiamoModel> libm = new List<CoefficienteRichiamoModel>();
 
-            try
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    List<COEFFICIENTEINDRICHIAMO> lib = new List<COEFFICIENTEINDRICHIAMO>();
-                    if (escludiAnnullati == true)
-                        lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
-                    else
-                        lib = db.COEFFICIENTEINDRICHIAMO.OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
+        //    try
+        //    {
+        //        using (ModelDBISE db = new ModelDBISE())
+        //        {
+        //            List<COEFFICIENTEINDRICHIAMO> lib = new List<COEFFICIENTEINDRICHIAMO>();
+        //            if (escludiAnnullati == true)
+        //                lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
+        //            else
+        //                lib = db.COEFFICIENTEINDRICHIAMO.OrderBy(a => a.DATAINIZIOVALIDITA).OrderBy(a => a.DATAFINEVALIDITA).ToList();
 
 
-                    libm = (from e in lib
-                            select new CoefficienteRichiamoModel()
-                            {
-                                idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
-                                dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                // dataFineValidita = e.DATAFINEVALIDITA != Convert.ToDateTime("31/12/9999") ? e.DATAFINEVALIDITA : new CoefficienteRichiamoModel().dataFineValidita,
-                                dataFineValidita = e.DATAFINEVALIDITA,
-                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
-                                dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                annullato = e.ANNULLATO,
-                            }).ToList();
-                }
+        //            libm = (from e in lib
+        //                    select new CoefficienteRichiamoModel()
+        //                    {
+        //                        idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
+        //                        dataInizioValidita = e.DATAINIZIOVALIDITA,
+        //                        dataFineValidita = e.DATAFINEVALIDITA,
+        //                        coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+        //                        dataAggiornamento = e.DATAAGGIORNAMENTO,
+        //                        annullato = e.ANNULLATO,
+        //                    }).ToList();
+        //        }
 
-                return libm;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //        return libm;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        public void SetListCoeffIndRichiamo(CoefficienteRichiamoModel ibm)
-        {
-            List<COEFFICIENTEINDRICHIAMO> libNew = new List<COEFFICIENTEINDRICHIAMO>();
+        //public void SetListCoeffIndRichiamo(CoefficienteRichiamoModel ibm)
+        //{
+        //    List<COEFFICIENTEINDRICHIAMO> libNew = new List<COEFFICIENTEINDRICHIAMO>();
+        //    COEFFICIENTEINDRICHIAMO ibNew = new COEFFICIENTEINDRICHIAMO();
+        //    COEFFICIENTEINDRICHIAMO ibPrecedente = new COEFFICIENTEINDRICHIAMO();
+        //    List<COEFFICIENTEINDRICHIAMO> lArchivioIB = new List<COEFFICIENTEINDRICHIAMO>();
 
-            COEFFICIENTEINDRICHIAMO ibNew = new COEFFICIENTEINDRICHIAMO();
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        try
+        //        {
+        //            if (ibm.dataFineValidita.HasValue)
+        //            {
+        //                if (EsistonoMovimentiSuccessiviUguale(ibm))
+        //                {
+        //                    ibNew = new COEFFICIENTEINDRICHIAMO()
+        //                    {
+        //                        IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
+        //                        DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+        //                        DATAFINEVALIDITA = ibm.dataFineValidita.Value,
+        //                        DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+        //                        ANNULLATO = ibm.annullato
+        //                    };
+        //                }
+        //                else
+        //                {
+        //                    ibNew = new COEFFICIENTEINDRICHIAMO()
+        //                    {
 
-            COEFFICIENTEINDRICHIAMO ibPrecedente = new COEFFICIENTEINDRICHIAMO();
+        //                        DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+        //                        DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+        //                        DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+        //                        ANNULLATO = ibm.annullato
+        //                    };
+        //                }
+        //            }
+        //            else
+        //            {
+        //                ibNew = new COEFFICIENTEINDRICHIAMO()
+        //                {
 
-            List<COEFFICIENTEINDRICHIAMO> lArchivioIB = new List<COEFFICIENTEINDRICHIAMO>();
+        //                    DATAINIZIOVALIDITA = ibm.dataInizioValidita,
+        //                    DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
+        //                    DATAAGGIORNAMENTO = ibm.dataAggiornamento,
+        //                    ANNULLATO = ibm.annullato
+        //                };
+        //            }
 
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                try
-                {
-                    if (ibm.dataFineValidita.HasValue)
-                    {
-                        if (EsistonoMovimentiSuccessiviUguale(ibm))
-                        {
-                            ibNew = new COEFFICIENTEINDRICHIAMO()
-                            {
-                                IDCOEFINDRICHIAMO = ibm.idCoefIndRichiamo,
-                                DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = ibm.dataFineValidita.Value,
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
-                                ANNULLATO = ibm.annullato
-                            };
-                        }
-                        else
-                        {
-                            ibNew = new COEFFICIENTEINDRICHIAMO()
-                            {
+        //            db.Database.BeginTransaction();
 
-                                DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                                DATAAGGIORNAMENTO = ibm.dataAggiornamento,
-                                ANNULLATO = ibm.annullato
-                            };
-                        }
-                    }
-                    else
-                    {
-                        ibNew = new COEFFICIENTEINDRICHIAMO()
-                        {
+        //            var recordInteressati = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false)
+        //                                                    .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
+        //                                                    .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
+        //                                                    .ToList();
 
-                            DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                            DATAFINEVALIDITA = Convert.ToDateTime("31/12/9999"),
-                            DATAAGGIORNAMENTO = ibm.dataAggiornamento,
-                            ANNULLATO = ibm.annullato
-                        };
-                    }
+        //            recordInteressati.ForEach(a => a.ANNULLATO = true);
+        //            //db.SaveChanges();
 
-                    db.Database.BeginTransaction();
+        //            if (recordInteressati.Count > 0)
+        //            {
+        //                foreach (var item in recordInteressati)
+        //                {
 
-                    var recordInteressati = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false)
-                                                            .Where(a => a.DATAINIZIOVALIDITA >= ibNew.DATAINIZIOVALIDITA || a.DATAFINEVALIDITA >= ibNew.DATAINIZIOVALIDITA)
-                                                            .Where(a => a.DATAINIZIOVALIDITA <= ibNew.DATAFINEVALIDITA || a.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                                            .ToList();
-
-                    recordInteressati.ForEach(a => a.ANNULLATO = true);
-                    //db.SaveChanges();
-
-                    if (recordInteressati.Count > 0)
-                    {
-                        foreach (var item in recordInteressati)
-                        {
-
-                            if (item.DATAINIZIOVALIDITA < ibNew.DATAINIZIOVALIDITA)
-                            {
-                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
-                                    {
+        //                    if (item.DATAINIZIOVALIDITA < ibNew.DATAINIZIOVALIDITA)
+        //                    {
+        //                        if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
+        //                        {
+        //                            var ibOld1 = new COEFFICIENTEINDRICHIAMO()
+        //                            {
 
 
-                                        DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
+        //                                DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
+        //                                DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
 
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
-                                        ANNULLATO = false
-                                    };
+        //                                DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+        //                                ANNULLATO = false
+        //                            };
 
-                                    libNew.Add(ibOld1);
+        //                            libNew.Add(ibOld1);
 
-                                }
-                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
-                                    {
-
-
-                                        DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
-                                        DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
-
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
-                                        ANNULLATO = false
-                                    };
-
-                                    var ibOld2 = new COEFFICIENTEINDRICHIAMO()
-                                    {
+        //                        }
+        //                        else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
+        //                        {
+        //                            var ibOld1 = new COEFFICIENTEINDRICHIAMO()
+        //                            {
 
 
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
-                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
+        //                                DATAINIZIOVALIDITA = item.DATAINIZIOVALIDITA,
+        //                                DATAFINEVALIDITA = (ibNew.DATAINIZIOVALIDITA).AddDays(-1),
 
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
-                                        ANNULLATO = false
-                                    };
+        //                                DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+        //                                ANNULLATO = false
+        //                            };
 
-                                    libNew.Add(ibOld1);
-                                    libNew.Add(ibOld2);
-
-                                }
-
-                            }
-                            else if (item.DATAINIZIOVALIDITA == ibNew.DATAINIZIOVALIDITA)
-                            {
-                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                {
-                                    //Non preleva il record old
-                                }
-                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
-                                    {
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
-                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
-
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
-                                        ANNULLATO = false
-                                    };
-
-                                    libNew.Add(ibOld1);
-                                }
-                            }
-                            else if (item.DATAINIZIOVALIDITA > ibNew.DATAINIZIOVALIDITA)
-                            {
-                                if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
-                                {
-                                    //Non preleva il record old
-                                }
-                                else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
-                                {
-                                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
-                                    {
+        //                            var ibOld2 = new COEFFICIENTEINDRICHIAMO()
+        //                            {
 
 
-                                        DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
-                                        DATAFINEVALIDITA = item.DATAFINEVALIDITA,
+        //                                DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(+1),
+        //                                DATAFINEVALIDITA = item.DATAFINEVALIDITA,
 
-                                        DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
-                                        ANNULLATO = false
-                                    };
+        //                                DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+        //                                ANNULLATO = false
+        //                            };
 
-                                    libNew.Add(ibOld1);
-                                }
-                            }
-                        }
+        //                            libNew.Add(ibOld1);
+        //                            libNew.Add(ibOld2);
 
-                        libNew.Add(ibNew);
-                        libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+        //                        }
 
-                        db.COEFFICIENTEINDRICHIAMO.AddRange(libNew);
-                    }
-                    else
-                    {
-                        db.COEFFICIENTEINDRICHIAMO.Add(ibNew);
+        //                    }
+        //                    else if (item.DATAINIZIOVALIDITA == ibNew.DATAINIZIOVALIDITA)
+        //                    {
+        //                        if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
+        //                        {
+        //                            //Non preleva il record old
+        //                        }
+        //                        else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
+        //                        {
+        //                            var ibOld1 = new COEFFICIENTEINDRICHIAMO()
+        //                            {
+        //                                DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
+        //                                DATAFINEVALIDITA = item.DATAFINEVALIDITA,
 
-                    }
-                    db.SaveChanges();
+        //                                DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+        //                                ANNULLATO = false
+        //                            };
 
-                    using (objLogAttivita log = new objLogAttivita())
-                    {
-                        log.Log(enumAttivita.Inserimento, "Inserimento parametro di Coeff. Ind. Richiamo", "COEFFICIENTEINDRICHIAMO", ibNew.IDCOEFINDRICHIAMO);
-                    }
-
-                    db.Database.CurrentTransaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    db.Database.CurrentTransaction.Rollback();
-                    throw ex;
-                }
-            }
-        }
-
-        public bool EsistonoMovimentiPrima(CoefficienteRichiamoModel ibm)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita).Count() > 0 ? true : false;
-            }
-        }
-
-        public bool EsistonoMovimentiSuccessivi(CoefficienteRichiamoModel ibm)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                if (ibm.dataFineValidita.HasValue)
-                {
-                    return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value).Count() > 0 ? true : false;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        public bool EsistonoMovimentiSuccessiviUguale(CoefficienteRichiamoModel ibm)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                if (ibm.dataFineValidita.HasValue)
-                {
-                    return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value).Count() > 0 ? true : false;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        public bool EsistonoMovimentiPrimaUguale(CoefficienteRichiamoModel ibm)
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita).Count() > 0 ? true : false;
-            }
-        }
-
-        public void DelListCoeffIndRichiamo(decimal idCoeffIndRichiamo)
-        {
-            COEFFICIENTEINDRICHIAMO precedenteIB = new COEFFICIENTEINDRICHIAMO();
-            COEFFICIENTEINDRICHIAMO delIB = new COEFFICIENTEINDRICHIAMO();
+        //                            libNew.Add(ibOld1);
+        //                        }
+        //                    }
+        //                    else if (item.DATAINIZIOVALIDITA > ibNew.DATAINIZIOVALIDITA)
+        //                    {
+        //                        if (item.DATAFINEVALIDITA <= ibNew.DATAFINEVALIDITA)
+        //                        {
+        //                            //Non preleva il record old
+        //                        }
+        //                        else if (item.DATAFINEVALIDITA > ibNew.DATAFINEVALIDITA)
+        //                        {
+        //                            var ibOld1 = new COEFFICIENTEINDRICHIAMO()
+        //                            {
 
 
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                try
-                {
-                    db.Database.BeginTransaction();
+        //                                DATAINIZIOVALIDITA = (ibNew.DATAFINEVALIDITA).AddDays(1),
+        //                                DATAFINEVALIDITA = item.DATAFINEVALIDITA,
 
-                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == idCoeffIndRichiamo);
+        //                                DATAAGGIORNAMENTO = item.DATAAGGIORNAMENTO,
+        //                                ANNULLATO = false
+        //                            };
 
-                    if (lib.Count() > 0)
-                    {
-                        delIB = lib.First();
-                        delIB.ANNULLATO = true;
+        //                            libNew.Add(ibOld1);
+        //                        }
+        //                    }
+        //                }
 
-                        var lprecIB = db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+        //                libNew.Add(ibNew);
+        //                libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                        if (lprecIB.Count > 0)
-                        {
-                            precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
-                            precedenteIB.ANNULLATO = true;
+        //                db.COEFFICIENTEINDRICHIAMO.AddRange(libNew);
+        //            }
+        //            else
+        //            {
+        //                db.COEFFICIENTEINDRICHIAMO.Add(ibNew);
 
-                            var ibOld1 = new COEFFICIENTEINDRICHIAMO()
-                            {
-                                IDCOEFINDRICHIAMO = precedenteIB.IDCOEFINDRICHIAMO,
-                                DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
-                                DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                                COEFFICIENTERICHIAMO = precedenteIB.COEFFICIENTERICHIAMO,
-                                ANNULLATO = false
-                            };
+        //            }
+        //            db.SaveChanges();
 
-                            db.COEFFICIENTEINDRICHIAMO.Add(ibOld1);
-                        }
+        //            using (objLogAttivita log = new objLogAttivita())
+        //            {
+        //                log.Log(enumAttivita.Inserimento, "Inserimento parametro di Coeff. Ind. Richiamo", "COEFFICIENTEINDRICHIAMO", ibNew.IDCOEFINDRICHIAMO);
+        //            }
 
-                        db.SaveChanges();
+        //            db.Database.CurrentTransaction.Commit();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            db.Database.CurrentTransaction.Rollback();
+        //            throw ex;
+        //        }
+        //    }
+        //}
 
-                        using (objLogAttivita log = new objLogAttivita())
-                        {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di coeff. Ind. Richiamo", "COEFFICIENTEINDRICHIAMO", idCoeffIndRichiamo);
-                        }
-                        db.Database.CurrentTransaction.Commit();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    db.Database.CurrentTransaction.Rollback();
-                    throw ex;
-                }
-            }
-        }
+        //public bool EsistonoMovimentiPrima(CoefficienteRichiamoModel ibm)
+        //{
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA < ibm.dataInizioValidita).Count() > 0 ? true : false;
+        //    }
+        //}
+
+        //public bool EsistonoMovimentiSuccessivi(CoefficienteRichiamoModel ibm)
+        //{
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        if (ibm.dataFineValidita.HasValue)
+        //        {
+        //            return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA > ibm.dataFineValidita.Value).Count() > 0 ? true : false;
+        //        }
+        //        else
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //}
+
+        //public bool EsistonoMovimentiSuccessiviUguale(CoefficienteRichiamoModel ibm)
+        //{
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        if (ibm.dataFineValidita.HasValue)
+        //        {
+        //            return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA >= ibm.dataFineValidita.Value).Count() > 0 ? true : false;
+        //        }
+        //        else
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //}
+
+        //public bool EsistonoMovimentiPrimaUguale(CoefficienteRichiamoModel ibm)
+        //{
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        return db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita).Count() > 0 ? true : false;
+        //    }
+        //}
+
+        //public void DelListCoeffIndRichiamo(decimal idCoeffIndRichiamo)
+        //{
+        //    COEFFICIENTEINDRICHIAMO precedenteIB = new COEFFICIENTEINDRICHIAMO();
+        //    COEFFICIENTEINDRICHIAMO delIB = new COEFFICIENTEINDRICHIAMO();
+
+
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        try
+        //        {
+        //            db.Database.BeginTransaction();
+
+        //            var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == idCoeffIndRichiamo);
+
+        //            if (lib.Count() > 0)
+        //            {
+        //                delIB = lib.First();
+        //                delIB.ANNULLATO = true;
+
+        //                var lprecIB = db.COEFFICIENTEINDRICHIAMO.Where(a => a.DATAFINEVALIDITA < delIB.DATAINIZIOVALIDITA && a.ANNULLATO == false).ToList();
+
+        //                if (lprecIB.Count > 0)
+        //                {
+        //                    precedenteIB = lprecIB.Where(a => a.DATAFINEVALIDITA == lprecIB.Max(b => b.DATAFINEVALIDITA)).First();
+        //                    precedenteIB.ANNULLATO = true;
+
+        //                    var ibOld1 = new COEFFICIENTEINDRICHIAMO()
+        //                    {
+        //                        IDCOEFINDRICHIAMO = precedenteIB.IDCOEFINDRICHIAMO,
+        //                        DATAINIZIOVALIDITA = precedenteIB.DATAFINEVALIDITA,
+        //                        DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
+        //                        COEFFICIENTERICHIAMO = precedenteIB.COEFFICIENTERICHIAMO,
+        //                        ANNULLATO = false
+        //                    };
+
+        //                    db.COEFFICIENTEINDRICHIAMO.Add(ibOld1);
+        //                }
+
+        //                db.SaveChanges();
+
+        //                using (objLogAttivita log = new objLogAttivita())
+        //                {
+        //                    log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di coeff. Ind. Richiamo", "COEFFICIENTEINDRICHIAMO", idCoeffIndRichiamo);
+        //                }
+        //                db.Database.CurrentTransaction.Commit();
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            db.Database.CurrentTransaction.Rollback();
+        //            throw ex;
+        //        }
+        //    }
+        //}
         public static DateTime DataInizioMinimaNonAnnullataCoeffIndRichiamo()
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -454,13 +448,19 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             return Utility.GetData_Inizio_Base();
         }
 
-        public decimal Get_Id_CoeffIndRichiamoPrimoNonAnnullato()
+        public decimal Get_Id_CoeffIndRichiamoPrimoNonAnnullato(decimal idTipoCoeffindRichiamo)
         {
             decimal tmp = 0;
             using (ModelDBISE db = new ModelDBISE())
             {
                 List<COEFFICIENTEINDRICHIAMO> libm = new List<COEFFICIENTEINDRICHIAMO>();
-                libm = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
+                libm = db.COEFFICIENTEINDRICHIAMO
+                                    .Where(a => 
+                                                a.ANNULLATO == false &&
+                                                a.IDTIPOCOEFFICIENTERICHIAMO==idTipoCoeffindRichiamo)
+                                    .OrderBy(b => b.DATAINIZIOVALIDITA)
+                                    .ThenBy(c => c.DATAFINEVALIDITA)
+                                    .ToList();
                 if (libm.Count != 0)
                     tmp = libm.First().IDCOEFINDRICHIAMO;
             }
@@ -478,10 +478,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 try
                 {
                     db.Database.BeginTransaction();
-                    var lib = db.COEFFICIENTEINDRICHIAMO.Where(a => a.IDCOEFINDRICHIAMO == idCoefIndRichiamo);
-                    if (lib.Count() > 0)
+                    var cir = db.COEFFICIENTEINDRICHIAMO.Find(idCoefIndRichiamo);
+                    if (cir.IDCOEFINDRICHIAMO > 0)
                     {
-                        delIB = lib.First();
+                        var idTipoCoeffRichiamo = cir.IDTIPOCOEFFICIENTERICHIAMO;
+                        delIB = cir;
+
                         delIB.ANNULLATO = true;
                         RendiAnnullatoUnRecord(delIB.IDCOEFINDRICHIAMO, db);
                         precedenteIB = RestituisciIlRecordPrecedente(idCoefIndRichiamo);
@@ -491,10 +493,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                             DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
-                            // ALIQUOTA = precedenteIB.ALIQUOTA,
                             COEFFICIENTERICHIAMO = precedenteIB.COEFFICIENTERICHIAMO,
-                            DATAAGGIORNAMENTO = DateTime.Now,// precedenteIB.DATAAGGIORNAMENTO,
-                            ANNULLATO = false
+                            DATAAGGIORNAMENTO = DateTime.Now,
+                            ANNULLATO = false,
+                            IDTIPOCOEFFICIENTERICHIAMO=precedenteIB.IDTIPOCOEFFICIENTERICHIAMO
                         };
                         db.COEFFICIENTEINDRICHIAMO.Add(NuovoPrecedente);
 
@@ -509,7 +511,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     using (objLogAttivita log = new objLogAttivita())
                     {
-                        log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di aliquote contributive.", "COEFFICIENTEINDRICHIAMO", idCoefIndRichiamo);
+                        log.Log(enumAttivita.Eliminazione, "Eliminazione parametro coefficiente indennita di richiamo.", "COEFFICIENTEINDRICHIAMO", idCoefIndRichiamo);
                     }
                     db.Database.CurrentTransaction.Commit();
                 }
@@ -521,15 +523,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        public static List<RiduzioniModel> dataInizioValiditaAccettataPerRiduzione(DateTime d)
-        {
-            List<RiduzioniModel> tmp = new List<RiduzioniModel>();
-            using (dtRiduzioni dtRid = new dtRiduzioni())
-            {
-                tmp = dtRid.getListRiduzioni().Where(a => a.annullato == false).ToList().Where(b => d >= b.dataInizioValidita && d <= b.dataFineValidita).OrderBy(a => a.dataInizioValidita).ThenBy(b => b.dataFineValidita).ToList();
-            }
-            return tmp;
-        }
+        //public static List<RiduzioniModel> dataInizioValiditaAccettataPerRiduzione(DateTime d)
+        //{
+        //    List<RiduzioniModel> tmp = new List<RiduzioniModel>();
+        //    using (dtRiduzioni dtRid = new dtRiduzioni())
+        //    {
+        //        tmp = dtRid.getListRiduzioni().Where(a => a.annullato == false).ToList().Where(b => d >= b.dataInizioValidita && d <= b.dataFineValidita).OrderBy(a => a.dataInizioValidita).ThenBy(b => b.dataFineValidita).ToList();
+        //    }
+        //    return tmp;
+        //}
         public static ValidationResult VerificaDataInizio(string v, ValidationContext context)
         {
             ValidationResult vr = ValidationResult.Success;
@@ -557,18 +559,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             return vr;
         }
 
-        public static DateTime DataInizioMinimaNonAnnullataIndennitaBase()
-        {
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var TuttiNonAnnullati = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-                if (TuttiNonAnnullati.Count > 0)
-                {
-                    return (DateTime)TuttiNonAnnullati.First().DATAINIZIOVALIDITA;
-                }
-            }
-            return Utility.GetData_Inizio_Base();
-        }
+        //public static DateTime DataInizioMinimaNonAnnullataIndennitaBase()
+        //{
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        var TuttiNonAnnullati = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+        //        if (TuttiNonAnnullati.Count > 0)
+        //        {
+        //            return (DateTime)TuttiNonAnnullati.First().DATAINIZIOVALIDITA;
+        //        }
+        //    }
+        //    return Utility.GetData_Inizio_Base();
+        //}
         public COEFFICIENTEINDRICHIAMO RestituisciIlRecordPrecedente(decimal IDCOEFINDRICHIAMO)
         {
             COEFFICIENTEINDRICHIAMO tmp = null;
@@ -576,86 +578,92 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 COEFFICIENTEINDRICHIAMO interessato = new COEFFICIENTEINDRICHIAMO();
                 interessato = db.COEFFICIENTEINDRICHIAMO.Find(IDCOEFINDRICHIAMO);
-                tmp = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList().Where(b => b.DATAFINEVALIDITA == interessato.DATAINIZIOVALIDITA.AddDays(-1)).ToList().First();
+                tmp = db.COEFFICIENTEINDRICHIAMO
+                                        .Where(a => a.ANNULLATO == false && 
+                                                    a.IDTIPOCOEFFICIENTERICHIAMO==interessato.IDTIPOCOEFFICIENTERICHIAMO)
+                                        .ToList()
+                                        .Where(b => b.DATAFINEVALIDITA == interessato.DATAINIZIOVALIDITA.AddDays(-1))
+                                        .ToList()
+                                        .First();
             }
             return tmp;
         }
-        public List<string> RestituisciIntervalloDiUnaData(DateTime DataCampione)
-        {
-            List<string> tmp = new List<string>();
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                List<COEFFICIENTEINDRICHIAMO> libm = new List<COEFFICIENTEINDRICHIAMO>();
-                libm = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList().Where(b =>
-                b.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop())
-                && DataCampione > b.DATAINIZIOVALIDITA
-                && DataCampione < b.DATAFINEVALIDITA).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
-                if (libm.Count != 0)
-                {
-                    tmp.Add(libm[0].IDCOEFINDRICHIAMO.ToString());
-                    tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].COEFFICIENTERICHIAMO.ToString());
-                }
-            }
-            return tmp;
-        }
-        public List<string> DataVariazioneCoincideConDataInizio(DateTime DataCampione)
-        {
-            List<string> tmp = new List<string>();
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                List<COEFFICIENTEINDRICHIAMO> libm = new List<COEFFICIENTEINDRICHIAMO>();
-                libm = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().Where(b => DataCampione == b.DATAINIZIOVALIDITA &&
-                 b.DATAFINEVALIDITA != Utility.DataFineStop()).ToList();
-                if (libm.Count != 0)
-                {
-                    tmp.Add(libm[0].IDCOEFINDRICHIAMO.ToString());
-                    tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].COEFFICIENTERICHIAMO.ToString());
-                }
-            }
-            return tmp;
-        }
-        public List<string> DataVariazioneCoincideConDataFine(DateTime DataCampione)
-        {
-            List<string> tmp = new List<string>();
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                List<COEFFICIENTEINDRICHIAMO> libm = new List<COEFFICIENTEINDRICHIAMO>();
-                libm = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().
-                Where(b => DataCampione == b.DATAFINEVALIDITA
-                && b.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop())).ToList();
+        //public List<string> RestituisciIntervalloDiUnaData(DateTime DataCampione)
+        //{
+        //    List<string> tmp = new List<string>();
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        List<COEFFICIENTEINDRICHIAMO> libm = new List<COEFFICIENTEINDRICHIAMO>();
+        //        libm = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList().Where(b =>
+        //        b.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop())
+        //        && DataCampione > b.DATAINIZIOVALIDITA
+        //        && DataCampione < b.DATAFINEVALIDITA).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
+        //        if (libm.Count != 0)
+        //        {
+        //            tmp.Add(libm[0].IDCOEFINDRICHIAMO.ToString());
+        //            tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
+        //            tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+        //            tmp.Add(libm[0].COEFFICIENTERICHIAMO.ToString());
+        //        }
+        //    }
+        //    return tmp;
+        //}
+        //public List<string> DataVariazioneCoincideConDataInizio(DateTime DataCampione)
+        //{
+        //    List<string> tmp = new List<string>();
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        List<COEFFICIENTEINDRICHIAMO> libm = new List<COEFFICIENTEINDRICHIAMO>();
+        //        libm = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().Where(b => DataCampione == b.DATAINIZIOVALIDITA &&
+        //         b.DATAFINEVALIDITA != Utility.DataFineStop()).ToList();
+        //        if (libm.Count != 0)
+        //        {
+        //            tmp.Add(libm[0].IDCOEFINDRICHIAMO.ToString());
+        //            tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
+        //            tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+        //            tmp.Add(libm[0].COEFFICIENTERICHIAMO.ToString());
+        //        }
+        //    }
+        //    return tmp;
+        //}
+        //public List<string> DataVariazioneCoincideConDataFine(DateTime DataCampione)
+        //{
+        //    List<string> tmp = new List<string>();
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        List<COEFFICIENTEINDRICHIAMO> libm = new List<COEFFICIENTEINDRICHIAMO>();
+        //        libm = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().
+        //        Where(b => DataCampione == b.DATAFINEVALIDITA
+        //        && b.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop())).ToList();
 
-                if (libm.Count != 0)
-                {
-                    tmp.Add(libm[0].IDCOEFINDRICHIAMO.ToString());
-                    tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].COEFFICIENTERICHIAMO.ToString());
-                }
-            }
-            return tmp;
-        }
-        public List<string> RestituisciLaRigaMassima()
-        {
-            List<string> tmp = new List<string>();
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                List<COEFFICIENTEINDRICHIAMO> libm = new List<COEFFICIENTEINDRICHIAMO>();
-                libm = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList().Where(b =>
-                b.DATAFINEVALIDITA == Convert.ToDateTime(Utility.DataFineStop())).ToList();
-                if (libm.Count != 0)
-                {
-                    tmp.Add(libm[0].IDCOEFINDRICHIAMO.ToString());
-                    tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].COEFFICIENTERICHIAMO.ToString());
-                }
-            }
-            return tmp;
-        }
+        //        if (libm.Count != 0)
+        //        {
+        //            tmp.Add(libm[0].IDCOEFINDRICHIAMO.ToString());
+        //            tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
+        //            tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+        //            tmp.Add(libm[0].COEFFICIENTERICHIAMO.ToString());
+        //        }
+        //    }
+        //    return tmp;
+        //}
+        //public List<string> RestituisciLaRigaMassima()
+        //{
+        //    List<string> tmp = new List<string>();
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        List<COEFFICIENTEINDRICHIAMO> libm = new List<COEFFICIENTEINDRICHIAMO>();
+        //        libm = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList().Where(b =>
+        //        b.DATAFINEVALIDITA == Convert.ToDateTime(Utility.DataFineStop())).ToList();
+        //        if (libm.Count != 0)
+        //        {
+        //            tmp.Add(libm[0].IDCOEFINDRICHIAMO.ToString());
+        //            tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
+        //            tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
+        //            tmp.Add(libm[0].COEFFICIENTERICHIAMO.ToString());
+        //        }
+        //    }
+        //    return tmp;
+        //}
         public void RendiAnnullatoUnRecord(decimal IDCOEFINDRICHIAMO, ModelDBISE db)
         {
             COEFFICIENTEINDRICHIAMO entita = new COEFFICIENTEINDRICHIAMO();
@@ -663,27 +671,25 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             entita.ANNULLATO = true;
             db.SaveChanges();
         }
-        public decimal Get_Id_CoefficienteIndRichiamoNonAnnullato(decimal IDCOEFINDRICHIAMO)
-        {
-            decimal tmp = 0;
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                List<COEFFICIENTEINDRICHIAMO> libm = new List<COEFFICIENTEINDRICHIAMO>();
-                libm = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false
-                && a.IDCOEFINDRICHIAMO == IDCOEFINDRICHIAMO).OrderBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
-                if (libm.Count != 0)
-                    tmp = libm.First().IDCOEFINDRICHIAMO;
-            }
-            return tmp;
-        }
-        public void SetCoefficienteRichiamo(CoefficienteRichiamoModel ibm, bool aggiornaTutto)
+        //public decimal Get_Id_CoefficienteIndRichiamoNonAnnullato(decimal IDCOEFINDRICHIAMO)
+        //{
+        //    decimal tmp = 0;
+        //    using (ModelDBISE db = new ModelDBISE())
+        //    {
+        //        List<COEFFICIENTEINDRICHIAMO> libm = new List<COEFFICIENTEINDRICHIAMO>();
+        //        libm = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false
+        //        && a.IDCOEFINDRICHIAMO == IDCOEFINDRICHIAMO).OrderBy(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
+        //        if (libm.Count != 0)
+        //            tmp = libm.First().IDCOEFINDRICHIAMO;
+        //    }
+        //    return tmp;
+        //}
+        public void SetCoefficienteRichiamo(CoefficienteRichiamoModel ibm, decimal idTipoCoeffRichiamo, bool aggiornaTutto)
         {
             List<COEFFICIENTEINDRICHIAMO> libNew = new List<COEFFICIENTEINDRICHIAMO>();
 
-            //COEFFICIENTEINDRICHIAMO ibPrecedente = new COEFFICIENTEINDRICHIAMO();
             COEFFICIENTEINDRICHIAMO ibNew1 = new COEFFICIENTEINDRICHIAMO();
             COEFFICIENTEINDRICHIAMO ibNew2 = new COEFFICIENTEINDRICHIAMO();
-            //List<COEFFICIENTEINDRICHIAMO> lArchivioIB = new List<COEFFICIENTEINDRICHIAMO>();
 
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
@@ -695,23 +701,22 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     using (dtCoefficienteRichiamo dtal = new dtCoefficienteRichiamo())
                     {
                         //Se la data variazione coincide con una data inizio esistente
-                        lista = dtal.DataVariazioneCoincideConDataInizio(ibm.dataInizioValidita);
+                        lista = dtal.DataVariazioneCoincideConDataInizio(ibm.dataInizioValidita, idTipoCoeffRichiamo);
                         if (lista.Count != 0)
                         {
                             giafatta = true;
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            //decimal COEFFICIENTERICHIAMO = Convert.ToDecimal(lista[3]);
-                            //decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
 
                             ibNew1 = new COEFFICIENTEINDRICHIAMO()
                             {
                                 DATAINIZIOVALIDITA = dataInizioFirst,
                                 DATAFINEVALIDITA = dataFineFirst,
                                 COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                //COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                IDTIPOCOEFFICIENTERICHIAMO=idTipoCoeffRichiamo,
                                 DATAAGGIORNAMENTO = DateTime.Now,
+                                ANNULLATO=false
                             };
 
                             if (aggiornaTutto)
@@ -721,11 +726,19 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAINIZIOVALIDITA = dataInizioFirst,
                                     DATAFINEVALIDITA = Utility.DataFineStop(),
                                     COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                    //COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                     DATAAGGIORNAMENTO = DateTime.Now,
+                                    ANNULLATO=false,
+                                    IDTIPOCOEFFICIENTERICHIAMO=idTipoCoeffRichiamo
                                 };
                                 //qui annullo tutti i record rimanenti dalla data inizio inserita
-                                libNew = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > dataInizioFirst).ToList();
+                                libNew = db.COEFFICIENTEINDRICHIAMO
+                                                        .Where(a => 
+                                                                    a.ANNULLATO == false &&
+                                                                    a.IDTIPOCOEFFICIENTERICHIAMO==idTipoCoeffRichiamo)
+                                                        .ToList()
+                                                        .Where(a => a.DATAINIZIOVALIDITA > dataInizioFirst)
+                                                        .ToList();
+
                                 foreach (var elem in libNew)
                                 {
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDCOEFINDRICHIAMO), db);
@@ -747,7 +760,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         ///se la data variazione coincide con una data fine esistente(diversa da 31/12/9999)
                         if (giafatta == false)
                         {
-                            lista = dtal.DataVariazioneCoincideConDataFine(ibm.dataInizioValidita);
+                            lista = dtal.DataVariazioneCoincideConDataFine(ibm.dataInizioValidita, idTipoCoeffRichiamo);
                             if (lista.Count != 0)
                             {
                                 giafatta = true;
@@ -763,19 +776,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     DATAINIZIOVALIDITA = dataInizioLast,
                                     DATAFINEVALIDITA = dataFineLast.AddDays(-1),
-                                    //COEFFICIENTEKM = aliquotaLast,
                                     COEFFICIENTERICHIAMO = COEFFICIENTERICHIAMO_last,
-                                    //COEFFICIENTEINDBASE = COEFFICIENTEINDBASE_last,
                                     DATAAGGIORNAMENTO = DateTime.Now,
+                                    IDTIPOCOEFFICIENTERICHIAMO=idTipoCoeffRichiamo
                                 };
                                 ibNew2 = new COEFFICIENTEINDRICHIAMO()
                                 {
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = ibm.dataInizioValidita,//è uguale alla data Inizio
-                                                                              //COEFFICIENTEKM = ibm.coefficienteKm,
                                     COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                    //COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
-                                    DATAAGGIORNAMENTO = DateTime.Now
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                    IDTIPOCOEFFICIENTERICHIAMO=idTipoCoeffRichiamo
                                 };
                                 if (aggiornaTutto)
                                 {
@@ -786,16 +797,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         // COEFFICIENTEKM = ibm.coefficienteKm,
                                         COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
                                         //COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
-                                        DATAAGGIORNAMENTO = DateTime.Now
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        IDTIPOCOEFFICIENTERICHIAMO=idTipoCoeffRichiamo
                                     };
-                                    libNew = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
+                                    libNew = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false && a.IDTIPOCOEFFICIENTERICHIAMO==idTipoCoeffRichiamo).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
                                     foreach (var elem in libNew)
                                     {
                                         RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDCOEFINDRICHIAMO), db);
                                     }
                                 }
 
-                                libNew.Add(ibNew1); libNew.Add(ibNew2);
+                                libNew.Add(ibNew1);
+                                libNew.Add(ibNew2);
                                 libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
                                 db.Database.BeginTransaction();
@@ -820,35 +833,32 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         //Se il nuovo record si trova in un intervallo non annullato con data fine non uguale al 31/12/9999
                         if (giafatta == false)
                         {
-                            lista = dtal.RestituisciIntervalloDiUnaData(ibm.dataInizioValidita);
+                            lista = dtal.RestituisciIntervalloDiUnaData(ibm.dataInizioValidita, idTipoCoeffRichiamo);
                             if (lista.Count != 0)
                             {
                                 giafatta = true;
                                 decimal idIntervallo = Convert.ToDecimal(lista[0]);
                                 DateTime dataInizio = Convert.ToDateTime(lista[1]);
                                 DateTime dataFine = Convert.ToDateTime(lista[2]);
-                                //  decimal aliquota = Convert.ToDecimal(lista[3]);
                                 decimal COEFFICIENTERICHIAMO = Convert.ToDecimal(lista[3]);
-                                //decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
                                 DateTime NewdataFine1 = ibm.dataInizioValidita.AddDays(-1);
 
                                 ibNew1 = new COEFFICIENTEINDRICHIAMO()
                                 {
                                     DATAINIZIOVALIDITA = dataInizio,
                                     DATAFINEVALIDITA = NewdataFine1,
-                                    // COEFFICIENTEKM = aliquota,
                                     COEFFICIENTERICHIAMO = COEFFICIENTERICHIAMO,
-                                    //COEFFICIENTEINDBASE = COEFFICIENTEINDBASE,
                                     DATAAGGIORNAMENTO = DateTime.Now,
+                                    IDTIPOCOEFFICIENTERICHIAMO=idTipoCoeffRichiamo,
+                                    ANNULLATO=false
                                 };
                                 ibNew2 = new COEFFICIENTEINDRICHIAMO()
                                 {
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = dataFine,
-                                    //COEFFICIENTEKM = ibm.coefficienteKm,
                                     COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                    //COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
-                                    DATAAGGIORNAMENTO = DateTime.Now
+                                    DATAAGGIORNAMENTO = DateTime.Now,
+                                    IDTIPOCOEFFICIENTERICHIAMO=idTipoCoeffRichiamo
                                 };
 
                                 if (aggiornaTutto)
@@ -857,17 +867,25 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
-                                        // COEFFICIENTEKM = ibm.coefficienteKm,
                                         COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                        DATAAGGIORNAMENTO = DateTime.Now
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        IDTIPOCOEFFICIENTERICHIAMO=idTipoCoeffRichiamo
                                     };
-                                    libNew = db.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
+                                    libNew = db.COEFFICIENTEINDRICHIAMO
+                                                        .Where(a => 
+                                                                    a.ANNULLATO == false &&
+                                                                    a.IDTIPOCOEFFICIENTERICHIAMO==idTipoCoeffRichiamo)
+                                                        .ToList()
+                                                        .Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita)
+                                                        .ToList();
+
                                     foreach (var elem in libNew)
                                     {
                                         RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDCOEFINDRICHIAMO), db);
                                     }
                                 }
-                                libNew.Add(ibNew1); libNew.Add(ibNew2);
+                                libNew.Add(ibNew1);
+                                libNew.Add(ibNew2);
                                 libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
                                 db.Database.BeginTransaction();
                                 db.COEFFICIENTEINDRICHIAMO.AddRange(libNew);
@@ -892,7 +910,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         {
                             //Attenzione qui se la lista non contiene nessun elemento
                             //significa che non esiste nessun elemento corrispondentemente al livello selezionato
-                            lista = dtal.RestituisciLaRigaMassima();
+                            lista = dtal.RestituisciLaRigaMassima(idTipoCoeffRichiamo);
                             if (lista.Count == 0)
                             {
                                 ibNew1 = new COEFFICIENTEINDRICHIAMO()
@@ -901,6 +919,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
                                     COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
                                     DATAAGGIORNAMENTO = DateTime.Now,
+                                    ANNULLATO=false,
+                                    IDTIPOCOEFFICIENTERICHIAMO=idTipoCoeffRichiamo
                                 };
                                 libNew.Add(ibNew1);
                                 db.Database.BeginTransaction();
@@ -918,7 +938,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 decimal idIntervalloUltimo = Convert.ToDecimal(lista[0]);
                                 DateTime dataInizioUltimo = Convert.ToDateTime(lista[1]);
                                 DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
-                                //  decimal aliquotaUltimo = Convert.ToDecimal(lista[3]);
                                 decimal COEFFICIENTERICHIAMO_Ultimo = Convert.ToDecimal(lista[3]);
                                 decimal COEFFICIENTEINDBASE_Ultimo = Convert.ToDecimal(lista[4]);
 
@@ -928,9 +947,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         DATAINIZIOVALIDITA = dataInizioUltimo,
                                         DATAFINEVALIDITA = dataFineUltimo,
-                                        // COEFFICIENTEKM = ibm.coefficienteKm,//nuova aliquota rispetto alla vecchia registrata
                                         COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                        DATAAGGIORNAMENTO = DateTime.Now
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        IDTIPOCOEFFICIENTERICHIAMO=idTipoCoeffRichiamo,
+                                        ANNULLATO=false
                                     };
                                     libNew.Add(ibNew1);
                                     db.Database.BeginTransaction();
@@ -953,20 +973,22 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         DATAINIZIOVALIDITA = dataInizioUltimo,
                                         DATAFINEVALIDITA = ibm.dataInizioValidita.AddDays(-1),
-                                        // COEFFICIENTEKM = aliquotaUltimo,
                                         COEFFICIENTERICHIAMO = COEFFICIENTERICHIAMO_Ultimo,
-                                        DATAAGGIORNAMENTO = DateTime.Now
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        IDTIPOCOEFFICIENTERICHIAMO=idTipoCoeffRichiamo,
+                                        ANNULLATO=false
                                     };
                                     ibNew2 = new COEFFICIENTEINDRICHIAMO()
                                     {
-
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
                                         // COEFFICIENTEKM = ibm.coefficienteKm,//nuova aliquota rispetto alla vecchia registrata
                                         COEFFICIENTERICHIAMO = ibm.coefficienteRichiamo,
-                                        DATAAGGIORNAMENTO = DateTime.Now
+                                        DATAAGGIORNAMENTO = DateTime.Now,
+                                        IDTIPOCOEFFICIENTERICHIAMO=idTipoCoeffRichiamo
                                     };
-                                    libNew.Add(ibNew1); libNew.Add(ibNew2);
+                                    libNew.Add(ibNew1);
+                                    libNew.Add(ibNew2);
                                     libNew = libNew.OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
                                     db.Database.BeginTransaction();
                                     db.COEFFICIENTEINDRICHIAMO.AddRange(libNew);
@@ -1010,27 +1032,69 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-        decimal RestituisciIdRecordNuovo(DateTime d1, DateTime d2)
-        {
-            decimal tmp = 0;
+        //decimal RestituisciIdRecordNuovo(DateTime d1, DateTime d2)
+        //{
+        //    decimal tmp = 0;
 
-            return tmp;
-        }
-        public void Associa_Riduzione_CoeffIndRichiamo(decimal idRiduzioni, decimal idCoeffIndRichiamo, ModelDBISE db)
+        //    return tmp;
+        //}
+        //public void Associa_Riduzione_CoeffIndRichiamo(decimal idRiduzioni, decimal idCoeffIndRichiamo, ModelDBISE db)
+        //{
+        //    try
+        //    {
+        //        var r = db.RIDUZIONI.Find(idRiduzioni);
+        //        var item = db.Entry<RIDUZIONI>(r);
+        //        item.State = System.Data.Entity.EntityState.Modified;
+        //        //item.Collection(a => a.DOCUMENTI).Load();
+        //        var c = db.COEFFICIENTEINDRICHIAMO.Find(idCoeffIndRichiamo);
+        //        r.COEFFICIENTEINDRICHIAMO.Add(c);
+        //        int i = db.SaveChanges();
+        //        if (i <= 0)
+        //        {
+        //            throw new Exception(string.Format("Impossibile associare Riduzioni al Coeffiente Ind Richiamo."));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+
+        public IList<CoefficienteRichiamoModel> GetListCoeffRichiamo_x_Tipo(decimal idTipoCoeffRichiamo, bool escludiAnnullati = false)
         {
+            List<CoefficienteRichiamoModel> lcrm = new List<CoefficienteRichiamoModel>();
             try
             {
-                var r = db.RIDUZIONI.Find(idRiduzioni);
-                var item = db.Entry<RIDUZIONI>(r);
-                item.State = System.Data.Entity.EntityState.Modified;
-                //item.Collection(a => a.DOCUMENTI).Load();
-                var c = db.COEFFICIENTEINDRICHIAMO.Find(idCoeffIndRichiamo);
-                r.COEFFICIENTEINDRICHIAMO.Add(c);
-                int i = db.SaveChanges();
-                if (i <= 0)
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    throw new Exception(string.Format("Impossibile associare Riduzioni al Coeffiente Ind Richiamo."));
+                    List<COEFFICIENTEINDRICHIAMO> lcr = new List<COEFFICIENTEINDRICHIAMO>();
+                    if (escludiAnnullati)
+                        lcr = db.COEFFICIENTEINDRICHIAMO
+                                                    .Where(a => a.ANNULLATO == false &&
+                                                                a.IDTIPOCOEFFICIENTERICHIAMO==idTipoCoeffRichiamo)
+                                                    .OrderBy(a => a.DATAINIZIOVALIDITA)
+                                                    .OrderBy(a => a.DATAFINEVALIDITA)
+                                                    .ToList();
+                    else
+                        lcr = db.COEFFICIENTEINDRICHIAMO
+                                                .Where(a=>a.IDTIPOCOEFFICIENTERICHIAMO == idTipoCoeffRichiamo)
+                                                .OrderBy(a => a.DATAINIZIOVALIDITA)
+                                                .OrderBy(a => a.DATAFINEVALIDITA)
+                                                .ToList();
+                            
+
+                    lcrm = (from e in lcr
+                            select new CoefficienteRichiamoModel()
+                            {
+                                idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
+                                dataInizioValidita = e.DATAINIZIOVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA,
+                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
+                                annullato = e.ANNULLATO,
+                            }).ToList();
                 }
+                return lcrm;
             }
             catch (Exception ex)
             {
@@ -1038,27 +1102,57 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        //public static ValidationResult VerificaPercentualeRICHIAMO(string v, ValidationContext context)
-        //{
-        //    ValidationResult vr = ValidationResult.Success;
-        //    var fm = context.ObjectInstance as CoefficienteRichiamoModel;
+        public IList<TipoCoefficienteRichiamoModel> ListTipoCoeffIndRichiamo()
+        {
+            List<TipoCoefficienteRichiamoModel> ltcrm = new List<TipoCoefficienteRichiamoModel>();
 
-        //    if (fm != null)
-        //    {
-        //        if (fm.coefficienteIndBase > 100)
-        //        {
-        //            vr = new ValidationResult(string.Format("Impossibile inserire percentuale maggiore di 100 ({0}).", fm.coefficienteIndBase.ToString()));
-        //        }
-        //        else
-        //        {
-        //            vr = ValidationResult.Success;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        vr = new ValidationResult("La percentuale KM è richiesta.");
-        //    }
-        //    return vr;
-        //}
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var ltcr = db.TIPOCOEFFICIENTERICHIAMO.OrderBy(a => a.DESCRIZIONE).ToList();
+
+                    ltcrm = (from e in ltcr
+                            select new TipoCoefficienteRichiamoModel()
+                            {
+                                idTipoCoefficienteRichiamo=e.IDTIPOCOEFFICIENTERICHIAMO,
+                                descrizione=e.DESCRIZIONE
+                            }).ToList();
+                }
+
+                return ltcrm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public TIPOCOEFFICIENTERICHIAMO GetTipoCoeffRichiamo(decimal idTipoCoeffIndRichiamo)
+        {
+            TIPOCOEFFICIENTERICHIAMO tcir = new TIPOCOEFFICIENTERICHIAMO();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    tcir = db.TIPOCOEFFICIENTERICHIAMO.Find(idTipoCoeffIndRichiamo);
+                    if(!(tcir.IDTIPOCOEFFICIENTERICHIAMO>0))
+                    {
+                        throw new Exception("Tipo Coefficiente di Richiamo non trovato.");
+                    }
+                }
+                        
+
+                return tcir;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+
     }
 }
