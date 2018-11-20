@@ -6783,6 +6783,7 @@
     <Folder Include="Scripts\DayPilot\" />
     <Folder Include="Scripts\ScriptsView\" />
     <Folder Include="Scripts\themes\" />
+    <Folder Include="Temp\" />
     <Folder Include="Views\Log\" />
   </ItemGroup>
   <ItemGroup>
