@@ -51,7 +51,7 @@ namespace NewISE.Controllers
         public ActionResult DatiTrasferimentoDipendente(decimal idTeorico)
         {
             TrasferimentoModel tm = new TrasferimentoModel();
-            DatiTrasferimentoDipendenteModel dtdm=new DatiTrasferimentoDipendenteModel();
+            DatiTrasferimentoDipendenteModel dtdm = new DatiTrasferimentoDipendenteModel();
 
             try
             {
@@ -59,7 +59,7 @@ namespace NewISE.Controllers
                 {
                     tm = dtt.GetTrasferimentoByIdTeorico(idTeorico);
 
-                    using (CalcoliIndennita ci=new CalcoliIndennita(tm.idTrasferimento))
+                    using (CalcoliIndennita ci = new CalcoliIndennita(tm.idTrasferimento))
                     {
                         dtdm = new DatiTrasferimentoDipendenteModel()
                         {
@@ -71,13 +71,13 @@ namespace NewISE.Controllers
                             Livello = ci.Livello.LIVELLO,
                             Ruolo = ci.RuoloUfficio.DESCRUOLO,
                             Coan = string.IsNullOrEmpty(tm.coan) ? tm.TipoCoan.idTipoCoan == 1 ? "S.I." : "S.P." : tm.TipoCoan.descrizione + " (" + tm.coan + ")",
-                            FasciaKM_P = string.IsNullOrEmpty(ci.FasciaKM_P.KM) ? "-" :ci.FasciaKM_P.KM + " (" + ci.PercentualeFKMPartenza.ToString() + "%)",
-                            FasciaKM_R = string.IsNullOrEmpty(ci.FasciaKM_R.KM) ? "-" :ci.FasciaKM_R.KM + " (" + ci.PercentualeFKMRientro.ToString() + "%)",
+                            FasciaKM_P = string.IsNullOrEmpty(ci.FasciaKM_P.KM) ? "-" : ci.FasciaKM_P.KM + " (" + ci.PercentualeFKMPartenza.ToString() + "%)",
+                            FasciaKM_R = string.IsNullOrEmpty(ci.FasciaKM_R.KM) ? "-" : ci.FasciaKM_R.KM + " (" + ci.PercentualeFKMRientro.ToString() + "%)",
 
                         };
                     }
 
-                    
+
 
                 }
 
@@ -656,6 +656,7 @@ namespace NewISE.Controllers
                                         dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
                                     }
                                 }
+
                                 using (dtDipendenti dtd = new dtDipendenti())
                                 {
                                     foreach (var dip in lDip)
