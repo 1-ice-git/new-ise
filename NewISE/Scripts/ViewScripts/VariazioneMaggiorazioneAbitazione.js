@@ -697,10 +697,10 @@ function TabElencoFormulariMAB(idMab) {
     });
 }
 
-function FiltraFormulariMAB(idMab)
+function FiltraFormulariMAB(idMab,idAttivazione)
 {
     //debugger;
-    var idAttivazione =  parseInt($("#idAttivazione").val());
+    //var idAttivazione =  parseInt($("#idAttivazione").val());
 
     if (idAttivazione > 0) {
 

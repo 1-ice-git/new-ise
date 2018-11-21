@@ -5,21 +5,23 @@
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
+    decimal idTipoCoeffRichiamo = (decimal)ViewBag.idTipoCoeffRichiamo;
 }
 
 <p>
     <a id="btnInsNuovoCoeffIndRichiamo" href="#" onclick="NuovoCoeffIndRichiamo();">Inserisci nuovo Coeff. Ind. Richiamo</a>
 </p>
 
+
 <p>
-    @*<div class="form-group">
-            @Html.Label("lblCoeffIndRichiamo", "Seleziona nuovo Coeff. Ind. Richiamo ", new { @class = "control-label" })
-            <div id="divCombo">
-                <div class="select2-container select2-container--classic">
-                    @Html.DropDownList("idRiduzioni", ViewBag.CoeffIndRichiamo as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVCoeffIndRichiamo();", @onClick = "PrelevaPVCoeffIndRichiamo();" })
-                </div>
+    <div class="form-group">
+        @Html.Label("lblTipoCoeffRichiamo", "Tipo coefficiente", new { @class = "control-label" })
+        <div id="divCombo">
+            <div class="select2-container select2-container--classic">
+                @Html.DropDownList("idTipoCoeffRichiamo", ViewBag.TipoCoeffRichiamoList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaCoefficientiRichiamo();", @onClick = "PrelevaCoefficientiRichiamo();" })
             </div>
-        </div>*@
+        </div>
+    </div>
 </p>
 
 <table id="tbCoeffIndRichiamo" class="display" cellspacing="0">
@@ -94,7 +96,7 @@
     </tbody>
 </table>
 
-<div id="dialog-confirm" title="Elimina aliquota contributiva?" class="hide">
+<div id="dialog-confirm" title="Elimina coefficiente di richiamo?" class="hide">
     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione del Coefficiente Ind Richiamo?</p>
 </div>
 
@@ -125,28 +127,34 @@
             }
         }
     });
-    $("#idRiduzioni").select2({
-        placeholder: "Seleziona nuovo Coefficiente Indennità di Richiamo",
+
+    $("#idTipoCoeffRichiamo").select2({
+        placeholder: "Seleziona Tipo Coefficiente Indennità di Richiamo",
         allowClear: true,
         language: "it",
-        width: '150'
+        width: '300'
 
     });
 
     $("#btnInsNuovoCoeffIndRichiamo").button();
 
+    $("#idTipoCoeffRichiamo").val(@idTipoCoeffRichiamo);
 
-    function PrelevaPVCoeffIndRichiamo() {
+    $("#hiIdTipoCoeffRichiamo").val(@idTipoCoeffRichiamo);
+
+    function PrelevaCoefficientiRichiamo() {
         //debugger;
-        rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffIndRichiamoLivello";
+        rotta = "/Parametri/ParamCoeffIndRichiamo/CoeffTipoRichiamo";
 
-        var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
-        $("#hiTipoContributo").val(idRiduzioni);
+        var idTipoCoeffRichiamo = parseInt($("#idTipoCoeffRichiamo").select2('val'));
 
-        if (isNaN(idRiduzioni)) {
-            $("#divPViewParametri").empty();
-            return false;
-        }
+        
+        $("#hiIdTipoCoeffRichiamo").val(idTipoCoeffRichiamo);
+
+        //if (isNaN(idRiduzioni)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
 
         var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
@@ -156,7 +164,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idRiduzioni: idRiduzioni, escludiAnnullati: chk },
+            data: { idTipoCoeffRichiamo: idTipoCoeffRichiamo, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -187,18 +195,10 @@
 
     }
 
-
     function NuovoCoeffIndRichiamo() {
 
         var rotta = "/Parametri/ParamCoeffIndRichiamo/NuovoCoeffIndRichiamo";
-        var idRiduzioni = parseInt($("#idRiduzioni").select2('val'));
-
-        if (isNaN(idRiduzioni)) {
-            ////$("#divPViewParametri").empty();
-            //AlertDialog("Selezionare un coeff. per procedere.");
-            //return false;
-            idRiduzioni = 0;
-        }
+        var idTipoCoeffRichiamo = parseInt($("#idTipoCoeffRichiamo").select2('val'));
 
         var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
@@ -208,7 +208,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idRiduzioni: idRiduzioni, escludiAnnullati: chk },
+            data: { idTipoCoeffRichiamo: idTipoCoeffRichiamo, escludiAnnullati: chk },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -241,8 +241,7 @@
         //debugger;
         var rotta = "/Parametri/ParamCoeffIndRichiamo/EliminaCoeffIndRichiamo";
 
-        //var idRiduzioni =  parseInt($("#idRiduzioni").select2('val'));
-        var idRiduzioni = 0;
+        var idTipoCoeffIndRichiamo = parseInt($("#idTipoCoeffRichiamo").select2('val'));
 
         //if (isNaN(idRiduzioni)) {
         //    $("#divPViewParametri").empty();
@@ -266,7 +265,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idRiduzioni: idRiduzioni, idCoeffIndRichiamo: id },
+                            data: { escludiAnnullati: chk, idCoeffIndRichiamo: id, idTipoCoeffIndRichiamo: idTipoCoeffIndRichiamo },
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

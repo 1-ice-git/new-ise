@@ -37,7 +37,7 @@
         <div style="margin-top: 10px; margin-bottom: 10px;">
             @Html.Label("Data Attivazione", htmlAttributes: new { @class = "control-label" })
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("lDataAttivazione", ViewBag.lDataAttivazione as IEnumerable<SelectListItem>, new { @id = "idAttivazione", @class = "form-control select2 select2-select", @onchange = "FiltraElencoFormularioMAB();" })
+                @Html.DropDownList("lDataAttivazione", ViewBag.lDataAttivazione as IEnumerable<SelectListItem>, new { @id = "idAttivazioneMAB", @class = "form-control select2 select2-select", @onchange = "FiltraElencoFormularioMAB();" })
             </div>
         </div>
     </div>
@@ -60,7 +60,9 @@
         $('#ModalDownloadFormularioMAB_var').modal().show();
     }
     function FiltraElencoFormularioMAB() {
-        FiltraFormulariMAB(@idMab);
+        //debugger
+        var idAttivazioneMAB = $("#idAttivazioneMAB").val();
+        FiltraFormulariMAB(@idMab, idAttivazioneMAB);
     }
 
     $("#idAttivazione").select2({

@@ -188,16 +188,19 @@ namespace NewISE.Controllers
                                 dtps.SituazioneAttivazioneProvvScolById(e.IDPROVSCOLASTICHE, out richiestaPS,
                                        out attivazionePS, out DocProvvidenzeScolastiche);
                                 
-                                    if (richiestaPS == false && DocProvvidenzeScolastiche)
-                                    {
-                                        lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString() + " (In Lavorazione)", Value = e.IDPROVSCOLASTICHE.ToString() });
-                                        //solaLettura = false;
-                                    }
-                                    if (richiestaPS)
-                                    {
-                                        lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString(), Value = e.IDPROVSCOLASTICHE.ToString() });
-                                    }
+                                if (richiestaPS == false && DocProvvidenzeScolastiche)
+                                {
+                                    lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString() + " (In Lavorazione)", Value = e.IDPROVSCOLASTICHE.ToString() });
                                 }
+                                if (attivazionePS == false && richiestaPS)
+                                {
+                                    lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString() + " (Da Attivare)", Value = e.IDPROVSCOLASTICHE.ToString() });
+                                }
+                                if (richiestaPS && attivazionePS)
+                                {
+                                    lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString(), Value = e.IDPROVSCOLASTICHE.ToString() });
+                                }
+                            }
                             else
                             {
                                 lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + e.DATAAGGIORNAMENTO.ToString(), Value = e.IDPROVSCOLASTICHE.ToString() });
@@ -602,8 +605,9 @@ namespace NewISE.Controllers
             {
                 using (dtDocumenti dtd = new dtDocumenti())
                 {
-                    //ldm = dtd.GetFormulariProvvidenzeScolasticheByIdAttivazione(idTrasfProvScolastiche, idAttivazione).ToList();
-                    ldm = dtd.GetFormulariProvvidenzeScolasticheByIdAttivazioneVariazione(idTrasfProvScolastiche, idProvScolastiche).ToList();
+                    ldm = dtd.GetFormulariProvvidenzeScolasticheByIdAttivazione(idTrasfProvScolastiche, idProvScolastiche).OrderBy(a => a.progressivo).ToList();
+                    //List <VariazioneDocumentiModel> ldm = dtd.GetFormulariProvvidenzeScolasticheByIdAttivazioneVariazione(idTrasfProvScolastiche, idProvScolastiche).OrderBy(a => a.progressivo).ToList();
+
                 }
             }
             catch (Exception ex)
@@ -611,7 +615,10 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
+
             return PartialView("TabFormulariInseriti", ldm);
+            
+            //return PartialView("TabFormulariInseriti");
         }
         public JsonResult GestionePulsantiNotificaAttivaAnnullaProvvidenzeScolastiche(decimal idTrasfProvScolastiche)
         {

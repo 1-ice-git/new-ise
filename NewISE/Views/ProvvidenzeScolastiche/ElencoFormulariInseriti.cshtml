@@ -59,8 +59,7 @@
         <div style="margin-top: 10px; margin-bottom: 10px;">
             @Html.Label("Data Attivazione", htmlAttributes: new { @class = "control-label" })
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("lDataAttivazione", ViewBag.lDataAttivazione as IEnumerable<SelectListItem>, new { @id = "idAttivazione", @class = "form-control select2 select2-select", @onchange = "FiltraElencoFormulario();" })
-                @*@Html.DropDownList("lDataAttivazione", ViewBag.lDataAttivazione as IEnumerable<SelectListItem>, new { @id = "idAttivazione", @class = "form-control select2 select2-select", @onchange = "FiltraElencoFormulario();" })*@
+                @Html.DropDownList("lDataAttivazione", ViewBag.lDataAttivazione as IEnumerable<SelectListItem>, new { @id = "idAttivazionePS", @class = "form-control select2 select2-select", @onchange = "FiltraElencoFormularioPS();" })
             </div>
         </div>
     </div>
@@ -69,7 +68,6 @@
 <div class="row">
     <div class="col-xs-12">
         <div id="divTabElencoFormulari">
-            @*@Html.Action("TabFormulariInseriti", "ProvvidenzeScolastiche", new { idTrasfProvScolastiche = idTrasfProvScolastiche})*@
             @Html.Action("TabFormulariInseriti", "ProvvidenzeScolastiche", new { idTrasfProvScolastiche = idTrasfProvScolastiche, idTipoDocumento= idTipoDocumento, idProvScolastiche = idProvScolastiche })
         </div>
     </div>
@@ -404,9 +402,9 @@
         });
     }
 
-    function FiltraElencoFormulario() {
+    function FiltraElencoFormularioPS() {
         //debugger;
-        var idAttivazione = $("#idAttivazione").val();
+        var idAttivazione = $("#idAttivazionePS").val();
 
         if (idAttivazione != "" && idAttivazione != undefined) {
 
@@ -482,5 +480,11 @@
         //ElencoFormulariInseriti();
     });
 
+
+    //$("#idAttivazione").select2({
+    //    placeholder: "Seleziona il Documento",
+    //    allowClear: true,
+    //    language: "it"
+    //});
 
 </script>

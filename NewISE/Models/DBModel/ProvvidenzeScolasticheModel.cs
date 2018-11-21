@@ -16,5 +16,7 @@ namespace NewISE.Models.DBModel
         {
             return idTrasfProvScolastiche > 0 ? true : false;
         }
+
+        public decimal progressivo;
     }
 }
