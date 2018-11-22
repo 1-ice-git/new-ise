@@ -127,6 +127,10 @@ namespace NewISE.Controllers
         public ActionResult DatiTabElencoSospensione(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
+
+            bool admin = Utility.Amministratore();
+            ViewBag.Amministratore = admin;
+
             List<SospensioneModel> tmp = new List<SospensioneModel>();
             try
             {
