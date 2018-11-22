@@ -15,6 +15,7 @@ using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {
+
     public class SospensioneController : Controller
     {
         // GET: Sospensione
@@ -51,6 +52,8 @@ namespace NewISE.Controllers
                 return Json(new { err = ex.Message });
             }
         }
+
+        [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult DeleteSospensione(decimal idSospensione, decimal idTrasferimento)
         {
@@ -101,6 +104,9 @@ namespace NewISE.Controllers
             tmp.idTrasferimento = (decimal)ViewData["idTrasferimento"];
             return PartialView(tmp);
         }
+
+
+        [Authorize(Roles = "1 ,2")]
         public ActionResult Elimina_Sospensione(decimal idSospensione, bool permesso = true)
         {
             //decimal idSospensione =(decimal)ViewBag.idSospensione;
@@ -155,6 +161,8 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
+
+        [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult NuovaSospensione(decimal idTrasferimento)
         {
@@ -279,6 +287,8 @@ namespace NewISE.Controllers
             }
             return PartialView("AttivitaSospensione");
         }
+
+        [Authorize(Roles = "1 ,2")]
         public ActionResult EditSospensione(decimal idSospensione, decimal idTrasferimento)
         {
             ViewData["idSospensione"] = idSospensione;
@@ -317,6 +327,8 @@ namespace NewISE.Controllers
             tmp.idTrasferimento = (decimal)ViewData["idTrasferimento"];
             return PartialView(tmp);
         }
+
+        [Authorize(Roles = "1 ,2")]
         public ActionResult ModificaSospensione(SospensioneModel sm, decimal idSospensione, decimal idTrasferimento)
         {
             string[] my_array = null;
