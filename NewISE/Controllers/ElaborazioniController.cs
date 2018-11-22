@@ -655,13 +655,18 @@ namespace NewISE.Controllers
                                     {
                                         dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
                                     }
-                                    using (dtInvioFileFTP dtFile = new dtInvioFileFTP())
+                                    
+                                }
+
+                                using (dtInvioFileFTP dtFile = new dtInvioFileFTP())
+                                {
+                                    foreach (var dip in lDip)
                                     {
-
-                                        dtFile.FlUpload(idAnnoMeseElaborato, teorico, db);
-
+                                        //dtFile.FlUpload(idAnnoMeseElaborato, teorico, db);
+                                        dtFile.FlUpload(dip.IDDIPENDENTE, idAnnoMeseElaborato, db);
                                     }
                                 }
+
                                 using (dtDipendenti dtd = new dtDipendenti())
                                 {
                                     foreach (var dip in lDip)
