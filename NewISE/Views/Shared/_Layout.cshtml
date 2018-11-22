@@ -3,6 +3,7 @@
 @using System.Security.Policy
 @using NewISE.Models;
 @using NewISE.Models.Tools;
+@using NewISE.Models.Enumeratori;
 
 
 
@@ -26,6 +27,7 @@
             descRuoloAccesso = ac.RuoloAccesso.descRuoloAccesso;
         }
 
+        bool admin = Utility.Amministratore();
 
     }
 
@@ -46,8 +48,10 @@
 
     @Scripts.Render("~/bundles/ckeditor")
 
+
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap.min.js"></script>
+
 
     <link href="~/Content/jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47/css/custom-theme/jquery-ui-1.10.0.custom.css" rel="stylesheet" />
     <script src="~/Content/jquery-ui-bootstrap-jquery-ui-bootstrap-71f2e47/assets/js/jquery-ui-1.10.0.custom.min.js"></script>
@@ -158,7 +162,7 @@
         <div id="RealeSimulazione" class="row">
             <div class="col-xs-3">
                 @if (reale)
-            {
+                {
                     <span>Reale</span>
                 }
                 else
@@ -168,7 +172,7 @@
             </div>
             <div class="col-xs-9 text-right">
                 @if (reale)
-            {
+                {
                     <span>Il sistema è in modalità reale</span>
                 }
                 else
@@ -178,18 +182,48 @@
             </div>
         </div>
         <div id="menuIse" class="row">
-            <div class="col-xs-4">
+            <div class="col-xs-3">
                 @if (nominativo == string.Empty)
                 {
-                    <span>Utente: </span><span>Anonimo</span>
+                    <span>Utente: </span>
+                    <span>Anonimo</span>
                 }
                 else
                 {
-                    <span>@descRuoloAccesso: </span><span>@nominativo</span>
+                    <span>@descRuoloAccesso: </span>
+                    <span>@nominativo</span>
                 }
             </div>
-            <div class="col-xs-8 text-right ">
-                <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Home")">Home</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Dipendenti")">Dipendente</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Parametri")">Parametri</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Elaborazioni")">Elaborazioni</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Statistiche")">Statistiche</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("CalendariEventi")">Calendario</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Notifiche")">Notifiche</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("UtenzeDipendenti")">Utenze</a>
+          
+            <div class="pull-right">
+                <a class="btn_link" id="lkHome" onclick="Blocca();" href="@Url.RouteUrl("Home")">Home</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Dipendenti")">Dipendenti</a> |&nbsp; 
+                @if (admin)
+                {
+                    <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Parametri")">Parametri</a>
+                    <span> | </span>
+                    <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Elaborazioni")">Elaborazioni</a>
+                    <span> | </span>
+                    <span class="dropdown">
+                        <span class="dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Utility
+                            <span class="caret"></span>
+                        </span>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li class="dropdown-item" ><a  style="font-size:1.2rem" href="@Url.RouteUrl("Statistiche")">Statistiche</a></li>
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation"><a href="@Url.RouteUrl("Statistiche")" style="font-size:1.2rem">Import Dati da ISEPRO a ISESIM</a></li>
+                        </ul>
+                    </span>
+                <span> | </span>
+                }
+
+                <a class="btn_link" href="@Url.RouteUrl("CalendariEventi")">Calendario</a> | <a class="btn_link" href="@Url.RouteUrl("Notifiche")">Notifiche</a>&nbsp;
+                @if (admin)
+                {
+                    <span>| </span>
+                    <a class="btn_link" href="@Url.RouteUrl("UtenzeDipendenti")">Utenze</a>
+                    <span>&nbsp;</span>
+                }
             </div>
         </div>
     </div>
