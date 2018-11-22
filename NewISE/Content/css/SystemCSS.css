@@ -43,6 +43,38 @@ body {
     cursor: pointer;
 }
 
+#menuIse span ul li a:hover {
+    background-color: #ccffdd;
+    cursor: pointer;
+}
+
+#menuIse span ul li a {
+    color:gray
+}
+
+#menuIse span:hover {
+    background-color: #237069;
+    cursor: pointer;
+}
+
+#menuIse span ul {
+    background-color: #f2fff3;
+    cursor: pointer;
+}
+
+#menuIse span ul li {
+    background-color: #f2fff3;
+    cursor: pointer;
+}
+
+#menuIse .dropdown-menu .divider {
+  height: 1px;
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: lightgray;
+}
+
+
 .container {
     max-width: none !important;
     width: 1200px;

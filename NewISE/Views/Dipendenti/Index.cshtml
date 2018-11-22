@@ -45,10 +45,10 @@
                 <li class="disabled" id="mnGestioneTrasferimento"><a id="lkGestioneTrasferimento" disabled href="#tabGestioneTrasferimento" data-toggle="tab">Gestione Trasferimento</a></li>
 
                 <li class="dropdown">
-                    <button class="btn btn-default dropdown-toggle disabled" style="font-size:1.2rem" disabled type="button" id="ddVariazioneTrasferimento" data-toggle="dropdown">
+                    <a class="dropdown-toggle disabled" style="font-size:1.2rem" disabled role="button" id="ddVariazioneTrasferimento" data-toggle="dropdown">
                         Variazioni Trasferimento
                         <span class="caret"></span>
-                    </button>
+                    </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                         <li role="presentation" class="disabled" id="mnMaggiorazioneFamiliare"><a role="menuitem" tabindex="-1" id="lkMaggiorazioneFamiliare" disabled href="#tabMaggiorazioneFamiliare" data-toggle="tab" style="font-size:1.2rem">Maggiorazione Familiare</a></li>
                         <li role="presentation" class="disabled" id="mnPassaporto"><a role="menuitem" tabindex="-1" id="lkPassaporto" disabled href="#tabPassaporto" data-toggle="tab" style="font-size:1.2rem">Richiesta Passaporto</a></li>
@@ -78,31 +78,20 @@
                 {
                     <li class="disabled" id="mnSospensione"><a id="lkSospensione" disabled href="#tabSospensione" data-toggle="tab">Sospensione</a></li>
                 }
-                @*@if (admin)
-                {*@
-                    <li class="dropdown">
-                        <button class="btn btn-default dropdown-toggle disabled" disabled type="button" id="ddRientro" data-toggle="dropdown" style="font-size:1.2rem">
-                            Rientro
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                            <li role="presentation" class="disabled" id="mnRichiamo"><a role="menuitem" tabindex="-1" id="lkRichiamo" disabled href="#tabRichiamo" data-toggle="tab" style="font-size:1.2rem">Richiamo</a></li>
-                            <li role="presentation" class="divider"></li>
-                            <li role="presentation" class="disabled dropdown-header" id="mnHeaderTE" style="font-size:1.2rem"><b>Richiesta Trasporto Effetti</b></li>
-                            <li role="presentation" class="disabled" id="mnTrasportoEffettiRientroAnticipo"><a role="menuitem" tabindex="-1" id="lkTrasportoEffettiRientroAnticipo" disabled href="#tabTrasportoEffettiRientroAnticipo" data-toggle="tab" style="font-size:1.2rem">Anticipo</a></li>
-                            <li role="presentation" class="disabled" id="mnTrasportoEffettiRientroSaldo"><a role="menuitem" tabindex="-1" id="lkTrasportoEffettiRientroSaldo" disabled href="#tabTrasportoEffettiRientroSaldo" data-toggle="tab" style="font-size:1.2rem">Saldo</a></li>
-                        </ul>
-                    </li>
-                @*}
-                else
-                {
-                    <li class="dropdown">
-                        <button class="btn btn-default dropdown-toggle disabled" disabled type="button" id="ddRientro" data-toggle="dropdown" style="font-size:1.2rem">
-                            Rientro
-                            <span class="caret"></span>
-                        </button>
-                    </li>
-                }*@
+                <li class="dropdown">
+                    <a class="dropdown-toggle disabled" style="font-size:1.2rem" disabled role="button" id="ddRientro" data-toggle="dropdown">
+                        Rientro
+                        <span class="caret"></span>
+                    </a>
+                 
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                        <li role="presentation" class="disabled" id="mnRichiamo"><a role="menuitem" tabindex="-1" id="lkRichiamo" disabled href="#tabRichiamo" data-toggle="tab" style="font-size:1.2rem">Richiamo</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation" class="disabled dropdown-header" id="mnHeaderTE" style="font-size:1.2rem"><b>Richiesta Trasporto Effetti</b></li>
+                        <li role="presentation" class="disabled" id="mnTrasportoEffettiRientroAnticipo"><a role="menuitem" tabindex="-1" id="lkTrasportoEffettiRientroAnticipo" disabled href="#tabTrasportoEffettiRientroAnticipo" data-toggle="tab" style="font-size:1.2rem">Anticipo</a></li>
+                        <li role="presentation" class="disabled" id="mnTrasportoEffettiRientroSaldo"><a role="menuitem" tabindex="-1" id="lkTrasportoEffettiRientroSaldo" disabled href="#tabTrasportoEffettiRientroSaldo" data-toggle="tab" style="font-size:1.2rem">Saldo</a></li>
+                    </ul>
+                </li>
 
                 <li class="disabled" id="mnIndennita"><a id="lkIndennita" disabled href="#tabIndennita" data-toggle="tab" onclick="GestioneIndennita();">Indennità</a></li>
                 @if (admin)
@@ -833,6 +822,9 @@
 
             $("#ddVariazioneTrasferimento").attr("disabled", "disabled");
             $("#ddVariazioneTrasferimento").addClass("disabled");
+
+            $("#ddRientro").attr("disabled", "disabled");
+            $("#ddRientro").addClass("disabled");
 
             $("#lkMaggiorazioneFamiliare").attr("disabled", "disabled");
             $("#mnMaggiorazioneFamiliare").addClass("disabled");
