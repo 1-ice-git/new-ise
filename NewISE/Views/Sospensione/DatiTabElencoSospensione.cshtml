@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<NewISE.Models.DBModel.SospensioneModel>
+@{
 
+    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+    bool admin = Convert.ToBoolean(ViewBag.Amministratore);
+}
 <div style="padding-left: 15px; padding-right: 35px; padding-top: 10px;">
 
     <table id="tabListaSospensioni" class="table-striped" cellspacing="0">
@@ -53,6 +57,8 @@
                     <td style="text-align: center;">
                         @Html.DisplayFor(modelItem => item.NumeroGiorni)
                     </td>
+                    @if (admin)
+                    { 
                     <td style="text-align: center;">
                         <a href="javascript:void(0);"
                            class="anchorDetailDelete" id_Sosp="@item.idSospensione"><span class="text-uppercase" title="Elimina"><img src="~/Immagini/delete.png" /></span></a>
@@ -60,6 +66,19 @@
                         <a href="javascript:void(@item.idSospensione);"
                            class="anchorDetailEdit" idSosp="@item.idSospensione"><span class="text-uppercase" title="Modifica"><img src="~/Immagini/edit.png" /></span></a>
                     </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center;" >
+                            <a href="javascript:void(0);"
+                               class="anchorDetailDelete hidden" id_Sosp="@item.idSospensione"><span class="text-uppercase" title="Elimina"><img src="~/Immagini/delete.png" /></span></a>
+                            &nbsp;&nbsp;
+                            <a href="javascript:void(@item.idSospensione);"
+                               class="anchorDetailEdit hidden" idSosp="@item.idSospensione"><span class="text-uppercase" title="Modifica"><img src="~/Immagini/edit.png" /></span></a>
+                        </td>
+
+                    }
+
                 </tr>
                 if (@rowColor.Equals("#ffffff"))
                 {
