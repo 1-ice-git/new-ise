@@ -14,6 +14,7 @@
 
     @{
         bool reale = false;
+
         AccountModel ac = new AccountModel();
         AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
         string nominativo = string.Empty;
@@ -194,9 +195,9 @@
                     <span>@nominativo</span>
                 }
             </div>
-          
+
             <div class="pull-right">
-                <a class="btn_link" id="lkHome" onclick="Blocca();" href="@Url.RouteUrl("Home")">Home</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Dipendenti")">Dipendenti</a> |&nbsp; 
+                <a class="btn_link" id="lkHome" onclick="Blocca();" href="@Url.RouteUrl("Home")">Home</a> | <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Dipendenti")">Dipendenti</a> |&nbsp;
                 @if (admin)
                 {
                     <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("Parametri")">Parametri</a>
@@ -209,12 +210,12 @@
                             <span class="caret"></span>
                         </span>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li class="dropdown-item" ><a  style="font-size:1.2rem" href="@Url.RouteUrl("Statistiche")">Statistiche</a></li>
+                            <li class="dropdown-item"><a style="font-size:1.2rem" href="@Url.RouteUrl("Statistiche")">Statistiche</a></li>
                             <li role="presentation" class="divider"></li>
                             <li role="presentation"><a href="@Url.RouteUrl("Allineamento")" style="font-size:1.2rem">Import Dati da ISEPRO a ISESIM</a></li>
                         </ul>
                     </span>
-                <span> | </span>
+                    <span> | </span>
                 }
 
                 <a class="btn_link" href="@Url.RouteUrl("CalendariEventi")">Calendario</a> | <a class="btn_link" href="@Url.RouteUrl("Notifiche")">Notifiche</a>&nbsp;

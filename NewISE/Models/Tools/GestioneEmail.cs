@@ -27,6 +27,11 @@ namespace NewISE.Models.Tools
 
             try
             {
+
+
+
+
+
                 bool test = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Ambiente"]);
 
                 AccountModel am = new AccountModel();
