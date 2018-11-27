@@ -298,4 +298,10 @@ namespace NewISE.Models.Enumeratori
         Schedulata = 4
     }
 
+    public enum EnumTipoAmbiente
+    {
+        Reale = 1,
+        Simulazione = 2
+    }
+
 }
