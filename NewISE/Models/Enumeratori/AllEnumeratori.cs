@@ -290,4 +290,12 @@ namespace NewISE.Models.Enumeratori
         CoefficienteRichiamo = 2
     }
 
+    public enum EnumStatoElaborazione
+    {
+        InCorso = 1,
+        Terminata = 2,
+        TerminataConErrori = 3,
+        Schedulata = 4
+    }
+
 }

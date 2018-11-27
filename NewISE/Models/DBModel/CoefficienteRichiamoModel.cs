@@ -28,7 +28,7 @@ namespace NewISE.Models.DBModel
         public DateTime? dataFineValidita { get; set; }
         //[CustomValidation(typeof(dtParCoeffIndRichiamo), "VerificaPercentualeRICHIAMO")]
         [Required(ErrorMessage = "Il coefficiente è richiesto.")]
-        [Display(Name = "Coefficiente Indennita di Richiamo")]
+        [Display(Name = "Valore Coefficiente")]
         public decimal coefficienteRichiamo { get; set; }
 
         [Required(ErrorMessage = "Il coefficiente è richiesto.")]

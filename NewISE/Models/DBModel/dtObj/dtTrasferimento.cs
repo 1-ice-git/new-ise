@@ -76,7 +76,7 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var t = db.TEORICI.Find(idTeorico).TRASFERIMENTO;
-
+                
                 TrasferimentoModel tm = new TrasferimentoModel()
                 {
                     idTrasferimento = t.IDTRASFERIMENTO,
