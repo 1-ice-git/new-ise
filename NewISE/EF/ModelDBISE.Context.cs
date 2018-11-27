@@ -12,6 +12,8 @@ namespace NewISE.EF
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class ModelDBISE : DbContext
     {
@@ -77,6 +79,7 @@ namespace NewISE.EF
         public virtual DbSet<INDENNITASISTEMAZIONE> INDENNITASISTEMAZIONE { get; set; }
         public virtual DbSet<LIVELLI> LIVELLI { get; set; }
         public virtual DbSet<LIVELLIDIPENDENTI> LIVELLIDIPENDENTI { get; set; }
+        public virtual DbSet<LOG_ALLINEAMENTO> LOG_ALLINEAMENTO { get; set; }
         public virtual DbSet<LOGATTIVITA> LOGATTIVITA { get; set; }
         public virtual DbSet<MAB> MAB { get; set; }
         public virtual DbSet<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
@@ -143,5 +146,18 @@ namespace NewISE.EF
         public virtual DbSet<VALUTE> VALUTE { get; set; }
         public virtual DbSet<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
         public virtual DbSet<VOCI> VOCI { get; set; }
+    
+        public virtual int ALLINEA(Nullable<System.DateTime> aVVIO, string eMAIL, ObjectParameter wRK)
+        {
+            var aVVIOParameter = aVVIO.HasValue ?
+                new ObjectParameter("AVVIO", aVVIO) :
+                new ObjectParameter("AVVIO", typeof(System.DateTime));
+    
+            var eMAILParameter = eMAIL != null ?
+                new ObjectParameter("EMAIL", eMAIL) :
+                new ObjectParameter("EMAIL", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ALLINEA", aVVIOParameter, eMAILParameter, wRK);
+        }
     }
 }

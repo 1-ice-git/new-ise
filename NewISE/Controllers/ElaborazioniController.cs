@@ -52,7 +52,7 @@ namespace NewISE.Controllers
         {
             TrasferimentoModel tm = new TrasferimentoModel();
             DatiTrasferimentoDipendenteModel dtdm = new DatiTrasferimentoDipendenteModel();
-
+            
             try
             {
                 using (dtTrasferimento dtt = new dtTrasferimento())

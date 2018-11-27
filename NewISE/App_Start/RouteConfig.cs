@@ -61,6 +61,10 @@ namespace NewISE
                 url: "Elaborazioni/Index"
             );
 
+            routes.MapRoute(
+               name: "Allineamento",
+               url: "Allineamento/Index"
+           );
         }
     }
 }
