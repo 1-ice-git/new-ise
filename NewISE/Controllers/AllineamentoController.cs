@@ -45,6 +45,10 @@ namespace NewISE.Controllers
                             lavm.StatoElaborazione = la.STATO_ELAB;
                             lavm.InizioJob = la.INIZIO_JOB.Value;
                             lavm.DataOraInizio = null;
+                            if (la.STATO_ELAB == (decimal)EnumStatoElaborazione.Terminata)
+                            {
+                                lavm.DataOraInizio = DateTime.Now;
+                            }
 
                             if (la.STATO_ELAB == (decimal)EnumStatoElaborazione.Schedulata)
                             {
@@ -55,7 +59,7 @@ namespace NewISE.Controllers
                         else
                         {
                             lavm.FaseElaborazione = ".n.d.";
-                            lavm.DataOraInizio=null;
+                            lavm.DataOraInizio=DateTime.Now;
                         }
                     }
                 }
