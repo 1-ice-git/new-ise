@@ -76,7 +76,7 @@
                 <div class="form-group  text-right">
                     @Html.LabelFor(model => model.DataOraInizio, new { @class = "control-label col-xs-4", @style = "padding-top:10px" })
                     @if (Model.StatoElaborazione == (decimal)EnumStatoElaborazione.Terminata || Model.StatoElaborazione == (decimal)EnumStatoElaborazione.TerminataConErrori)
-                    {
+                    {         
                         <div class='col-xs-2'>
                             <div class="form-group">
                                 <div class='input-group date' id='datetimepicker1'>
@@ -98,6 +98,7 @@
                             </button>
                         </div>
                     }
+
 
                     @if (Model.StatoElaborazione == (decimal)EnumStatoElaborazione.InCorso || Model.StatoElaborazione == (decimal)EnumStatoElaborazione.Schedulata)
                     {
