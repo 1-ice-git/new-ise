@@ -691,5 +691,24 @@ namespace NewISE.Models.DBModel.dtObj
                 return null;
             }
         }
+
+        public bool EsisteEventoTrasferimentoDaAttivare(decimal idTrasferimento, EnumFunzioniEventi fe, ModelDBISE db)
+        {
+            decimal funzEv = (decimal)fe;
+            bool ret = false;
+
+            var lce =
+                db.CALENDARIOEVENTI
+                    .Where(
+                        c =>
+                            c.IDTRASFERIMENTO == idTrasferimento && c.IDFUNZIONIEVENTI == funzEv && c.ANNULLATO == false).OrderByDescending(a => a.IDCALENDARIOEVENTI)
+                    .ToList();
+
+            if (lce?.Any() ?? false)
+            {
+                ret = true;
+            }
+            return ret;
+        }
     }
 }

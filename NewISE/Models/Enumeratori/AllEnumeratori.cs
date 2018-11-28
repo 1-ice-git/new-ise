@@ -190,8 +190,10 @@ namespace NewISE.Models.Enumeratori
         AttivaTrasferimento = 8,
         InvioPassaporto = 9,
         RichiestaProvvidenzeScolastiche = 10,
-        RichiestaViaggiCongedo = 11
+        RichiestaViaggiCongedo = 11,
+        TrasferimentoDaAttivare = 12
     }
+
     public enum EnumTipoRegolaCalcolo
     {
         IndennitaBase = 1,

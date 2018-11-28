@@ -3958,5 +3958,71 @@ namespace NewISE.Models.DBModel.dtObj
             return ltm;
         }
 
+        public DateTime GetDataAttivazioneMassimaPartenza(decimal idTrasferimento, ModelDBISE db)
+        {
+            DateTime dtMax=DateTime.Now;
+
+            var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+            var lamf = t.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM && a.RICHIESTAATTIVAZIONE).OrderBy(a => a.IDATTIVAZIONEMAGFAM).ToList();
+            if(lamf?.Any()??false)
+            {
+                dtMax = lamf.First().DATAATTIVAZIONEMAGFAM.Value;
+            }
+
+            var lap = t.PASSAPORTI.ATTIVAZIONIPASSAPORTI.Where(a => a.ANNULLATO == false && a.NOTIFICARICHIESTA && a.PRATICACONCLUSA).OrderBy(a => a.IDATTIVAZIONIPASSAPORTI).ToList();
+            if (lap?.Any() ?? false)
+            {
+                DateTime dt = lap.First().DATAPRATICACONCLUSA.Value;
+                if(dt > dtMax)
+                {
+                    dtMax = dt;
+                }               
+            }
+
+            var latv = t.TITOLIVIAGGIO.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.ATTIVAZIONERICHIESTA && a.NOTIFICARICHIESTA).OrderBy(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();
+            if (latv?.Any() ?? false)
+            {
+                DateTime dt = latv.First().DATAATTIVAZIONERICHIESTA.Value;
+                if (dt > dtMax)
+                {
+                    dtMax = dt;
+                }
+            }
+
+            var laa = t.PRIMASITEMAZIONE.ATTIVITAANTICIPI.Where(a => a.ANNULLATO == false && a.ATTIVARICHIESTA && a.NOTIFICARICHIESTA).OrderBy(a => a.IDATTIVITAANTICIPI).ToList();
+            if (laa?.Any() ?? false)
+            {
+                DateTime dt = laa.First().DATAATTIVARICHIESTA.Value;
+                if (dt > dtMax)
+                {
+                    dtMax = dt;
+                }
+            }
+
+            var late = t.TEPARTENZA.ATTIVITATEPARTENZA.Where(a => a.ANNULLATO == false && a.ATTIVAZIONETRASPORTOEFFETTI && a.RICHIESTATRASPORTOEFFETTI).OrderBy(a => a.IDATEPARTENZA).ToList();
+            if (late?.Any() ?? false)
+            {
+                DateTime dt = late.First().DATAATTIVAZIONETE.Value;
+                if (dt > dtMax)
+                {
+                    dtMax = dt;
+                }
+            }
+
+            var lmab = t.INDENNITA.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato).OrderBy(a => a.IDMAB).ToList();
+            if (lmab?.Any() ?? false)
+            {
+                var amab = lmab.First().ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false && a.ATTIVAZIONE && a.NOTIFICARICHIESTA).OrderBy(a => a.IDATTIVAZIONEMAB).ToList();
+
+                DateTime dt = amab.First().DATAATTIVAZIONE.Value;
+                if (dt > dtMax)
+                {
+                    dtMax = dt;
+                }
+            }
+            return dtMax;
+        }
+
     }
 }

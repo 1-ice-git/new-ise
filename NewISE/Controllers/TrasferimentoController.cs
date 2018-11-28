@@ -2542,10 +2542,77 @@ namespace NewISE.Controllers
             {
                 return Json(new { err = ex.Message });
             }
+        }
+        
+        public JsonResult InserisceEventoTrasferimentoDattivare(decimal idTrasferimento)
+        {
+            try
+            {
+                if (idTrasferimento.Equals(null))
+                {
+                    throw new Exception("Il trasferimento non risulta valorizzato.");
+                }
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                        {
+                            if (dtce.EsisteEventoTrasferimentoDaAttivare(idTrasferimento, EnumFunzioniEventi.TrasferimentoDaAttivare, db) == false)
+                            {
+                                var t = dtt.GetSoloTrasferimentoById(idTrasferimento);
 
+                                DateTime dtMax = dtt.GetDataAttivazioneMassimaPartenza(t.idTrasferimento, db);
 
+                                CalendarioEventiModel cem = new CalendarioEventiModel()
+                                {
+                                    idFunzioneEventi = EnumFunzioniEventi.TrasferimentoDaAttivare,
+                                    idTrasferimento = idTrasferimento,
+                                    DataInizioEvento = dtMax,
+                                    DataScadenza = t.dataPartenza < dtMax ? dtMax : t.dataPartenza,
+                                };
+                                dtce.InsertCalendarioEvento(ref cem, db);                               
+                            }
+                        }
+                    }
+                }
+                return Json(new { err = "" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
         }
 
+
+        public JsonResult ModificaEventoTrasferimentoDattivareInCompletato(decimal idTrasferimento)
+        {
+            try
+            {
+                if (idTrasferimento.Equals(null))
+                {
+                    throw new Exception("Il trasferimento non risulta valorizzato.");
+                }
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                        {
+                            if (dtce.EsisteEventoTrasferimentoDaAttivare(idTrasferimento, EnumFunzioniEventi.TrasferimentoDaAttivare, db))
+                            {
+                                dtce.ModificaInCompletatoCalendarioEvento(idTrasferimento, EnumFunzioniEventi.TrasferimentoDaAttivare, db);
+                            }
+                        }
+                    }
+                }
+                return Json(new { err = "" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
+        }
 
     }
 }

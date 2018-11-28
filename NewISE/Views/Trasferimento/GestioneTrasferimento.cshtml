@@ -169,6 +169,7 @@
                     InfoTrasferimento(idTrasferimento);
                     //GestioneMenu();
                     GestioneAbilitazioneMenu(idTrasferimento);
+                    ModificaEventoTrasferimentoDattivareInCompletato();
                     //MenuDaVisualizzare();
                     //ElencoTrasferimento();
                     var list = result.listaTrasferimenti;
@@ -191,6 +192,35 @@
         });
     }
 
-
+    function ModificaEventoTrasferimentoDattivareInCompletato() {
+        //debugger;
+        var rotta = "/Trasferimento/ModificaEventoTrasferimentoDattivareInCompletato";
+        var idTrasferimento = parseInt('@idTrasferimento');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTrasferimento: idTrasferimento,
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err != "") {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
 
 </script>

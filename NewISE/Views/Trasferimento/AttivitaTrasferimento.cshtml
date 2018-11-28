@@ -346,6 +346,8 @@
                         $("#btAttivaTrsf").removeAttr("disabled");
                         $("#btAttivaTrsf").removeClass("disableLink");
 
+                        InserisceEventoTrasferimentoDattivare();
+
                     } else {
 
                         $("#btAttivaTrsf").attr("disabled", "disabled");
@@ -491,6 +493,38 @@
                 ErroreElaborazioneAjax(msg);
             }
 
+        });
+    }
+
+
+    function InserisceEventoTrasferimentoDattivare() {
+        //debugger;
+        var rotta = "/Trasferimento/InserisceEventoTrasferimentoDattivare";
+        var idTrasferimento = parseInt('@idTrasferimento');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTrasferimento: idTrasferimento,
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err != "") {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
         });
     }
 
