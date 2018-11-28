@@ -16,12 +16,10 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
-        public IList<DestinatarioModel> GetListDestinatari(decimal idNotifica)
+        public IList<DestinatarioModel> GetListDestinatari(decimal idNotifica, ModelDBISE db)
         {
             List<DestinatarioModel> ldes = new List<DestinatarioModel>();
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                ldes = (from d in db.DESTINATARI
+            ldes = (from d in db.DESTINATARI
                         where d.IDNOTIFICA == idNotifica
                         orderby d.DIPENDENTI.NOME
                         select new DestinatarioModel()
@@ -31,7 +29,6 @@ namespace NewISE.Models.DBModel.dtObj
                             Nominativi = d.DIPENDENTI.NOME + "  " + d.DIPENDENTI.COGNOME,
                             ToCc = d.TOCC
                         }).ToList();
-            }
             return ldes;
         }
 
@@ -359,7 +356,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return tmp;
         }
-        public bool InsertNotifiche(NotificheModel NM, out bool tutti)
+        public bool InsertNotifiche(NotificheModel NM, ModelDBISE db, out bool tutti)
         {
             tutti = false;
             List<DESTINATARI> listDest = new List<DESTINATARI>();
@@ -415,34 +412,38 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                 }
             }
-            using (ModelDBISE db = new ModelDBISE())
+
+            if (listDest.Count != 0)
             {
-                if (listDest.Count != 0)
+                //try
+                //{
+                NOTIFICHE nuovo = new NOTIFICHE();
+                nuovo.IDMITTENTE = NM.idMittente;
+                nuovo.CORPOMESSAGGIO = NM.corpoMessaggio;
+                nuovo.DATANOTIFICA = DateTime.Now;
+                nuovo.OGGETTO = NM.Oggetto;
+                nuovo.DESTINATARI = listDest;
+                nuovo.ALLEGATO = NM.Allegato;
+                nuovo.NOMEDOCUMENTO = NM.NomeFile;
+                nuovo.ESTENSIONEDOC = NM.Estensione;
+                //db.Database.BeginTransaction();
+                db.NOTIFICHE.Add(nuovo);
+                if(db.SaveChanges()<=0)
                 {
-                    try
-                    {
-                        NOTIFICHE nuovo = new NOTIFICHE();
-                        nuovo.IDMITTENTE = NM.idMittente;
-                        nuovo.CORPOMESSAGGIO = NM.corpoMessaggio;
-                        nuovo.DATANOTIFICA = DateTime.Now;
-                        nuovo.OGGETTO = NM.Oggetto;
-                        nuovo.DESTINATARI = listDest;
-                        nuovo.ALLEGATO = NM.Allegato;
-                        nuovo.NOMEDOCUMENTO = NM.NomeFile;
-                        nuovo.ESTENSIONEDOC = NM.Estensione;
-                        db.Database.BeginTransaction();
-                        db.NOTIFICHE.Add(nuovo);
-                        db.SaveChanges();
-                        db.Database.CurrentTransaction.Commit();
-                        NM.idNotifica = nuovo.IDNOTIFICA;
-                    }
-                    catch (Exception ex)
-                    {
-                        db.Database.CurrentTransaction.Rollback();
-                        return false;
-                    }
+                    throw new Exception("Errore in fase di inserimento notifica");
                 }
+
+                //db.Database.CurrentTransaction.Commit();
+                NM.idNotifica = nuovo.IDNOTIFICA;
+                //}
+                //catch (Exception ex)
+                //{
+                //    //db.Database.CurrentTransaction.Rollback();
+                //    throw ex;
+                //    //return false;
+                //}
             }
+            
             if (listDest.Count != 0)
                 return true;
             else
@@ -547,17 +548,14 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return dm;
         }
-        public byte[] GetDocumentoByteById(decimal idNotifica)
+        public byte[] GetDocumentoByteById(decimal idNotifica, ModelDBISE db)
         {
             byte[] blob = null;
-            using (ModelDBISE db = new ModelDBISE())
-            {
-                var d = db.NOTIFICHE.Find(idNotifica);
+            var d = db.NOTIFICHE.Find(idNotifica);
 
-                if (d != null && d.IDNOTIFICA > 0)
-                {
-                    blob = d.ALLEGATO;
-                }
+            if (d != null && d.IDNOTIFICA > 0)
+            {
+                blob = d.ALLEGATO;
             }
             return blob;
         }

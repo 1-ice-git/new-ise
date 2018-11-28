@@ -251,7 +251,7 @@ namespace NewISE.Models.DBModel.dtObj
                 DIPENDENTI d = db.DIPENDENTI.Find(idDipendente);
 
                 var lemail = d.EMAILSECONDARIEDIP.Where(
-                        a => a.IDDIPENDENTE == idDipendente).ToList();
+                        a => a.IDDIPENDENTE == idDipendente && a.ATTIVA).ToList();
 
                 if (lemail?.Any() ?? false)
                 {
