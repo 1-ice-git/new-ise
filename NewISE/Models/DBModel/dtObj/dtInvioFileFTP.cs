@@ -82,7 +82,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (lTeorici?.Any() ?? false)
                         {
-                            string pathtemp_idfile = System.Web.HttpContext.Current.Server.MapPath("\\Temp\\");
+                            //string pathtemp_idfile = System.Web.HttpContext.Current.Server.MapPath("\\Temp\\");
+                            string pathtemp_idfile = System.Web.HttpContext.Current.Server.MapPath("~");
+
                             StreamWriter outputFile = new StreamWriter(Path.Combine(pathtemp_idfile, "FL052A-EEE.txt"));
 
                             foreach (var teorico in lTeorici)

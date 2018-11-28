@@ -371,6 +371,8 @@ namespace NewISE.Controllers
                             }
                             else
                             {
+                                string msgGoogle = "";
+                                ViewData["msgGoogle"] = msgGoogle;
                                 ViewBag.ModelStateCount = 1;
                                 ModelState.AddModelError("", "L'utente non è autorizzato per l'accesso.");
                                 return View(account);

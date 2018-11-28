@@ -11,6 +11,13 @@
         {
             @Html.Label("lblListaTrasferimento", "Trasferimento", new { @class = "control-label col-xs-3" })
         }
+        else
+        {
+            @Html.Label("lblListaTrasferimento", "Trasferimento", new { @class = "control-label col-xs-3" })
+            @Html.DropDownList("listaTrasferimento", ViewBag.ListaTrasferimento as IEnumerable<SelectListItem>, new { @id = "ElencolistaTrasferimento", @class = "form-control select2 select2-select" })
+        }
+
+        
         <div id="divCombo2" class="col-xs-9">
             <div class="select2-container select2-container--classic">
                 @if (admin)
@@ -19,9 +26,10 @@
                 }
                 else
                 {
-                    if (notificato)
+                    if (notificato )
                     {
-                        @Html.DropDownList("listaTrasferimento", ViewBag.ListaTrasferimento as IEnumerable<SelectListItem>, new { @id = "ElencolistaTrasferimento", @class = "form-control select2 select2-select disabled", @disabled = "disabled" })
+                        @Html.Label("lblListaTrasferimento", "Trasferimento", new { @class = "control-label col-xs-3" })
+                        @Html.DropDownList("listaTrasferimento", ViewBag.ListaTrasferimento as IEnumerable<SelectListItem>, new { @id = "ElencolistaTrasferimento", @class = "form-control select2 select2-select" })
                     }
                 }
 
