@@ -44,8 +44,11 @@ namespace NewISE.Models.Tools
                         var ldip =
                             db.DIPENDENTI.Where(
                                 a =>
-                                    a.ABILITATO == true && (a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == 1 ||
-                                    a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == 2))
+                                    a.ABILITATO == true &&
+                                    (
+                                        a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.SuperAmministratore ||
+                                        a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Amministratore)
+                                    )
                                 .OrderBy(a => a.COGNOME)
                                 .ThenBy(a => a.NOME)
                                 .ToList();
@@ -62,7 +65,6 @@ namespace NewISE.Models.Tools
                                     eMail = dip.EMAIL,
                                     password = dip.UTENTIAUTORIZZATI.PSW,
                                     utente = dip.UTENTIAUTORIZZATI.UTENTE
-
                                 };
 
                                 lacm.Add(acm);
@@ -92,7 +94,7 @@ namespace NewISE.Models.Tools
 
                         msgMail.cc.Clear();
                     }
-                    else if (am.idRuoloUtente == 1)
+                    else if (am.idRuoloUtente ==(decimal)EnumRuoloAccesso.SuperAmministratore)
                     {
                         msgMail.destinatario.Clear();
                         msgMail.destinatario.Add(new Destinatario()
