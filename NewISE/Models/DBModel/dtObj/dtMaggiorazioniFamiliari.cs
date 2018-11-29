@@ -302,6 +302,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
 
                                         amf.ATTIVAZIONEMAGFAM = true;
+                                        amf.DATAATTIVAZIONEMAGFAM = DateTime.Now;
 
                                         var rmf =
                                             amf.RINUNCIAMAGGIORAZIONIFAMILIARI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Da_Attivare)
