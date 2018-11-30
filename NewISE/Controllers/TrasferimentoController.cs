@@ -2548,32 +2548,43 @@ namespace NewISE.Controllers
         {
             try
             {
-                if (idTrasferimento.Equals(null))
-                {
-                    throw new Exception("Il trasferimento non risulta valorizzato.");
-                }
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    db.Database.BeginTransaction();
+
+                    try
                     {
-                        using (dtCalendarioEventi dtce = new dtCalendarioEventi())
+                        if (idTrasferimento.Equals(null))
                         {
-                            if (dtce.EsisteEventoTrasferimentoDaAttivare(idTrasferimento, EnumFunzioniEventi.TrasferimentoDaAttivare, db) == false)
+                            throw new Exception("Il trasferimento non risulta valorizzato.");
+                        }
+                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        {
+                            using (dtCalendarioEventi dtce = new dtCalendarioEventi())
                             {
-                                var t = dtt.GetSoloTrasferimentoById(idTrasferimento);
-
-                                DateTime dtMax = dtt.GetDataAttivazioneMassimaPartenza(t.idTrasferimento, db);
-
-                                CalendarioEventiModel cem = new CalendarioEventiModel()
+                                if (dtce.EsisteEventoTrasferimentoDaAttivare(idTrasferimento, EnumFunzioniEventi.TrasferimentoDaAttivare, db) == false)
                                 {
-                                    idFunzioneEventi = EnumFunzioniEventi.TrasferimentoDaAttivare,
-                                    idTrasferimento = idTrasferimento,
-                                    DataInizioEvento = dtMax,
-                                    DataScadenza = t.dataPartenza < dtMax ? dtMax : t.dataPartenza,
-                                };
-                                dtce.InsertCalendarioEvento(ref cem, db);                               
+                                    var t = dtt.GetSoloTrasferimentoById(idTrasferimento);
+    
+                                    DateTime dtMax = dtt.GetDataAttivazioneMassimaPartenza(t.idTrasferimento, db);
+    
+                                    CalendarioEventiModel cem = new CalendarioEventiModel()
+                                    {   
+                                        idFunzioneEventi = EnumFunzioniEventi.TrasferimentoDaAttivare,
+                                        idTrasferimento = idTrasferimento,
+                                        DataInizioEvento = dtMax,
+                                        DataScadenza = t.dataPartenza < dtMax ? dtMax : t.dataPartenza,
+                                    };
+                                    dtce.InsertCalendarioEvento(ref cem, db);                               
+                                }
                             }
                         }
+                        db.Database.CurrentTransaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        db.Database.CurrentTransaction.Rollback();
+                        throw ex;
                     }
                 }
                 return Json(new { err = "" });

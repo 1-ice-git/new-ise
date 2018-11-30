@@ -654,17 +654,23 @@ namespace NewISE.Controllers
                                     if (!dip.ELABORAZIONI?.Any(a => a.IDMESEANNOELAB == idAnnoMeseElaborato) ?? false)
                                     {
                                         dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
-                                    }
-                                    
+                                    }                                    
                                 }
 
                                 using (dtInvioFileFTP dtFile = new dtInvioFileFTP())
                                 {
-                                    foreach (var dip in lDip)
-                                    {
-                                        //dtFile.FlUpload(idAnnoMeseElaborato, teorico, db);
-                                        dtFile.FlUpload(dip.IDDIPENDENTE, idAnnoMeseElaborato, db);
-                                    }
+                                    dtFile.FlUpload(lTeorici, db);
+                                    //foreach (var dip in lDip)
+                                    //{
+                                    //    //var t = db.TEORICI.Find(1);
+                                    //    //if (t.VOCI.TIPOLIQUIDAZIONE.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe)
+                                    //    //{
+                                    //    //    var d = t.TRASFERIMENTO.DIPENDENTI;
+
+                                    //    //}
+                                    //    //dtFile.FlUpload(idAnnoMeseElaborato, teorico, db);
+                                    //    dtFile.FlUpload(dip.IDDIPENDENTE, idAnnoMeseElaborato, db);
+                                    //}
                                 }
 
                                 using (dtDipendenti dtd = new dtDipendenti())

@@ -101,11 +101,15 @@
         //debugger;
         var rotta = "/Anticipi/GestionePulsantiAnticipi";
         var idPrimaSistemazione = parseInt('@idPrimaSistemazione');
+        var percentualeRichiesta = parseInt(PercentualeAnticipoRichiesto.getNumber());
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idPrimaSistemazione: idPrimaSistemazione },
+            data: {
+                idPrimaSistemazione: idPrimaSistemazione,
+                percentualeRichiesta: percentualeRichiesta
+            },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;
@@ -317,7 +321,7 @@
                 type: "POST",
                 url: rotta,
                 data: { idAttivitaAnticipi: idAttivitaAnticipi, percRichiesta: percRichiesta },
-                async: true,
+                async: false,
                 dataType: 'json',
                 beforeSend: function () {
                     //debugger;
@@ -412,7 +416,12 @@
             success: function (result) {
                 //debugger;
                 if (result.errore === "") {
-                    AttivitaAnticipi();
+                    //AttivitaAnticipi();
+                    //if (result.chkRinuncia == 1)
+                    //{
+                        CalcolaAnticipo(idAttivitaAnticipi, result.chkRinuncia);
+                    //}
+                    GestionePulsantiNotificaAttivaAnnullaAnticipi();
                 } else {
                     ErroreElaborazioneAjax(result.msg);
                 }

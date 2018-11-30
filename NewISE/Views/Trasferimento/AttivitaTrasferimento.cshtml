@@ -503,7 +503,9 @@
         var idTrasferimento = parseInt('@idTrasferimento');
         $.ajax({
             type: "POST",
+            async: false,
             url: rotta,
+            
             data: {
                 idTrasferimento: idTrasferimento,
             },

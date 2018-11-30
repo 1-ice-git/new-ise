@@ -139,7 +139,7 @@ namespace NewISE.Controllers
         }
 
 
-        public ActionResult GestionePulsantiAnticipi(decimal idPrimaSistemazione)
+        public ActionResult GestionePulsantiAnticipi(decimal idPrimaSistemazione, decimal percentualeRichiesta)
         {
             AttivitaAnticipiModel aam = new AttivitaAnticipiModel();
 
@@ -188,6 +188,11 @@ namespace NewISE.Controllers
                             }
 
                             if (rinunciaAnticipi && notificaRichiesta == false && attivaRichiesta == false && statoTrasferimento != EnumStatoTraferimento.Attivo && statoTrasferimento != EnumStatoTraferimento.Annullato)
+                            {
+                                disabledNotificaRichiesta = "";
+                            }
+
+                            if (Math.Round(percentualeRichiesta,0)>0 && notificaRichiesta == false && attivaRichiesta == false && statoTrasferimento != EnumStatoTraferimento.Attivo && statoTrasferimento != EnumStatoTraferimento.Annullato)
                             {
                                 disabledNotificaRichiesta = "";
                             }
@@ -369,18 +374,26 @@ namespace NewISE.Controllers
 
         public JsonResult AggiornaRinunciaAnticipi(decimal idAttivitaAnticipi)
         {
-            try
+            using (dtAnticipi dta = new dtAnticipi())
             {
-                using (dtAnticipi dta = new dtAnticipi())
+                using (ModelDBISE db = new ModelDBISE())
                 {
-                    dta.Aggiorna_RinunciaAnticipi(idAttivitaAnticipi);
+                    decimal chkRinuncia;
+                    try
+                    {
+                        dta.Aggiorna_RinunciaAnticipi(idAttivitaAnticipi);
+
+                        var RinunciaAnticipi = dta.GetRinunciaAnticipi(idAttivitaAnticipi, db);
+
+                        chkRinuncia = Convert.ToDecimal(RinunciaAnticipi.rinunciaAnticipi);
+                    }
+                    catch (Exception ex)
+                    {
+                        return Json(new { errore = ex.Message, msg = "" });
+                    }
+                    return Json(new { errore = "", msg = "Aggiornamento eseguito correttamente.", chkRinuncia = chkRinuncia });
                 }
             }
-            catch (Exception ex)
-            {
-                return Json(new { errore = ex.Message, msg = "" });
-            }
-            return Json(new { errore = "", msg = "Aggiornamento eseguito correttamente." });
         }
 
     }
