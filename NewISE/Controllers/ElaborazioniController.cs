@@ -626,9 +626,7 @@ namespace NewISE.Controllers
                             {
                                 lTeorici.AddRange(lt6);
                             }
-                            #endregion
-
-
+                            #endregion                       
 
                             lTeorici = lTeorici.OrderBy(a => a).ToList();
 
@@ -660,17 +658,6 @@ namespace NewISE.Controllers
                                 using (dtInvioFileFTP dtFile = new dtInvioFileFTP())
                                 {
                                     dtFile.FlUpload(lTeorici, db);
-                                    //foreach (var dip in lDip)
-                                    //{
-                                    //    //var t = db.TEORICI.Find(1);
-                                    //    //if (t.VOCI.TIPOLIQUIDAZIONE.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe)
-                                    //    //{
-                                    //    //    var d = t.TRASFERIMENTO.DIPENDENTI;
-
-                                    //    //}
-                                    //    //dtFile.FlUpload(idAnnoMeseElaborato, teorico, db);
-                                    //    dtFile.FlUpload(dip.IDDIPENDENTE, idAnnoMeseElaborato, db);
-                                    //}
                                 }
 
                                 using (dtDipendenti dtd = new dtDipendenti())
