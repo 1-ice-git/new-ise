@@ -284,5 +284,10 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
             return ret;
         }
 
+        public void VerificaPeriodo(decimal MeseDa, decimal AnnoDa, decimal MeseA, decimal AnnoA, ModelDBISE db)
+        {
+
+        }
+
     }
 }

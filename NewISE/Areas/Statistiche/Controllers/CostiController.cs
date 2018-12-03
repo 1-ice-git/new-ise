@@ -25,6 +25,8 @@ namespace NewISE.Areas.Statistiche.Controllers
             var rMeseAnno = new List<SelectListItem>();
             List<MeseAnnoElaborazioneModel> lmaem = new List<MeseAnnoElaborazioneModel>();
 
+            RptCostiModel rcm = new RptCostiModel();
+
             try
             {
                 int anno = DateTime.Now.Year;
@@ -71,7 +73,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            return PartialView();
+            return PartialView(rcm);
         }
 
         public JsonResult PrelevaMesiAnniElab(string search)
@@ -118,6 +120,20 @@ namespace NewISE.Areas.Statistiche.Controllers
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
+
+                    try
+                    {
+                        if (meseAnnoDa > meseAnnoA)
+                        {
+                            throw new Exception("Il Periodo A non può essere superiore al Periodo Da");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError("", ex.Message);
+                        return PartialView();
+                    }
+
                     var annoMeseElabDa = db.MESEANNOELABORAZIONE.Find(meseAnnoDa);
                     decimal annoMeseDa = Convert.ToDecimal(annoMeseElabDa.ANNO.ToString() + annoMeseElabDa.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
                     decimal annoDa = annoMeseElabDa.ANNO;
