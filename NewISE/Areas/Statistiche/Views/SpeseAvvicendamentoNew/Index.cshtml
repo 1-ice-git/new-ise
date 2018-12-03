@@ -62,7 +62,6 @@
                     search: dati.term,
                     type: 'public'
                 }
-
                 // Query parameters will be ?search=[term]&type=public
                 return query;
             },
@@ -79,12 +78,9 @@
 
     $("#cbMesiAnniElaboratiDa").change(function () {
         //debugger;
-
         if (this.value != "") {
             var valore = this.value;
-
         }
-
     });
 
     $("#cbMesiAnniElaboratiA").select2({
@@ -101,7 +97,6 @@
                     search: dati.term,
                     type: 'public'
                 }
-
                 // Query parameters will be ?search=[term]&type=public
                 return query;
             },
@@ -118,7 +113,6 @@
 
     $("#cbMesiAnniElaboratiA").change(function () {
         //debugger;
-
         if (this.value != "") {
             var valore = this.value;
         }
@@ -157,50 +151,63 @@
         close: function (event, ui) {
             $('.container').removeClass("NoOverflow");
         },
-        height: windowHeight, width: windowWidth
-
-
+        height: windowHeight,
+        width: windowWidth
     });
 
     $("#btStampa").on("click", function () {
-
         //debugger;
-        $('.container').addClass("NoOverflow");
-        $("#divReport").dialog("open");
-        $("#divReport").css("background-color", "#ffffff");
-        var rotta = "/Statistiche/SpeseAvvicendamentoNew/RptSpeseAvvicendamento";
-        var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
-        var meseAnnoA = $("#idMesiAnniElaboratiA").val();
+        if (ValidazioneDateAvvicendamento()) {
+            $('.container').addClass("NoOverflow");
+            $("#divReport").dialog("open");
+            $("#divReport").css("background-color", "#ffffff");
+            var rotta = "/Statistiche/SpeseAvvicendamentoNew/RptSpeseAvvicendamento";
+            var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
+            var meseAnnoA = $("#idMesiAnniElaboratiA").val();
 
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                meseAnnoDa: meseAnnoDa,
-                meseAnnoA: meseAnnoA
-            },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                $("#divReport").empty();
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    meseAnnoDa: meseAnnoDa,
+                    meseAnnoA: meseAnnoA
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#divReport").empty();
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divReport").html(result);
-            },
-            complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#divReport").html(result);
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+            });
+        } else {
+            $("#msgModalStatistiche").html("Mese Inizio Elaborazione non può essere superiore a Mese Fine Elaborazione");
+            $('#myModalErrorStatistiche').modal('toggle');
+        }
     });
 
+    function ValidazioneDateAvvicendamento() {
+        //debugger;
+        var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
+        var meseAnnoA = $("#idMesiAnniElaboratiA").val();
+        if (meseAnnoA < meseAnnoDa) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 </script>
 
 

@@ -65,6 +65,7 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return Json(new { results = ls2, err = "" });
         }
+
         public ActionResult SelezionaMeseAnno(int mese = 0, int anno = 0)
         {
             var rMeseAnno = new List<SelectListItem>();
@@ -125,7 +126,6 @@ namespace NewISE.Areas.Statistiche.Controllers
 
             return PartialView();
         }
-
 
         public ActionResult RptRiepiloghiSospensioni(DateTime idIni, DateTime idFin)
         {
@@ -205,6 +205,26 @@ namespace NewISE.Areas.Statistiche.Controllers
             }
 
             return PartialView();
+        }
+
+        public JsonResult ValidazioneDateSospensioni(DateTime dtIni, DateTime dtFin)
+        {
+            try
+            {
+                if (dtIni > dtFin)
+                {
+                    return Json(new { datevalide = 0, err = "" });
+                }
+                else
+                {
+                    return Json(new { datevalide = 1, err = "" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
         }
 
     }

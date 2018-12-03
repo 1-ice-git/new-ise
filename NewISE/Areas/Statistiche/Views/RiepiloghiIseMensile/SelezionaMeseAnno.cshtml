@@ -143,7 +143,6 @@
     var windowWidth = $(window).width();
     var windowHeight = $(window).height();
 
-
     $("#dialog").dialog({
         autoOpen: false,
         show: {
@@ -164,86 +163,59 @@
 
     $("#opener").on("click", function () {
         //debugger;
+        if (ValidazioneIse()) { 
+            $('.container').addClass("NoOverflow");
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
 
-        $('.container').addClass("NoOverflow");
+            var rotta = "/Statistiche/RiepiloghiIseMensile/RptRiepiloghiIseMensile";
 
-        $("#dialog").dialog("open");
-        $("#dialog").css("background-color", "#ffffff");
+            var idElabIni = $("#mesiAnniElaboratiDa").val();
+            var idElabFin = $("#mesiAnniElaboratiA").val();
 
-
-        var rotta = "/Statistiche/RiepiloghiIseMensile/RptRiepiloghiIseMensile";
-
-        var idElabIni = $("#mesiAnniElaboratiDa").val();
-        var idElabFin = $("#mesiAnniElaboratiA").val();
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                idElabIni: idElabIni,
-                idElabFin: idElabFin
-            },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                $("#dialog").empty();
-
-            },
-            success: function (result) {
-                //debugger;
-                $("#dialog").html(result);
-
-
-            },
-            complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-
-        });
-
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    idElabIni: idElabIni,
+                    idElabFin: idElabFin
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+            });
+        } else {
+            $("#msgModalStatistiche").html("Mese Inizio Elaborazione non può essere superiore a Mese Fine Elaborazione");
+            $('#myModalErrorStatistiche').modal('toggle');
+        }
     });
 
-    //// Operazioni Effettuate - Indennità di Sede Estera (Nuovo ISE) - Test
-    //function callpartialRptOpIndSedeEstera() {
-    //    //debugger;
+    function ValidazioneIse() {
+        //debugger;
+        var meseAnnoDa = $("#mesiAnniElaboratiDa").val();
+        var meseAnnoA = $("#mesiAnniElaboratiA").val();
 
-    //    rotta = "/Statistiche/RiepiloghiIseMensile/RptRiepiloghiIseMensile";
-
-    //    var data = $("#datepicker").datepicker().val()
-    //    var data = $("#datepicker").datepicker().val()
-
-    //    $.ajax({
-    //        type: "POST",
-    //        url: rotta,
-    //        data: {
-    //            V_DATA: data,
-    //            V_DATA1: data1
-    //        },
-    //        dataType: 'html',
-    //        beforeSend: function () {
-
-    //        },
-    //        success: function (result) {
-    //            //debugger;
-    //            $("#divPartialView").empty();
-    //            $("#divPartialView").html(result);
-    //        },
-    //        complete: function () {
-
-    //        },
-    //        error: function (jqXHR, textStatus, errorThrow) {
-    //            //debugger;
-    //            var msg = errorThrow.err;
-    //            AlertDialog(msg);
-    //        }
-    //    });
-    //}
+        if (meseAnnoA < meseAnnoDa) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     $("#mesiAnniElaboratiDa").select2({
         placeholder: "Seleziona la Data Dal",

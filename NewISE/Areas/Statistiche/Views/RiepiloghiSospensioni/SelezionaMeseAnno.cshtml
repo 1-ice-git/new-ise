@@ -191,44 +191,91 @@
         //debugger;
 
         if (Validazione()) {
-            $('.container').addClass("NoOverflow");
+            if (ValidazioneDateSospensioni()==1) {
+                $('.container').addClass("NoOverflow");
 
-            $("#dialog").dialog("open");
-            $("#dialog").css("background-color", "#ffffff");
+                $("#dialog").dialog("open");
+                $("#dialog").css("background-color", "#ffffff");
 
 
-            var rotta = "/Statistiche/RiepiloghiSospensioni/RptRiepiloghiSospensioni";
+                var rotta = "/Statistiche/RiepiloghiSospensioni/RptRiepiloghiSospensioni";
 
-            var idIni = $("#data1").datepicker().val()
-            var idFin = $("#data2").datepicker().val()
+                var idIni = $("#data1").datepicker().val()
+                var idFin = $("#data2").datepicker().val()
 
-            $.ajax({
-                type: "POST",
-                url: rotta,
-                data: {
-                    idIni: idIni,
-                    idFin: idFin
-                },
-                dataType: 'html',
-                beforeSend: function () {
-                    //debugger;
-                    $("#dialog").empty();
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {
+                        idIni: idIni,
+                        idFin: idFin
+                    },
+                    dataType: 'html',
+                    beforeSend: function () {
+                        //debugger;
+                        $("#dialog").empty();
 
-                },
-                success: function (result) {
-                    //debugger;
-                    $("#dialog").html(result);
-                },
-                complete: function () {
-                },
-                error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    AlertDialog(msg);
-                }
-            });
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#dialog").html(result);
+                    },
+                    complete: function () {
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+                });
+            } else {
+                $("#msgModalStatistiche").html("La Data Inizio non può essere superiore alla Data Fine");
+                $('#myModalErrorStatistiche').modal('toggle');
+            }
         }
     });
+
+    function ValidazioneDateSospensioni() {
+        //debugger;
+        var rotta = "/Statistiche/RiepiloghiSospensioni/ValidazioneDateSospensioni";
+        var data1 = $("#data1").datepicker().val()
+        var data2 = $("#data2").datepicker().val()
+        var valoreRitorno = 0;
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                dtIni: data1,
+                dtFin: data2
+            },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "" || result.err == undefined) {
+                    if (result.datevalide != 0) {
+                        valoreRitorno = 1;
+                    }
+                    else {
+                        valoreRitorno = 0;
+                    }
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+        return valoreRitorno;
+    }
 
     $('#data1').datepicker({
         //showButtonPanel: true,

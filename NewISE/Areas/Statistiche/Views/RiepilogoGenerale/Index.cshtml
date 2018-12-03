@@ -163,42 +163,56 @@
     });
 
     $("#btStampa").on("click", function () {
-
         //debugger;
-        $('.container').addClass("NoOverflow");
-        $("#divReport").dialog("open");
-        $("#divReport").css("background-color", "#ffffff");
-        var rotta = "/Statistiche/RiepilogoGenerale/RptRiepilogoGenerale";
-        var idMeseAnnoDa = $("#idMesiAnniElaboratiDa").val();
-        var idMeseAnnoA = $("#idMesiAnniElaboratiA").val();
+        if (ValidazioneGenerale()) { 
+            $('.container').addClass("NoOverflow");
+            $("#divReport").dialog("open");
+            $("#divReport").css("background-color", "#ffffff");
+            var rotta = "/Statistiche/RiepilogoGenerale/RptRiepilogoGenerale";
+            var idMeseAnnoDa = $("#idMesiAnniElaboratiDa").val();
+            var idMeseAnnoA = $("#idMesiAnniElaboratiA").val();
 
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                idMeseAnnoDa: idMeseAnnoDa,
-                idMeseAnnoA: idMeseAnnoA
-            },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                $("#divReport").empty();
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    idMeseAnnoDa: idMeseAnnoDa,
+                    idMeseAnnoA: idMeseAnnoA
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#divReport").empty();
 
-            },
-            success: function (result) {
-                //debugger;
-                $("#divReport").html(result);
-            },
-            complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#divReport").html(result);
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+            });
+        } else {
+            $("#msgModalStatistiche").html("Mese Inizio Elaborazione non può essere superiore a Mese Fine Elaborazione");
+            $('#myModalErrorStatistiche').modal('toggle');
+        }
     });
 
+    function ValidazioneGenerale() {
+        //debugger;
+        var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
+        var meseAnnoA = $("#idMesiAnniElaboratiA").val();
+        if (meseAnnoA < meseAnnoDa) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 </script>

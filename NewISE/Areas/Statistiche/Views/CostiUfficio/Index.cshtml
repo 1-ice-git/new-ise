@@ -186,51 +186,55 @@
     $("#btStampa").on("click", function () {
 
         //debugger;
-        if (Validazione()) {
-            $('.container').addClass("NoOverflow");
+        if (ValidazioneCostiUfficio()) {
+            if (ValidazioneDateCostiUfficio()) {
+                $('.container').addClass("NoOverflow");
 
-            $("#divReport").dialog("open");
-            $("#divReport").css("background-color", "#ffffff");
+                $("#divReport").dialog("open");
+                $("#divReport").css("background-color", "#ffffff");
+    
+                var rotta = "/Statistiche/CostiUfficio/RptCostiUfficio";
 
-            var rotta = "/Statistiche/CostiUfficio/RptCostiUfficio";
-
-            var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
-            var meseAnnoA = $("#idMesiAnniElaboratiA").val();
-            var idUfficio = $("#idUfficio").val()
-
-            $.ajax({
-                type: "POST",
-                url: rotta,
-                data: {
-                    meseAnnoDa: meseAnnoDa,
-                    meseAnnoA: meseAnnoA,
-                    idUfficio: idUfficio
-                },
-                dataType: 'html',
-                beforeSend: function () {
-                    //debugger;
-                    $("#divReport").empty();
-
-                },
-                success: function (result) {
-                    //debugger;
-                    $("#divReport").html(result);
-                },
-                complete: function () {
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    //                $("#Centro").getNiceScroll().resize();
-                },
-                error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    AlertDialog(msg);
-                }
-
-            });
+                var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
+                var meseAnnoA = $("#idMesiAnniElaboratiA").val();
+                var idUfficio = $("#idUfficio").val()
+    
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {
+                        meseAnnoDa: meseAnnoDa,
+                        meseAnnoA: meseAnnoA,
+                        idUfficio: idUfficio
+                    },
+                    dataType: 'html',
+                    beforeSend: function () {
+                        //debugger;
+                        $("#divReport").empty();
+    
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#divReport").html(result);
+                    },
+                    complete: function () {
+                        //$("#divEffettoLoadAutNoDoc").hide("slow");
+                        //                $("#Centro").getNiceScroll().resize();
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+                });
+            } else {
+                $("#msgModalStatistiche").html("Mese Inizio Elaborazione non può essere superiore a Mese Fine Elaborazione");
+                $('#myModalErrorStatistiche').modal('toggle');
+            }
         } 
     });
 
-    function Validazione() {
+    function ValidazioneCostiUfficio() {
         //debugger;
 
         var ret = false;
@@ -247,6 +251,16 @@
         return ret;
     }
 
+    function ValidazioneDateCostiUfficio() {
+        //debugger;
+        var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
+        var meseAnnoA = $("#idMesiAnniElaboratiA").val();
+        if (meseAnnoA < meseAnnoDa) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     $("#idUfficio").select2({
         placeholder: "Seleziona Ufficio",

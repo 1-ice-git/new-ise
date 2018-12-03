@@ -159,54 +159,68 @@
 
     $("#opener").on("click", function () {
         //debugger;
+        if (ValidazioneTE()) { 
+            $('.container').addClass("NoOverflow");
 
-        $('.container').addClass("NoOverflow");
-
-        $("#dialog").dialog("open");
-        $("#dialog").css("background-color", "#ffffff");
-
-
-        var rotta = "/Statistiche/TrasportoEffettiNew/RptTrasportoEffetti";
-
-        //var data1 = $("#data1").datepicker().val()
-        //var data2 = $("#data2").datepicker().val()
-
-        var data1 = $("#mesiAnniElaborati").val();
-        var data2 = $("#mesiAnniElaborati1").val();
-
-        $.ajax({
-            type: "POST",
-            url: rotta,
-            data: {
-                dtIni: data1,
-                dtFin: data2
-            },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                $("#dialog").empty();
-
-            },
-            success: function (result) {
-                //debugger;
-                $("#dialog").html(result);
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
 
 
-            },
-            complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
+            var rotta = "/Statistiche/TrasportoEffettiNew/RptTrasportoEffetti";
 
-        });
+            //var data1 = $("#data1").datepicker().val()
+            //var data2 = $("#data2").datepicker().val()
 
+            var data1 = $("#mesiAnniElaborati").val();
+            var data2 = $("#mesiAnniElaborati1").val();
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    dtIni: data1,
+                    dtFin: data2
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        } else {
+            $("#msgModalStatistiche").html("Mese Inizio Elaborazione non può essere superiore a Mese Fine Elaborazione");
+            $('#myModalErrorStatistiche').modal('toggle');
+        }
     });
 
+    function ValidazioneTE() {
+        //debugger;
+        var meseAnnoDa = $("#mesiAnniElaborati").val();
+        var meseAnnoA = $("#mesiAnniElaborati1").val();
+
+        if (meseAnnoA < meseAnnoDa) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     $("#mesiAnniElaborati").select2({
         placeholder: "Seleziona la Data Dal",
         allowClear: true,

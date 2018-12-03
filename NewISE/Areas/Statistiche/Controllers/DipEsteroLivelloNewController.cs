@@ -138,5 +138,25 @@ namespace NewISE.Areas.Statistiche.Controllers
             return PartialView("RptDipEsteroLivello");
         }
 
+        public JsonResult ValidazioneDateEsteroLivello(DateTime dtIni, DateTime dtFin)
+        {
+            try
+            {
+                if(dtIni>dtFin)
+                {
+                    return Json(new { datevalide = 0, err = "" });
+                }
+                else
+                {
+                    return Json(new { datevalide = 1, err = "" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { err = ex.Message });
+            }
+        }
+
     }
 }

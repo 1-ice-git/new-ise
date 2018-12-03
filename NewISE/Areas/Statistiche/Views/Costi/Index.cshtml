@@ -1,12 +1,5 @@
-﻿@model NewISE.Areas.Statistiche.Models.RptCostiModel
+﻿<div id="divReport" class="text-center"></div>
 
-<div id="divReport" class="text-center"></div>
-
-@{
-    var errori = ViewData.ModelState;
-}
-
-@Html.AntiForgeryToken()
 <div class="row">
     <div class="col-xs-12">
         <div class="form-group">
@@ -53,27 +46,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title alert alert-warning text-warning" id="myModalLabel">Attenzione!!!</h4>
-            </div>
-            <div class="modal-body alert alert-warning text-warning">
-                <p id="msgModalWarning" class="text-warning">
-                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button id="btProcedi" type="button" class="btn btn-warning" data-dismiss="modal">OK</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script type="text/javascript">
 
     $("#cbMesiAnniElaboratiDa").select2({
@@ -90,7 +62,6 @@
                     search: dati.term,
                     type: 'public'
                 }
-
                 // Query parameters will be ?search=[term]&type=public
                 return query;
             },
@@ -107,12 +78,9 @@
 
     $("#cbMesiAnniElaboratiDa").change(function () {
         //debugger;
-
         if (this.value != "") {
             var valore = this.value;
-
         }
-
     });
 
     $("#cbMesiAnniElaboratiA").select2({
@@ -129,7 +97,6 @@
                     search: dati.term,
                     type: 'public'
                 }
-
                 // Query parameters will be ?search=[term]&type=public
                 return query;
             },
@@ -146,7 +113,6 @@
 
     $("#cbMesiAnniElaboratiA").change(function () {
         //debugger;
-
         if (this.value != "") {
             var valore = this.value;
         }
@@ -185,18 +151,13 @@
         close: function (event, ui) {
             $('.container').removeClass("NoOverflow");
         },
-        height: windowHeight, width: windowWidth
-
-
+        height: windowHeight,
+        width: windowWidth
     });
 
+
     $("#btStampa").on("click", function () {
-
-        var form = $(this);
-        if (!form.valid()) {
-            DialogModalError('True');
-        } else {
-
+        if (ValidazioneCosti()) {
             //debugger;
             $('.container').addClass("NoOverflow");
             $("#divReport").dialog("open");
@@ -204,7 +165,7 @@
             var rotta = "/Statistiche/Costi/RptCosti";
             var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
             var meseAnnoA = $("#idMesiAnniElaboratiA").val();
-
+      
             $.ajax({
                 type: "POST",
                 url: rotta,
@@ -230,28 +191,25 @@
                     //debugger;
                     var msg = errorThrow.err;
                     AlertDialog(msg);
-
                     //DialogModalError('True');
-
                 }
             });
+        } else {
+            $("#msgModalStatistiche").html("Mese Inizio Elaborazione non può essere superiore a Mese Fine Elaborazione");
+            $('#myModalErrorStatistiche').modal('toggle');
         }
     });
 
-    @foreach (var e in errori)
-    {
-        if (e.Value.Errors.Count > 0)
-        {
-            @:DialogModalError('True');
-            break;
-        }
-
-    }
-
-    function DialogModalError(err) {
+    function ValidazioneCosti() {
         //debugger;
-        if (err == 'True') {
-            $('#myModalErrorModel').modal('toggle');
+        var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
+        var meseAnnoA = $("#idMesiAnniElaboratiA").val();
+        if(meseAnnoA<meseAnnoDa)
+        {
+            return false;
+        }else
+        {
+            return true;
         }
     }
 
