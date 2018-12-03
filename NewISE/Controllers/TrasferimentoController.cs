@@ -1561,18 +1561,20 @@ namespace NewISE.Controllers
 
                         ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
                         ViewBag.ListUfficio = lUffici;
-                        ViewBag.ListRuolo = lRuoloUfficio;
                         ViewBag.ListTipoCoan = lTipologiaCoan;
                         ViewBag.ListFasciaKM = lFasciaKM;
 
                         ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
-                        ViewBag.Matricola = matricola;
+                        ViewBag.Matricola = matricola;                      
 
                         using (dtDipendenti dtd = new dtDipendenti())
                         {
                             var d = dtd.GetDipendenteByMatricola(Convert.ToInt16(matricola));
                             ViewBag.Dipendente = d;
+
+                            FiltraRuoloUfficio(out lRuoloUfficio, d);
                         }
+                        ViewBag.ListRuolo = lRuoloUfficio;
 
                         ViewBag.idTrasferimentoOld = idTrasferimentoOld;
                         if (idTrasferimentoOld > 0)
@@ -1635,7 +1637,6 @@ namespace NewISE.Controllers
 
                     ViewBag.ListTipoTrasferimento = lTipoTrasferimento;
                     ViewBag.ListUfficio = lUffici;
-                    ViewBag.ListRuolo = lRuoloUfficio;
                     ViewBag.ListTipoCoan = lTipologiaCoan;
                     ViewBag.ListFasciaKM = lFasciaKM;
 
@@ -1646,7 +1647,10 @@ namespace NewISE.Controllers
                     {
                         var d = dtd.GetDipendenteByMatricola(Convert.ToInt16(matricola));
                         ViewBag.Dipendente = d;
+                        FiltraRuoloUfficio(out lRuoloUfficio, d);
                     }
+
+                    ViewBag.ListRuolo = lRuoloUfficio;
 
                     ViewBag.idTrasferimentoOld = idTrasferimentoOld;
                     if (idTrasferimentoOld > 0)
@@ -1670,8 +1674,6 @@ namespace NewISE.Controllers
                             }
                         }
                     }
-
-
                     return PartialView("NuovoTrasferimento", trm);
                 }
             }
