@@ -135,7 +135,7 @@ namespace NewISE.Models.DBModel.dtObj
                             #endregion
 
                             #region imposta importo
-                            var Importo = Math.Round(teorici_row.IMPORTO, 2);
+                            var Importo = Math.Abs(Math.Round(teorici_row.IMPORTO, 2));
                             var Valore = Importo.ToString().PadLeft(10, '0').Replace(",", "");
                             #endregion
 
@@ -145,7 +145,7 @@ namespace NewISE.Models.DBModel.dtObj
                             #region imposta NrDato
                             if (teorici_row.IMPORTO < 0)
                             {
-                                NrDato = "5" + NrDato.Substring(5, 3);
+                                NrDato = "5" + NrDato.Substring(0, 3);
                             }
                             else
                             {
