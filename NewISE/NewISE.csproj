@@ -4914,6 +4914,8 @@
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSetRiepiloghiVoci.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="Areas\Statistiche\Views\Statistiche\Index_old.cshtml" />
+    <Content Include="Areas\Statistiche\Views\Statistiche\AttivitaStatistiche.cshtml" />
     <None Include="DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet.Designer.cs</LastGenOutput>

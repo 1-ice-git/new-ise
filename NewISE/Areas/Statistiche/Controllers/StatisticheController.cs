@@ -24,25 +24,14 @@ namespace NewISE.Areas.Statistiche.Controllers
         [Authorize(Roles = "1 ,2")]
         public ActionResult Index()
         {
-
-            //using (dtInvioFileFTP dtFile = new dtInvioFileFTP())
-            //{
-
-            //    dtFile.FlUpload(idAnnoMeseElaborato, teorico, db);
-
-            //}
-            //using (ModelDBISE db = new ModelDBISE())
-            //{
-            //    using (dtInvioFileFTP dtFile = new dtInvioFileFTP())
-            //    {
-
-            //        dtFile.FlUpload(db);
-
-
-            //    }
-            //}
-
             return View("Index");
+        }
+
+
+        [Authorize(Roles = "1 ,2")]
+        public ActionResult AttivitaStatistiche()
+        {
+            return PartialView();
         }
 
     }

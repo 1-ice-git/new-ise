@@ -1,0 +1,149 @@
+﻿<div class="row">
+    <div class="col-xs-12 text-center">
+        <h4><strong>STATISTICHE</strong></h4>
+    </div>
+</div>
+
+<div class="row">
+    <div id="divStatistiche" class="col-xs-12">
+        <div class="col-xs-12" style="background-color:beige; border:solid;border-width:thin;padding-bottom:30px;border-radius:15px">
+            <div class="row" style="padding-top:30px">
+                <div class="col-xs-3" style="padding-left:20px">
+                    <div class="col-xs-12" style="border:solid; border-width:thin;border-radius:10px;border-color:lightgray;background-color:lightgray">
+                        <div class="row" style="padding-top:10px;padding-left:20px;">
+                            <div class="form-group pull-left" style="background-color:lightgray">
+                                <i aria-hidden="true" class="fa fa-2x fa-eur"></i>&nbsp;
+                                @Html.Label("CONSUNTIVO")
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("Costi", "Index", "Costi", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("Costi per Codice CO.AN.", "Index", "CostiCoan", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("Costi per Ufficio", "Index", "CostiUfficio", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("Spese di Avvicendamento", "Index", "SpeseAvvicendamentoNew", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="form-group" style="background-color:lightgray">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-3" style="padding-left:20px">
+                    <div class="col-xs-12" style="border:solid; border-width:thin;border-radius:10px;border-color:lightgray;background-color:lightgray">
+                        <div class="row" style="padding-top:10px;padding-left:20px;">
+                            <div class="form-group pull-left" style="background-color:lightgray">
+                                <i aria-hidden="true" class="fa fa-2x fa-user"></i>&nbsp;
+                                @Html.Label("DIPENDENTI")
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("All'Estero per Livello", "Index", "DipEsteroLivelloNew", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("Dislocazione all'Estero", "Index", "OpDipEsteroNew", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("Storia Dipendente", "Index", "StoriaDipendenteNew", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="form-group" style="background-color:lightgray">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-3" style="padding-left:20px">
+                    <div class="col-xs-12" style="border:solid; border-width:thin;border-radius:10px;border-color:lightgray;background-color:lightgray">
+                        <div class="row" style="padding-top:10px;padding-left:20px;">
+                            <div class="form-group pull-left" style="background-color:lightgray">
+                                <i aria-hidden="true" class="fa fa-2x fa-list"></i>&nbsp;
+                                @Html.Label("RIEPILOGO")
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("Generale", "Index", "RiepilogoGenerale", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("Per Livello", "Index", "RiepilogoLivello", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("Per Ufficio", "Index", "RiepilogoUfficio", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("Operazioni Effettuate - ISE", "Index", "RiepiloghiIseMensile", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("Operazioni Effettuate - MAB", "Index", "RiepiloghiMaggAbitazione", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("Operazioni Effettuate - Trasp. Effetti", "Index", "TrasportoEffettiNew", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="form-group" style="background-color:lightgray">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-3" style="padding-left:20px">
+                    <div class="col-xs-12" style="border:solid; border-width:thin;border-radius:10px;border-color:lightgray;background-color:lightgray">
+                        <div class="row" style="padding-top:10px;padding-left:20px;">
+                            <div class="form-group pull-left" style="background-color:lightgray">
+                                <i aria-hidden="true" class="fa fa-2x fa-cog"></i>&nbsp;
+                                @Html.Label("ALTRO")
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-left:20px;font-size:1.2em;background-color:white">
+                            <div class="form-group">
+                                @Ajax.ActionLink("Sospensioni", "Index", "RiepiloghiSospensioni", new AjaxOptions { UpdateTargetId = "divReportStatistiche", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                            </div>
+                        </div>
+                        <div class="form-group" style="background-color:lightgray">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div id="divReportStatistiche" class="col-xs-12" style="padding-top:15px">
+    </div>
+</div>
+
