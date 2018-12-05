@@ -136,8 +136,17 @@ namespace NewISE.Models.DBModel.dtObj
 
                             #region imposta importo
                             var Importo = Math.Abs(Math.Round(teorici_row.IMPORTO, 2));
-                            var Valore = Importo.ToString().PadLeft(10, '0').Replace(",", "");
+                            var importosenzavirgola = Importo.ToString().Replace(",", "");
+                            var importoPadded = importosenzavirgola.PadLeft(9, '0');
+                            var Valore = importoPadded;
+                            //var Valore = Importo.ToString().PadLeft(10, '0').Replace(",", "");
+
                             #endregion
+                            if (Importo == 0)
+                            {
+                                var val = 0;
+                                var val1 = val.ToString().PadLeft(10, '0').Replace(",", "");
+                            }
 
                             var CodFormula = teorici_row.VOCI.CODICEVOCE;
                             string NrDato = CodFormula;
