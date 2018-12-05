@@ -19,10 +19,10 @@ namespace NewISE.Models.dtObj
         {
             var dip = db.DIPENDENTI.Find(idDipendente);
 
-            if (dip.ABILITATO == false)
-            {
-                dip.ABILITATO = true;
-            }
+            //if (dip.ABILITATO == false)
+            //{
+            //    dip.ABILITATO = true;
+            //}
 
             //Effettuo una ricerca della matricola che voglio autorizzare per capire se già risulta autorizzata precedentemente.
             var luamAttivoOld = dip.UTENTIAUTORIZZATI;
@@ -33,7 +33,8 @@ namespace NewISE.Models.dtObj
                 {
                     IDRUOLOUTENTE = (decimal)EnumRuoloAccesso.Utente,
                     IDDIPENDENTE = idDipendente,
-                    UTENTE = dip.MATRICOLA.ToString()
+                    UTENTE = dip.MATRICOLA.ToString(),
+                    PSW = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["PasswordDefaultTEST"])
                 };
 
                 db.UTENTIAUTORIZZATI.Add(ua);

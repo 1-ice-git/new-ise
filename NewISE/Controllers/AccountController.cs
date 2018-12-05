@@ -374,7 +374,7 @@ namespace NewISE.Controllers
                                 string msgGoogle = "";
                                 ViewData["msgGoogle"] = msgGoogle;
                                 ViewBag.ModelStateCount = 1;
-                                ModelState.AddModelError("", "L'utente non è autorizzato per l'accesso.");
+                                ModelState.AddModelError("", "L'utente non è abilitato all'accesso.");
                                 return View(account);
                             }
 
@@ -384,7 +384,7 @@ namespace NewISE.Controllers
                             string msgGoogle = "";
                             ViewData["msgGoogle"] = msgGoogle;
                             ViewBag.ModelStateCount = 1;
-                            ModelState.AddModelError("", "La matricola non è presente !!");
+                            ModelState.AddModelError("", "L'utente non è autorizzato per l'accesso.");
                             return View(account);
                         }
 
