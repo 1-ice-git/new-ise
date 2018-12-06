@@ -743,7 +743,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 ruoloLav = new RuoloDipendenteModel()
                                 {
                                     idTrasferimento = rdm.idTrasferimento,
-                                    idRuolo = ruoloPrecedente.idRuolo,
+                                    idRuolo = rdm.idRuolo,
                                     dataInizioValidita = rdm.dataInizioValidita,
                                     dataFineValidita = ruoloSuccessivo.dataFineValidita,
                                     dataAggiornamento = DateTime.Now,
@@ -979,7 +979,7 @@ namespace NewISE.Models.DBModel.dtObj
                             ruoloLav = new RuoloDipendenteModel()
                             {
                                 idTrasferimento = rdm.idTrasferimento,
-                                idRuolo = ruoloPrecedente.idRuolo,
+                                idRuolo = rdm.idRuolo,
                                 dataInizioValidita = ruoloPrecedente.dataInizioValidita,
                                 dataFineValidita = dataFineCorrente,
                                 dataAggiornamento = DateTime.Now,
