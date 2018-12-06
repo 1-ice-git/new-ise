@@ -188,7 +188,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
 
             decimal tmp = 0;
-            if (idCoeffIndRichiamo == 0 || idPercentualeFKM == 0)
+            if (idCoeffIndRichiamo == 0 || idPercentualeFKM == 0 || idCoeffMagIndRichiamo==0)
                 return 0;
 
             try
@@ -227,11 +227,11 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return tmp;
         }
-        public decimal EditRichiamo(RichiamoModel ric, decimal idCoeffIndRichiamo, decimal idPercentualeFKM, DateTime DataRientro, decimal idRichiamo, ModelDBISE db)
+        public decimal EditRichiamo(RichiamoModel ric, decimal idCoeffIndRichiamo, decimal idCoeffMaggRichiamo, decimal idPercentualeFKM, DateTime DataRientro, decimal idRichiamo, ModelDBISE db)
         {
 
             decimal tmp = 0;
-            if (idCoeffIndRichiamo == 0 || idPercentualeFKM == 0)
+            if (idCoeffIndRichiamo == 0 || idPercentualeFKM == 0 || idCoeffMaggRichiamo==0)
                 return 0;
 
             try
@@ -263,8 +263,10 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     RimuoviAsscoiazioni_Richiamo_CoeffIndRichiamo(idRichiamo, db);
                     RimuoviAsscoiazioni_Richiamo_PercentualeFKM(idRichiamo, db);
+                    RimuoviAssociazioni_Richiamo_CoeffMagRichiamo(idRichiamo, db);
 
                     dtr.Associa_Richiamo_CoeffIndRichiamo(tmp, idCoeffIndRichiamo, db);
+                    dtr.Associa_Richiamo_CoeffIndRichiamo(tmp, idCoeffMaggRichiamo, db);
                     dtr.Associa_Richiamo_PercentualeFKM(tmp, idPercentualeFKM, db);
                 }
                 if (i > 0)
@@ -296,7 +298,21 @@ namespace NewISE.Models.DBModel.dtObj
         public void RimuoviAsscoiazioni_Richiamo_CoeffIndRichiamo(decimal idRichiamo, ModelDBISE db)
         {
             var i = db.RICHIAMO.Find(idRichiamo);
-            var lCoefIndRick = i.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false).ToList();
+            var lCoefIndRick = i.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false && a.IDTIPOCOEFFICIENTERICHIAMO==(decimal)EnumTipoCoefficienteRichiamo.CoefficienteRichiamo).ToList();
+            if (lCoefIndRick?.Any() ?? false)
+            {
+                foreach (var z in lCoefIndRick)
+                {
+                    i.COEFFICIENTEINDRICHIAMO.Remove(z);
+                }
+                db.SaveChanges();
+            }
+        }
+
+        public void RimuoviAssociazioni_Richiamo_CoeffMagRichiamo(decimal idRichiamo, ModelDBISE db)
+        {
+            var i = db.RICHIAMO.Find(idRichiamo);
+            var lCoefIndRick = i.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false && a.IDTIPOCOEFFICIENTERICHIAMO==(decimal)EnumTipoCoefficienteRichiamo.CoefficienteMaggiorazione).ToList();
             if (lCoefIndRick?.Any() ?? false)
             {
                 foreach (var z in lCoefIndRick)

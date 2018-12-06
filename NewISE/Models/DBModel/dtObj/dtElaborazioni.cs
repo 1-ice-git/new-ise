@@ -7944,7 +7944,7 @@
                         {
 
                             rateoImportoOld = (sumImportoOld / sumGiorniOld) * numeroGiorniNew;
-                            differenzaGiorni = Convert.ToInt16(numeroGiorniNew - sumGiorniOld);
+                            //differenzaGiorni = Convert.ToInt16(numeroGiorniNew - sumGiorniOld);
 
 
                             decimal conguaglio = Math.Round(sumImportoNew - rateoImportoOld, 8);
@@ -7967,7 +7967,7 @@
                                     ELABORATO = false,
                                     DIRETTO = false,
                                     ANNULLATO = false,
-                                    GIORNI = differenzaGiorni
+                                    GIORNI = numeroGiorniNew
                                 };
 
                                 db.TEORICI.Add(teorico);
