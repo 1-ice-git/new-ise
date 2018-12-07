@@ -7400,9 +7400,17 @@
                         if (lElabMabNew?.Any() ?? false)
                         {
 
-                            rateoImportoMabOPld = (sumImportoMabOld / sumNumeroGiorniOld) * giorniElabTotali;
+                            if (sumNumeroGiorniOld == 0)
+                            {
+                                rateoImportoMabOPld = 0;
+                            }
+                            else
+                            {
+                                rateoImportoMabOPld = (sumImportoMabOld / sumNumeroGiorniOld) * giorniElabTotali;
+                            }
+                            
 
-                            differenzaGiorni = giorniElabTotali - sumNumeroGiorniOld;
+                            //differenzaGiorni = giorniElabTotali - sumNumeroGiorniOld;
 
                             decimal conguaglioMab = importoMabNewTot - rateoImportoMabOPld;
 
@@ -7472,7 +7480,7 @@
                                     ELABORATO = false,
                                     DIRETTO = false,
                                     ANNULLATO = false,
-                                    GIORNI = differenzaGiorni
+                                    GIORNI = giorniElabTotali
                                 };
 
                                 db.TEORICI.Add(t);
@@ -7824,6 +7832,8 @@
                         if (lTeoriciOld?.Any() ?? false)
                         {
                             sumImportoOld = lTeoriciOld.Where(a => a.ELABORATO == true).Sum(a => a.IMPORTO);
+                            //var aa = lTeoriciOld.Where(a => a.ELABORATO == true).Sum(a => a.IMPORTO);
+                            //var bb = lTeoriciOld.Sum(a => a.IMPORTO);
                             sumGiorniOld = lTeoriciOld.Where(a => a.ELABORATO == true).Sum(a => a.GIORNI);
 
 
@@ -7943,7 +7953,16 @@
                         if (lIdElabInd?.Any() ?? false)
                         {
 
-                            rateoImportoOld = (sumImportoOld / sumGiorniOld) * numeroGiorniNew;
+                            if (sumGiorniOld == 0)
+                            {
+                                rateoImportoOld = 0;
+                            }
+                            else
+                            {
+                                rateoImportoOld = (sumImportoOld / sumGiorniOld) * numeroGiorniNew;
+                            }
+                            
+                            
                             //differenzaGiorni = Convert.ToInt16(numeroGiorniNew - sumGiorniOld);
 
 

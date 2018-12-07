@@ -626,22 +626,69 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         if (ruoloPrecedente.dataInizioValidita == rdm.dataInizioValidita)
                         {
-                            #region replico record e annullo il dato
-                            ruoloPrecedente.AnnullaRecord(db);
-                            #endregion
-
-                            #region creo record
-                            ruoloLav = new RuoloDipendenteModel()
+                            if (lRuoliPrecedenti.Count() > 1)
                             {
-                                idTrasferimento = rdm.idTrasferimento,
-                                idRuolo = rdm.idRuolo,
-                                dataInizioValidita = rdm.dataInizioValidita,
-                                dataFineValidita = ruoloPrecedente.dataFineValidita,
-                                dataAggiornamento = DateTime.Now,
-                                annullato = false
-                            };
-                            SetRuoloDipendente(ref ruoloLav, db);
-                            #endregion
+                                #region legge periodo ancora precedente
+                                var lrprec = lRuoliPrecedenti.Where(a => a.annullato == false && a.idRuoloDipendente < ruoloPrecedente.idRuoloDipendente).OrderByDescending(a => a.idRuoloDipendente).ToList();
+                                var rprec = lrprec.First();
+                                #endregion
+
+                                #region replico record e annullo il dato
+                                ruoloPrecedente.AnnullaRecord(db);
+                                #endregion
+
+                                if (rprec.idRuolo == rdm.idRuolo)
+                                {
+                                    rprec.AnnullaRecord(db);
+
+                                    #region creo record
+                                    ruoloLav = new RuoloDipendenteModel()
+                                    {
+                                        idTrasferimento = rdm.idTrasferimento,
+                                        idRuolo = rdm.idRuolo,
+                                        dataInizioValidita = rprec.dataInizioValidita,
+                                        dataFineValidita = ruoloPrecedente.dataFineValidita,
+                                        dataAggiornamento = DateTime.Now,
+                                        annullato = false
+                                    };
+                                    SetRuoloDipendente(ref ruoloLav, db);
+                                    #endregion
+                                }
+                                else
+                                {
+                                    #region creo record
+                                    ruoloLav = new RuoloDipendenteModel()
+                                    {
+                                        idTrasferimento = rdm.idTrasferimento,
+                                        idRuolo = rdm.idRuolo,
+                                        dataInizioValidita = ruoloPrecedente.dataInizioValidita,
+                                        dataFineValidita = ruoloPrecedente.dataFineValidita,
+                                        dataAggiornamento = DateTime.Now,
+                                        annullato = false
+                                    };
+                                    SetRuoloDipendente(ref ruoloLav, db);
+                                    #endregion
+                                }
+                            }
+                            else
+                            {
+                                #region replico record e annullo il dato
+                                ruoloPrecedente.AnnullaRecord(db);
+                                #endregion
+
+                                #region creo record
+                                ruoloLav = new RuoloDipendenteModel()
+                                {
+                                    idTrasferimento = rdm.idTrasferimento,
+                                    idRuolo = rdm.idRuolo,
+                                    dataInizioValidita = ruoloPrecedente.dataInizioValidita,
+                                    dataFineValidita = ruoloPrecedente.dataFineValidita,
+                                    dataAggiornamento = DateTime.Now,
+                                    annullato = false
+                                };
+                                SetRuoloDipendente(ref ruoloLav, db);
+                                #endregion
+                            }
 
                         }
                         else
@@ -714,32 +761,56 @@ namespace NewISE.Models.DBModel.dtObj
                         ruoloSuccessivo = lRuoliSuccessivi.First();
 
                         if (ruoloPrecedente.dataInizioValidita == rdm.dataInizioValidita)                                                
-                        {                           
-                            #region replico record e lo nascondo
-
+                        {
+                                                                                  
+                            #region annullo periodo precedente e successivo                        
                             ruoloPrecedente.AnnullaRecord(db);
                             ruoloSuccessivo.AnnullaRecord(db);
+                            #endregion
 
                             if (lRuoliPrecedenti.Count() > 1)
                             {
-                                //legge periodo ancora precedente
+                                #region legge periodo ancora precedente
                                 var lrprec = lRuoliPrecedenti.Where(a => a.annullato==false && a.idRuoloDipendente < ruoloPrecedente.idRuoloDipendente).OrderByDescending(a => a.idRuoloDipendente).ToList();
                                 var rprec = lrprec.First();
-                                rprec.AnnullaRecord(db);
-
-                                ruoloLav = new RuoloDipendenteModel()
-                                {
-                                    idTrasferimento = rdm.idTrasferimento,
-                                    idRuolo = rdm.idRuolo,
-                                    dataInizioValidita = rprec.dataInizioValidita,
-                                    dataFineValidita = ruoloSuccessivo.dataFineValidita,
-                                    dataAggiornamento = DateTime.Now,
-                                    annullato = false
-                                };
-                                SetRuoloDipendente(ref ruoloLav, db);
                                 #endregion
-                            }else
+
+                                if (rprec.idRuolo == rdm.idRuolo)
+                                {
+                                    rprec.AnnullaRecord(db);
+
+                                    #region inserisce record                                
+                                    ruoloLav = new RuoloDipendenteModel()
+                                    {
+                                        idTrasferimento = rdm.idTrasferimento,
+                                        idRuolo = rdm.idRuolo,
+                                        dataInizioValidita = rprec.dataInizioValidita,
+                                        dataFineValidita = ruoloSuccessivo.dataFineValidita,
+                                        dataAggiornamento = DateTime.Now,
+                                        annullato = false
+                                    };
+                                    SetRuoloDipendente(ref ruoloLav, db);
+                                    #endregion
+                                }
+                                else
+                                {
+                                    #region inserisce record                                
+                                    ruoloLav = new RuoloDipendenteModel()
+                                    {
+                                        idTrasferimento = rdm.idTrasferimento,
+                                        idRuolo = rdm.idRuolo,
+                                        dataInizioValidita = ruoloPrecedente.dataInizioValidita,
+                                        dataFineValidita = ruoloSuccessivo.dataFineValidita,
+                                        dataAggiornamento = DateTime.Now,
+                                        annullato = false
+                                    };
+                                    SetRuoloDipendente(ref ruoloLav, db);
+                                    #endregion
+                                }
+                            }
+                            else
                             {
+                                #region inserisce record
                                 ruoloLav = new RuoloDipendenteModel()
                                 {
                                     idTrasferimento = rdm.idTrasferimento,
@@ -749,9 +820,11 @@ namespace NewISE.Models.DBModel.dtObj
                                     dataAggiornamento = DateTime.Now,
                                     annullato = false
                                 };
-                                SetRuoloDipendente(ref ruoloLav, db);
+                                SetRuoloDipendente(ref ruoloLav, db); 
+                                #endregion
                             }
-                        }else
+                        }
+                        else
                         {
                             //annullo periodo successivo
                             ruoloSuccessivo.AnnullaRecord(db);
