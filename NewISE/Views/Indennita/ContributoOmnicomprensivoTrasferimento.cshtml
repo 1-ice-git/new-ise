@@ -26,22 +26,22 @@
 <table id="tbContributoOmnicomprensivoTrasferimento" class="display" cellspacing="0">
     <thead>
         <tr>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataPartenza)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.IndennitaSistemazione)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.PercentualeFasciaKmP)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.AnticipoContributoOmnicomprensivoPartenza)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.SaldoContributoOmnicomprensivoPartenza)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.TotaleContributoOmnicomprensivoPartenza)
             </th>
             
@@ -51,22 +51,22 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.dataPartenza)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.IndennitaSistemazione)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.PercentualeFasciaKmP)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.AnticipoContributoOmnicomprensivoPartenza)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.SaldoContributoOmnicomprensivoPartenza)
                 </td>
-                <td>
+                <td class="text-center">
                     @Html.DisplayFor(modelItem => item.TotaleContributoOmnicomprensivoPartenza)
                 </td>
                 
