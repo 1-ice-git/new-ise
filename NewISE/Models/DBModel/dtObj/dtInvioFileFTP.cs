@@ -18,25 +18,25 @@ namespace NewISE.Models.DBModel.dtObj
       
         public void FlUpload(List<decimal> lTeorici, ModelDBISE db)
         {
+
+            bool invia_file = false;
+            string pathtemp_idfile = System.Web.HttpContext.Current.Server.MapPath("~");
+            string strLocalFile = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["FTPCedolinoNomeFileLocal"]);
+            string strLocalFilePath = @pathtemp_idfile + strLocalFile;
+
+            #region apre il file
+            StreamWriter outputFile = new StreamWriter(Path.Combine(pathtemp_idfile, strLocalFile));
+            #endregion
+
             try
-            {
-
-                bool invia_file = false;
-                string pathtemp_idfile = System.Web.HttpContext.Current.Server.MapPath("~");
-                string strLocalFile = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["FTPCedolinoNomeFileLocal"]);
-                string strLocalFilePath = @pathtemp_idfile + strLocalFile;
-
-                #region apre il file
-                StreamWriter outputFile = new StreamWriter(Path.Combine(pathtemp_idfile, strLocalFile));
-                #endregion
-
+            {              
                 if (lTeorici?.Any() ?? false)
                 {
                     foreach (var teorici in lTeorici)
                     {
                         var teorici_row = db.TEORICI.Find(teorici);
 
-                        #region verifica che la riga è relativa a PAGHE
+                        //verifica che la riga è relativa a PAGHE
                         if (
                                 teorici_row.ANNULLATO == false &&
                                 teorici_row.DIRETTO == false &&
@@ -55,7 +55,6 @@ namespace NewISE.Models.DBModel.dtObj
                             var CodGruppo = "0";
                             #endregion
 
-                            invia_file = true;
                             decimal idLivello = 0;
                             bool livellotrovato = false;
 
@@ -90,8 +89,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 var meserif = teorici_row.MESERIFERIMENTO;
                                 var annorif = teorici_row.ANNORIFERIMENTO;
-                                DateTime primogiornorif= Convert.ToDateTime("01/" + meserif + "/" + annorif);
-                                DateTime ultimogiornorif= Utility.GetDtFineMese(primogiornorif);
+                                DateTime primogiornorif = Convert.ToDateTime("01/" + meserif + "/" + annorif);
+                                DateTime ultimogiornorif = Utility.GetDtFineMese(primogiornorif);
 
                                 idLivello = teorici_row.AUTOMATISMOVOCIMANUALI
                                                         .TRASFERIMENTO
@@ -113,7 +112,7 @@ namespace NewISE.Models.DBModel.dtObj
                             }
                             #endregion
 
-                            var l_livDirigente = db.LIVELLI.Where(a => a.LIVELLO == "D").OrderByDescending(a=>a.IDLIVELLO).ToList();
+                            var l_livDirigente = db.LIVELLI.Where(a => a.LIVELLO == "D").OrderByDescending(a => a.IDLIVELLO).ToList();
 
                             #region se non esiste il livello DIRIGENTE va in errore
                             if (!(l_livDirigente?.Any() ?? false))
@@ -131,7 +130,6 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 CodGruppo = "0001";
                             }
-
                             #endregion
 
                             #region imposta importo
@@ -140,13 +138,13 @@ namespace NewISE.Models.DBModel.dtObj
                             var importoPadded = importosenzavirgola.PadLeft(9, '0');
                             var Valore = importoPadded;
                             //var Valore = Importo.ToString().PadLeft(10, '0').Replace(",", "");
-
                             #endregion
-                            if (Importo == 0)
-                            {
-                                var val = 0;
-                                var val1 = val.ToString().PadLeft(10, '0').Replace(",", "");
-                            }
+
+                            //if (Importo == 0)
+                            //{
+                            //    var val = 0;
+                            //    var val1 = val.ToString().PadLeft(10, '0').Replace(",", "");
+                            //}
 
                             var CodFormula = teorici_row.VOCI.CODICEVOCE;
                             string NrDato = CodFormula;
@@ -164,9 +162,15 @@ namespace NewISE.Models.DBModel.dtObj
 
                             var codformula = CodFormula.Substring(4, 3);
 
-                            outputFile.WriteLine(Scheda + CodAzienda + CodGruppo + CodMatr + Filler1 + NrDato + Filler2 + Valore + CodCosto + codformula + Filler3);
+                            #region scrive solo importi diversi da zero
+                            if (Importo != 0)
+                            {
+                                invia_file = true;
+
+                                outputFile.WriteLine(Scheda + CodAzienda + CodGruppo + CodMatr + Filler1 + NrDato + Filler2 + Valore + CodCosto + codformula + Filler3);
+                            }
+                            #endregion
                         }
-                        #endregion 
                     }
                 }
 
@@ -204,6 +208,10 @@ namespace NewISE.Models.DBModel.dtObj
             }
             catch (Exception ex)
             {
+                #region chiude il file in caso di errore
+                outputFile.Close();
+                #endregion
+
                 throw ex;
             }
         }
