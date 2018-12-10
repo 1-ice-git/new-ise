@@ -43,12 +43,12 @@
             <input id="CDCDestinazione" name="CDCDestinazione" type="text" value="@Model.CDCDestinazione" class="form-control" readonly />
         </div>
     </div>
-   
+
 
     <div class="col-xs-12">
         <div class="col-xs-6" style="background-color:#f3f1f1; border:solid;border-color:darkgray; border-width:thin;margin-top:5px; margin-bottom:15px;border-radius:15px">
             <div class="form-group">
-                @Html.Label("lblTitoloPartenza", "PARTENZA", new { @class = "control-label col-xs-12", @style= "text-align:center; color:#0033cc" })
+                @Html.Label("lblTitoloPartenza", "PARTENZA", new { @class = "control-label col-xs-12", @style = "text-align:center; color:#0033cc" })
             </div>
             <div class="form-group">
                 @Html.Label("lblDecorrenza", "Data Trasf.", new { @class = "control-label col-xs-6" })
@@ -134,7 +134,7 @@
             </div>
 
             <div class="form-group">
-                @Html.Label("lblMab", "M.AB. mensile", new { @class = "control-label col-xs-6" })
+                @Html.Label("lblMab", "M.AB. max mensile", new { @class = "control-label col-xs-6" })
                 <div class="col-xs-6">
                     <input id="mabMensile" name="mabMensile" type="text" value="@Model.mabMensile.ToString("N2")" class="form-control text-right" readonly />
                 </div>
