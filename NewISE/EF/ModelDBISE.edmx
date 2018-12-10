@@ -1305,6 +1305,18 @@
           </Key>
           <Property Name="IDPRIMASISTEMAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="PRIMO_CAR">
+          <Property Name="MAT" Type="number" Precision="38" Scale="0" />
+          <Property Name="SEDE" Type="varchar2" MaxLength="4" />
+          <Property Name="PARTENZA" Type="date" />
+          <Property Name="RUOLO" Type="number" Precision="38" Scale="0" />
+          <Property Name="TCOAN" Type="number" Precision="38" Scale="0" />
+          <Property Name="COAN" Type="varchar2" MaxLength="16" />
+          <Property Name="FASCIA" Type="number" Precision="38" Scale="0" />
+          <Property Name="TIPO_T" Type="number" Precision="38" Scale="0" />
+        </EntityType>-->
         <EntityType Name="PROVVIDENZESCOLASTICHE">
           <Key>
             <PropertyRef Name="IDTRASFPROVSCOLASTICHE" />
@@ -5643,6 +5655,10 @@
         <Function Name="ANNULLA_ALLINEA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO">
           <Parameter Name="WRK" Type="varchar2" Mode="Out" />
         </Function>
+        
+        
+        
+        
         <EntityContainer Name="DBISEStoreContainer">
           <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ADF_C" EntityType="Self.ADF_C" Schema="ISEPRO" store:Type="Tables" />
