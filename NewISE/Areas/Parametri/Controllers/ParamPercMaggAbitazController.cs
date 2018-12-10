@@ -100,7 +100,7 @@ namespace NewISE.Areas.Parametri.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult InserisciMaggiorazioneAbitazione(PercMaggAbitazModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
-            var r = new List<SelectListItem>();
+            //var r = new List<SelectListItem>();
             ViewBag.escludiAnnullati = escludiAnnullati;
             List<PercMaggAbitazModel> libm = new List<PercMaggAbitazModel>();
             try
@@ -127,10 +127,10 @@ namespace NewISE.Areas.Parametri.Controllers
                         var lm = dtl.GetLivelli(ibm.idLivello);
                         ViewBag.Livello = lm;
                     }
-                    using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
-                    {
-                        libm = dtib.getListMaggiorazioneAbitazione(ibm.idLivello, ibm.idUfficio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                    }
+                    //using (dtParPercMaggAbitazione dtib = new dtParPercMaggAbitazione())
+                    //{
+                    //    libm = dtib.getListMaggiorazioneAbitazione(ibm.idLivello, ibm.idUfficio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    //}
                     return PartialView("NuovaPercentualeMaggAbitazione", ibm);
                 }
             }

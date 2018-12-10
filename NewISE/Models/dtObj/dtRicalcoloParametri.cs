@@ -367,7 +367,7 @@ namespace NewISE.Models.dtObj
                 throw ex;
             }
         }
-        
+
         public void AssociaIndennitaBase_IB(decimal idIndBase, ModelDBISE db, DateTime dataVariazione)
         {
             try
@@ -381,7 +381,7 @@ namespace NewISE.Models.dtObj
                         a =>
                             a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
                             a.DATARIENTRO >= ib.DATAINIZIOVALIDITA && a.DATAPARTENZA <= ib.DATAFINEVALIDITA &&
-                            a.DIPENDENTI.LIVELLIDIPENDENTI.Any(
+                            a.INDENNITA.LIVELLIDIPENDENTI.Any(
                                 b =>
                                     b.ANNULLATO == false && b.IDLIVELLO == ib.IDLIVELLO &&
                                     b.DATAFINEVALIDITA >= ib.DATAINIZIOVALIDITA &&
@@ -409,6 +409,7 @@ namespace NewISE.Models.dtObj
                         if (nCont <= 0)
                         {
                             ib.INDENNITA.Add(indennita);
+
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
                                 dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
@@ -697,70 +698,129 @@ namespace NewISE.Models.dtObj
                 var pm = db.PERCENTUALEMAB.Find(idPerceMAB);
                 var item = db.Entry<PERCENTUALEMAB>(pm);
 
-                //var lmab = db.MAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                //                             a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.IDUFFICIO == pm.IDUFFICIO &&
-                //                             a.MAGGIORAZIONEABITAZIONE.INDENNITA.TRASFERIMENTO.DIPENDENTI
-                //                                 .LIVELLIDIPENDENTI.Any(
-                //                                     b =>
-                //                                         b.ANNULLATO == false &&
-                //                                         b.DATAFINEVALIDITA >= pm.DATAINIZIOVALIDITA &&
-                //                                         b.DATAINIZIOVALIDITA <= pm.DATAFINEVALIDITA &&
-                //                                         b.IDLIVELLO == pm.IDLIVELLO) &&
-                //                             a.PERIODOMAB.Any(
-                //                                 b =>
-                //                                     b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                //                                     b.ATTIVAZIONEMAB.ANNULLATO == false &&
-                //                                     b.ATTIVAZIONEMAB.NOTIFICARICHIESTA == true &&
-                //                                     b.ATTIVAZIONEMAB.ATTIVAZIONE == true &&
-                //                                     b.DATAFINEMAB >= pm.DATAINIZIOVALIDITA &&
-                //                                     b.DATAINIZIOMAB <= pm.DATAFINEVALIDITA)
-                //    )
-                //    .OrderBy(a => a.IDMAB)
-                //    .ToList();
 
-                var lPerMab =
-                    db.PERIODOMAB.Where(
-                        a =>
-                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo && a.DATAFINEMAB >= pm.DATAINIZIOVALIDITA &&
-                            a.DATAINIZIOMAB <= pm.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOMAB).ToList();
+                var lt =
+                    db.TRASFERIMENTO.Where(a => a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
+                                                a.IDUFFICIO == pm.IDUFFICIO &&
+                                                a.DATARIENTRO >= pm.DATAINIZIOVALIDITA &&
+                                                a.DATAPARTENZA <= pm.DATAFINEVALIDITA &&
+                                                a.INDENNITA.LIVELLIDIPENDENTI.Any(b => b.ANNULLATO == false &&
+                                                                                       b.IDLIVELLO == pm.IDLIVELLO &&
+                                                                                       b.DATAFINEVALIDITA >=
+                                                                                       pm.DATAINIZIOVALIDITA &&
+                                                                                       b.DATAINIZIOVALIDITA <=
+                                                                                       pm.DATAFINEVALIDITA))
+                        .OrderBy(a => a.DATAPARTENZA)
+                        .ToList();
 
-
-                if (lPerMab?.Any() ?? false)
+                foreach (var t in lt)
                 {
-                    item.State = EntityState.Modified;
-                    item.Collection(a => a.PERIODOMAB).Load();
+                    var lmab =
+                        t.INDENNITA.MAB.Where(
+                            a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.RINUNCIAMAB == false)
+                            .ToList();
 
-                    foreach (var perMab in lPerMab)
+                    foreach (var mab in lmab)
                     {
-                        var nConta =
-                            pm.PERIODOMAB.Count(
+                        var lPerMab =
+                            mab.PERIODOMAB.Where(
                                 a =>
-                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                    a.IDPERIODOMAB == perMab.IDPERIODOMAB);
+                                    a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                    a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo &&
+                                    a.DATAFINEMAB >= pm.DATAINIZIOVALIDITA &&
+                                    a.DATAINIZIOMAB <= pm.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOMAB).ToList();
 
-                        if (nConta <= 0)
+                        if (lPerMab?.Any() ?? false)
                         {
-                            pm.PERIODOMAB.Add(perMab);
+                            item.State = EntityState.Modified;
+                            item.Collection(a => a.PERIODOMAB).Load();
 
-                            var t = perMab.MAB.INDENNITA.TRASFERIMENTO;
-                            using (dtDipendenti dtd = new dtDipendenti())
+                            foreach (var perMab in lPerMab)
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                var nConta =
+                                    pm.PERIODOMAB.Count(
+                                        a =>
+                                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                            a.IDPERIODOMAB == perMab.IDPERIODOMAB);
+
+                                if (nConta <= 0)
+                                {
+                                    pm.PERIODOMAB.Add(perMab);
+
+                                    if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo)
+                                    {
+                                        using (dtDipendenti dtd = new dtDipendenti())
+                                        {
+                                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                        }
+                                    }
+
+                                }
+
+                            }
+
+                            int i = db.SaveChanges();
+
+                            if (i <= 0)
+                            {
+                                throw new Exception("Errore nella fase di associazione della percentuale di maggiorazione abitazione sulla tabella MAB.");
                             }
 
                         }
 
+
+
+
+
+
+
+
+
                     }
 
-                    int i = db.SaveChanges();
 
-                    if (i <= 0)
-                    {
-                        throw new Exception("Errore nella fase di associazione della percentuale di maggiorazione abitazione sulla tabella MAB.");
-                    }
+
 
                 }
+
+
+
+
+                //if (lPerMab?.Any() ?? false)
+                //{
+                //    item.State = EntityState.Modified;
+                //    item.Collection(a => a.PERIODOMAB).Load();
+
+                //    foreach (var perMab in lPerMab)
+                //    {
+                //        var nConta =
+                //            pm.PERIODOMAB.Count(
+                //                a =>
+                //                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                //                    a.IDPERIODOMAB == perMab.IDPERIODOMAB);
+
+                //        if (nConta <= 0)
+                //        {
+                //            pm.PERIODOMAB.Add(perMab);
+
+                //            var t = perMab.MAB.INDENNITA.TRASFERIMENTO;
+                //            using (dtDipendenti dtd = new dtDipendenti())
+                //            {
+                //                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                //            }
+
+                //        }
+
+                //    }
+
+                //    int i = db.SaveChanges();
+
+                //    if (i <= 0)
+                //    {
+                //        throw new Exception("Errore nella fase di associazione della percentuale di maggiorazione abitazione sulla tabella MAB.");
+                //    }
+
+                //}
 
             }
             catch (Exception ex)
