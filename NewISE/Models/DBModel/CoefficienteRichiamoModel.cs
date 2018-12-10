@@ -29,9 +29,11 @@ namespace NewISE.Models.DBModel
         //[CustomValidation(typeof(dtParCoeffIndRichiamo), "VerificaPercentualeRICHIAMO")]
         [Required(ErrorMessage = "Il coefficiente è richiesto.")]
         [Display(Name = "Valore Coefficiente")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
         public decimal coefficienteRichiamo { get; set; }
 
         [Required(ErrorMessage = "Il coefficiente è richiesto.")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N5}")]
         public decimal coefficienteRichiamoUI { get; set; }
 
         // [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]

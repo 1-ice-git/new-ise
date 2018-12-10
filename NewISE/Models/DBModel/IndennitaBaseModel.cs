@@ -34,11 +34,11 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Il valore è richiesto.")]
         [Display(Name = "Importo")]
-        [DisplayFormat(ApplyFormatInEditMode = false, NullDisplayText = "0", DataFormatString = "{0:N8}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, NullDisplayText = "0", DataFormatString = "{0:N2}")]
         public decimal valore { get; set; }
         [Required(ErrorMessage = "Il valore per il responsabile è richiesto.")]
         [Display(Name = "Importo resp.")]
-        [DisplayFormat(ApplyFormatInEditMode = false, NullDisplayText = "0", DataFormatString = "{0:N8}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, NullDisplayText = "0", DataFormatString = "{0:N2}")]
         public decimal valoreResponsabile { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]

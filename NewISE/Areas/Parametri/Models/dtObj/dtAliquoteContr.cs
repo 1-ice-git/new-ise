@@ -152,7 +152,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idTipoContributo = e.IDTIPOCONTRIBUTO,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA,//!= Convert.ToDateTime(Utility.DataFineStop()) ? e.DATAFINEVALIDITA : new AliquoteContributiveModel().dataFineValidita,
-                                aliquota = e.VALORE,
+                                aliquota = Math.Round(e.VALORE,2),
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                                 descrizione = new TipoAliquoteContributiveModel()
