@@ -1316,7 +1316,6 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
           <Property Name="COAN" Type="varchar2" MaxLength="16" />
           <Property Name="FASCIA" Type="number" Precision="38" Scale="0" />
           <Property Name="TIPO_T" Type="number" Precision="38" Scale="0" />
-          <Property Name="STATO_CAR" Type="varchar2" MaxLength="2" />
         </EntityType>-->
         <EntityType Name="PROVVIDENZESCOLASTICHE">
           <Key>
@@ -5656,6 +5655,7 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
         <Function Name="ANNULLA_ALLINEA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO">
           <Parameter Name="WRK" Type="varchar2" Mode="Out" />
         </Function>
+        
         
         
         
