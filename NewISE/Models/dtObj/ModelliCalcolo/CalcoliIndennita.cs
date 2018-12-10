@@ -449,6 +449,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 _indennita.MAB.Where(
                     a =>
                         a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                        a.RINUNCIAMAB == false &&
                         a.PERIODOMAB.Any(
                             b =>
                                 b.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
