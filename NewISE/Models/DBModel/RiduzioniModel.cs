@@ -30,7 +30,7 @@ namespace NewISE.Models.DBModel
         //[CustomValidation(typeof(dtRiduzioni), "VerificaPercentualeRiduzione")]
         [Display(Name = "Percentuale")]
         [Required(ErrorMessage = "La percentuale è richiesta.")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N3}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N2}")]
         public decimal percentuale { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
