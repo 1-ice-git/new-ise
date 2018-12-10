@@ -439,8 +439,9 @@ namespace NewISE.Controllers
                         using (dtRichiamo dtric = new dtRichiamo())
                         {
                             decimal idCoeffIndRichiamo = dtric.Restituisci_ID_CoeffIndRichiamo_Da_Data(ri, db);
+                            decimal idCoeffMaggRichiamo = dtric.Restituisci_ID_CoeffMagIndRichiamo_Da_Data(ri, db);
                             decimal IDPFKM = dtric.Restituisci_ID_PercentualeFKM_Da_Data(ri, db);
-                            if (idCoeffIndRichiamo == 0 || IDPFKM == 0)
+                            if (idCoeffIndRichiamo == 0 || IDPFKM == 0 || idCoeffMaggRichiamo==0)
                             {
                                 errore = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
                                 ViewData["errore"] = errore;
@@ -462,7 +463,7 @@ namespace NewISE.Controllers
                                     errore = "Data Rientro (" + DataRientro.ToShortDateString() + ") non può essere inferiore alla data Partenza (" + dataPartenza.ToShortDateString() + " )";
                                 else
                                 {
-                                    idRichiamo = dtric.EditRichiamo(ri, idCoeffIndRichiamo, IDPFKM, DataRientro, idRichiamo, db);
+                                    idRichiamo = dtric.EditRichiamo(ri, idCoeffIndRichiamo, idCoeffMaggRichiamo, IDPFKM, DataRientro, idRichiamo, db);
                                     errore = "";
                                     lstr = AggiornaViewBag_Lista_Trasferimenti(idTrasferimento, db);
 

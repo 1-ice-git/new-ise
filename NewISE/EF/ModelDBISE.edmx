@@ -5643,8 +5643,6 @@
         <Function Name="ANNULLA_ALLINEA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISEPRO">
           <Parameter Name="WRK" Type="varchar2" Mode="Out" />
         </Function>
-        
-        
         <EntityContainer Name="DBISEStoreContainer">
           <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" Schema="ISEPRO" store:Type="Tables" />
           <EntitySet Name="ADF_C" EntityType="Self.ADF_C" Schema="ISEPRO" store:Type="Tables" />
