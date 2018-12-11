@@ -1358,13 +1358,14 @@ namespace NewISE.Models.DBModel.dtObj
                         dit.statoTrasferimento = tm.idStatoTrasferimento;
                         dit.UfficioDestinazione = tm.Ufficio;
                         dit.Decorrenza = tm.dataPartenza;
-                        if (tm.dataRientro.HasValue)
+                        if (tm.dataRientro<Utility.DataFineStop())
                         {
                             dtDatiParametri = tm.dataRientro.Value;
                         }
                         else
                         {
-                            dtDatiParametri = tm.dataPartenza > Utility.GetDtInizioMeseCorrente() ? tm.dataPartenza : Utility.GetDtInizioMeseCorrente();
+                            dtDatiParametri = tm.dataPartenza > DateTime.Now ? tm.dataPartenza : DateTime.Now;
+                            //dtDatiParametri = tm.dataPartenza > Utility.GetDtInizioMeseCorrente() ? tm.dataPartenza : Utility.GetDtInizioMeseCorrente();
                         }
 
                         using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
