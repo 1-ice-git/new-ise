@@ -394,11 +394,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 bool giafatta = false;
                 try
-                {
-
-                    
-
-
+                {                   
                     using (dtParIndennitaBase dtal = new dtParIndennitaBase())
                     {
                         //Se la data variazione coincide con una data inizio esistente

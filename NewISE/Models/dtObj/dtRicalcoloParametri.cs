@@ -88,7 +88,8 @@ namespace NewISE.Models.dtObj
                     var lcir =
                         db.COEFFICIENTEINDRICHIAMO.Where(
                             a =>
-                                a.ANNULLATO == false && a.DATAFINEVALIDITA >= riduzioni.DATAINIZIOVALIDITA &&
+                                a.ANNULLATO == false && 
+                                a.DATAFINEVALIDITA >= riduzioni.DATAINIZIOVALIDITA &&
                                 a.DATAINIZIOVALIDITA <= riduzioni.DATAFINEVALIDITA)
                             .OrderBy(a => a.DATAINIZIOVALIDITA)
                             .ToList();
@@ -101,8 +102,11 @@ namespace NewISE.Models.dtObj
                         foreach (var cir in lcir)
                         {
                             var nConta =
-                                riduzioni.COEFFICIENTEINDRICHIAMO.Count(
-                                    a => a.ANNULLATO == false && a.IDCOEFINDRICHIAMO == cir.IDCOEFINDRICHIAMO);
+                                riduzioni.COEFFICIENTEINDRICHIAMO
+                                    .Count(
+                                            a => 
+                                                a.ANNULLATO == false && 
+                                                a.IDCOEFINDRICHIAMO == cir.IDCOEFINDRICHIAMO);
 
                             if (nConta <= 0)
                             {
@@ -116,8 +120,10 @@ namespace NewISE.Models.dtObj
                                     {
                                         var t = r.TRASFERIMENTO;
 
-                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
-
+                                        if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
+                                        {
+                                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                        }
                                     }
                                 }
 
@@ -158,9 +164,14 @@ namespace NewISE.Models.dtObj
                             a.IDTIPOLOGIACONIUGE == pmc.IDTIPOLOGIACONIUGE &&
                             a.ATTIVAZIONIMAGFAM.Where(
                                 b =>
-                                    b.ANNULLATO == false && b.RICHIESTAATTIVAZIONE == true &&
-                                    b.ATTIVAZIONEMAGFAM == true).Any() && a.DATAFINEVALIDITA >= pmc.DATAINIZIOVALIDITA &&
-                            a.DATAINIZIOVALIDITA <= pmc.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+                                    b.ANNULLATO == false && 
+                                    b.RICHIESTAATTIVAZIONE == true &&
+                                    b.ATTIVAZIONEMAGFAM == true)
+                                .Any() && 
+                            a.DATAFINEVALIDITA >= pmc.DATAINIZIOVALIDITA &&
+                            a.DATAINIZIOVALIDITA <= pmc.DATAFINEVALIDITA)
+                        .OrderBy(a => a.DATAINIZIOVALIDITA)
+                        .ToList();
 
                 if (lc?.Any() ?? false)
                 {
@@ -171,18 +182,21 @@ namespace NewISE.Models.dtObj
                     {
                         var nConta =
                             pmc.CONIUGE.Count(
-                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDCONIUGE == c.IDCONIUGE);
+                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && 
+                                a.IDCONIUGE == c.IDCONIUGE);
 
                         if (nConta <= 0)
                         {
                             pmc.CONIUGE.Add(c);
 
                             var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
-                            using (dtDipendenti dtd = new dtDipendenti())
+                            if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                }
                             }
-
                         }
                     }
 
@@ -232,14 +246,18 @@ namespace NewISE.Models.dtObj
                     {
                         var nConta =
                             pmf.FIGLI.Count(
-                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDFIGLI == f.IDFIGLI);
+                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && 
+                                a.IDFIGLI == f.IDFIGLI);
                         if (nConta <= 0)
                         {
                             pmf.FIGLI.Add(f);
                             var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
-                            using (dtDipendenti dtd = new dtDipendenti())
+                            if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                }
                             }
                         }
                     }
@@ -269,13 +287,13 @@ namespace NewISE.Models.dtObj
 
                 var lf = db.FIGLI.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                              a.ATTIVAZIONIMAGFAM.Where(
-                                                 b =>
-                                                     b.ANNULLATO == false && b.RICHIESTAATTIVAZIONE == true &&
-                                                     b.ATTIVAZIONEMAGFAM == true).Any() &&
-                                             a.DATAFINEVALIDITA >= ips.DATAINIZIOVALIDITA &&
-                                             a.DATAINIZIOVALIDITA <= ips.DATAFINEVALIDITA)
-                    .OrderBy(a => a.DATAINIZIOVALIDITA)
-                    .ToList();
+                                                                    b =>
+                                                                        b.ANNULLATO == false && b.RICHIESTAATTIVAZIONE == true &&
+                                                                        b.ATTIVAZIONEMAGFAM == true).Any() &&
+                                                                        a.DATAFINEVALIDITA >= ips.DATAINIZIOVALIDITA &&
+                                                                        a.DATAINIZIOVALIDITA <= ips.DATAFINEVALIDITA)
+                                .OrderBy(a => a.DATAINIZIOVALIDITA)
+                                .ToList();
 
                 if (lf?.Any() ?? false)
                 {
@@ -286,17 +304,20 @@ namespace NewISE.Models.dtObj
                     {
                         var nConta =
                             ips.FIGLI.Count(
-                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && a.IDFIGLI == f.IDFIGLI);
+                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && 
+                                a.IDFIGLI == f.IDFIGLI);
 
                         if (nConta <= 0)
                         {
                             ips.FIGLI.Add(f);
                             var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
-                            using (dtDipendenti dtd = new dtDipendenti())
+                            if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                }
                             }
-
                         }
                     }
 
@@ -328,7 +349,8 @@ namespace NewISE.Models.dtObj
                         a =>
                             a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
                             a.IDUFFICIO == pd.IDUFFICIO &&
-                            a.DATARIENTRO >= pd.DATAINIZIOVALIDITA && a.DATAPARTENZA <= pd.DATAFINEVALIDITA)
+                            a.DATARIENTRO >= pd.DATAINIZIOVALIDITA && 
+                            a.DATAPARTENZA <= pd.DATAFINEVALIDITA)
                         .OrderBy(a => a.DATAPARTENZA)
                         .ToList();
 
@@ -345,9 +367,12 @@ namespace NewISE.Models.dtObj
                         if (nCont <= 0)
                         {
                             pd.INDENNITA.Add(indennita);
-                            using (dtDipendenti dtd = new dtDipendenti())
+                            if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                }
                             }
                         }
                     }
@@ -359,7 +384,6 @@ namespace NewISE.Models.dtObj
                         throw new Exception("Errore nella fase di associazione della percentuale di disagio alla tabella indennità.");
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -375,12 +399,12 @@ namespace NewISE.Models.dtObj
                 var ib = db.INDENNITABASE.Find(idIndBase);
                 var item = db.Entry<INDENNITABASE>(ib);
 
-
                 var lTrsferimento =
                     db.TRASFERIMENTO.Where(
                         a =>
                             a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-                            a.DATARIENTRO >= ib.DATAINIZIOVALIDITA && a.DATAPARTENZA <= ib.DATAFINEVALIDITA &&
+                            a.DATARIENTRO >= ib.DATAINIZIOVALIDITA && 
+                            a.DATAPARTENZA <= ib.DATAFINEVALIDITA &&
                             a.INDENNITA.LIVELLIDIPENDENTI.Any(
                                 b =>
                                     b.ANNULLATO == false && b.IDLIVELLO == ib.IDLIVELLO &&
@@ -410,9 +434,12 @@ namespace NewISE.Models.dtObj
                         {
                             ib.INDENNITA.Add(indennita);
 
-                            using (dtDipendenti dtd = new dtDipendenti())
+                            if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                }                            
                             }
                         }
                     }
@@ -448,10 +475,11 @@ namespace NewISE.Models.dtObj
                     var lib =
                         db.INDENNITABASE.Where(
                             a =>
-                                a.ANNULLATO == false && a.DATAFINEVALIDITA >= r.DATAINIZIOVALIDITA &&
-                                a.DATAINIZIOVALIDITA <= r.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-
+                                a.ANNULLATO == false && 
+                                a.DATAFINEVALIDITA >= r.DATAINIZIOVALIDITA &&
+                                a.DATAINIZIOVALIDITA <= r.DATAFINEVALIDITA)
+                            .OrderBy(a => a.DATAINIZIOVALIDITA)
+                            .ToList();
 
                     if (lib?.Any() ?? false)
                     {
@@ -472,22 +500,22 @@ namespace NewISE.Models.dtObj
                                         a =>
                                             a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
                                             a.TRASFERIMENTO.DATARIENTRO >= r.DATAINIZIOVALIDITA &&
-                                            a.TRASFERIMENTO.DATAPARTENZA <= r.DATAFINEVALIDITA).ToList();
+                                            a.TRASFERIMENTO.DATAPARTENZA <= r.DATAFINEVALIDITA)
+                                        .ToList();
 
                                 foreach (var i in li)
                                 {
                                     var t = i.TRASFERIMENTO;
-                                    using (dtDipendenti dtd = new dtDipendenti())
+                                    if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                                     {
-                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                        using (dtDipendenti dtd = new dtDipendenti())
+                                        {
+                                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                        }
                                     }
-
-
                                 }
-
                             }
                         }
-
 
                         int j = db.SaveChanges();
 
@@ -548,14 +576,14 @@ namespace NewISE.Models.dtObj
                                 foreach (var i in li)
                                 {
                                     var t = i.TRASFERIMENTO;
-                                    using (dtDipendenti dtd = new dtDipendenti())
+                                    if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                                     {
-                                        dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                        using (dtDipendenti dtd = new dtDipendenti())
+                                        {
+                                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                        }
                                     }
-
-
                                 }
-
                             }
                         }
 
@@ -589,7 +617,8 @@ namespace NewISE.Models.dtObj
                         a =>
                             a.IDUFFICIO == cs.IDUFFICIO &&
                             a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-                            a.DATARIENTRO >= cs.DATAINIZIOVALIDITA && a.DATAPARTENZA <= cs.DATAFINEVALIDITA)
+                            a.DATARIENTRO >= cs.DATAINIZIOVALIDITA && 
+                            a.DATAPARTENZA <= cs.DATAFINEVALIDITA)
                         .OrderBy(a => a.DATAPARTENZA)
                         .ToList();
 
@@ -606,9 +635,12 @@ namespace NewISE.Models.dtObj
                         if (nCont <= 0)
                         {
                             cs.INDENNITA.Add(indennita);
-                            using (dtDipendenti dtd = new dtDipendenti())
+                            if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                }
                             }
 
                         }
@@ -728,7 +760,9 @@ namespace NewISE.Models.dtObj
                                     a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
                                     a.IDSTATORECORD != (decimal)EnumStatoRecord.Nullo &&
                                     a.DATAFINEMAB >= pm.DATAINIZIOVALIDITA &&
-                                    a.DATAINIZIOMAB <= pm.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOMAB).ToList();
+                                    a.DATAINIZIOMAB <= pm.DATAFINEVALIDITA)
+                                .OrderBy(a => a.DATAINIZIOMAB)
+                                .ToList();
 
                         if (lPerMab?.Any() ?? false)
                         {
@@ -747,16 +781,14 @@ namespace NewISE.Models.dtObj
                                 {
                                     pm.PERIODOMAB.Add(perMab);
 
-                                    if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo)
+                                    if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                                     {
                                         using (dtDipendenti dtd = new dtDipendenti())
                                         {
                                             dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
                                         }
                                     }
-
                                 }
-
                             }
 
                             int i = db.SaveChanges();
@@ -765,22 +797,8 @@ namespace NewISE.Models.dtObj
                             {
                                 throw new Exception("Errore nella fase di associazione della percentuale di maggiorazione abitazione sulla tabella MAB.");
                             }
-
                         }
-
-
-
-
-
-
-
-
-
                     }
-
-
-
-
                 }
 
 
@@ -905,7 +923,8 @@ namespace NewISE.Models.dtObj
                     db.PAGATOCONDIVISOMAB.Where(
                         a =>
                             a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                            a.DATAFINEVALIDITA >= pc.DATAINIZIOVALIDITA && a.DATAINIZIOVALIDITA <= pc.DATAFINEVALIDITA)
+                            a.DATAFINEVALIDITA >= pc.DATAINIZIOVALIDITA && 
+                            a.DATAINIZIOVALIDITA <= pc.DATAFINEVALIDITA)
                         .OrderBy(a => a.DATAINIZIOVALIDITA)
                         .ToList();
 
@@ -928,12 +947,13 @@ namespace NewISE.Models.dtObj
                             pc.PAGATOCONDIVISOMAB.Add(pgc);
 
                             var t = pgc.MAB.INDENNITA.TRASFERIMENTO;
-                            using (dtDipendenti dtd = new dtDipendenti())
+                            if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                }
                             }
-
-
                         }
 
                     }
@@ -966,7 +986,7 @@ namespace NewISE.Models.dtObj
                     db.TEPARTENZA.Where(
                         a =>
                             a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-                            a.TRASFERIMENTO.DATARIENTRO >= patep.DATAINIZIOVALIDITA &&
+                            a.TRASFERIMENTO.DATAPARTENZA >= patep.DATAINIZIOVALIDITA &&
                             a.TRASFERIMENTO.DATAPARTENZA <= patep.DATAFINEVALIDITA)
                         .OrderBy(a => a.TRASFERIMENTO.DATAPARTENZA)
                         .ToList();
@@ -989,11 +1009,13 @@ namespace NewISE.Models.dtObj
                             patep.TEPARTENZA.Add(tep);
 
                             var t = tep.TRASFERIMENTO;
-                            using (dtDipendenti dtd = new dtDipendenti())
+                            if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                }
                             }
-
                         }
 
                     }
@@ -1026,7 +1048,7 @@ namespace NewISE.Models.dtObj
                         a =>
                             a.TRASFERIMENTO.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
                             a.TRASFERIMENTO.DATARIENTRO >= pater.DATAINIZIOVALIDITA &&
-                            a.TRASFERIMENTO.DATAPARTENZA <= pater.DATAFINEVALIDITA)
+                            a.TRASFERIMENTO.DATARIENTRO <= pater.DATAFINEVALIDITA)
                         .OrderBy(a => a.TRASFERIMENTO.DATAPARTENZA)
                         .ToList();
 
@@ -1048,11 +1070,13 @@ namespace NewISE.Models.dtObj
                             pater.TERIENTRO.Add(ter);
 
                             var t = ter.TRASFERIMENTO;
-                            using (dtDipendenti dtd = new dtDipendenti())
+                            if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                }
                             }
-
                         }
 
                     }
@@ -1084,7 +1108,7 @@ namespace NewISE.Models.dtObj
                         (a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
                          a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Da_Attivare ||
                          a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
-                        a.TRASFERIMENTO.DATARIENTRO >= indSist.DATAINIZIOVALIDITA &&
+                        a.TRASFERIMENTO.DATAPARTENZA >= indSist.DATAINIZIOVALIDITA &&
                         a.TRASFERIMENTO.DATAPARTENZA <= indSist.DATAFINEVALIDITA &&
                         a.TRASFERIMENTO.IDTIPOTRASFERIMENTO == indSist.IDTIPOTRASFERIMENTO)
                     .OrderBy(a => a.TRASFERIMENTO.DATAPARTENZA)
@@ -1108,11 +1132,13 @@ namespace NewISE.Models.dtObj
                     {
                         indSist.PRIMASITEMAZIONE.Add(ps);
                         var t = ps.TRASFERIMENTO;
-                        using (dtDipendenti dtd = new dtDipendenti())
+                        if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                         {
-                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                            }
                         }
-
                     }
                 }
 
@@ -1132,12 +1158,23 @@ namespace NewISE.Models.dtObj
             var pfkm = db.PERCENTUALEFKM.Find(idPercKM);
             var item = db.Entry<PERCENTUALEFKM>(pfkm);
 
+            //var lps = db.PRIMASITEMAZIONE.Where(
+            //    a =>
+            //        (a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+            //         a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Da_Attivare ||
+            //         a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
+            //        a.TRASFERIMENTO.DATARIENTRO >= pfkm.DATAINIZIOVALIDITA &&
+            //        a.TRASFERIMENTO.DATAPARTENZA <= pfkm.DATAFINEVALIDITA &&
+            //        a.PERCENTUALEFKM.Any(b => b.IDFKM == pfkm.IDFKM))
+            //    .OrderBy(a => a.TRASFERIMENTO.DATAPARTENZA)
+            //    .ToList();
+
             var lps = db.PRIMASITEMAZIONE.Where(
                 a =>
                     (a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
                      a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Da_Attivare ||
                      a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
-                    a.TRASFERIMENTO.DATARIENTRO >= pfkm.DATAINIZIOVALIDITA &&
+                    a.TRASFERIMENTO.DATAPARTENZA >= pfkm.DATAINIZIOVALIDITA &&
                     a.TRASFERIMENTO.DATAPARTENZA <= pfkm.DATAFINEVALIDITA &&
                     a.PERCENTUALEFKM.Any(b => b.IDFKM == pfkm.IDFKM))
                 .OrderBy(a => a.TRASFERIMENTO.DATAPARTENZA)
@@ -1162,11 +1199,13 @@ namespace NewISE.Models.dtObj
                     {
                         pfkm.PRIMASITEMAZIONE.Add(ps);
                         var t = ps.TRASFERIMENTO;
-                        using (dtDipendenti dtd = new dtDipendenti())
+                        if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                         {
-                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                            }
                         }
-
                     }
                 }
 
@@ -1206,7 +1245,8 @@ namespace NewISE.Models.dtObj
                         cr.RICHIAMO.Count(
                             a =>
                                 a.ANNULLATO == false &&
-                                a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato && a.IDRICHIAMO == r.IDRICHIAMO);
+                                a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato &&
+                                a.IDRICHIAMO == r.IDRICHIAMO);
 
                     if (nConta <= 0)
                     {
@@ -1240,8 +1280,10 @@ namespace NewISE.Models.dtObj
                     a =>
                         a.ANNULLATO == false &&
                         a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato &&
-                        a.TRASFERIMENTO.PRIMASITEMAZIONE.PERCENTUALEFKM.Any(b => b.IDFKM == pfkm.IDFKM) &&
-                        a.DATARICHIAMO >= pfkm.DATAINIZIOVALIDITA).OrderBy(a => a.DATARICHIAMO).ToList();
+                        a.PERCENTUALEFKM.Any(b => b.IDFKM == pfkm.IDFKM) &&
+                        a.DATARICHIAMO >= pfkm.DATAINIZIOVALIDITA)
+               .OrderBy(a => a.DATARICHIAMO)
+               .ToList();
 
             if (lr?.Any() ?? false)
             {
@@ -1254,17 +1296,20 @@ namespace NewISE.Models.dtObj
                         pfkm.RICHIAMO.Count(
                             a =>
                                 a.ANNULLATO == false &&
-                                a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato && a.IDRICHIAMO == r.IDRICHIAMO);
+                                a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato && 
+                                a.IDRICHIAMO == r.IDRICHIAMO);
 
                     if (nConta <= 0)
                     {
                         pfkm.RICHIAMO.Add(r);
                         var t = r.TRASFERIMENTO;
-                        using (dtDipendenti dtd = new dtDipendenti())
+                        if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                         {
-                            dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                            using (dtDipendenti dtd = new dtDipendenti())
+                            {
+                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                            }
                         }
-
                     }
 
 
@@ -1347,7 +1392,8 @@ namespace NewISE.Models.dtObj
             var lr =
                 db.RIDUZIONI.Where(
                     a =>
-                        a.ANNULLATO == false && a.DATAFINEVALIDITA >= cr.DATAINIZIOVALIDITA &&
+                        a.ANNULLATO == false && 
+                        a.DATAFINEVALIDITA >= cr.DATAINIZIOVALIDITA &&
                         a.DATAINIZIOVALIDITA <= cr.DATAFINEVALIDITA &&
                         a.IDFUNZIONERIDUZIONE == (decimal)EnumFunzioniRiduzione.Coefficente_Richiamo)
                     .OrderBy(a => a.DATAINIZIOVALIDITA)
@@ -1360,7 +1406,10 @@ namespace NewISE.Models.dtObj
 
                 foreach (var r in lr)
                 {
-                    var nConta = cr.RIDUZIONI.Count(a => a.ANNULLATO == false && a.IDRIDUZIONI == r.IDRIDUZIONI);
+                    var nConta = cr.RIDUZIONI
+                            .Count(a => 
+                                        a.ANNULLATO == false && 
+                                        a.IDRIDUZIONI == r.IDRIDUZIONI);
 
                     if (nConta <= 0)
                     {
@@ -1371,15 +1420,15 @@ namespace NewISE.Models.dtObj
                         foreach (var ric in lric)
                         {
                             var t = ric.TRASFERIMENTO;
-                            using (dtDipendenti dtd = new dtDipendenti())
+                            if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                }
                             }
-
                         }
-
                     }
-
                 }
 
                 int i = db.SaveChanges();
@@ -1402,7 +1451,8 @@ namespace NewISE.Models.dtObj
             var lr =
                 db.RIDUZIONI.Where(
                     a =>
-                        a.ANNULLATO == false && a.DATAFINEVALIDITA >= indSist.DATAINIZIOVALIDITA &&
+                        a.ANNULLATO == false && 
+                        a.DATAFINEVALIDITA >= indSist.DATAINIZIOVALIDITA &&
                         a.DATAINIZIOVALIDITA <= indSist.DATAFINEVALIDITA &&
                         a.IDFUNZIONERIDUZIONE == (decimal)EnumFunzioniRiduzione.Indennita_Sistemazione)
                     .OrderBy(a => a.DATAINIZIOVALIDITA)
@@ -1426,9 +1476,12 @@ namespace NewISE.Models.dtObj
                         foreach (var ps in lps)
                         {
                             var t = ps.TRASFERIMENTO;
-                            using (dtDipendenti dtd = new dtDipendenti())
+                            if (t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo || t.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                             {
-                                dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
+                                }
                             }
                         }
 
