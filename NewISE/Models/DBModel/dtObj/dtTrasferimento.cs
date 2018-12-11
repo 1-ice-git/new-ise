@@ -1694,7 +1694,7 @@ namespace NewISE.Models.DBModel.dtObj
                 tr.IDTIPOCOAN = trm.idTipoCoan > 0 ? trm.idTipoCoan : tr.IDTIPOCOAN;
                 tr.DATAPARTENZA = trm.dataPartenza > DateTime.MinValue ? trm.dataPartenza : tr.DATAPARTENZA;
                 tr.DATARIENTRO = trm.dataRientro ?? tr.DATARIENTRO;
-                tr.COAN = trm.coan ?? tr.COAN;
+                tr.COAN = trm.coan;// ?? tr.COAN;
                 tr.PROTOCOLLOLETTERA = trm.protocolloLettera ?? tr.PROTOCOLLOLETTERA;
                 tr.DATALETTERA = trm.dataLettera ?? tr.DATALETTERA;
                 tr.DATAAGGIORNAMENTO = trm.dataAggiornamento > DateTime.MinValue ? trm.dataAggiornamento : tr.DATAAGGIORNAMENTO;
