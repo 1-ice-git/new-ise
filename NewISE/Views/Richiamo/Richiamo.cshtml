@@ -277,7 +277,12 @@
                         $("#ElencolistaTrasferimento").select2();
                         $('#ElencolistaTrasferimento').html('');
                         $.each(list, function (key, val) {
-                            $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
+                            var selected = "";
+                            if (val.Selected == true) {
+                                selected = "selected";
+                            }
+                            $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '" ' + selected + '>' + val.Text + '</option>');
+                            //$('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
                         });
                         InfoTrasferimento(idTrasferimento);
                         GestioneAbilitazioneMenu(idTrasferimento);
@@ -339,8 +344,14 @@
                         $("#ElencolistaTrasferimento").select2();
                         $('#ElencolistaTrasferimento').html('');
                         $.each(list, function (key, val) {
-                            $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '">' + val.Text + '</option>');
-                        })
+                            var selected = "";
+                            if (val.Selected == true)
+                            {
+                                //selected = " selected='selected'";
+                                selected = "selected";
+                            }
+                            $('#ElencolistaTrasferimento').append('<option value="' + val.Value + '" ' + selected + '>' + val.Text + '</option>');
+                        });
                     }
                     else {
                         ErroreElaborazioneAjax(result.err);
