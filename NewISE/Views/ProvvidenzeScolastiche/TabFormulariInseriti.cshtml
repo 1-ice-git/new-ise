@@ -183,11 +183,8 @@
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "columnDefs": [
-                {
-                    "targets": 'no-sort',
-                    "orderable": false,
-
-                }
+                { "targets": [3], "type": 'date-euro' },
+                { "targets": [4, 5], "orderable": false },
         ],
         "order": [[0, "desc"], [1, "asc"], [3, "desc"]]
         //dom: 'Bfrtip',

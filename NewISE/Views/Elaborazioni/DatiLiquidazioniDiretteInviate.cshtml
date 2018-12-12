@@ -114,7 +114,11 @@
         "fixedHeader": {
             header: true,
             footer: false
-        }
+        },
+        "columnDefs": [
+           { "targets": [4], "type": 'date-euro' },
+           { "targets": [3], "orderable": false }
+        ]
         //"columnDefs": [
         //        {
         //            "targets": 'no-sort',

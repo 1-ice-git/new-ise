@@ -202,31 +202,13 @@ else
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "destroy": true,
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "width": "150px"
-        //    }
+        "columnDefs": [
+              { "targets": [2], "type": 'date-euro' },
+              { "targets": [3, 4], "orderable": false },
+        ],
+        "order": [[0, "asc"]]
 
-        //]
-        //dom: 'Bfrtip',
-        //buttons: [
-        //    {
-        //        text: 'Nuovo Coniuge',
-        //        className: 'green',
-        //        action: function (e, dt, node, config) {
-        //            NuovoConiuge();
-        //        }
-        //    }
-        //],
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "visible": false,
-        //        "searchable": false
-        //    },
-
-        //]
+       
     });
 
     function NuovoDocumento(idAttivazionePassaporto, idFamiliarePassaporto, TipoDocumento, Parentela, Chiamante) {

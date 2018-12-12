@@ -47,7 +47,7 @@
 
             <tbody>
                 @foreach (var item in Model)
-            {
+                {
                     <tr>
                         <td>@Html.HiddenFor(modelItem => item.ordinamento) </td>
                         <td style="text-align: left;">
@@ -152,6 +152,11 @@
         "paging": true,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
+        "columnDefs": [
+                     { "targets": [3, 4], "type": 'date-euro' },
+                     { "targets": [0, 6, 7, 8], "orderable": false },
+                     { "targets": [0], "visible": false },
+        ],
         "order": [[5, "asc"], [3, "asc"]]
     });
 

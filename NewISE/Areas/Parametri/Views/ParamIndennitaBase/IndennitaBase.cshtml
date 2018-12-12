@@ -131,7 +131,12 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        }
+        },
+        "columnDefs": [
+                    { "targets": [1, 2], "type": 'date-euro' },
+                    { "targets": [3,4], "type": 'numeric-comma' },
+                    { "targets": [5, 6], "orderable": false },
+        ],
     });
 
     $("#idLivello").select2({

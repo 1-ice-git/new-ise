@@ -220,7 +220,12 @@
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "destroy": true,
-        "order": [[3, "desc"]]
+        "columnDefs": [
+                     { "targets": [2], "type": 'date-euro' },
+                     { "targets": [3, 4], "orderable": false },
+        ],
+
+        "order": [[2, "desc"]]
     });
 
     function EliminaDocumento(id, Chiamante, idDocumento) {

@@ -80,7 +80,10 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        }
+        },
+        "columnDefs": [
+                  { "targets": [1, 2], "orderable": false },
+        ],
     });
 
     $("#idValuta").select2({

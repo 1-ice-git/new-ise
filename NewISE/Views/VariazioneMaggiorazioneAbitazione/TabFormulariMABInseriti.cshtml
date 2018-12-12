@@ -183,11 +183,10 @@
         "paging": true,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        "columnDefs":[
-            {
-                "targets": [0],
-                "visible":false,
-            }
+        "columnDefs": [
+            { "targets": [5], "type": 'date-euro' },
+            { "targets": [6, 7], "orderable": false },
+            { "targets": [0], "visible": false },
         ],
         "order": [[0, "desc"], [2, "asc"], [5, "desc"]]
     });

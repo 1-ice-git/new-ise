@@ -110,7 +110,10 @@
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "destroy": true,
-        "order": [[3, "desc"]]
+        "columnDefs": [
+                     { "targets": [3], "orderable": false },
+        ],
+        "order": [[2, "desc"]]
     });
 
 </script>

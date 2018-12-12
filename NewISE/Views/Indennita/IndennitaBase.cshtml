@@ -25,10 +25,7 @@
 <div class="row">
     <div class="col-md-12">
         <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
-            <h4>Indennità Base</h4>
-           
-            
-            
+            <h4>Indennità Base</h4>                                   
         </div>
     </div>
 </div>
@@ -204,11 +201,8 @@
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "columnDefs": [
-                //{
-                //    "targets": 'no-sort',
-                //    "orderable": false,
-
-                //}
+                { "targets": [1, 2], "type": 'date-euro' },
+                { "targets": [3], "type": 'numeric-comma' }
         ],
         "order": [[0, "asc"]]
     });

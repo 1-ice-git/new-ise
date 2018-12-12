@@ -122,12 +122,9 @@
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "columnDefs": [
-                {
-                    "targets": 'no-sort',
-                    "orderable": false,
-
-                }
-        ],
+                { "targets": [0], "type": 'date-euro' },
+                { "targets": [2], "type": 'numeric-comma' },
+                { "targets": [1, 3, 4, 5], "orderable": false }, ],
         "order": [[0, "asc"]]
     });
 

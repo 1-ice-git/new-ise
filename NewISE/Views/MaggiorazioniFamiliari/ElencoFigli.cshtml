@@ -151,14 +151,11 @@
         //        }
         //    }
         //],
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "visible": false,
-        //        "searchable": false
-        //    },
-
-        //]
+        "columnDefs": [
+             { "targets": [2, 3], "type": 'date-euro' },
+             { "targets": [4, 5], "orderable": false },
+        ],
+        "order": [[0, "asc"]]
     });
 
     //PulsantiNotificaAttivaMagFam();
