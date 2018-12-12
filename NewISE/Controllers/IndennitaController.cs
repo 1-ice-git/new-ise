@@ -65,6 +65,14 @@ namespace NewISE.Controllers
                         if (tr != null && tr.HasValue())
                         {
                             ViewBag.idTrasferimento = tr.idTrasferimento;
+                            bool vedi_PS_TE = true;
+                            string DataRifIndennita_TE_PS = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["DataLimiteIndennita_PS_TE"]);
+
+                            if (tr.dataPartenza<Convert.ToDateTime(DataRifIndennita_TE_PS))
+                            {
+                                vedi_PS_TE = false;
+                            }
+                            ViewBag.vedi_PS_TE = vedi_PS_TE;
                         }
                         else
                         {

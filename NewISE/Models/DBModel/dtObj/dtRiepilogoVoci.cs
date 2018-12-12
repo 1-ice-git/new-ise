@@ -18,7 +18,8 @@ namespace NewISE.Models.DBModel.dtObj
         public IList<RiepiloVociModel> GetRiepilogoVoci(decimal idTrasferimento)
         {
             List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
-            
+
+            List<MeseAnnoElaborazioneModel> lmaem = new List<MeseAnnoElaborazioneModel>();
 
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -36,7 +37,7 @@ namespace NewISE.Models.DBModel.dtObj
                         var ind = t.INDENNITA;
                         var tep = t.TEPARTENZA;
                         var ter = t.TERIENTRO;
-                        
+
                         //var lTeorici =
                         //    t.TEORICI.Where(
                         //        a =>
@@ -60,10 +61,28 @@ namespace NewISE.Models.DBModel.dtObj
                         //                .ThenBy(a => a.MESERIFERIMENTO)
                         //                .ToList();
 
+                        DateTime DataLimiteRiepilogoVoci = Convert.ToDateTime(System.Configuration.ConfigurationManager.AppSettings["DataLimiteRiepilogoVoci"]);
+
+                        decimal idMeseAnnoElaborazioneLimite = 0;
+                        using (CalcoloMeseAnnoElaborazione cmem = new CalcoloMeseAnnoElaborazione(db))
+                        {
+                            lmaem = cmem.Mae.Where(a=>
+                                                    a.mese>= Convert.ToDecimal(DataLimiteRiepilogoVoci.Month) &&
+                                                    a.anno >= Convert.ToDecimal(DataLimiteRiepilogoVoci.Year))
+                                            .OrderByDescending(a=>a.idMeseAnnoElab)
+                                            .ToList();
+                            if(lmaem?.Any()==false)
+                            {
+                                idMeseAnnoElaborazioneLimite = lmaem.First().idMeseAnnoElab;
+                            }
+                        }
+
                         var lTeorici =
                                trasferimento.TEORICI.Where(
                                          a =>
-                                            a.ANNULLATO == false && a.ELABORATO == true)
+                                            a.ANNULLATO == false && 
+                                            a.ELABORATO == true && 
+                                            a.IDMESEANNOELAB>=idMeseAnnoElaborazioneLimite)
                                         .OrderBy(a => a.ANNORIFERIMENTO)
                                         .ThenBy(a => a.MESERIFERIMENTO)
                                         .ToList();
