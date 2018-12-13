@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NewISE.Models.DBModel
 {
-    public class RiepiloVociModel
+    public class RiepilogoVociModel
     {
         [Key]
         
@@ -52,6 +52,7 @@ namespace NewISE.Models.DBModel
         public bool Elaborato { get; set; }
 
 
+        [Display(Name = "Mese-Anno Rif.")]
         public string MeseAnnoRiferimento
         {
             get
@@ -62,6 +63,11 @@ namespace NewISE.Models.DBModel
         }
 
         public decimal idMeseAnnoElaborato { get; set; }
+
+        [Display(Name = "Mese-Anno Elab.")]
+        public string MeseAnnoElaborato { get; set; }
+
+        public DateTime GiornoMeseAnnoElaborato { get; set; }
 
     }
 }

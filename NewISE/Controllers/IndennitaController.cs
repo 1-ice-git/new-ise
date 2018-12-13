@@ -3135,7 +3135,7 @@ namespace NewISE.Controllers
         public ActionResult AnticipoIndennitadiSistemazioneLorda(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
-            List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
+            List<RiepilogoVociModel> lrvm = new List<RiepilogoVociModel>();
 
             try
             {
@@ -3285,7 +3285,7 @@ namespace NewISE.Controllers
         public ActionResult IndennitadiSistemazioneLorda(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
-            List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
+            List<RiepilogoVociModel> lrvm = new List<RiepilogoVociModel>();
 
             try
             {

@@ -112,7 +112,7 @@ namespace NewISE.Controllers
         }
         public ActionResult ElencoRiepilogoVoci(decimal idTrasferimento)
         {
-            List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
+            List<RiepilogoVociModel> lrvm = new List<RiepilogoVociModel>();
 
             try
             {
@@ -132,7 +132,7 @@ namespace NewISE.Controllers
         }
         public ActionResult RptRiepilogoVoci(decimal idTrasferimento)
         {
-            List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
+            List<RiepilogoVociModel> lrvm = new List<RiepilogoVociModel>();
             List<RptRiepilogoVociModel> rpt = new List<RptRiepilogoVociModel>();
             
             try
@@ -167,7 +167,9 @@ namespace NewISE.Controllers
                                     Liquidazione = lm.TipoLiquidazione.descrizione,
                                     meseAnnoRiferimento = lm.MeseAnnoRiferimento,
                                     Importo = lm.Importo,
-                                    idMeseAnnoElaborato = lm.idMeseAnnoElaborato
+                                    idMeseAnnoElaborato = lm.idMeseAnnoElaborato,
+                                    meseAnnoElaborazione=lm.MeseAnnoElaborato,
+                                    giornoMeseAnnoElaborazione=lm.GiornoMeseAnnoElaborato
                                 };
 
                                 MeseAnnoElaborato = db.MESEANNOELABORAZIONE.Find(rptds.idMeseAnnoElaborato);
@@ -187,7 +189,7 @@ namespace NewISE.Controllers
                         reportViewer.Width = Unit.Percentage(100);
                         reportViewer.Height = Unit.Percentage(100);
 
-                        var datasource = new ReportDataSource("DataSetRiepiloghiVoci");
+                        var datasource = new ReportDataSource("DtRiepilogoVoci");
 
                         reportViewer.Visible = true;
                         reportViewer.ProcessingMode = ProcessingMode.Local;
@@ -196,13 +198,13 @@ namespace NewISE.Controllers
                         reportViewer.LocalReport.DataSources.Clear();
 
                         reportViewer.LocalReport.DataSources.Add(datasource);
-                        reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetRiepiloghiVoci", rpt));
+                        reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DtRiepilogoVoci", rpt));
                         reportViewer.LocalReport.Refresh();
-                    
+
 
                         ReportParameter[] parameterValues = new ReportParameter[]
                         {
-                            new ReportParameter ("Nominativo",Nominativo),
+                            new ReportParameter("Nominativo",Nominativo),
                             new ReportParameter("parAnnoMeseElab",Convert.ToString(annoMeseElaborato))
                         };
 

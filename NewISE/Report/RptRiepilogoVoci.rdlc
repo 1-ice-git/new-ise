@@ -20,7 +20,6 @@
         </Paragraphs>
         <rd:DefaultName>Textbox18</rd:DefaultName>
         <Top>0.55245cm</Top>
-        <Left>0.54815cm</Left>
         <Height>0.6cm</Height>
         <Width>3.73278cm</Width>
         <Style>
@@ -52,9 +51,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox1</rd:DefaultName>
         <Top>0.55245cm</Top>
-        <Left>4.45732cm</Left>
+        <Left>4.13982cm</Left>
         <Height>0.6cm</Height>
-        <Width>5.10654cm</Width>
+        <Width>8.64683cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -71,7 +70,13 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>5.02113cm</Width>
+              <Width>0.07938cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>3.27727cm</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>7.28144cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.91792cm</Width>
@@ -96,6 +101,76 @@
             <TablixRow>
               <Height>0.6cm</Height>
               <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox21">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Giorno Mese Anno Elaborazione</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox21</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox2">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Data Elaborazione</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox2</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <BackgroundColor>LightGrey</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox20">
@@ -348,6 +423,75 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
+                    <Textbox Name="giornoMeseAnnoElaborazione">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!giornoMeseAnnoElaborazione.Value</Value>
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                                <Format>dd/MM/yyyy</Format>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>giornoMeseAnnoElaborazione</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="meseAnnoElaborazione">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!meseAnnoElaborazione.Value</Value>
+                              <Style>
+                                <FontSize>9pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>meseAnnoElaborazione</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
                     <Textbox Name="descrizione">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
@@ -559,9 +703,10 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatNumber(Fields!Importo.Value,2)</Value>
+                              <Value>=Fields!Importo.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
+                                <Format>#,0.00;- #,0.00</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -590,6 +735,12 @@
         </TablixBody>
         <TablixColumnHierarchy>
           <TablixMembers>
+            <TablixMember>
+              <Visibility>
+                <Hidden>true</Hidden>
+              </Visibility>
+            </TablixMember>
+            <TablixMember />
             <TablixMember />
             <TablixMember />
             <TablixMember />
@@ -609,11 +760,19 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <DataSetName>DataSetRiepiloghiVoci</DataSetName>
-        <Top>2.27224cm</Top>
-        <Left>0.54815cm</Left>
+        <DataSetName>DtRiepilogoVoci</DataSetName>
+        <SortExpressions>
+          <SortExpression>
+            <Value>=Fields!giornoMeseAnnoElaborazione.Value</Value>
+            <Direction>Descending</Direction>
+          </SortExpression>
+          <SortExpression>
+            <Value>=Fields!descrizione.Value</Value>
+          </SortExpression>
+        </SortExpressions>
+        <Top>1.47849cm</Top>
         <Height>1.2cm</Height>
-        <Width>23.25903cm</Width>
+        <Width>28.87598cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -622,10 +781,10 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>3.04791in</Height>
+    <Height>1.21458in</Height>
     <Style />
   </Body>
-  <Width>9.49055in</Width>
+  <Width>11.3685in</Width>
   <Page>
     <PageHeader>
       <Height>2.54cm</Height>
@@ -676,9 +835,9 @@
           </Paragraphs>
           <rd:DefaultName>Textbox2</rd:DefaultName>
           <Top>0.19543cm</Top>
-          <Left>4.3977cm</Left>
+          <Left>4.37858cm</Left>
           <Height>2.14913cm</Height>
-          <Width>14.84326cm</Width>
+          <Width>19.66193cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -694,9 +853,9 @@
           <Source>Embedded</Source>
           <Value>LogoISE</Value>
           <Sizing>FitProportional</Sizing>
-          <Top>0.22189cm</Top>
-          <Left>19.37502cm</Left>
-          <Height>2.05811cm</Height>
+          <Top>0.19543cm</Top>
+          <Left>24.22437cm</Left>
+          <Height>2.14913cm</Height>
           <Width>4.65161cm</Width>
           <ZIndex>2</ZIndex>
           <ToolTip>ISE - Indennità Sede Estera</ToolTip>
@@ -726,7 +885,7 @@
           <Top>0.4572cm</Top>
           <Left>0.54815cm</Left>
           <Height>0cm</Height>
-          <Width>23.25903cm</Width>
+          <Width>28.32783cm</Width>
           <Style>
             <Border>
               <Style>Solid</Style>
@@ -764,7 +923,7 @@
           <Top>1.15521cm</Top>
           <Left>0.54815cm</Left>
           <Height>0.6cm</Height>
-          <Width>23.25903cm</Width>
+          <Width>28.32783cm</Width>
           <ZIndex>1</ZIndex>
           <Style>
             <Border>
@@ -785,10 +944,10 @@
     </PageFooter>
     <PageHeight>21cm</PageHeight>
     <PageWidth>29.7cm</PageWidth>
-    <LeftMargin>2cm</LeftMargin>
-    <RightMargin>2cm</RightMargin>
-    <TopMargin>2cm</TopMargin>
-    <BottomMargin>2cm</BottomMargin>
+    <LeftMargin>0cm</LeftMargin>
+    <RightMargin>0cm</RightMargin>
+    <TopMargin>0cm</TopMargin>
+    <BottomMargin>0cm</BottomMargin>
     <ColumnSpacing>0.13cm</ColumnSpacing>
     <Style />
   </Page>
@@ -803,12 +962,16 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="DataSetRiepiloghiVoci">
+    <DataSet Name="DtRiepilogoVoci">
       <Query>
         <DataSourceName>DataSetRiepiloghiVoci</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
+        <Field Name="meseAnnoElaborazione">
+          <DataField>meseAnnoElaborazione</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="dataOperazione">
           <DataField>dataOperazione</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -819,6 +982,10 @@
         </Field>
         <Field Name="Importo">
           <DataField>Importo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Inserimento">
+          <DataField>Inserimento</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Liquidazione">
@@ -837,14 +1004,14 @@
           <DataField>meseAnnoRiferimento</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="Inserimento">
-          <DataField>Inserimento</DataField>
+        <Field Name="giornoMeseAnnoElaborazione">
+          <DataField>giornoMeseAnnoElaborazione</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
-        <rd:DataSetName>DataSetRiepiloghiVoci</rd:DataSetName>
-        <rd:SchemaPath>C:\Users\UTENTE\Documents\Visual Studio 2015\Projects\NewISE\NewISE\Areas\Statistiche\RPTDataSet\DataSetRiepiloghiVoci.xsd</rd:SchemaPath>
+        <rd:DataSetName>DtRiepilogoVoci</rd:DataSetName>
+        <rd:SchemaPath>C:\lavoro\progetti\NewISE\NewISE\Areas\Statistiche\RPTDataSet\DtRiepilogoVoci.xsd</rd:SchemaPath>
         <rd:TableName>DataTable1</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

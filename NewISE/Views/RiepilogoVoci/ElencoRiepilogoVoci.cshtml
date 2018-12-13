@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NewISE.Models.DBModel.RiepiloVociModel>
+﻿@model IEnumerable<NewISE.Models.DBModel.RiepilogoVociModel>
 <link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
 
 @using NewISE.Models.DBModel
@@ -15,20 +15,20 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div style="padding-bottom:10px;margin-right:20px;border-bottom:solid;border-width:1px;border-color:limegreen">
+        <div style="padding-bottom:10px;border-bottom:solid;border-width:1px;border-color:limegreen;margin-bottom:15px">
             <h4>Elenco Riepilogo Voci</h4>
         </div>
     </div>
 </div>
 
-<div style="margin: 15px"></div>
-
 <table id="tbRiepilogoVoci" class="display" cellspacing="0">
     <thead>
         <tr>
-            @*<th class="text-center">
-                @Html.DisplayNameFor(model => model.dataOperazione)
-            </th>*@
+            <th class="text-center">
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.MeseAnnoElaborato)
+            </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.descrizione)
             </th>
@@ -56,9 +56,12 @@
         @foreach (var item in Model)
         {
             <tr>
-                @*<td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataOperazione)
-                </td>*@
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.GiornoMeseAnnoElaborato)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.MeseAnnoElaborato)
+                </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.descrizione)
                 </td>
@@ -173,10 +176,12 @@
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "columnDefs": [
-                    { "targets": [5], "orderable": false },
-                    { "targets": [6], "type": 'numeric-comma' },
+                    { "targets": [0], "type": 'date-euro' },
+                    { "targets": [0], "visible": false },
+                    { "targets": [1, 7], "orderable": false },
+                    { "targets": [8], "type": 'numeric-comma' },
         ],
-        "order": [0, "asc"]
+        "order": [[0, "desc"],[2, "asc"]]
     });
 
 
