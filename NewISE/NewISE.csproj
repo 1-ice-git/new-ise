@@ -364,12 +364,6 @@
     <Content Include="Areas\Statistiche\RPTDataSet\_old_RPTDataSet\DataSet99.xss">
       <DependentUpon>DataSet99.xsd</DependentUpon>
     </Content>
-    <Content Include="Areas\Statistiche\RPTDataSet\_old_RPTDataSet\DataSetRiepiloghiVoci.xsc">
-      <DependentUpon>DataSetRiepiloghiVoci.xsd</DependentUpon>
-    </Content>
-    <Content Include="Areas\Statistiche\RPTDataSet\_old_RPTDataSet\DataSetRiepiloghiVoci.xss">
-      <DependentUpon>DataSetRiepiloghiVoci.xsd</DependentUpon>
-    </Content>
     <Content Include="Areas\Statistiche\RPT\_old_report\Report12.rdlc" />
     <Content Include="Areas\Statistiche\RPT\_old_report\Report19.rdlc" />
     <Content Include="Areas\Statistiche\RPT\_old_report\Report30.rdlc" />
@@ -4796,6 +4790,17 @@
     <Content Include="Areas\Statistiche\Views\RiepilogoGenerale\RptRiepilogoGenerale.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepiloghiSospensioni\SelezionaMeseAnno.cshtml" />
     <Content Include="Areas\Statistiche\Views\RiepiloghiSospensioni\RptRiepiloghiSospensioni.cshtml" />
+    <Content Include="Areas\Statistiche\RPTDataSet\DtRiepilogoVoci.xsc">
+      <DependentUpon>DtRiepilogoVoci.xsd</DependentUpon>
+    </Content>
+    <None Include="Areas\Statistiche\RPTDataSet\DtRiepilogoVoci.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DtRiepilogoVoci.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Areas\Statistiche\RPTDataSet\DtRiepilogoVoci.xss">
+      <DependentUpon>DtRiepilogoVoci.xsd</DependentUpon>
+    </Content>
     <None Include="Areas\Statistiche\RPTDataSet\_old_RPTDataSet\DataSet1.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -4910,11 +4915,6 @@
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet99.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Areas\Statistiche\RPTDataSet\_old_RPTDataSet\DataSetRiepiloghiVoci.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSetRiepiloghiVoci.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Areas\Statistiche\Views\Statistiche\Index_old.cshtml" />
     <Content Include="Areas\Statistiche\Views\Statistiche\AttivitaStatistiche.cshtml" />
@@ -5280,6 +5280,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dsSpeseAvvicendamento.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Statistiche\RPTDataSet\DtRiepilogoVoci.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DtRiepilogoVoci.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\_old_RPTDataSet\DataSet10.Designer.cs">
       <DependentUpon>DataSet10.xsd</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -5408,11 +5413,6 @@
     </Compile>
     <Compile Include="Areas\Statistiche\RPTDataSet\_old_RPTDataSet\DataSet99.Designer.cs">
       <DependentUpon>DataSet99.xsd</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="Areas\Statistiche\RPTDataSet\_old_RPTDataSet\DataSetRiepiloghiVoci.Designer.cs">
-      <DependentUpon>DataSetRiepiloghiVoci.xsd</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
@@ -6008,7 +6008,7 @@
     <Compile Include="Models\DBModel\LogAllineamentoModel.cs" />
     <Compile Include="Models\DBModel\PeriodoMABModel.cs" />
     <Compile Include="Models\DBModel\MeseAnnoElaborazioneModel.cs" />
-    <Compile Include="Models\DBModel\RiepiloVociModel.cs" />
+    <Compile Include="Models\DBModel\RiepilogoVociModel.cs" />
     <Compile Include="Models\DBModel\RinunciaTERientroModel.cs" />
     <Compile Include="Models\DBModel\RptAnticipoIndennitàdiSistemazione_Lorda.cs" />
     <Compile Include="Models\DBModel\RptContributoOmnicomprensivoRientroModel.cs" />
