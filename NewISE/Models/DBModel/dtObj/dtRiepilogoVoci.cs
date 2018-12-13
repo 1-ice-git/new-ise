@@ -15,9 +15,9 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
-        public IList<RiepiloVociModel> GetRiepilogoVoci(decimal idTrasferimento)
+        public IList<RiepilogoVociModel> GetRiepilogoVoci(decimal idTrasferimento)
         {
-            List<RiepiloVociModel> lrvm = new List<RiepiloVociModel>();
+            List<RiepilogoVociModel> lrvm = new List<RiepilogoVociModel>();
 
             List<MeseAnnoElaborazioneModel> lmaem = new List<MeseAnnoElaborazioneModel>();
 
@@ -32,35 +32,11 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (t != null && t.IDTRASFERIMENTO > 0)
                     {
-
                         var ps = t.PRIMASITEMAZIONE;
                         var ind = t.INDENNITA;
                         var tep = t.TEPARTENZA;
                         var ter = t.TERIENTRO;
-
-                        //var lTeorici =
-                        //    t.TEORICI.Where(
-                        //        a =>
-                        //            a.ANNULLATO == false && a.ELABORATO == true && 
-                        //            (a.ELABINDSISTEMAZIONE.IDPRIMASISTEMAZIONE == ps.IDPRIMASISTEMAZIONE) ||
-                        //            a.ELABINDENNITA.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
-                        //            a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
-                        //            a.ELABTRASPEFFETTI.IDTEPARTENZA.Value == tep.IDTEPARTENZA ||
-                        //            a.ELABTRASPEFFETTI.IDTERIENTRO.Value == ter.IDTERIENTRO)
-                        //        .OrderBy(a => a.ANNORIFERIMENTO)
-                        //        .ThenBy(a => a.MESERIFERIMENTO)
-                        //        .ToList();
-
-                        //var lTeorici =
-                        //       trasferimento.TEORICI.Where(
-                        //                 a =>
-                        //                    a.ANNULLATO == false && a.ELABORATO == true &&
-                        //                    a.ELABINDENNITA.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) ||
-                        //                    a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == ind.IDTRASFINDENNITA) )
-                        //                .OrderBy(a => a.ANNORIFERIMENTO)
-                        //                .ThenBy(a => a.MESERIFERIMENTO)
-                        //                .ToList();
-
+                     
                         DateTime DataLimiteRiepilogoVoci = Convert.ToDateTime(System.Configuration.ConfigurationManager.AppSettings["DataLimiteRiepilogoVoci"]);
 
                         decimal idMeseAnnoElaborazioneLimite = 0;
@@ -69,9 +45,9 @@ namespace NewISE.Models.DBModel.dtObj
                             lmaem = cmem.Mae.Where(a=>
                                                     a.mese>= Convert.ToDecimal(DataLimiteRiepilogoVoci.Month) &&
                                                     a.anno >= Convert.ToDecimal(DataLimiteRiepilogoVoci.Year))
-                                            .OrderByDescending(a=>a.idMeseAnnoElab)
+                                            .OrderBy(a=>a.idMeseAnnoElab)
                                             .ToList();
-                            if(lmaem?.Any()==false)
+                            if(lmaem?.Any()??false)
                             {
                                 idMeseAnnoElaborazioneLimite = lmaem.First().idMeseAnnoElab;
                             }
@@ -89,7 +65,6 @@ namespace NewISE.Models.DBModel.dtObj
 
                         if (lTeorici?.Any() ?? false)
                         {
-
                             foreach (var teorico in lTeorici)
                             {
                                 var idMeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.IDMESEANNOELAB;
@@ -98,7 +73,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
                                 var tv = teorico.VOCI.TIPOVOCE;
                                
-                                RiepiloVociModel rv = new RiepiloVociModel()
+                                RiepilogoVociModel rv = new RiepilogoVociModel()
                                 {
                                     idMeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.IDMESEANNOELAB,
                                     dataOperazione = teorico.DATAOPERAZIONE,
@@ -139,16 +114,14 @@ namespace NewISE.Models.DBModel.dtObj
                                     meseRiferimento = teorico.MESERIFERIMENTO,
                                     annoRiferimento = teorico.ANNORIFERIMENTO,
                                     annomeseRiferimento = teorico.ANNORIFERIMENTO + teorico.MESERIFERIMENTO,
+                                    MeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.MESE.ToString().PadLeft(2, Convert.ToChar("0")) + "-" + teorico.MESEANNOELABORAZIONE.ANNO.ToString(),                                 
+                                    GiornoMeseAnnoElaborato=Convert.ToDateTime("01/"+ teorico.MESEANNOELABORAZIONE.MESE.ToString()+"/"+ teorico.MESEANNOELABORAZIONE.ANNO.ToString()),
                                     giorni = 0,
                                     Importo = teorico.IMPORTO,
                                     Elaborato = teorico.ELABORATO
                                 };
-
-
                                 lrvm.Add(rv);
-
                             }
-
                         }
                     }
 

@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
+namespace NewISE.Areas.Statistiche.RPTDataSet {
     
     
     /// <summary>
@@ -20,9 +20,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("DataSetRiepiloghiVoci")]
+    [global::System.Xml.Serialization.XmlRootAttribute("DtRiepilogoVoci")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class DataSetRiepiloghiVoci : global::System.Data.DataSet {
+    public partial class DtRiepilogoVoci : global::System.Data.DataSet {
         
         private DataTable1DataTable tableDataTable1;
         
@@ -30,7 +30,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public DataSetRiepiloghiVoci() {
+        public DtRiepilogoVoci() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -41,7 +41,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected DataSetRiepiloghiVoci(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected DtRiepilogoVoci(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -127,7 +127,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            DataSetRiepiloghiVoci cln = ((DataSetRiepiloghiVoci)(base.Clone()));
+            DtRiepilogoVoci cln = ((DtRiepilogoVoci)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -199,9 +199,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "DataSetRiepiloghiVoci";
+            this.DataSetName = "DtRiepilogoVoci";
             this.Prefix = "";
-            this.Namespace = "http://tempuri.org/DataSetRiepiloghiVoci.xsd";
+            this.Namespace = "http://tempuri.org/DtRiepilogoVoci.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
             this.tableDataTable1 = new DataTable1DataTable();
@@ -225,7 +225,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            DataSetRiepiloghiVoci ds = new DataSetRiepiloghiVoci();
+            DtRiepilogoVoci ds = new DtRiepilogoVoci();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -279,11 +279,15 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class DataTable1DataTable : global::System.Data.TypedTableBase<DataTable1Row> {
             
+            private global::System.Data.DataColumn columnmeseAnnoElaborazione;
+            
             private global::System.Data.DataColumn columndataOperazione;
             
             private global::System.Data.DataColumn columndescrizione;
             
             private global::System.Data.DataColumn columnImporto;
+            
+            private global::System.Data.DataColumn columnInserimento;
             
             private global::System.Data.DataColumn columnLiquidazione;
             
@@ -293,7 +297,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
             
             private global::System.Data.DataColumn columnmeseAnnoRiferimento;
             
-            private global::System.Data.DataColumn columnInserimento;
+            private global::System.Data.DataColumn columngiornoMeseAnnoElaborazione;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -330,6 +334,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn meseAnnoElaborazioneColumn {
+                get {
+                    return this.columnmeseAnnoElaborazione;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn dataOperazioneColumn {
                 get {
                     return this.columndataOperazione;
@@ -349,6 +361,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
             public global::System.Data.DataColumn ImportoColumn {
                 get {
                     return this.columnImporto;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn InserimentoColumn {
+                get {
+                    return this.columnInserimento;
                 }
             }
             
@@ -386,9 +406,9 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn InserimentoColumn {
+            public global::System.Data.DataColumn giornoMeseAnnoElaborazioneColumn {
                 get {
-                    return this.columnInserimento;
+                    return this.columngiornoMeseAnnoElaborazione;
                 }
             }
             
@@ -429,17 +449,19 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DataTable1Row AddDataTable1Row(string dataOperazione, string descrizione, string Importo, string Liquidazione, string Voce, string movimento, string meseAnnoRiferimento, string Inserimento) {
+            public DataTable1Row AddDataTable1Row(string meseAnnoElaborazione, string dataOperazione, string descrizione, string Importo, string Inserimento, string Liquidazione, string Voce, string movimento, string meseAnnoRiferimento, string giornoMeseAnnoElaborazione) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
+                        meseAnnoElaborazione,
                         dataOperazione,
                         descrizione,
                         Importo,
+                        Inserimento,
                         Liquidazione,
                         Voce,
                         movimento,
                         meseAnnoRiferimento,
-                        Inserimento};
+                        giornoMeseAnnoElaborazione};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -462,25 +484,31 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
+                this.columnmeseAnnoElaborazione = base.Columns["meseAnnoElaborazione"];
                 this.columndataOperazione = base.Columns["dataOperazione"];
                 this.columndescrizione = base.Columns["descrizione"];
                 this.columnImporto = base.Columns["Importo"];
+                this.columnInserimento = base.Columns["Inserimento"];
                 this.columnLiquidazione = base.Columns["Liquidazione"];
                 this.columnVoce = base.Columns["Voce"];
                 this.columnmovimento = base.Columns["movimento"];
                 this.columnmeseAnnoRiferimento = base.Columns["meseAnnoRiferimento"];
-                this.columnInserimento = base.Columns["Inserimento"];
+                this.columngiornoMeseAnnoElaborazione = base.Columns["giornoMeseAnnoElaborazione"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
+                this.columnmeseAnnoElaborazione = new global::System.Data.DataColumn("meseAnnoElaborazione", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnmeseAnnoElaborazione);
                 this.columndataOperazione = new global::System.Data.DataColumn("dataOperazione", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columndataOperazione);
                 this.columndescrizione = new global::System.Data.DataColumn("descrizione", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columndescrizione);
                 this.columnImporto = new global::System.Data.DataColumn("Importo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnImporto);
+                this.columnInserimento = new global::System.Data.DataColumn("Inserimento", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnInserimento);
                 this.columnLiquidazione = new global::System.Data.DataColumn("Liquidazione", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLiquidazione);
                 this.columnVoce = new global::System.Data.DataColumn("Voce", typeof(string), null, global::System.Data.MappingType.Element);
@@ -489,8 +517,8 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
                 base.Columns.Add(this.columnmovimento);
                 this.columnmeseAnnoRiferimento = new global::System.Data.DataColumn("meseAnnoRiferimento", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnmeseAnnoRiferimento);
-                this.columnInserimento = new global::System.Data.DataColumn("Inserimento", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnInserimento);
+                this.columngiornoMeseAnnoElaborazione = new global::System.Data.DataColumn("giornoMeseAnnoElaborazione", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columngiornoMeseAnnoElaborazione);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -558,7 +586,7 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                DataSetRiepiloghiVoci ds = new DataSetRiepiloghiVoci();
+                DtRiepilogoVoci ds = new DtRiepilogoVoci();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -633,6 +661,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string meseAnnoElaborazione {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.meseAnnoElaborazioneColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'meseAnnoElaborazione\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.meseAnnoElaborazioneColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string dataOperazione {
                 get {
                     try {
@@ -676,6 +720,22 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
                 }
                 set {
                     this[this.tableDataTable1.ImportoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string Inserimento {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.InserimentoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Inserimento\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.InserimentoColumn] = value;
                 }
             }
             
@@ -745,18 +805,31 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string Inserimento {
+            public string giornoMeseAnnoElaborazione {
                 get {
                     try {
-                        return ((string)(this[this.tableDataTable1.InserimentoColumn]));
+                        return ((string)(this[this.tableDataTable1.giornoMeseAnnoElaborazioneColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Inserimento\' in table \'DataTable1\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'giornoMeseAnnoElaborazione\' in table \'DataTable1\' is DBNull" +
+                                ".", e);
                     }
                 }
                 set {
-                    this[this.tableDataTable1.InserimentoColumn] = value;
+                    this[this.tableDataTable1.giornoMeseAnnoElaborazioneColumn] = value;
                 }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsmeseAnnoElaborazioneNull() {
+                return this.IsNull(this.tableDataTable1.meseAnnoElaborazioneColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetmeseAnnoElaborazioneNull() {
+                this[this.tableDataTable1.meseAnnoElaborazioneColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -793,6 +866,18 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetImportoNull() {
                 this[this.tableDataTable1.ImportoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsInserimentoNull() {
+                return this.IsNull(this.tableDataTable1.InserimentoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetInserimentoNull() {
+                this[this.tableDataTable1.InserimentoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -845,14 +930,14 @@ namespace NewISE.Areas.Statistiche.RPTDataSet._old_RPTDataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsInserimentoNull() {
-                return this.IsNull(this.tableDataTable1.InserimentoColumn);
+            public bool IsgiornoMeseAnnoElaborazioneNull() {
+                return this.IsNull(this.tableDataTable1.giornoMeseAnnoElaborazioneColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetInserimentoNull() {
-                this[this.tableDataTable1.InserimentoColumn] = global::System.Convert.DBNull;
+            public void SetgiornoMeseAnnoElaborazioneNull() {
+                this[this.tableDataTable1.giornoMeseAnnoElaborazioneColumn] = global::System.Convert.DBNull;
             }
         }
         

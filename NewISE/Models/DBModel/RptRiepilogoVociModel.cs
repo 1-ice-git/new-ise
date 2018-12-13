@@ -74,5 +74,9 @@ namespace NewISE.Models.DBModel
 
         public decimal idMeseAnnoElaborato { get; set; }
 
+        public string meseAnnoElaborazione { get; set; }
+
+        public DateTime giornoMeseAnnoElaborazione { get; set; }
+
     }
 }
