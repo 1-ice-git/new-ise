@@ -1,4 +1,5 @@
-﻿<head>
+﻿@using NewISE.Models.Enumeratori
+<head>
     <script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
     <script src="~/Scripts/ViewScripts/VariazioneMaggiorazioneAbitazione.js"></script>
 </head>
@@ -6,6 +7,7 @@
 <body>
     @{
         decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+        EnumChiamante enChiamante = EnumChiamante.Variazione_Maggiorazione_Abitazione;
     }
 
     @Html.Hidden("hdIdTrasferimento", idTrasferimento)
@@ -259,6 +261,48 @@
 
         var idTipoDocumento = parseInt($("#hiIdTipoDocumento").val());
         SalvaDocumentoMAB_var(idMab, idTipoDocumento);
+    }
+
+    function ConfermaEliminaFormularioMAB() {
+        //debugger;
+        var rotta = "/Documenti/EliminaFormularioMAB";
+        var idDoc = $("#hIdDocFormularioMAB").val();
+        var idTrasferimento = $("#hdIdTrasferimento").val();
+        var idMab = $("#hdIdMab").val();
+
+        $("#ModalEliminaFormularioMAB").modal("hide");
+        var chiamante = parseInt(@Convert.ToDecimal(enChiamante));
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idDocumento: idDoc, chiamante: chiamante }, //I dati, forniti sotto forma di oggetto FormData
+            dataType: 'json',
+            cache: false,
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err != "" && result.err != undefined) {
+                    ErroreElaborazioneAjax(result.err);
+                }
+                else {
+                    ElencoFormulariMABInseriti(idTrasferimento, idMab)
+                    GestionePulsantiNotificaAttivaAnnullaMAB_var(idTrasferimento);
+                }
+            },
+            complete: function () {
+            },
+            error: function (error) {
+                //debugger;
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
     }
 </script>
 

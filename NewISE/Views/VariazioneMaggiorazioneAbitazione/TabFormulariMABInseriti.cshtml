@@ -6,7 +6,6 @@
 
 @{
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
-    EnumChiamante enChiamante = EnumChiamante.Variazione_Maggiorazione_Abitazione;
 }
 
 @Html.Hidden("hiIdTipoDocumento", 0)
@@ -126,29 +125,8 @@
             </tr>
         }
     </tbody>
-
 </table>
 
-<div class="modal fade" id="ModalEliminaFormularioMAB" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaFormularioMABLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="EliminaFormularioMABLabel">Eliminazione Formulario Maggiorazione Abitazione</h3>
-            </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <input type="hidden" id="hIdDocFormularioMAB" />
-                <p><label>Eliminare il formulario selezionato?</label></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ConfermaEliminaFormularioMAB();">Ok</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script type="text/javascript">
     $("#tabElencoFormulariMABInseriti_Var").DataTable({
@@ -195,49 +173,6 @@
         $("#hIdDocFormularioMAB").val(idDoc);
         $("#ModalEliminaFormularioMAB").modal("show");
     }
-
-    function ConfermaEliminaFormularioMAB() {
-        //debugger;
-        var rotta = "/Documenti/EliminaFormularioMAB";
-        var idDoc = $("#hIdDocFormularioMAB").val();
-        var idTrasferimento = $("#hdIdTrasferimento").val();
-        var idMab = $("#hdIdMab").val();
-        
-        $("#ModalEliminaFormularioMAB").modal("hide");
-        var chiamante = parseInt(@Convert.ToDecimal(enChiamante));
-
-        $.ajax({
-            url: rotta,
-            type: "POST", //Le info testuali saranno passate in POST
-            data: { idDocumento: idDoc, chiamante: chiamante }, //I dati, forniti sotto forma di oggetto FormData
-            dataType: 'json',
-            cache: false,
-            async: false,
-            beforeSend: function () {
-                //debugger;
-                VerificaAutenticazione();
-                Blocca();
-            },
-            success: function (result) {
-                //debugger;
-                if (result.err != "" && result.err != undefined) {
-                    ErroreElaborazioneAjax(result.err);
-                }
-                else {
-                    ElencoFormulariMABInseriti(idTrasferimento, idMab)
-                    GestionePulsantiNotificaAttivaAnnullaMAB_var(idTrasferimento);
-                }
-            },
-            complete: function () {
-            },
-            error: function (error) {
-                //debugger;
-                var msg = error.responseText;
-                ErroreElaborazioneAjax(msg);
-            }
-        });
-    }
-
    
 </script>
 
