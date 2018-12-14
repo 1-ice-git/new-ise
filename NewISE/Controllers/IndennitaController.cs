@@ -3159,6 +3159,7 @@ namespace NewISE.Controllers
             }
 
         }
+
         public ActionResult RptAnticipoIndennitadiSistemazioneLorda(decimal idTrasferimento)
         {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
