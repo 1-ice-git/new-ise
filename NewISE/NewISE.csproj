@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
@@ -6010,13 +6010,13 @@
     <Compile Include="Models\DBModel\MeseAnnoElaborazioneModel.cs" />
     <Compile Include="Models\DBModel\RiepilogoVociModel.cs" />
     <Compile Include="Models\DBModel\RinunciaTERientroModel.cs" />
-    <Compile Include="Models\DBModel\RptAnticipoIndennit�diSistemazione_Lorda.cs" />
+    <Compile Include="Models\DBModel\RptAnticipoIndennitàdiSistemazione_Lorda.cs" />
     <Compile Include="Models\DBModel\RptContributoOmnicomprensivoRientroModel.cs" />
     <Compile Include="Models\DBModel\RptContributoOmnicomprensivoTrasferimentoModel.cs" />
     <Compile Include="Models\DBModel\RptIndennitaBaseModel.cs" />
     <Compile Include="Models\DBModel\RptIndennitaPersonaleModel.cs" />
     <Compile Include="Models\DBModel\RptIndennitaServizioModel.cs" />
-    <Compile Include="Models\DBModel\RptIndennit�RichiamoLordaModel.cs" />
+    <Compile Include="Models\DBModel\RptIndennitàRichiamoLordaModel.cs" />
     <Compile Include="Models\DBModel\RptIndSistemazioneLordaModel.cs" />
     <Compile Include="Models\DBModel\RptMaggiorazioneAbitazione.cs" />
     <Compile Include="Models\DBModel\RptMaggiorazioniConiuge.cs" />
@@ -6261,10 +6261,10 @@
     </Compile>
     <Compile Include="Report\Elaborazioni\Modell\LiquidazioniDiretteRpt.cs" />
     <Compile Include="Report\Elaborazioni\Modell\LiquidazioneMensileElabRpt.cs" />
-    <Compile Include="Views\Dataset\DataSetAnticipoIndennit�diSistemazioneLorda.Designer.cs">
+    <Compile Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataSetAnticipoIndennit�diSistemazioneLorda.xsd</DependentUpon>
+      <DependentUpon>DataSetAnticipoIndennitàdiSistemazioneLorda.xsd</DependentUpon>
     </Compile>
     <Compile Include="Views\Dataset\DataSetContributoOmnicomprensivoRientro.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -6291,15 +6291,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetIndennitaServizio.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Views\Dataset\DataSetIndennit�diSistemazioneLorda.Designer.cs">
+    <Compile Include="Views\Dataset\DataSetIndennitàdiSistemazioneLorda1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataSetIndennit�diSistemazioneLorda.xsd</DependentUpon>
+      <DependentUpon>DataSetIndennitàdiSistemazioneLorda.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Views\Dataset\DataSetIndennit�Richiamo.Designer.cs">
+    <Compile Include="Views\Dataset\DataSetIndennitàRichiamo1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataSetIndennit�Richiamo.xsd</DependentUpon>
+      <DependentUpon>DataSetIndennitàRichiamo.xsd</DependentUpon>
     </Compile>
     <Compile Include="Views\Dataset\DataSetMaggiorazioneAbitazione.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -6538,18 +6538,18 @@
     <Content Include="Views\Dataset\DataSetContributoOmnicomprensivoRientro.xsc">
       <DependentUpon>DataSetContributoOmnicomprensivoRientro.xsd</DependentUpon>
     </Content>
-    <Content Include="Views\Dataset\DataSetAnticipoIndennit�diSistemazioneLorda.xsc">
-      <DependentUpon>DataSetAnticipoIndennit�diSistemazioneLorda.xsd</DependentUpon>
-    </Content>
     <Content Include="Views\Allineamento\Index.cshtml" />
     <Content Include="Views\Allineamento\Allineamento.cshtml" />
-    <None Include="Views\Dataset\DataSetAnticipoIndennit�diSistemazioneLorda.xsd">
-      <SubType>Designer</SubType>
+    <Content Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.xsc">
+      <DependentUpon>DataSetAnticipoIndennitàdiSistemazioneLorda.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSetAnticipoIndennit�diSistemazioneLorda.Designer.cs</LastGenOutput>
+      <LastGenOutput>DataSetAnticipoIndennitàdiSistemazioneLorda1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
-    <Content Include="Views\Dataset\DataSetAnticipoIndennit�diSistemazioneLorda.xss">
-      <DependentUpon>DataSetAnticipoIndennit�diSistemazioneLorda.xsd</DependentUpon>
+    <Content Include="Views\Dataset\DataSetAnticipoIndennitàdiSistemazioneLorda.xss">
+      <DependentUpon>DataSetAnticipoIndennitàdiSistemazioneLorda.xsd</DependentUpon>
     </Content>
     <None Include="Views\Dataset\DataSetContributoOmnicomprensivoRientro.xsd">
       <SubType>Designer</SubType>
@@ -6600,30 +6600,30 @@
     <Content Include="Views\Dataset\DataSetIndennitaServizio.xss">
       <DependentUpon>DataSetIndennitaServizio.xsd</DependentUpon>
     </Content>
-    <Content Include="Views\Dataset\DataSetIndennit�diSistemazioneLorda.xsc">
-      <DependentUpon>DataSetIndennit�diSistemazioneLorda.xsd</DependentUpon>
+    <Content Include="Views\Dataset\DataSetIndennitàdiSistemazioneLorda.xsc">
+      <DependentUpon>DataSetIndennitàdiSistemazioneLorda.xsd</DependentUpon>
     </Content>
-    <None Include="Views\Dataset\DataSetIndennit�diSistemazioneLorda.xsd">
-      <SubType>Designer</SubType>
+    <None Include="Views\Dataset\DataSetIndennitàdiSistemazioneLorda.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSetIndennit�diSistemazioneLorda.Designer.cs</LastGenOutput>
+      <LastGenOutput>DataSetIndennitàdiSistemazioneLorda1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
-    <Content Include="Views\Dataset\DataSetIndennit�diSistemazioneLorda.xss">
-      <DependentUpon>DataSetIndennit�diSistemazioneLorda.xsd</DependentUpon>
+    <Content Include="Views\Dataset\DataSetIndennitàdiSistemazioneLorda.xss">
+      <DependentUpon>DataSetIndennitàdiSistemazioneLorda.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Dataset\DataSetIndennitàRichiamo.xsc">
+      <DependentUpon>DataSetIndennitàRichiamo.xsd</DependentUpon>
+    </Content>
+    <None Include="Views\Dataset\DataSetIndennitàRichiamo.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetIndennitàRichiamo1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Views\Dataset\DataSetIndennitàRichiamo.xss">
+      <DependentUpon>DataSetIndennitàRichiamo.xsd</DependentUpon>
     </Content>
     <Content Include="Views\Dataset\DataSetMaggiorazioniConiuge.xsc">
       <DependentUpon>DataSetMaggiorazioniConiuge.xsd</DependentUpon>
-    </Content>
-    <Content Include="Views\Dataset\DataSetIndennit�Richiamo.xsc">
-      <DependentUpon>DataSetIndennit�Richiamo.xsd</DependentUpon>
-    </Content>
-    <None Include="Views\Dataset\DataSetIndennit�Richiamo.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DataSetIndennit�Richiamo.Designer.cs</LastGenOutput>
-    </None>
-    <Content Include="Views\Dataset\DataSetIndennit�Richiamo.xss">
-      <DependentUpon>DataSetIndennit�Richiamo.xsd</DependentUpon>
     </Content>
     <Content Include="Views\Dataset\DataSetMaggiorazioneAbitazione.xsc">
       <DependentUpon>DataSetMaggiorazioneAbitazione.xsd</DependentUpon>
