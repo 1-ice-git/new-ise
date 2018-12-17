@@ -279,6 +279,10 @@ namespace NewISE.Models.DBModel.dtObj
                                         adfm.residente = false;
                                         adfm.ulterioreMagConiuge = true;
                                         break;
+                                    case EnumTipologiaConiuge.NonResidente:
+                                        adfm.residente = false;
+                                        adfm.ulterioreMagConiuge = false;
+                                        break;
                                     default:
                                         throw new ArgumentOutOfRangeException();
                                 }

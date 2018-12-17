@@ -304,6 +304,11 @@ namespace NewISE.Controllers
                                         adfcm.ulterioreMagConiuge = true;
                                         break;
 
+                                    case EnumTipologiaConiuge.NonResidente:
+                                        adfcm.residente = false;
+                                        adfcm.ulterioreMagConiuge = false;
+                                        break;
+
                                     default:
                                         throw new ArgumentOutOfRangeException();
                                 }

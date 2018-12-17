@@ -331,6 +331,11 @@ namespace NewISE.Controllers
                                 adf.ulterioreMagConiuge = true;
                                 break;
 
+                            case EnumTipologiaConiuge.NonResidente:
+                                adf.residente = false;
+                                adf.ulterioreMagConiuge = false;
+                                break;
+
                             default:
                                 break;
                         }
@@ -444,6 +449,11 @@ namespace NewISE.Controllers
                             case EnumTipologiaConiuge.NonResidente_A_Carico:
                                 adf.residente = false;
                                 adf.ulterioreMagConiuge = true;
+                                break;
+
+                            case EnumTipologiaConiuge.NonResidente:
+                                adf.residente = false;
+                                adf.ulterioreMagConiuge = false;
                                 break;
 
                             default:

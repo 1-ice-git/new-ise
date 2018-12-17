@@ -852,6 +852,11 @@ namespace NewISE.Controllers
                                     adf.ulterioreMagConiuge = true;
                                     break;
 
+                                case EnumTipologiaConiuge.NonResidente:
+                                    adf.residente = false;
+                                    adf.ulterioreMagConiuge = false;
+                                    break;
+
                                 default:
                                     break;
                             }

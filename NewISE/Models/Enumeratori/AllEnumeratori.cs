@@ -124,7 +124,8 @@ namespace NewISE.Models.Enumeratori
     public enum EnumTipologiaConiuge
     {
         Residente = 1,
-        NonResidente_A_Carico = 2
+        NonResidente_A_Carico = 2,
+        NonResidente = 3
     }
 
     public enum EnumParentela
