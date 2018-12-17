@@ -8,7 +8,8 @@ namespace NewISE.Models.DBModel
     public class RiepilogoVociModel
     {
         [Key]
-        
+        public decimal idTeorici { get; set; }
+
         [DataType(DataType.Date)]
         [Display(Name = "Data Operazione")]
         public DateTime dataOperazione { get; set; }
@@ -51,15 +52,13 @@ namespace NewISE.Models.DBModel
         [DefaultValue(false)]
         public bool Elaborato { get; set; }
 
-
         [Display(Name = "Mese-Anno Rif.")]
         public string MeseAnnoRiferimento
         {
             get
             {
                 return meseRiferimento.ToString().PadLeft(2, Convert.ToChar("0")) + "-" + annoRiferimento;
-            }
-            
+            }           
         }
 
         public decimal idMeseAnnoElaborato { get; set; }
@@ -67,6 +66,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Mese-Anno Elab.")]
         public string MeseAnnoElaborato { get; set; }
 
+        [Display(Name = "Data Elab.")]
         public DateTime GiornoMeseAnnoElaborato { get; set; }
 
     }

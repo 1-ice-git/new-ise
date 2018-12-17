@@ -55,9 +55,9 @@
             </thead>
             <tbody>
                 @foreach (var item in Model)
-            {
-                if (item.Elaborato == false)
                 {
+                    if (item.Elaborato == false)
+                    {
                         <tr>
                             <td>
                                 @Html.HiddenFor(modelItem => item.idTeorici)
@@ -289,7 +289,7 @@
     });
 
     $("#btLiquidazioniMensili").on("click", function () {
-        //debugger;
+        debugger;
         
 
         var rotta = "/Elaborazioni/ReportLiquidazioniMensili";

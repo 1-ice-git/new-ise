@@ -67,62 +67,163 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             foreach (var teorico in lTeorici)
                             {
-                                var idMeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.IDMESEANNOELAB;
-                                var tm = teorico.TIPOMOVIMENTO;
-                                var voce = teorico.VOCI;
-                                var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
-                                var tv = teorico.VOCI.TIPOVOCE;
-                               
-                                RiepilogoVociModel rv = new RiepilogoVociModel()
-                                {
-                                    idMeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.IDMESEANNOELAB,
-                                    dataOperazione = teorico.DATAOPERAZIONE,
-                                    importo = teorico.IMPORTO,
-                                    descrizione = teorico.VOCI.DESCRIZIONE,
-                                    TipoMovimento = new TipoMovimentoModel()
-                                    {
-                                        idTipoMovimento = tm.IDTIPOMOVIMENTO,
-                                        TipoMovimento = tm.TIPOMOVIMENTO1,
-                                        DescMovimento = tm.DESCMOVIMENTO
-                                    },
-                                    TipoLiquidazione = new TipoLiquidazioneModel()
-                                    {
-                                        idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
-                                        descrizione = tl.DESCRIZIONE
-                                    },
-                                    TipoVoce = new TipoVoceModel()
-                                    {
-                                        idTipoVoce = tv.IDTIPOVOCE,
-                                        descrizione = tv.DESCRIZIONE
-                                    },
-                                    Voci = new VociModel()
-                                    {
-                                        idVoci = voce.IDVOCI,
-                                        codiceVoce = voce.CODICEVOCE,
-                                        descrizione = voce.DESCRIZIONE,
-                                        TipoLiquidazione = new TipoLiquidazioneModel()
-                                        {
-                                            idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
-                                            descrizione = tl.DESCRIZIONE
-                                        },
-                                        TipoVoce = new TipoVoceModel()
-                                        {
-                                            idTipoVoce = tv.IDTIPOVOCE,
-                                            descrizione = tv.DESCRIZIONE
-                                        }
-                                    },
-                                    meseRiferimento = teorico.MESERIFERIMENTO,
-                                    annoRiferimento = teorico.ANNORIFERIMENTO,
-                                    annomeseRiferimento = teorico.ANNORIFERIMENTO + teorico.MESERIFERIMENTO,
-                                    MeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.MESE.ToString().PadLeft(2, Convert.ToChar("0")) + "-" + teorico.MESEANNOELABORAZIONE.ANNO.ToString(),                                 
-                                    GiornoMeseAnnoElaborato=Convert.ToDateTime("01/"+ teorico.MESEANNOELABORAZIONE.MESE.ToString()+"/"+ teorico.MESEANNOELABORAZIONE.ANNO.ToString()),
-                                    giorni = 0,
-                                    Importo = teorico.IMPORTO,
-                                    Elaborato = teorico.ELABORATO
-                                };
+                                RiepilogoVociModel rv = GetRiepilogoVociByID(teorico.IDTEORICI, db);
+
+                                #region commento
+                                //var idMeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.IDMESEANNOELAB;
+                                //var tm = teorico.TIPOMOVIMENTO;
+                                //var voce = teorico.VOCI;
+                                //var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
+                                //var tv = teorico.VOCI.TIPOVOCE;
+
+                                //RiepilogoVociModel rv = new RiepilogoVociModel()
+                                //{
+                                //    idTeorici = teorico.IDTEORICI,
+                                //    idMeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.IDMESEANNOELAB,
+                                //    dataOperazione = teorico.DATAOPERAZIONE,
+                                //    importo = teorico.IMPORTO,
+                                //    descrizione = teorico.VOCI.DESCRIZIONE,
+                                //    TipoMovimento = new TipoMovimentoModel()
+                                //    {
+                                //        idTipoMovimento = tm.IDTIPOMOVIMENTO,
+                                //        TipoMovimento = tm.TIPOMOVIMENTO1,
+                                //        DescMovimento = tm.DESCMOVIMENTO
+                                //    },
+                                //    TipoLiquidazione = new TipoLiquidazioneModel()
+                                //    {
+                                //        idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
+                                //        descrizione = tl.DESCRIZIONE
+                                //    },
+                                //    TipoVoce = new TipoVoceModel()
+                                //    {
+                                //        idTipoVoce = tv.IDTIPOVOCE,
+                                //        descrizione = tv.DESCRIZIONE
+                                //    },
+                                //    Voci = new VociModel()
+                                //    {
+                                //        idVoci = voce.IDVOCI,
+                                //        codiceVoce = voce.CODICEVOCE,
+                                //        descrizione = voce.DESCRIZIONE,
+                                //        TipoLiquidazione = new TipoLiquidazioneModel()
+                                //        {
+                                //            idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
+                                //            descrizione = tl.DESCRIZIONE
+                                //        },
+                                //        TipoVoce = new TipoVoceModel()
+                                //        {
+                                //            idTipoVoce = tv.IDTIPOVOCE,
+                                //            descrizione = tv.DESCRIZIONE
+                                //        }
+                                //    },
+                                //    meseRiferimento = teorico.MESERIFERIMENTO,
+                                //    annoRiferimento = teorico.ANNORIFERIMENTO,
+                                //    annomeseRiferimento = teorico.ANNORIFERIMENTO + teorico.MESERIFERIMENTO,
+                                //    MeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.MESE.ToString().PadLeft(2, Convert.ToChar("0")) + "-" + teorico.MESEANNOELABORAZIONE.ANNO.ToString(),                                 
+                                //    GiornoMeseAnnoElaborato=Convert.ToDateTime("01/"+ teorico.MESEANNOELABORAZIONE.MESE.ToString()+"/"+ teorico.MESEANNOELABORAZIONE.ANNO.ToString()),
+                                //    giorni = 0,
+                                //    Importo = teorico.IMPORTO,
+                                //    Elaborato = teorico.ELABORATO
+                                //};
+                                #endregion
+
                                 lrvm.Add(rv);
                             }
                         }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    throw ex;
+                }
+
+            }
+
+            return lrvm;
+
+        }
+
+        public RiepilogoVociModel GetRiepilogoVociByID(decimal idTeorico, ModelDBISE db)
+        {
+
+            var teorico = db.TEORICI.Find(idTeorico);
+
+            var idMeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.IDMESEANNOELAB;
+            var tm = teorico.TIPOMOVIMENTO;
+            var voce = teorico.VOCI;
+            var tl = teorico.VOCI.TIPOLIQUIDAZIONE;
+            var tv = teorico.VOCI.TIPOVOCE;
+
+            RiepilogoVociModel rv = new RiepilogoVociModel()
+            {
+                idTeorici = teorico.IDTEORICI,
+                idMeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.IDMESEANNOELAB,
+                dataOperazione = teorico.DATAOPERAZIONE,
+                importo = teorico.IMPORTO,
+                descrizione = teorico.VOCI.DESCRIZIONE,
+                TipoMovimento = new TipoMovimentoModel()
+                {
+                    idTipoMovimento = tm.IDTIPOMOVIMENTO,
+                    TipoMovimento = tm.TIPOMOVIMENTO1,
+                    DescMovimento = tm.DESCMOVIMENTO
+                },
+                TipoLiquidazione = new TipoLiquidazioneModel()
+                {
+                    idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
+                    descrizione = tl.DESCRIZIONE
+                },
+                TipoVoce = new TipoVoceModel()
+                {
+                    idTipoVoce = tv.IDTIPOVOCE,
+                    descrizione = tv.DESCRIZIONE
+                },
+                Voci = new VociModel()
+                {
+                    idVoci = voce.IDVOCI,
+                    codiceVoce = voce.CODICEVOCE,
+                    descrizione = voce.DESCRIZIONE,
+                    TipoLiquidazione = new TipoLiquidazioneModel()
+                    {
+                        idTipoLiquidazione = tl.IDTIPOLIQUIDAZIONE,
+                        descrizione = tl.DESCRIZIONE
+                    },
+                    TipoVoce = new TipoVoceModel()
+                    {
+                        idTipoVoce = tv.IDTIPOVOCE,
+                        descrizione = tv.DESCRIZIONE
+                    }
+                },
+                meseRiferimento = teorico.MESERIFERIMENTO,
+                annoRiferimento = teorico.ANNORIFERIMENTO,
+                annomeseRiferimento = teorico.ANNORIFERIMENTO + teorico.MESERIFERIMENTO,
+                MeseAnnoElaborato = teorico.MESEANNOELABORAZIONE.MESE.ToString().PadLeft(2, Convert.ToChar("0")) + "-" + teorico.MESEANNOELABORAZIONE.ANNO.ToString(),
+                GiornoMeseAnnoElaborato = Convert.ToDateTime("01/" + teorico.MESEANNOELABORAZIONE.MESE.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + teorico.MESEANNOELABORAZIONE.ANNO.ToString()),
+                giorni = 0,
+                Importo = teorico.IMPORTO,
+                Elaborato = teorico.ELABORATO
+            };
+
+            return rv;
+
+        }
+
+        public IList<RiepilogoVociModel> PrelevaRiepilogoVoci(List<decimal> lidTeorici)
+        {
+            List<RiepilogoVociModel> lrvm = new List<RiepilogoVociModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+
+                    foreach (decimal teorico in lidTeorici)
+                    {
+                        lrvm.Add(GetRiepilogoVociByID(teorico, db));
                     }
 
                     db.Database.CurrentTransaction.Commit();

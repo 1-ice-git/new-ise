@@ -3139,16 +3139,11 @@ namespace NewISE.Controllers
 
             try
             {
-
                 using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
                     eim = dtei.GetAnticipoIndennitaSistemazioneEvoluzione(idTrasferimento).ToList();
 
-                }
-
-
-               
-
+                }             
                 ViewBag.idTrasferimento = idTrasferimento;
 
                 return PartialView(eim);
@@ -3157,7 +3152,6 @@ namespace NewISE.Controllers
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
         }
 
         public ActionResult RptAnticipoIndennitadiSistemazioneLorda(decimal idTrasferimento)

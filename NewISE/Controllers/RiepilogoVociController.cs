@@ -130,7 +130,7 @@ namespace NewISE.Controllers
 
             return PartialView(lrvm);
         }
-        public ActionResult RptRiepilogoVoci(decimal idTrasferimento)
+        public ActionResult RptRiepilogoVoci(decimal idTrasferimento, List<decimal> Teorici)
         {
             List<RiepilogoVociModel> lrvm = new List<RiepilogoVociModel>();
             List<RptRiepilogoVociModel> rpt = new List<RptRiepilogoVociModel>();
@@ -148,7 +148,9 @@ namespace NewISE.Controllers
 
                         using (dtRiepilogoVoci dtrv = new dtRiepilogoVoci())
                         {
-                            lrvm = dtrv.GetRiepilogoVoci(idTrasferimento).ToList();
+                            //lrvm = dtrv.GetRiepilogoVoci(idTrasferimento).ToList();
+                            lrvm = dtrv.PrelevaRiepilogoVoci(Teorici).ToList();
+
                         }
 
                         MESEANNOELABORAZIONE MeseAnnoElaborato = new MESEANNOELABORAZIONE();

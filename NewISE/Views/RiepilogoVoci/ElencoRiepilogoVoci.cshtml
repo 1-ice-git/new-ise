@@ -21,12 +21,13 @@
     </div>
 </div>
 
-<table id="tbRiepilogoVoci" class="display" cellspacing="0">
+<table id="DtRiepilogoVoci" cellspacing="0" class="table">
     <thead>
-        <tr>
-            <th class="text-center">
+        <tr>            
+            <th>
+                @Html.DisplayNameFor(model => model.GiornoMeseAnnoElaborato)
             </th>
-            <th class="text-center">
+            <th>
                 @Html.DisplayNameFor(model => model.MeseAnnoElaborato)
             </th>
             <th class="text-center">
@@ -49,17 +50,18 @@
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.importo)
-            </th>
+            </th>            
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
-        {
+        {            
             <tr>
-                <td style="text-align:center;">
+                <td>
                     @Html.DisplayFor(modelItem => item.GiornoMeseAnnoElaborato)
                 </td>
                 <td style="text-align:center;">
+                    @Html.HiddenFor(modelItem => item.idTeorici)
                     @Html.DisplayFor(modelItem => item.MeseAnnoElaborato)
                 </td>
                 <td style="text-align:center;">
@@ -82,38 +84,19 @@
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.importo)
-                </td>
-            </tr>
+                </td>                    
+            </tr>            
         }
     </tbody>
+
 </table>
 
 <div class="row">
     <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
-
-        @*Button Call Modal*@
-        @*<button class="btn btn-default btn-sm" onclick="DownloadReport();">
-            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-            Stampa
-        </button>*@
-
-        @*<button class="btn btn-default btn-sm" onclick="invia();">
-            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-            Stampa1
-        </button>
-
-        <button class="btn btn-default btn-sm" onclick="invia();">
-            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-            Stampa2
-        </button>*@
-
         <button class="btn btn-default btn-sm" id="opener">
             <i aria-hidden="true" class="fa fa-2x fa-print"></i>
             Stampa
         </button>
-
-        @*<a href="#" id="opener">Stampa Riepilogo Voci </a>*@
-
     </div>
 </div>
 
@@ -128,11 +111,6 @@
             </div>
             <div class="modal-body">
                 <div id="divRiepilogoVoci">
-                    @*@Html.Action("RptRiepilogoVoci", "RiepilogoVoci")*@
-                    @*@Html.Action("RptRiepilogoVoci", "RiepilogoVoci", new { idTrasferimento = idTrasferimento })*@
-                    @*@{Html.RenderAction("RptRiepilogoVoci", "RiepilogoVoci");}*@
-                    
-                    @*@Ajax.ActionLink("Riepilogo Voci", "RptRiepilogoVoci", "RiepilogoVoci", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })*@
                 </div>
             </div>
             <div class="modal-footer">
@@ -143,7 +121,8 @@
 </div>
 
 <script type="text/javascript">
-    $('#tbRiepilogoVoci').DataTable({
+
+    $("#DtRiepilogoVoci").DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -165,16 +144,16 @@
             "oAria": {
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
-            },
-            
+            }
         },
-        "info": false,
+        "info": true,
         "lengthChange": false,
-        "pageLength": 10,
-        //"searching": false,
-        "paging": true,
+        //"pageLength": 10,
+        "searching": true,
+        "paging": false,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
+        "scrollY": 350, 
         "columnDefs": [
                     { "targets": [0], "type": 'date-euro' },
                     { "targets": [0], "visible": false },
@@ -184,38 +163,9 @@
         "order": [[0, "desc"],[2, "asc"]]
     });
 
-
-    /* Custom filtering function which will search data in column four between two values */
-    $.fn.dataTable.ext.search.push(
-        function (settings, data, dataIndex) {
-            var min = parseInt($('#min').val(), 10);
-            var max = parseInt($('#max').val(), 10);
-            var age = parseFloat(data[1]) || 0; // use data for the age column
-
-            if ((isNaN(min) && isNaN(max)) ||
-                 (isNaN(min) && age <= max) ||
-                 (min <= age && isNaN(max)) ||
-                 (min <= age && age <= max)) {
-                return true;
-            }
-            return false;
-        }
-    );
-
-    $(document).ready(function () {
-        var table = $('#tbRiepilogoVoci').DataTable();
-
-        // Event listener to the two range filtering inputs to redraw on input
-        $('#min, #max').keyup(function () {
-            table.draw();
-        });
-    });
-
     function DownloadReport() {
         $('#ModalReport').modal().show();
-
     }
-
 
     var windowWidth = $(window).width();
     var windowHeight = $(window).height();
@@ -240,93 +190,60 @@
         });
 
         $("#opener").on("click", function () {
-            $('.container').addClass("NoOverflow");
-
-            $("#dialog").dialog("open");
-            $("#dialog").css("background-color", "#ffffff");
-
+           
+            //debugger;
             var rotta = "/RiepilogoVoci/RptRiepilogoVoci";
 
             var idTrasferimento = $("#hidTrasferimento").val();
 
+            var lidTeorici = new Array();
 
-            $.ajax({
-                type: "POST",
-                url: rotta,
-                data: { idTrasferimento: idTrasferimento },
-                dataType: 'html',
-                beforeSend: function () {
-                    //debugger;
-                    $("#dialog").empty();
+            var lTeorici = $('#DtRiepilogoVoci > tbody > tr > td > #item_idTeorici');
 
-                },
-                success: function (result) {
-                    //debugger;
-                    $("#dialog").html(result);
+            for (var i = 0; i < lTeorici.length; i++) {
+                var idTeorico = lTeorici[parseInt(i)].value;
+                lidTeorici.push(idTeorico);
+            }
+
+            if (lidTeorici.length >0) {
+                $('.container').addClass("NoOverflow");
+
+                $("#dialog").dialog("open");
+                $("#dialog").css("background-color", "#ffffff");
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: { idTrasferimento: idTrasferimento, Teorici: lidTeorici },
+                    dataType: 'html',
+                    beforeSend: function () {
+                        //debugger;
+                        $("#dialog").empty();
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#dialog").html(result);
 
 
-                },
-                complete: function () {
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    //                $("#Centro").getNiceScroll().resize();
-                },
-                error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    AlertDialog(msg);
-                }
+                    },
+                    complete: function () {
+                        //$("#divEffettoLoadAutNoDoc").hide("slow");
+                        //                $("#Centro").getNiceScroll().resize();
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
 
-            });
+                });
+            }
+            else {
+                InfoElaborazioneAjax("Non sono presenti dati per la stampa.")
+            }
 
         });
     });
-
-
-    function invia() {
-        //debugger
-        var idTrasferimento = $("#hidTrasferimento").val();
-
-        window.location.href = "/RiepilogoVoci/RptRiepilogoVoci?idTrasferimento=" + idTrasferimento;
-        target = "_blank";
-        done = 1;
-    };
-
-    function RptRiepilogoVoci() {
-        debugger;
-        var rotta = "/RiepilogoVoci/RptRiepilogoVoci";
-
-        var idTrasferimento = 0;
-
-        if (!isNaN(idTrasf)) {
-            idTrasferimento = idTrasf;
-        } else {
-            idTrasferimento = $("#hidTrasferimento").val();
-        }
-                 $.ajax({
-                     type: "POST",
-                     url: rotta,
-                     data: { idTrasferimento: idTrasferimento },
-                     dataType: 'html',
-                     beforeSend: function () {
-                         //debugger;
-                         VerificaAutenticazione();
-                     },
-                     success: function (result) {
-                         //debugger;
-
-                         $("#divRiepilogoVoci").empty();
-                         $("#divRiepilogoVoci").html(result);
-                     },
-                     complete: function () {
-                     },
-                     error: function (jqXHR, textStatus, errorThrow) {
-                         //debugger;
-                         var msg = errorThrow.err;
-                         ErroreElaborazioneAjax(msg);
-                     }
-
-                 });
-
-    }
 
 </script>
