@@ -25,6 +25,8 @@
     <thead>
         <tr>            
             <th>
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.GiornoMeseAnnoElaborato)
             </th>
             <th>
@@ -58,10 +60,13 @@
         {            
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.idTeorici)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.GiornoMeseAnnoElaborato)
                 </td>
                 <td style="text-align:center;">
-                    @Html.HiddenFor(modelItem => item.idTeorici)
+                    @*@Html.HiddenFor(modelItem => item.idTeorici)*@
                     @Html.DisplayFor(modelItem => item.MeseAnnoElaborato)
                 </td>
                 <td style="text-align:center;">
@@ -122,7 +127,7 @@
 
 <script type="text/javascript">
 
-    $("#DtRiepilogoVoci").DataTable({
+    var myTable = $("#DtRiepilogoVoci").DataTable({
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -150,15 +155,15 @@
         "lengthChange": false,
         //"pageLength": 10,
         "searching": true,
-        "paging": false,
+        "paging": true,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "scrollY": 350, 
         "columnDefs": [
-                    { "targets": [0], "type": 'date-euro' },
-                    { "targets": [0], "visible": false },
-                    { "targets": [1, 7], "orderable": false },
-                    { "targets": [8], "type": 'numeric-comma' },
+                    { "targets": [1], "type": 'date-euro' },
+                    { "targets": [0, 1], "visible": false },
+                    { "targets": [2, 8, 9], "orderable": false },
+                    { "targets": [9], "type": 'numeric-comma' },
         ],
         "order": [[0, "desc"],[2, "asc"]]
     });
@@ -191,19 +196,23 @@
 
         $("#opener").on("click", function () {
            
-            //debugger;
+            debugger;
             var rotta = "/RiepilogoVoci/RptRiepilogoVoci";
 
             var idTrasferimento = $("#hidTrasferimento").val();
 
             var lidTeorici = new Array();
 
-            var lTeorici = $('#DtRiepilogoVoci > tbody > tr > td > #item_idTeorici');
+            //var lTeorici = $('#DtRiepilogoVoci > tbody > tr > td > #item_idTeorici');
 
-            for (var i = 0; i < lTeorici.length; i++) {
-                var idTeorico = lTeorici[parseInt(i)].value;
-                lidTeorici.push(idTeorico);
-            }
+            myTable.column(0,{search:'applied'}).data().each(function(value, index){
+                lidTeorici.push(value);
+            });
+
+            //for (var i = 0; i < lTeorici.length; i++) {
+            //    var idTeorico = lTeorici[parseInt(i)].value;
+            //    lidTeorici.push(idTeorico);
+            //}
 
             if (lidTeorici.length >0) {
                 $('.container').addClass("NoOverflow");

@@ -15,6 +15,7 @@ namespace NewISE.Models.DBModel
         public DateTime dataOperazione { get; set; }
 
         [Display(Name = "Importo")]
+        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal importo { get; set; }
 
         [Display(Name = "Descrizione Voce")]
@@ -45,7 +46,7 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "Il campo è richiesto.")]
         [DefaultValue(0)]
-        [DisplayFormat(DataFormatString = "{0:C2}")]
+        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal Importo { get; set; }
 
         [Display(Name = "Elab.")]
