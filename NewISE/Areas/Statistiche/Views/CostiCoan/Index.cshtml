@@ -218,7 +218,8 @@
         //debugger;
         var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
         var meseAnnoA = $("#idMesiAnniElaboratiA").val();
-        if (meseAnnoA < meseAnnoDa) {
+        if (parseInt(meseAnnoA) < parseInt(meseAnnoDa))
+        {
             return false;
         } else {
             return true;
