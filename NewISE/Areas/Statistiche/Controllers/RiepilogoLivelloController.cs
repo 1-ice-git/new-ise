@@ -140,6 +140,8 @@ namespace NewISE.Areas.Statistiche.Controllers
                         strMeseAnnoA = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseA) + " " + annoA.ToString();
                     }
 
+                    string strDataOdierna = DateTime.Now.ToShortDateString();
+
                     ReportViewer reportViewer = new ReportViewer();
 
                     reportViewer.ProcessingMode = ProcessingMode.Local;
@@ -152,10 +154,11 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.LocalReport.Refresh();
 
                     ReportParameter[] parameterValues = new ReportParameter[]
-                       {
-                            new ReportParameter ("paramMeseAnnoDa", strMeseAnnoDa),
-                            new ReportParameter ("paramMeseAnnoA",strMeseAnnoA),
-                       };
+                    {
+                        new ReportParameter ("paramMeseAnnoDa", strMeseAnnoDa),
+                        new ReportParameter ("paramMeseAnnoA",strMeseAnnoA),
+                        new ReportParameter ("paramDataOdierna", strDataOdierna)
+                    };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);
                     ReportDataSource _rsource = new ReportDataSource("dsRiepilogoLivello", lrpt);

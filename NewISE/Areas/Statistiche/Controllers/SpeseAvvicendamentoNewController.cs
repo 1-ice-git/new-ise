@@ -138,7 +138,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                     string strMeseAnnoDa = "";
                     string strMeseAnnoA = "";
                     string strTotaleImporto = lrpt.Sum(a => a.Importo).ToString("#,##0.##");
-
+                    string strDataOdierna = DateTime.Now.ToShortDateString();
 
                     using (dtElaborazioni dte = new dtElaborazioni())
                     {
@@ -161,11 +161,12 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.LocalReport.Refresh();
 
                     ReportParameter[] parameterValues = new ReportParameter[]
-                       {
-                            new ReportParameter ("paramMeseAnnoDa", strMeseAnnoDa),
-                            new ReportParameter ("paramMeseAnnoA",strMeseAnnoA),
-                            new ReportParameter ("paramTotaleImporto", strTotaleImporto)
-                       };
+                    {
+                        new ReportParameter ("paramMeseAnnoDa", strMeseAnnoDa),
+                        new ReportParameter ("paramMeseAnnoA",strMeseAnnoA),
+                        new ReportParameter ("paramTotaleImporto", strTotaleImporto),
+                        new ReportParameter ("paramDataOdierna", strDataOdierna)
+                    };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);
 

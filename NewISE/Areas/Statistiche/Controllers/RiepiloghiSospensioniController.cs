@@ -166,7 +166,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                         }
                     }
 
-
+                    string strDataOdierna = DateTime.Now.ToShortDateString();
 
                     ReportViewer reportViewer = new ReportViewer();
 
@@ -190,8 +190,9 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                     ReportParameter[] parameterValues = new ReportParameter[]
                     {
-                        new ReportParameter ("Dal",Convert.ToString(idIni)),
-                        new ReportParameter ("Al",Convert.ToString(idFin))
+                        new ReportParameter ("Dal",idIni.ToShortDateString()),
+                        new ReportParameter ("Al",idFin.ToShortDateString()),
+                        new ReportParameter ("DataOdierna", strDataOdierna)
                     };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);

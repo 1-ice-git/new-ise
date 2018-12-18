@@ -139,6 +139,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                         strMeseAnnoDa = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseDa) + " " + annoDa.ToString();
                         strMeseAnnoA = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseA) + " " + annoA.ToString();
                     }
+                    string strDataOdierna = DateTime.Now.ToShortDateString();
 
                     ReportViewer reportViewer = new ReportViewer();
 
@@ -155,6 +156,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                        {
                             new ReportParameter ("paramMeseAnnoDa", strMeseAnnoDa),
                             new ReportParameter ("paramMeseAnnoA",strMeseAnnoA),
+                            new ReportParameter ("paramDataOdierna", strDataOdierna)
                        };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);

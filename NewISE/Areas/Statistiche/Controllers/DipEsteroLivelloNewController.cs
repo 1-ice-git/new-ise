@@ -97,7 +97,7 @@ namespace NewISE.Areas.Statistiche.Controllers
                         }
                     }
 
-
+                    string strDataOdierna = DateTime.Now.ToShortDateString();
 
                     ReportViewer reportViewer = new ReportViewer();
 
@@ -121,9 +121,10 @@ namespace NewISE.Areas.Statistiche.Controllers
                     // Nel caso in cui passo il DatePicker
                     ReportParameter[] parameterValues = new ReportParameter[]
                        {
-                            new ReportParameter ("Dal",Convert.ToString(dtIni)),
-                            new ReportParameter ("Al",Convert.ToString(dtFin))
-                       };
+                            new ReportParameter ("Dal",dtIni.ToShortDateString()),
+                            new ReportParameter ("Al",dtFin.ToShortDateString()),
+                            new ReportParameter ("DataOdierna", strDataOdierna)
+                           };
 
                     reportViewer.LocalReport.SetParameters(parameterValues);
                     ViewBag.ReportViewer = reportViewer;

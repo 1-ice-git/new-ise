@@ -178,9 +178,8 @@ namespace NewISE.Areas.Statistiche.Controllers
 
                         }
                     }
-                    
-                   
-                    
+
+                    string strDataOdierna = DateTime.Now.ToShortDateString();
 
                     ReportViewer reportViewer = new ReportViewer();
 
@@ -195,8 +194,14 @@ namespace NewISE.Areas.Statistiche.Controllers
                     reportViewer.ProcessingMode = ProcessingMode.Local;
 
                     reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"\Areas\Statistiche\RPT\RptStoriaDipendenteNew.rdlc";
-                    reportViewer.LocalReport.DataSources.Clear();
 
+                    ReportParameter[] parameterValues = new ReportParameter[]
+                    {
+                        new ReportParameter ("paramDataOdierna", strDataOdierna)
+                    };
+                    reportViewer.LocalReport.SetParameters(parameterValues);
+
+                    reportViewer.LocalReport.DataSources.Clear();
                     reportViewer.LocalReport.DataSources.Add(datasource);
                     reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetStoriaDipendenteNew", rpt));
                     reportViewer.LocalReport.Refresh();
