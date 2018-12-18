@@ -14,5 +14,8 @@ namespace NewISE.Models.ViewModel
         [Display(Name = "Data/Ora Inizio")]
         [DisplayFormat(DataFormatString = "{0:d t}")]
         public DateTime? DataOraInizio { get; set; }
+
+        [Display(Name = "Data/Ora Fine Ultima Elaborazione")]
+        public DateTime? DataOraFine { get; set; }
     }
 }
