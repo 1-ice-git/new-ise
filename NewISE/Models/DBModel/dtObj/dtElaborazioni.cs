@@ -531,28 +531,33 @@
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                try
+                this.AnnullaTeoriciNonElaborati(db);
+
+                if (dipendenti?.Any() ?? false)
                 {
-                    db.Database.BeginTransaction();
-
-                    this.AnnullaTeoriciNonElaborati(db);
-
-                    if (dipendenti?.Any() ?? false)
+                    foreach (decimal idDip in dipendenti)
                     {
-                        foreach (decimal idDip in dipendenti)
+
+                        try
                         {
+                            db.Database.BeginTransaction();
+
                             this.CalcolaElaborazioneMensile(idDip, idMeseAnnoElaborato, db);
                             this.CalcolaConguagli(idDip, idMeseAnnoElaborato, db);
+
+                            db.Database.CurrentTransaction.Commit();
+
+                        }
+                        catch (Exception ex)
+                        {
+                            db.Database.CurrentTransaction.Rollback();
+                            throw ex;
                         }
                     }
+                }
 
-                    db.Database.CurrentTransaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    db.Database.CurrentTransaction.Rollback();
-                    throw ex;
-                }
+
+
             }
         }
 
@@ -7408,7 +7413,7 @@
                             {
                                 rateoImportoMabOPld = (sumImportoMabOld / sumNumeroGiorniOld) * giorniElabTotali;
                             }
-                            
+
 
                             //differenzaGiorni = giorniElabTotali - sumNumeroGiorniOld;
 
@@ -7961,8 +7966,8 @@
                             {
                                 rateoImportoOld = (sumImportoOld / sumGiorniOld) * numeroGiorniNew;
                             }
-                            
-                            
+
+
                             //differenzaGiorni = Convert.ToInt16(numeroGiorniNew - sumGiorniOld);
 
 
