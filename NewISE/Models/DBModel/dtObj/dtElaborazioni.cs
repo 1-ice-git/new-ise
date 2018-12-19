@@ -849,7 +849,7 @@
             if (t.ELABINDSISTEMAZIONE?.IDINDSISTLORDA > 0)
             {
                 if (t.ANNULLATO == false && t.DIRETTO == false && t.ELABORATO == false &&
-                    t.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS && t.ELABINDSISTEMAZIONE.SALDO == true)
+                    t.IDVOCI == (decimal)EnumVociContabili.Ind_Prima_Sist_IPS && (t.ELABINDSISTEMAZIONE.SALDO == true || t.ELABINDSISTEMAZIONE.UNICASOLUZIONE == true || t.ELABINDSISTEMAZIONE.CONGUAGLIO == true))
                 {
                     var eis = t.ELABINDSISTEMAZIONE;
                     var trasferimento = eis.PRIMASITEMAZIONE.TRASFERIMENTO;

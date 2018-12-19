@@ -52,7 +52,7 @@ namespace NewISE.Controllers
         {
             TrasferimentoModel tm = new TrasferimentoModel();
             DatiTrasferimentoDipendenteModel dtdm = new DatiTrasferimentoDipendenteModel();
-            
+
             try
             {
                 using (dtTrasferimento dtt = new dtTrasferimento())
@@ -609,7 +609,6 @@ namespace NewISE.Controllers
                             }
                             #endregion
 
-
                             #region Lettura dati Richiamo
                             List<decimal> lt6 = (from t in db.TEORICI
                                                  where t.ANNULLATO == false &&
@@ -652,7 +651,7 @@ namespace NewISE.Controllers
                                     if (!dip.ELABORAZIONI?.Any(a => a.IDMESEANNOELAB == idAnnoMeseElaborato) ?? false)
                                     {
                                         dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
-                                    }                                    
+                                    }
                                 }
 
                                 using (dtInvioFileFTP dtFile = new dtInvioFileFTP())
