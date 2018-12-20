@@ -4938,6 +4938,7 @@
     <Content Include="node_modules\autonumeric\package.json" />
     <Content Include="node_modules\autonumeric\README.md" />
     <Content Include="node_modules\autonumeric\yarn.lock" />
+    <None Include="Properties\PublishProfiles\Bell_esercizio.pubxml" />
     <None Include="Properties\PublishProfiles\gull.pubxml" />
     <None Include="Properties\PublishProfiles\Mauro.pubxml" />
     <None Include="Properties\PublishProfiles\Mauro1.pubxml" />

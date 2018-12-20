@@ -1,4 +1,6 @@
-﻿namespace NewISE.Models.DBModel.dtObj
+﻿using EntityFramework.Functions;
+
+namespace NewISE.Models.DBModel.dtObj
 {
     using Microsoft.Ajax.Utilities;
     using NewISE.EF;
@@ -62,7 +64,9 @@
                     }
                 }
 
+                db.Configuration.AutoDetectChangesEnabled = true;
                 int j = db.SaveChanges();
+                db.Configuration.AutoDetectChangesEnabled = false;
 
                 if (j <= 0)
                 {
@@ -87,8 +91,9 @@
                     };
 
                     db.ELABINDSISTEMAZIONE.Add(eisNew);
-
+                    db.Configuration.AutoDetectChangesEnabled = true;
                     int i = db.SaveChanges();
+                    db.Configuration.AutoDetectChangesEnabled = false;
 
                     if (i <= 0)
                     {
@@ -111,8 +116,9 @@
 
                             eisNew.ELABDATIFIGLI.Add(edfnew);
                         }
-
+                        db.Configuration.AutoDetectChangesEnabled = true;
                         db.SaveChanges();
+                        db.Configuration.AutoDetectChangesEnabled = false;
                     }
 
                     var detrazioni = eisOld.ALIQUOTECONTRIBUTIVE.Last(a =>
@@ -146,8 +152,9 @@
                     };
 
                     db.TEORICI.Add(teorici);
-
+                    db.Configuration.AutoDetectChangesEnabled = true;
                     int n = db.SaveChanges();
+                    db.Configuration.AutoDetectChangesEnabled = false;
 
                     if (n <= 0)
                     {
@@ -176,8 +183,9 @@
                 {
                     t.ANNULLATO = true;
                 }
-
+                db.Configuration.AutoDetectChangesEnabled = true;
                 int i = db.SaveChanges();
+                db.Configuration.AutoDetectChangesEnabled = false;
 
                 if (i <= 0)
                 {
@@ -384,8 +392,9 @@
                 var annoMese = db.MESEANNOELABORAZIONE.Find(idAnnoMeseElab);
 
                 annoMese.CHIUSO = true;
-
+                db.Configuration.AutoDetectChangesEnabled = true;
                 int i = db.SaveChanges();
+                db.Configuration.AutoDetectChangesEnabled = false;
 
                 if (i <= 0)
                 {
@@ -413,9 +422,9 @@
                     if (!db.MESEANNOELABORAZIONE?.Any(a => a.ANNO == me.ANNO && a.MESE == me.MESE) ?? false)
                     {
                         db.MESEANNOELABORAZIONE.Add(me);
-
+                        db.Configuration.AutoDetectChangesEnabled = true;
                         int j = db.SaveChanges();
-
+                        db.Configuration.AutoDetectChangesEnabled = false;
                         if (j <= 0)
                         {
                             throw new Exception("Impossibile inserire il nuovo periodo di elaborazione.");
@@ -535,12 +544,14 @@
 
                 if (dipendenti?.Any() ?? false)
                 {
-                    foreach (decimal idDip in dipendenti)
+                    foreach (decimal idDip in dipendenti.OrderBy(a => a))
                     {
 
                         try
                         {
+
                             db.Database.BeginTransaction();
+                            db.Configuration.AutoDetectChangesEnabled = false;
 
                             this.CalcolaElaborazioneMensile(idDip, idMeseAnnoElaborato, db);
                             this.CalcolaConguagli(idDip, idMeseAnnoElaborato, db);
@@ -553,6 +564,11 @@
                             db.Database.CurrentTransaction.Rollback();
                             throw ex;
                         }
+                        finally
+                        {
+                            db.Configuration.AutoDetectChangesEnabled = true;
+                        }
+
                     }
                 }
 
@@ -768,8 +784,9 @@
                 };
 
                 dip.ELABORAZIONI.Add(el);
-
+                db.Configuration.AutoDetectChangesEnabled = true;
                 int i = db.SaveChanges();
+                db.Configuration.AutoDetectChangesEnabled = false;
 
                 if (i <= 0)
                 {
@@ -816,14 +833,15 @@
             };
 
             db.FLUSSICEDOLINO.Add(fc);
-
+            db.Configuration.AutoDetectChangesEnabled = true;
             int i = db.SaveChanges();
-
+            db.Configuration.AutoDetectChangesEnabled = false;
             if (i > 0)
             {
                 t.ELABORATO = true;
+                db.Configuration.AutoDetectChangesEnabled = true;
                 int j = db.SaveChanges();
-
+                db.Configuration.AutoDetectChangesEnabled = false;
                 if (j <= 0)
                 {
                     throw new Exception("Impossibile impostare la fase di elaborato a vero per i teorici.");
@@ -908,12 +926,15 @@
                             };
 
                             db.OA.Add(oa);
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             int i = db.SaveChanges();
-
+                            db.Configuration.AutoDetectChangesEnabled = false;
                             if (i > 0)
                             {
                                 t.ELABORATO = true;
+                                db.Configuration.AutoDetectChangesEnabled = true;
                                 int j = db.SaveChanges();
+                                db.Configuration.AutoDetectChangesEnabled = false;
 
                                 if (j <= 0)
                                 {
@@ -929,7 +950,9 @@
                         else
                         {
                             t.ELABORATO = true;
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             int j = db.SaveChanges();
+                            db.Configuration.AutoDetectChangesEnabled = false;
 
                             if (j <= 0)
                             {
@@ -1011,13 +1034,15 @@
                         };
 
                         db.OA.Add(oa);
+                        db.Configuration.AutoDetectChangesEnabled = true;
                         int i = db.SaveChanges();
-
+                        db.Configuration.AutoDetectChangesEnabled = false;
                         if (i > 0)
                         {
                             t.ELABORATO = true;
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             int j = db.SaveChanges();
-
+                            db.Configuration.AutoDetectChangesEnabled = false;
                             if (j <= 0)
                             {
                                 throw new Exception("Impossibile impostare la fase di elaborato a vero per i teorici.");
@@ -1031,8 +1056,9 @@
                     else
                     {
                         t.ELABORATO = true;
+                        db.Configuration.AutoDetectChangesEnabled = true;
                         int j = db.SaveChanges();
-
+                        db.Configuration.AutoDetectChangesEnabled = false;
                         if (j <= 0)
                         {
                             throw new Exception("Impossibile impostare la fase di elaborato a vero per i teorici.");
@@ -1111,12 +1137,15 @@
                         };
 
                         db.OA.Add(oa);
+                        db.Configuration.AutoDetectChangesEnabled = true;
                         int i = db.SaveChanges();
-
+                        db.Configuration.AutoDetectChangesEnabled = false;
                         if (i > 0)
                         {
                             t.ELABORATO = true;
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             int j = db.SaveChanges();
+                            db.Configuration.AutoDetectChangesEnabled = false;
 
                             if (j <= 0)
                             {
@@ -1131,7 +1160,9 @@
                     else
                     {
                         t.ELABORATO = true;
+                        db.Configuration.AutoDetectChangesEnabled = true;
                         int j = db.SaveChanges();
+                        db.Configuration.AutoDetectChangesEnabled = false;
 
                         if (j <= 0)
                         {
@@ -1208,12 +1239,16 @@
                         };
 
                         db.OA.Add(oa);
+                        db.Configuration.AutoDetectChangesEnabled = true;
                         int i = db.SaveChanges();
+                        db.Configuration.AutoDetectChangesEnabled = false;
 
                         if (i > 0)
                         {
                             t.ELABORATO = true;
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             int j = db.SaveChanges();
+                            db.Configuration.AutoDetectChangesEnabled = false;
 
                             if (j <= 0)
                             {
@@ -1372,12 +1407,15 @@
                             };
 
                             db.OA.Add(oa);
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             int i = db.SaveChanges();
+                            db.Configuration.AutoDetectChangesEnabled = false;
                             if (i > 0)
                             {
                                 tps.ELABORATO = true;
+                                db.Configuration.AutoDetectChangesEnabled = true;
                                 int j = db.SaveChanges();
-
+                                db.Configuration.AutoDetectChangesEnabled = false;
                                 if (j > 0)
                                 {
                                     EmailElaborazione.EmailInviiDirettiPrimaSistemazione(trasferimento.IDTRASFERIMENTO,
@@ -1635,9 +1673,9 @@
             var aliq = db.ALIQUOTECONTRIBUTIVE.Find(idAliquota);
 
             indSist.ALIQUOTECONTRIBUTIVE.Add(aliq);
-
+            db.Configuration.AutoDetectChangesEnabled = true;
             var i = db.SaveChanges();
-
+            db.Configuration.AutoDetectChangesEnabled = false;
             if (i <= 0)
             {
                 throw new Exception("Impossibile associare l'aliquota alla prima sistemazione.");
@@ -1660,9 +1698,9 @@
             var aliq = db.ALIQUOTECONTRIBUTIVE.Find(idAliquota);
 
             indRich.ALIQUOTECONTRIBUTIVE.Add(aliq);
-
+            db.Configuration.AutoDetectChangesEnabled = true;
             var i = db.SaveChanges();
-
+            db.Configuration.AutoDetectChangesEnabled = false;
             if (i <= 0)
             {
                 throw new Exception("Impossibile associare l'aliquota all'indennità di richiamo.");
@@ -1726,8 +1764,9 @@
                             };
 
                             ps.ELABINDSISTEMAZIONE.Add(eis);
-
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             int i = db.SaveChanges();
+                            db.Configuration.AutoDetectChangesEnabled = false;
 
                             if (i <= 0)
                             {
@@ -1748,8 +1787,9 @@
 
                                     eis.ELABDATIFIGLI.Add(edf);
                                 }
-
+                                db.Configuration.AutoDetectChangesEnabled = true;
                                 int j = db.SaveChanges();
+                                db.Configuration.AutoDetectChangesEnabled = false;
 
                                 if (j <= 0)
                                 {
@@ -1989,8 +2029,9 @@
 
                                             eis.TEORICI.Add(teorici);
 
-
+                                            db.Configuration.AutoDetectChangesEnabled = true;
                                             int j = db.SaveChanges();
+                                            db.Configuration.AutoDetectChangesEnabled = false;
 
                                             if (j <= 0)
                                             {
@@ -2000,7 +2041,9 @@
                                             else
                                             {
                                                 dip.DATAINIZIORICALCOLI = t.DATAPARTENZA;
+                                                db.Configuration.AutoDetectChangesEnabled = true;
                                                 db.SaveChanges();
+                                                db.Configuration.AutoDetectChangesEnabled = false;
                                             }
 
 
@@ -2026,13 +2069,13 @@
 
                                             eis.TEORICI.Add(teoriciLordo);
 
-                                            int z = db.SaveChanges();
+                                            //int z = db.SaveChanges();
 
-                                            if (z <= 0)
-                                            {
-                                                throw new Exception(
-                                                    "Errore nella fase d'inderimento del lordo a cedolino per la prima sistemazione (086-380).");
-                                            }
+                                            //if (z <= 0)
+                                            //{
+                                            //    throw new Exception(
+                                            //        "Errore nella fase d'inderimento del lordo a cedolino per la prima sistemazione (086-380).");
+                                            //}
 
 
                                             TEORICI teoriciNetto = new TEORICI()
@@ -2058,7 +2101,9 @@
 
                                             eis.TEORICI.Add(teoriciNetto);
 
+                                            db.Configuration.AutoDetectChangesEnabled = true;
                                             int k = db.SaveChanges();
+                                            db.Configuration.AutoDetectChangesEnabled = false;
 
                                             if (k <= 0)
                                             {
@@ -2090,8 +2135,9 @@
                                                 };
 
                                                 eis.TEORICI.Add(teoriciDetrazioni);
-
+                                                db.Configuration.AutoDetectChangesEnabled = true;
                                                 int y = db.SaveChanges();
+                                                db.Configuration.AutoDetectChangesEnabled = false;
 
                                                 if (y <= 0)
                                                 {
@@ -2164,8 +2210,9 @@
             };
 
             ps.ELABINDSISTEMAZIONE.Add(eis);
-
+            db.Configuration.AutoDetectChangesEnabled = true;
             int k = db.SaveChanges();
+            db.Configuration.AutoDetectChangesEnabled = false;
 
             if (k > 0)
             {
@@ -2182,8 +2229,9 @@
 
                         eis.ELABDATIFIGLI.Add(edf);
                     }
-
+                    db.Configuration.AutoDetectChangesEnabled = true;
                     int j = db.SaveChanges();
+                    db.Configuration.AutoDetectChangesEnabled = false;
 
                     if (j <= 0)
                     {
@@ -2364,13 +2412,13 @@
 
                         eis.TEORICI.Add(teoriciLordo);
 
-                        int z = db.SaveChanges();
+                        //int z = db.SaveChanges();
 
-                        if (z <= 0)
-                        {
-                            throw new Exception(
-                                "Errore nella fase d'inderimento del lordo a cedolino per la prima sistemazione (086-380).");
-                        }
+                        //if (z <= 0)
+                        //{
+                        //    throw new Exception(
+                        //        "Errore nella fase d'inderimento del lordo a cedolino per la prima sistemazione (086-380).");
+                        //}
 
 
                         TEORICI teoriciNetto = new TEORICI()
@@ -2395,13 +2443,13 @@
 
                         eis.TEORICI.Add(teoriciNetto);
 
-                        int x = db.SaveChanges();
+                        //int x = db.SaveChanges();
 
-                        if (x <= 0)
-                        {
-                            throw new Exception(
-                                "Errore nella fase d'inderimento del netto a cedolino per la prima sistemazione (086-383).");
-                        }
+                        //if (x <= 0)
+                        //{
+                        //    throw new Exception(
+                        //        "Errore nella fase d'inderimento del netto a cedolino per la prima sistemazione (086-383).");
+                        //}
 
 
                         TEORICI teoriciDetrazioni = new TEORICI()
@@ -2425,13 +2473,13 @@
 
                         eis.TEORICI.Add(teoriciDetrazioni);
 
-                        int y = db.SaveChanges();
+                        //int y = db.SaveChanges();
 
-                        if (y <= 0)
-                        {
-                            throw new Exception(
-                                "Errore nella fase d'inderimento della detrazione a cedolino per la prima sistemazione (086-384).");
-                        }
+                        //if (y <= 0)
+                        //{
+                        //    throw new Exception(
+                        //        "Errore nella fase d'inderimento della detrazione a cedolino per la prima sistemazione (086-384).");
+                        //}
 
 
                         TEORICI teorici = new TEORICI()
@@ -2457,7 +2505,9 @@
 
                         eis.TEORICI.Add(teorici);
 
+                        db.Configuration.AutoDetectChangesEnabled = true;
                         int j = db.SaveChanges();
+                        db.Configuration.AutoDetectChangesEnabled = false;
 
                         if (j <= 0)
                         {
@@ -2538,8 +2588,9 @@
                         };
 
                         db.ELABINDSISTEMAZIONE.Add(eis);
-
+                        db.Configuration.AutoDetectChangesEnabled = true;
                         int i = db.SaveChanges();
+                        db.Configuration.AutoDetectChangesEnabled = false;
 
                         if (i <= 0)
                         {
@@ -2560,8 +2611,9 @@
 
                                 eis.ELABDATIFIGLI.Add(edf);
                             }
-
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             int j = db.SaveChanges();
+                            db.Configuration.AutoDetectChangesEnabled = false;
 
                             if (j <= 0)
                             {
@@ -2731,13 +2783,13 @@
 
                         eis.TEORICI.Add(teoriciLordo);
 
-                        int z = db.SaveChanges();
+                        //int z = db.SaveChanges();
 
-                        if (z <= 0)
-                        {
-                            throw new Exception(
-                                "Errore nella fase d'inderimento del lordo a cedolino per la prima sistemazione (086-380).");
-                        }
+                        //if (z <= 0)
+                        //{
+                        //    throw new Exception(
+                        //        "Errore nella fase d'inderimento del lordo a cedolino per la prima sistemazione (086-380).");
+                        //}
 
 
                         TEORICI teoriciNetto = new TEORICI()
@@ -2762,13 +2814,13 @@
 
                         eis.TEORICI.Add(teoriciNetto);
 
-                        int k = db.SaveChanges();
+                        //int k = db.SaveChanges();
 
-                        if (k <= 0)
-                        {
-                            throw new Exception(
-                                "Errore nella fase d'inderimento del netto a cedolino per la prima sistemazione (086-383).");
-                        }
+                        //if (k <= 0)
+                        //{
+                        //    throw new Exception(
+                        //        "Errore nella fase d'inderimento del netto a cedolino per la prima sistemazione (086-383).");
+                        //}
 
 
                         TEORICI teoriciDetrazioni = new TEORICI()
@@ -2792,8 +2844,9 @@
                         };
 
                         eis.TEORICI.Add(teoriciDetrazioni);
-
+                        db.Configuration.AutoDetectChangesEnabled = true;
                         int y = db.SaveChanges();
+                        db.Configuration.AutoDetectChangesEnabled = false;
 
                         if (y <= 0)
                         {
@@ -2840,8 +2893,9 @@
                             };
 
                             eis.TEORICI.Add(teoriciContabilita);
-
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             int x = db.SaveChanges();
+                            db.Configuration.AutoDetectChangesEnabled = false;
 
                             if (x <= 0)
                             {
@@ -2920,8 +2974,9 @@
                         };
 
                         db.ELABINDSISTEMAZIONE.Add(eis);
-
+                        db.Configuration.AutoDetectChangesEnabled = true;
                         int i = db.SaveChanges();
+                        db.Configuration.AutoDetectChangesEnabled = false;
 
                         if (i <= 0)
                         {
@@ -2942,8 +2997,9 @@
 
                                 eis.ELABDATIFIGLI.Add(edf);
                             }
-
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             int j = db.SaveChanges();
+                            db.Configuration.AutoDetectChangesEnabled = false;
 
                             if (j <= 0)
                             {
@@ -3104,7 +3160,6 @@
                             tipoMov = EnumTipoMovimento.MeseCorrente_M;
                         }
 
-
                         TEORICI teoriciLordo = new TEORICI()
                         {
                             IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
@@ -3128,14 +3183,13 @@
 
                         eis.TEORICI.Add(teoriciLordo);
 
-                        int z = db.SaveChanges();
+                        //int z = db.SaveChanges();
 
-                        if (z <= 0)
-                        {
-                            throw new Exception(
-                                "Errore nella fase d'inderimento del lordo a cedolino per la prima sistemazione (086-380).");
-                        }
-
+                        //if (z <= 0)
+                        //{
+                        //    throw new Exception(
+                        //        "Errore nella fase d'inderimento del lordo a cedolino per la prima sistemazione (086-380).");
+                        //}
 
                         TEORICI teoriciNetto = new TEORICI()
                         {
@@ -3160,14 +3214,13 @@
 
                         eis.TEORICI.Add(teoriciNetto);
 
-                        int k = db.SaveChanges();
+                        //int k = db.SaveChanges();
 
-                        if (k <= 0)
-                        {
-                            throw new Exception(
-                                "Errore nella fase d'inderimento del netto a cedolino per la prima sistemazione (086-383).");
-                        }
-
+                        //if (k <= 0)
+                        //{
+                        //    throw new Exception(
+                        //        "Errore nella fase d'inderimento del netto a cedolino per la prima sistemazione (086-383).");
+                        //}
 
                         TEORICI teoriciDetrazioni = new TEORICI()
                         {
@@ -3191,8 +3244,9 @@
                         };
 
                         eis.TEORICI.Add(teoriciDetrazioni);
-
+                        db.Configuration.AutoDetectChangesEnabled = true;
                         int y = db.SaveChanges();
+                        db.Configuration.AutoDetectChangesEnabled = false;
 
                         if (y <= 0)
                         {
@@ -3236,8 +3290,9 @@
                                 };
 
                                 eis.TEORICI.Add(teoriciContabilita);
-
+                                db.Configuration.AutoDetectChangesEnabled = true;
                                 int x = db.SaveChanges();
+                                db.Configuration.AutoDetectChangesEnabled = false;
 
                                 if (x <= 0)
                                 {
@@ -3309,8 +3364,9 @@
                             };
 
                             db.ELABINDSISTEMAZIONE.Add(eis);
-
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             int i = db.SaveChanges();
+                            db.Configuration.AutoDetectChangesEnabled = false;
 
                             if (i <= 0)
                             {
@@ -3331,8 +3387,9 @@
 
                                     eis.ELABDATIFIGLI.Add(edf);
                                 }
-
+                                db.Configuration.AutoDetectChangesEnabled = true;
                                 int j = db.SaveChanges();
+                                db.Configuration.AutoDetectChangesEnabled = false;
 
                                 if (j <= 0)
                                 {
@@ -3522,13 +3579,13 @@
 
                                     eis.TEORICI.Add(teorici);
 
-                                    int j = db.SaveChanges();
+                                    //int j = db.SaveChanges();
 
-                                    if (j <= 0)
-                                    {
-                                        throw new Exception(
-                                            "Errore nella fase d'inderimento dell'anticipo di prima sistemazione in contabilità.");
-                                    }
+                                    //if (j <= 0)
+                                    //{
+                                    //    throw new Exception(
+                                    //        "Errore nella fase d'inderimento dell'anticipo di prima sistemazione in contabilità.");
+                                    //}
 
 
                                     //decimal annoMeseElab = Convert.ToDecimal(mae.anno.ToString() + mae.mese.ToString().PadLeft(2, (char)'0'));
@@ -3569,13 +3626,13 @@
 
                                     eis.TEORICI.Add(teoriciLordo);
 
-                                    int k = db.SaveChanges();
+                                    //int k = db.SaveChanges();
 
-                                    if (k <= 0)
-                                    {
-                                        throw new Exception(
-                                            "Errore nella fase d'inderimento del lordo a cedolino per la prima sistemazione (086-380).");
-                                    }
+                                    //if (k <= 0)
+                                    //{
+                                    //    throw new Exception(
+                                    //        "Errore nella fase d'inderimento del lordo a cedolino per la prima sistemazione (086-380).");
+                                    //}
 
 
                                     TEORICI teoriciNetto = new TEORICI()
@@ -3602,13 +3659,13 @@
 
                                     eis.TEORICI.Add(teoriciNetto);
 
-                                    int q = db.SaveChanges();
+                                    //int q = db.SaveChanges();
 
-                                    if (q <= 0)
-                                    {
-                                        throw new Exception(
-                                            "Errore nella fase d'inderimento del netto a cedolino per la prima sistemazione (086-383).");
-                                    }
+                                    //if (q <= 0)
+                                    //{
+                                    //    throw new Exception(
+                                    //        "Errore nella fase d'inderimento del netto a cedolino per la prima sistemazione (086-383).");
+                                    //}
 
 
                                     TEORICI teoriciDetrazioni = new TEORICI()
@@ -3632,8 +3689,9 @@
                                     };
 
                                     eis.TEORICI.Add(teoriciDetrazioni);
-
+                                    db.Configuration.AutoDetectChangesEnabled = true;
                                     int y = db.SaveChanges();
+                                    db.Configuration.AutoDetectChangesEnabled = false;
 
                                     if (y <= 0)
                                     {
@@ -3901,6 +3959,9 @@
         {
             try
             {
+
+
+
                 var dipendente = db.DIPENDENTI.Find(IdDip);
 
                 var meseAnnoElaborazione = db.MESEANNOELABORAZIONE.Find(idMeseAnnoElaborato);
@@ -3912,10 +3973,10 @@
                 }
 
 
-                DateTime dataElaborazioneCorrente =
-                    Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString().PadLeft(2, Convert.ToChar("0")) +
-                                       "/" +
-                                       meseAnnoElaborazione.ANNO);
+                //DateTime dataElaborazioneCorrente =
+                //    Convert.ToDateTime("01/" + meseAnnoElaborazione.MESE.ToString().PadLeft(2, Convert.ToChar("0")) +
+                //                       "/" +
+                //                       meseAnnoElaborazione.ANNO);
                 decimal annoMese =
                     Convert.ToDecimal(meseAnnoElaborazione.ANNO.ToString() +
                                       meseAnnoElaborazione.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
@@ -3923,15 +3984,15 @@
 
                 var lTeoriciPS =
                     db.TEORICI.Where(
-                            a =>
-                                a.IDMESEANNOELAB == idMeseAnnoElaborato && a.DIRETTO == false &&
-                                a.INSERIMENTOMANUALE == false &&
-                                a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.IDDIPENDENTE ==
-                                dipendente.IDDIPENDENTE &&
-                                a.ELABINDSISTEMAZIONE.ANTICIPO == true &&
-                                a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
-                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
-                                a.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383)
+                        a =>
+                            a.IDMESEANNOELAB == idMeseAnnoElaborato && a.DIRETTO == false &&
+                            a.INSERIMENTOMANUALE == false &&
+                            a.ELABINDSISTEMAZIONE.PRIMASITEMAZIONE.TRASFERIMENTO.IDDIPENDENTE ==
+                            dipendente.IDDIPENDENTE &&
+                            a.ELABINDSISTEMAZIONE.ANTICIPO == true &&
+                            a.ELABINDSISTEMAZIONE.ANNULLATO == false &&
+                            a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                            a.IDVOCI == (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383)
                         .OrderBy(a => a.IDTEORICI)
                         .ToList();
 
@@ -3942,6 +4003,9 @@
                     if (t.ELABORATO == false)
                     {
                         this.InserimentoAnticipoPrimaSistemazioneCedolino(t, meseAnnoElaborazione, db);
+
+                        #region Commentato
+
                         //var elabIndSist = t.ELABINDSISTEMAZIONE;
                         //var ps = elabIndSist.PRIMASITEMAZIONE;
                         //var trasf = ps.TRASFERIMENTO;
@@ -3964,7 +4028,9 @@
                         //    var tLast = lTeoriciPS.Last();
 
                         //    this.InserimentoAnticipoPrimaSistemazioneCedolino(tLast, meseAnnoElaborazione, db);
-                        //}
+                        //} 
+
+                        #endregion
                     }
                 }
 
@@ -3976,11 +4042,11 @@
                                     &&
                                     (Convert.ToDecimal(string.Concat(a.DATARIENTRO.Year.ToString(),
                                         a.DATARIENTRO.Month.ToString().PadLeft(2, Convert.ToChar("0")))) >=
-                                    annoMese
-                                    &&
-                                    Convert.ToDecimal(string.Concat(a.DATAPARTENZA.Year.ToString(),
-                                        a.DATAPARTENZA.Month.ToString().PadLeft(2, Convert.ToChar("0")))) <=
-                                    annoMese) || a.DIPENDENTI.RICALCOLARE == true
+                                     annoMese
+                                     &&
+                                     Convert.ToDecimal(string.Concat(a.DATAPARTENZA.Year.ToString(),
+                                         a.DATAPARTENZA.Month.ToString().PadLeft(2, Convert.ToChar("0")))) <=
+                                     annoMese) || a.DIPENDENTI.RICALCOLARE == true
                         ).OrderBy(a => a.DATAPARTENZA).ToList();
 
                 if (lTrasferimenti?.Any() ?? false)
@@ -4012,6 +4078,7 @@
             {
                 throw ex;
             }
+
         }
 
         /// <summary>
@@ -4073,8 +4140,9 @@
                         {
                             tOld.ANNULLATO = true;
                         }
-
+                        db.Configuration.AutoDetectChangesEnabled = true;
                         db.SaveChanges();
+                        db.Configuration.AutoDetectChangesEnabled = false;
                     }
 
 
@@ -4138,8 +4206,9 @@
                                 };
 
                                 db.TEORICI.Add(t);
-
+                                db.Configuration.AutoDetectChangesEnabled = true;
                                 int k = db.SaveChanges();
+                                db.Configuration.AutoDetectChangesEnabled = false;
 
                                 if (k <= 0)
                                 {
@@ -4377,8 +4446,7 @@
 
                                     if (fineRateMab < fineElab)
                                     {
-                                        using (GiorniRateo gr = new GiorniRateo(dataInizioElaborazione,
-                                            dataFineElaborazione))
+                                        using (GiorniRateo gr = new GiorniRateo(dataInizioElaborazione, dataFineElaborazione))
                                         {
                                             int numeroCicli = Convert.ToInt32(gr.CicliElaborazione / 6);
 
@@ -4520,8 +4588,9 @@
                                                 teorico.ANNULLATO = true;
                                             }
                                         }
-
+                                        db.Configuration.AutoDetectChangesEnabled = true;
                                         db.SaveChanges();
+                                        db.Configuration.AutoDetectChangesEnabled = false;
                                     }
 
 
@@ -4976,9 +5045,9 @@
                                                             };
 
                                                             indennita.ELABMAB.Add(emab);
-
+                                                            db.Configuration.AutoDetectChangesEnabled = true;
                                                             int n = db.SaveChanges();
-
+                                                            db.Configuration.AutoDetectChangesEnabled = false;
 
                                                             if (n > 0)
                                                             {
@@ -4997,9 +5066,9 @@
 
                                                                     emab.ELABDATIFIGLI.Add(edf);
                                                                 }
-
-                                                                int h = db.SaveChanges();
-
+                                                                db.Configuration.AutoDetectChangesEnabled = true;
+                                                                db.SaveChanges();
+                                                                db.Configuration.AutoDetectChangesEnabled = false;
 
                                                                 importoMabTot += ci.ImportoMABMensile / 30 *
                                                                                  grVariazione.RateoGiorni;
@@ -5068,8 +5137,9 @@
 
 
                                             db.TEORICI.Add(t);
-
+                                            db.Configuration.AutoDetectChangesEnabled = true;
                                             int c = db.SaveChanges();
+                                            db.Configuration.AutoDetectChangesEnabled = false;
 
                                             if (c <= 0)
                                             {
@@ -6145,8 +6215,9 @@
                                 {
                                     tOld.ANNULLATO = true;
                                 }
-
+                                db.Configuration.AutoDetectChangesEnabled = true;
                                 db.SaveChanges();
+                                db.Configuration.AutoDetectChangesEnabled = false;
 
                                 ELABTRASPEFFETTI teap = new ELABTRASPEFFETTI()
                                 {
@@ -6162,9 +6233,9 @@
                                 };
 
                                 tePartenza.ELABTRASPEFFETTI.Add(teap);
-
+                                db.Configuration.AutoDetectChangesEnabled = true;
                                 int i = db.SaveChanges();
-
+                                db.Configuration.AutoDetectChangesEnabled = false;
                                 if (i > 0)
                                 {
                                     EnumTipoMovimento tipoMov;
@@ -6202,8 +6273,9 @@
                                     };
 
                                     teap.TEORICI.Add(t);
-
+                                    db.Configuration.AutoDetectChangesEnabled = true;
                                     db.SaveChanges();
+                                    db.Configuration.AutoDetectChangesEnabled = false;
                                 }
                             }
                             else
@@ -6246,7 +6318,7 @@
                                                 tOld.ANNULLATO = true;
                                             }
 
-                                            db.SaveChanges();
+                                            //db.SaveChanges();
 
                                             ELABTRASPEFFETTI teap = new ELABTRASPEFFETTI()
                                             {
@@ -6262,8 +6334,9 @@
                                             };
 
                                             tePartenza.ELABTRASPEFFETTI.Add(teap);
-
+                                            db.Configuration.AutoDetectChangesEnabled = true;
                                             int i = db.SaveChanges();
+                                            db.Configuration.AutoDetectChangesEnabled = false;
 
                                             if (i > 0)
                                             {
@@ -6315,8 +6388,9 @@
                                                 };
 
                                                 teap.TEORICI.Add(t);
-
+                                                db.Configuration.AutoDetectChangesEnabled = true;
                                                 db.SaveChanges();
+                                                db.Configuration.AutoDetectChangesEnabled = false;
                                             }
                                         }
                                     }
@@ -6337,8 +6411,9 @@
                                         };
 
                                         tePartenza.ELABTRASPEFFETTI.Add(teap);
-
+                                        db.Configuration.AutoDetectChangesEnabled = true;
                                         int i = db.SaveChanges();
+                                        db.Configuration.AutoDetectChangesEnabled = false;
 
                                         if (i > 0)
                                         {
@@ -6387,8 +6462,9 @@
                                             };
 
                                             teap.TEORICI.Add(t);
-
+                                            db.Configuration.AutoDetectChangesEnabled = true;
                                             db.SaveChanges();
+                                            db.Configuration.AutoDetectChangesEnabled = false;
                                         }
                                     }
                                 }
@@ -6411,8 +6487,9 @@
                             };
 
                             tePartenza.ELABTRASPEFFETTI.Add(teap);
-
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             int i = db.SaveChanges();
+                            db.Configuration.AutoDetectChangesEnabled = false;
 
                             if (i > 0)
                             {
@@ -6450,8 +6527,9 @@
                                 };
 
                                 teap.TEORICI.Add(t);
-
+                                db.Configuration.AutoDetectChangesEnabled = true;
                                 db.SaveChanges();
+                                db.Configuration.AutoDetectChangesEnabled = false;
                             }
                         }
                     }
@@ -6497,7 +6575,7 @@
                                     tOld.ANNULLATO = true;
                                 }
 
-                                db.SaveChanges();
+                                //db.SaveChanges();
 
                                 ELABTRASPEFFETTI teap = new ELABTRASPEFFETTI()
                                 {
@@ -6513,7 +6591,9 @@
 
                                 teRientro.ELABTRASPEFFETTI.Add(teap);
 
+                                db.Configuration.AutoDetectChangesEnabled = true;
                                 int i = db.SaveChanges();
+                                db.Configuration.AutoDetectChangesEnabled = false;
 
                                 if (i > 0)
                                 {
@@ -6552,8 +6632,9 @@
                                     };
 
                                     teap.TEORICI.Add(t);
-
+                                    db.Configuration.AutoDetectChangesEnabled = true;
                                     db.SaveChanges();
+                                    db.Configuration.AutoDetectChangesEnabled = false;
                                 }
                             }
                             else
@@ -6597,7 +6678,7 @@
                                                 tOld.ANNULLATO = true;
                                             }
 
-                                            db.SaveChanges();
+                                            //db.SaveChanges();
 
                                             ELABTRASPEFFETTI teap = new ELABTRASPEFFETTI()
                                             {
@@ -6613,8 +6694,9 @@
                                             };
 
                                             teRientro.ELABTRASPEFFETTI.Add(teap);
-
+                                            db.Configuration.AutoDetectChangesEnabled = true;
                                             int i = db.SaveChanges();
+                                            db.Configuration.AutoDetectChangesEnabled = false;
 
                                             if (i > 0)
                                             {
@@ -6665,8 +6747,9 @@
                                                 };
 
                                                 teap.TEORICI.Add(t);
-
+                                                db.Configuration.AutoDetectChangesEnabled = true;
                                                 db.SaveChanges();
+                                                db.Configuration.AutoDetectChangesEnabled = false;
                                             }
                                         }
                                     }
@@ -6686,9 +6769,9 @@
                                         };
 
                                         teRientro.ELABTRASPEFFETTI.Add(teap);
-
+                                        db.Configuration.AutoDetectChangesEnabled = true;
                                         int i = db.SaveChanges();
-
+                                        db.Configuration.AutoDetectChangesEnabled = false;
                                         if (i > 0)
                                         {
                                             EnumTipoMovimento tipoMov;
@@ -6736,8 +6819,9 @@
                                             };
 
                                             teap.TEORICI.Add(t);
-
+                                            db.Configuration.AutoDetectChangesEnabled = true;
                                             db.SaveChanges();
+                                            db.Configuration.AutoDetectChangesEnabled = false;
                                         }
                                     }
                                 }
@@ -6758,9 +6842,9 @@
                             };
 
                             teRientro.ELABTRASPEFFETTI.Add(teap);
-
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             int i = db.SaveChanges();
-
+                            db.Configuration.AutoDetectChangesEnabled = false;
                             if (i > 0)
                             {
                                 EnumTipoMovimento tipoMov;
@@ -6798,8 +6882,9 @@
                                 };
 
                                 teap.TEORICI.Add(t);
-
+                                db.Configuration.AutoDetectChangesEnabled = true;
                                 db.SaveChanges();
+                                db.Configuration.AutoDetectChangesEnabled = false;
                             }
                         }
                     }
@@ -7426,7 +7511,9 @@
                                     using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, elabMabNew.DAL, db))
                                     {
                                         indennita.ELABMAB.Add(elabMabNew);
+                                        db.Configuration.AutoDetectChangesEnabled = true;
                                         int n = db.SaveChanges();
+                                        db.Configuration.AutoDetectChangesEnabled = false;
 
                                         if (n > 0)
                                         {
@@ -7441,8 +7528,9 @@
 
                                                 elabMabNew.ELABDATIFIGLI.Add(edf);
                                             }
-
-                                            int h = db.SaveChanges();
+                                            db.Configuration.AutoDetectChangesEnabled = true;
+                                            db.SaveChanges();
+                                            db.Configuration.AutoDetectChangesEnabled = false;
                                         }
                                         else
                                         {
@@ -7490,7 +7578,9 @@
 
                                 db.TEORICI.Add(t);
 
+                                db.Configuration.AutoDetectChangesEnabled = true;
                                 int c = db.SaveChanges();
+                                db.Configuration.AutoDetectChangesEnabled = false;
 
                                 if (c <= 0)
                                 {
@@ -7512,8 +7602,9 @@
                                     {
                                         tNoElab.ANNULLATO = false;
                                     }
-
+                                    db.Configuration.AutoDetectChangesEnabled = true;
                                     db.SaveChanges();
+                                    db.Configuration.AutoDetectChangesEnabled = false;
                                 }
                             }
                         }
@@ -7921,9 +8012,9 @@
                                                 };
 
                                                 indennita.ELABINDENNITA.Add(ei);
-
+                                                db.Configuration.AutoDetectChangesEnabled = true;
                                                 int n = db.SaveChanges();
-
+                                                db.Configuration.AutoDetectChangesEnabled = false;
                                                 if (n > 0)
                                                 {
                                                     lIdElabInd.Add(ei.IDELABIND);
@@ -7941,7 +8032,9 @@
                                                         ei.ELABDATIFIGLI.Add(edf);
                                                     }
 
-                                                    //db.SaveChanges();
+                                                    db.Configuration.AutoDetectChangesEnabled = true;
+                                                    db.SaveChanges();
+                                                    db.Configuration.AutoDetectChangesEnabled = false;
                                                 }
                                                 else
                                                 {
@@ -7995,9 +8088,9 @@
                                 };
 
                                 db.TEORICI.Add(teorico);
-
+                                db.Configuration.AutoDetectChangesEnabled = true;
                                 int k = db.SaveChanges();
-
+                                db.Configuration.AutoDetectChangesEnabled = false;
                                 if (k > 0)
                                 {
                                     foreach (var idElabInd in lIdElabInd)
@@ -8018,8 +8111,11 @@
 
                                     db.ELABINDENNITA.Remove(ei);
 
-                                    db.SaveChanges();
+
                                 }
+                                db.Configuration.AutoDetectChangesEnabled = true;
+                                db.SaveChanges();
+                                db.Configuration.AutoDetectChangesEnabled = false;
                             }
                         }
                     }
@@ -8153,8 +8249,9 @@
                                     teorici.ANNULLATO = true;
                                 }
                             }
-
+                            db.Configuration.AutoDetectChangesEnabled = true;
                             db.SaveChanges();
+                            db.Configuration.AutoDetectChangesEnabled = false;
                         }
 
 
@@ -8451,7 +8548,11 @@
 
                                                 indennita.ELABINDENNITA.Add(ei);
 
+                                                db.Configuration.AutoDetectChangesEnabled = true;
+
                                                 int n = db.SaveChanges();
+
+                                                db.Configuration.AutoDetectChangesEnabled = false;
 
                                                 if (n > 0)
                                                 {
@@ -8560,7 +8661,9 @@
                 item.Collection(a => a.ELABMAB).Load();
                 var l = db.ELABMAB.Find(idElabMab);
                 i.ELABMAB.Add(l);
+                db.Configuration.AutoDetectChangesEnabled = true;
                 db.SaveChanges();
+                db.Configuration.AutoDetectChangesEnabled = false;
             }
             catch (Exception ex)
             {
@@ -8589,9 +8692,9 @@
                 var l = db.TEORICI.Find(idTeorico);
 
                 i.TEORICI.Add(l);
-
+                db.Configuration.AutoDetectChangesEnabled = true;
                 int j = db.SaveChanges();
-
+                db.Configuration.AutoDetectChangesEnabled = false;
                 if (j <= 0)
                 {
                     throw new Exception("Errore nell'associare teorici ad elabIndennità.");
@@ -9062,7 +9165,10 @@
                     teoricoOld.ANNULLATO = true;
                 }
 
+
+                db.Configuration.AutoDetectChangesEnabled = true;
                 db.SaveChanges();
+                db.Configuration.AutoDetectChangesEnabled = false;
             }
 
             decimal indPsAnticipabileLorda = 0;
