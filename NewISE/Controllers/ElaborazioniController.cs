@@ -646,17 +646,24 @@ namespace NewISE.Controllers
 
                                 foreach (decimal teorico in lTeorici)
                                 {
-                                    var dip = dte.EstrapolaDipendenteDaTeorico(teorico, db);
-
-                                    if (!dip.ELABORAZIONI?.Any(a => a.IDMESEANNOELAB == idAnnoMeseElaborato) ?? false)
+                                    using (ModelDBISE db2 = new ModelDBISE())
                                     {
-                                        dte.InviaFlussiMensili(idAnnoMeseElaborato, teorico, db);
+                                        var dip = dte.EstrapolaDipendenteDaTeorico(teorico, db2);
+
+                                        if (!dip.ELABORAZIONI?.Any(a => a.IDMESEANNOELAB == idAnnoMeseElaborato) ?? false)
+                                        {
+                                            dte.InviaFlussiMensiliCedoCont(idAnnoMeseElaborato, teorico, db2);
+                                        }
                                     }
+
                                 }
 
                                 using (dtInvioFileFTP dtFile = new dtInvioFileFTP())
                                 {
-                                    dtFile.FlUpload(lTeorici, db);
+
+                                    dtFile.FlUpload(lTeorici);
+
+
                                 }
 
                                 using (dtDipendenti dtd = new dtDipendenti())
