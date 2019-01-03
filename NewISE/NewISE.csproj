@@ -6750,12 +6750,8 @@
     <Content Include="Views\VariazioneTrasportoEffetti\TabDocumentiVariazioneTEPInseriti.cshtml" />
     <Content Include="Views\VariazioneTrasportoEffetti\NuovoDocumentoVariazioneTEP.cshtml" />
     <Content Include="Views\VariazioneTrasportoEffetti\MessaggioAnnullaVariazioneTEP.cshtml" />
-    <Content Include="Views\Elaborazioni\ReportLiquidazioniDirette.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Views\Elaborazioni\ReportLiquidazioniMensili.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Views\Elaborazioni\ReportLiquidazioniDirette.cshtml" />
+    <Content Include="Views\Elaborazioni\ReportLiquidazioniMensili.cshtml" />
     <Content Include="Views\Elaborazioni\FormVociManuali.cshtml" />
     <Content Include="Views\TrasportoEffetti\TERientro.cshtml" />
     <Content Include="Views\TrasportoEffetti\TrasportoEffettiRientro.cshtml" />

@@ -289,15 +289,15 @@
     });
 
     $("#btLiquidazioniMensili").on("click", function () {
-        debugger;
-        
+        //debugger;
+
 
         var rotta = "/Elaborazioni/ReportLiquidazioniMensili";
 
         var idAnnoMeseElaborato = @idAnnoMeseElaborato;
         var lidTeorici = new Array();
 
-        
+
         var lTeorici = $('#TabLiquidazioniMensili > tbody > tr > td > #item_idTeorici');
 
 
@@ -305,14 +305,14 @@
             var idTeorico = lTeorici[parseInt(i)].value;
             lidTeorici.push(idTeorico);
         }
-        
-        
+
+
         if (lidTeorici.length >0) {
             $('.container').addClass("NoOverflow");
 
-        $("#dialogRpt").dialog("open");
-        $("#dialogRpt").css("background-color", "#ffffff");
-            
+            $("#dialogRpt").dialog("open");
+            $("#dialogRpt").css("background-color", "#ffffff");
+
 
             $.ajax({
                 type: "POST",
@@ -345,7 +345,7 @@
         else {
             InfoElaborazioneAjax("Non sono presenti movimenti per la stampa.")
         }
-        
+
 
     });
 
@@ -355,5 +355,3 @@
 
 
 </script>
-
-

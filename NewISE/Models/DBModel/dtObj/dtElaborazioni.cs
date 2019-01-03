@@ -4326,7 +4326,17 @@ namespace NewISE.Models.DBModel.dtObj
 
                             if (verificaMeseElab == false)
                             {
-                                dataInizioElaborazione = dataInizioElaborazione.AddDays(giorniElabMese);
+
+                                if (giorniElabMese == 30)
+                                {
+                                    dataInizioElaborazione = dataInizioElaborazione.AddMonths(1);
+                                }
+                                else
+                                {
+                                    dataInizioElaborazione = dataInizioElaborazione.AddDays(giorniElabMese);
+                                }
+
+
                                 break;
                             }
 
