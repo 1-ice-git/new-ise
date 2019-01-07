@@ -69,8 +69,8 @@ namespace NewISE.App_Start
 
             var googleAutOptiom = new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "108843374092-73iepmnlehpr859t60fmcaffd1vgasgm.apps.googleusercontent.com",
-                ClientSecret = "CUQa7l15OwZz12Wr2TVHCww9",
+                ClientId = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["Google_ClientId"]),
+                ClientSecret = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["Google_ClientSecret"]),
                 //CallbackPath = new PathString("/Account/ExternalLoginCallback"),
                 //Provider = new GoogleOAuth2AuthenticationProvider()
                 //{
