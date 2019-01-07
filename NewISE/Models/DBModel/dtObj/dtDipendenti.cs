@@ -664,7 +664,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var ldip =
                         db.DIPENDENTI.Where(
                             a =>
-                                a.ABILITATO == true && a.NOSISTEMA == false &&
+                                a.NOSISTEMA == false &&
                                 a.TRASFERIMENTO.Any(
                                     b => b.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato))
                             .OrderBy(a => a.COGNOME)
