@@ -16,7 +16,7 @@ namespace NewISE.Models.dtObj
 
             try
             {
-                var client = new RestSharp.RestClient("http://128.1.50.97:82");
+                var client = new RestSharp.RestClient("http://bell.ice.it:5000");
                 var req = new RestSharp.RestRequest("api/dipendente", RestSharp.Method.GET);
                 req.RequestFormat = RestSharp.DataFormat.Json;
                 req.AddParameter("matricola", matricola);
