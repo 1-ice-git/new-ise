@@ -969,7 +969,7 @@ namespace NewISE.Models.DBModel.dtObj
             #endregion
 
             #region Trattenute su ISE
-            if (t.AUTOMATISMOVOCIMANUALI?.IDVOCI == (decimal)EnumVociContabili.TRAT_MAGG_IGLI_SU_ISE_ISE)
+            if (t.AUTOMATISMOVOCIMANUALI?.IDVOCI == (decimal)EnumVociContabili.TRAT_MAGG_FIGLI_SU_ISE_ISE)
             {
                 if (t.INSERIMENTOMANUALE == true)
                 {
@@ -4163,7 +4163,13 @@ namespace NewISE.Models.DBModel.dtObj
                                      Convert.ToDecimal(string.Concat(a.DATAPARTENZA.Year.ToString(),
                                          a.DATAPARTENZA.Month.ToString().PadLeft(2, Convert.ToChar("0")))) <=
                                      annoMese) || a.DIPENDENTI.RICALCOLARE == true
-                        ).OrderBy(a => a.DATAPARTENZA).ToList();
+                        )
+                        .Where(
+                            a =>
+                                a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
+                        .OrderBy(a => a.DATAPARTENZA)
+                        .ToList();
 
                 if (lTrasferimenti?.Any() ?? false)
                 {

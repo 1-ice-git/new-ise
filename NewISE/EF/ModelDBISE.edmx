@@ -6962,6 +6962,22 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
           <FunctionImport Name="ANNULLA_ALLINEA1">
             <Parameter Name="WRK" Mode="Out" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="ALLINEA2">
+            <Parameter Name="AVVIO" Mode="In" Type="DateTime" />
+            <Parameter Name="EMAIL" Mode="In" Type="String" />
+            <Parameter Name="WRK" Mode="Out" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ANNULLA_ALLINEA2">
+            <Parameter Name="WRK" Mode="Out" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ALLINEA3">
+            <Parameter Name="AVVIO" Mode="In" Type="DateTime" />
+            <Parameter Name="EMAIL" Mode="In" Type="String" />
+            <Parameter Name="WRK" Mode="Out" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ANNULLA_ALLINEA3">
+            <Parameter Name="WRK" Mode="Out" Type="String" />
+          </FunctionImport>
           <EntitySet Name="ACCESSI" EntityType="DBISE.ACCESSI" />
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="DBISE.ALIQUOTECONTRIBUTIVE" />
           <EntitySet Name="ALTRIDATIFAM" EntityType="DBISE.ALTRIDATIFAM" />
@@ -7957,12 +7973,12 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="TITOLIVIAGGIORICHIEDENTE" EntitySet="TITOLIVIAGGIORICHIEDENTE" />
           </AssociationSet>
-          <FunctionImport Name="ALLINEA2">
+          <FunctionImport Name="ALLINEA4">
             <Parameter Name="AVVIO" Mode="In" Type="DateTime" />
             <Parameter Name="EMAIL" Mode="In" Type="String" />
             <Parameter Name="WRK" Mode="Out" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="ANNULLA_ALLINEA2">
+          <FunctionImport Name="ANNULLA_ALLINEA4">
             <Parameter Name="WRK" Mode="Out" Type="String" />
           </FunctionImport>
           </EntityContainer>
@@ -14098,8 +14114,8 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
           </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="ALLINEA2" FunctionName="DBISE.Store.ALLINEA" />
-          <FunctionImportMapping FunctionImportName="ANNULLA_ALLINEA2" FunctionName="DBISE.Store.ANNULLA_ALLINEA" />
+          <FunctionImportMapping FunctionImportName="ALLINEA4" FunctionName="DBISE.Store.ALLINEA" />
+          <FunctionImportMapping FunctionImportName="ANNULLA_ALLINEA4" FunctionName="DBISE.Store.ANNULLA_ALLINEA" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
