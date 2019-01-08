@@ -595,10 +595,12 @@ namespace NewISE.Controllers
                             #endregion
 
                             #region Lettura dati voci manuali
+
                             List<decimal> lt5 = (from a in db.TEORICI
                                                  where a.ANNULLATO == false && a.INSERIMENTOMANUALE == true &&
                                                        a.IDMESEANNOELAB == idAnnoMeseElaborato &&
-                                                       a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
+                                                       (a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe ||
+                                                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità) &&
                                                        a.DIRETTO == false &&
                                                        a.ELABORATO == false
                                                  select a.IDTEORICI).ToList();

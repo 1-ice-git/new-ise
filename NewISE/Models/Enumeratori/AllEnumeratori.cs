@@ -259,7 +259,9 @@ namespace NewISE.Models.Enumeratori
         Sistemazione_Lorda_086_380 = 2,
         Detrazione_086_384 = 3,
         Trasp_Mass_Partenza_Rientro_162_131 = 9,
-        Rientro_Lordo_086_381 = 13
+        Rientro_Lordo_086_381 = 13,
+        Polizza_sanitaria_AC_116_030 = 14,
+        Viaggio_di_congedo_086_382 = 15
 
     }
 
@@ -268,7 +270,8 @@ namespace NewISE.Models.Enumeratori
         Ind_Sede_Estera = 8,
         Ind_Prima_Sist_IPS = 10,
         MAB = 11,
-        Ind_Richiamo_IRI = 12
+        Ind_Richiamo_IRI = 12,
+        TRAT_MAGG_IGLI_SU_ISE_ISE = 16
 
     }
 
