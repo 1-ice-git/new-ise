@@ -1,4 +1,6 @@
-﻿@using NewISE.Models.Enumeratori
+﻿
+@using System.Web.Mvc.Html
+@using NewISE.Models.Enumeratori
 @model IEnumerable<NewISE.Models.ViewModel.LiquidazioneMensileViewModel>
 
 @{
@@ -66,7 +68,16 @@
                                 <a id="LinkDatiDip" href="#" onclick="ModaleDatiTrasf(@item.idTeorici);">@Html.DisplayFor(modelItem => item.Nominativo)</a>
                             </td>
                             <td style="text-align: center;">
-                                @Html.DisplayFor(modelItem => item.Voci.descrizione)
+
+                                @if (item.Giorni < 30)
+                                {
+                                    @*@Html.DisplayFor(modelItem => item.Voci.descrizione, new { @title = "Rateo di numero giorni: " + item.Giorni })*@
+                                    <span style="color: brown">@item.Voci.descrizione (@item.Giorni.ToString())</span>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.Voci.descrizione)
+                                }
                             </td>
                             <td style="text-align: center;">
                                 @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
@@ -116,7 +127,15 @@
                                 <a id="LinkDatiDip" href="#" onclick="ModaleDatiTrasf(@item.idTeorici);">@Html.DisplayFor(modelItem => item.Nominativo)</a>
                             </td>
                             <td style="text-align: center;">
-                                @Html.DisplayFor(modelItem => item.Voci.descrizione)
+                                @if (item.Giorni < 30)
+                                {
+                                    @*@Html.DisplayFor(modelItem => item.Voci.descrizione, new { @title = "Rateo di numero giorni: " + item.Giorni })*@
+                                    <span style="color: brown">@item.Voci.descrizione (@item.Giorni.ToString())</span>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.Voci.descrizione)
+                                }
                             </td>
                             <td style="text-align: center;">
                                 @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
@@ -343,14 +362,14 @@
             });
         }
         else {
-            InfoElaborazioneAjax("Non sono presenti movimenti per la stampa.")
+            InfoElaborazioneAjax("Non sono presenti movimenti per la stampa.");
         }
 
 
     });
 
 
-
+    //$('span').tooltip();
 
 
 

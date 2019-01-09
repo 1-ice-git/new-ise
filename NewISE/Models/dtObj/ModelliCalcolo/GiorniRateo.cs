@@ -64,13 +64,19 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                             {
                                 if (this.VerificaFineMese(giornoFin, meseFin, annoFin))
                                 {
-                                    nGiorni = 30 - giornoIni + 1;
+                                    if (giornoIni == 31)
+                                    {
+                                        nGiorni = 31 - giornoIni + 1;
+                                    }
+                                    else
+                                    {
+                                        nGiorni = 30 - giornoIni + 1;
+                                    }
                                 }
                                 else
                                 {
                                     nGiorni = giornoFin - giornoIni + 1;
                                 }
-
                             }
                         }
                         else
@@ -86,7 +92,14 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                                 }
                                 else
                                 {
-                                    nGiorni += 30 - giornoIni + 1;
+                                    if (giornoIni == 31)
+                                    {
+                                        nGiorni += 31 - giornoIni + 1;
+                                    }
+                                    else
+                                    {
+                                        nGiorni += 30 - giornoIni + 1;
+                                    }
                                 }
                             }
                             else if (j > meseIni && j < meseFin)
@@ -120,7 +133,15 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                             if (j == meseIni)
                             {
-                                nGiorni += 30 - giornoIni + 1;
+
+                                if (giornoIni == 31)
+                                {
+                                    nGiorni += 31 - giornoIni + 1;
+                                }
+                                else
+                                {
+                                    nGiorni += 30 - giornoIni + 1;
+                                }
                             }
                             else
                             {

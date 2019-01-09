@@ -49,6 +49,8 @@ namespace NewISE.Models.ViewModel
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Importo { get; set; }
 
+        public decimal Giorni { get; set; }
+
         [Display(Name = "Elab.")]
         [DefaultValue(false)]
         public bool Elaborato { get; set; }
