@@ -21,7 +21,7 @@ namespace NewISE.Models.DBModel.dtObj
             LOG_ALLINEAMENTO la = new LOG_ALLINEAMENTO();
 
             var lla =
-                db.LOG_ALLINEAMENTO.OrderByDescending(a=>a.IDJOB).ToList();
+                db.LOG_ALLINEAMENTO.OrderByDescending(a => a.IDJOB).ToList();
 
             if (lla?.Any() ?? false)
             {
@@ -30,7 +30,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             return la;
         }
-                
+
         public string AvviaAllineamento(DateTime dataoraini, ModelDBISE db)
         {
             try

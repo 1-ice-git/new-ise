@@ -14,7 +14,7 @@ namespace NewISE.Models.IseArio
             GC.SuppressFinalize(this);
         }
 
-        public OracleConnection OpenConnDBArio()
+        public OracleConnection OpenConnDBAzoto()
         {
             string strConn = System.Configuration.ConfigurationManager.ConnectionStrings["DBISEAZOTO"].ConnectionString;
 

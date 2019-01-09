@@ -38,7 +38,7 @@ namespace NewISE.Models.IseArio.dtObj
                 {
                     using (OracleCommand cmd = new OracleCommand())
                     {
-                        cmd.Connection = conn.OpenConnDBArio();
+                        cmd.Connection = conn.OpenConnDBAzoto();
                         cmd.CommandType = System.Data.CommandType.Text;
                         cmd.CommandText = sqlStr;
                         cmd.Parameters.Add("matricola", OracleDbType.Int32).Value = matricola;
