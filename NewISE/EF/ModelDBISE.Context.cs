@@ -160,9 +160,17 @@ namespace NewISE.EF
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ALLINEA", aVVIOParameter, eMAILParameter, wRK);
         }
     
-        public virtual int ANNULLA_ALLINEA(ObjectParameter wRK)
+        public virtual int ALLINEA1(Nullable<System.DateTime> aVVIO, string eMAIL, ObjectParameter wRK)
         {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ANNULLA_ALLINEA", wRK);
+            var aVVIOParameter = aVVIO.HasValue ?
+                new ObjectParameter("AVVIO", aVVIO) :
+                new ObjectParameter("AVVIO", typeof(System.DateTime));
+    
+            var eMAILParameter = eMAIL != null ?
+                new ObjectParameter("EMAIL", eMAIL) :
+                new ObjectParameter("EMAIL", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ALLINEA1", aVVIOParameter, eMAILParameter, wRK);
         }
     }
 }

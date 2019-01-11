@@ -44,6 +44,7 @@ namespace NewISE.EF
         public bool ELABORATO { get; set; }
         public bool DIRETTO { get; set; }
         public bool ANNULLATO { get; set; }
+        public bool RECUPERO { get; set; }
     
         public virtual AUTOMATISMOVOCIMANUALI AUTOMATISMOVOCIMANUALI { get; set; }
         public virtual ELABINDRICHIAMO ELABINDRICHIAMO { get; set; }
