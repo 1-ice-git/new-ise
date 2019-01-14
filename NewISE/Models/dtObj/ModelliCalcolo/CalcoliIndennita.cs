@@ -747,9 +747,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                         _percentualeMaggiorazioneConiuge = percentualeMaggiorazioneConiuge.PERCENTUALECONIUGE;
 
+
                         _maggiorazioneConiuge = _indennitaDiServizio *
                                                 _percentualeMaggiorazioneConiuge /
                                                 100;
+
                     }
 
                     var lpensioni =
@@ -861,6 +863,179 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
         }
 
+
+        private Decimal CalcolaMaggiorazioneFamiliareRichiamo(decimal indennitaServizioRichiamo)
+        {
+            decimal maggiorazioneConiuge = 0;
+            decimal maggiorazioneConiugeMenoPensione = 0;
+            decimal ImppercentualeMaggiorazioneConiuge = 0;
+            decimal pensioneConiuge = 0;
+            decimal percentualeMaggiorazioniFigli = 0;
+            decimal indennitaPrimoSegretario = 0;
+            decimal indennitaServizioPrimoSegretario = 0;
+            decimal maggiorazioneFigli = 0;
+            List<DatiFigli> lDatiFigli = new List<DatiFigli>();
+            decimal maggiorazioniFimailiri = 0;
+
+            var mf = _trasferimento.MAGGIORAZIONIFAMILIARI;
+
+            var lattivazioneMF =
+                mf.ATTIVAZIONIMAGFAM.Where(
+                    a =>
+                        a.ANNULLATO == false && a.RICHIESTAATTIVAZIONE == true &&
+                        a.ATTIVAZIONEMAGFAM == true)
+                    .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
+
+            if (lattivazioneMF?.Any() ?? false)
+            {
+                #region Maggiorazione coniuge
+
+                var lc =
+                    mf.CONIUGE.Where(
+                        a =>
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                            _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                            _dtDatiParametri <= a.DATAFINEVALIDITA)
+                        .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                if (lc?.Any() ?? false)
+                {
+                    var coniuge = lc.First();
+
+                    var lpmc =
+                        coniuge.PERCENTUALEMAGCONIUGE.Where(
+                            a =>
+                                a.ANNULLATO == false &&
+                                a.IDTIPOLOGIACONIUGE == coniuge.IDTIPOLOGIACONIUGE &&
+                                _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                                _dtDatiParametri <= a.DATAFINEVALIDITA)
+                            .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                    if (lpmc?.Any() ?? false)
+                    {
+                        var percentualeMaggiorazioneConiuge = lpmc.First();
+
+                        ImppercentualeMaggiorazioneConiuge = percentualeMaggiorazioneConiuge.PERCENTUALECONIUGE;
+
+                        maggiorazioneConiuge = indennitaServizioRichiamo *
+                                                    ImppercentualeMaggiorazioneConiuge /
+                                                    100;
+                    }
+
+                    var lpensioni =
+                        coniuge.PENSIONE.Where(
+                            a =>
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                _dtDatiParametri >= a.DATAINIZIO &&
+                                _dtDatiParametri <= a.DATAFINE)
+                            .OrderByDescending(a => a.DATAINIZIO)
+                            .ToList();
+
+
+                    if (lpensioni?.Any() ?? false)
+                    {
+                        var pens = lpensioni.First();
+                        pensioneConiuge = pens.IMPORTOPENSIONE;
+
+                        if (pensioneConiuge >= maggiorazioneConiuge)
+                        {
+                            maggiorazioneConiugeMenoPensione = 0;
+                        }
+                        else
+                        {
+                            maggiorazioneConiugeMenoPensione = maggiorazioneConiuge - pensioneConiuge;
+                        }
+
+                    }
+                    else
+                    {
+                        maggiorazioneConiugeMenoPensione = maggiorazioneConiuge;
+                    }
+                }
+                #endregion
+
+                #region Maggiorazioni figli
+
+                var lf =
+                    mf.FIGLI.Where(
+                        a =>
+                            a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                            _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                            _dtDatiParametri <= a.DATAFINEVALIDITA)
+                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+
+                if (lf?.Any() ?? false)
+                {
+                    foreach (var f in lf)
+                    {
+                        DatiFigli datiFigli = new DatiFigli();
+
+                        var lpmf =
+                            f.PERCENTUALEMAGFIGLI.Where(
+                                a =>
+                                    a.ANNULLATO == false && _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                                    _dtDatiParametri <= a.DATAFINEVALIDITA && a.IDTIPOLOGIAFIGLIO == f.IDTIPOLOGIAFIGLIO)
+                                .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                        if (lpmf?.Any() ?? false)
+                        {
+                            var pmf = lpmf.First();
+                            percentualeMaggiorazioniFigli = pmf.PERCENTUALEFIGLI;
+
+                            var lips =
+                                f.INDENNITAPRIMOSEGRETARIO.Where(
+                                    a =>
+                                        a.ANNULLATO == false &&
+                                        _dtDatiParametri >= a.DATAINIZIOVALIDITA &&
+                                        _dtDatiParametri <= a.DATAFINEVALIDITA)
+                                    .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                            if (lips?.Any() ?? false)
+                            {
+                                var ips = lips.First();
+                                indennitaPrimoSegretario = ips.INDENNITA;
+
+                                indennitaServizioPrimoSegretario = (((indennitaPrimoSegretario *
+                                                                       _coefficienteDiSede) +
+                                                                      indennitaPrimoSegretario) +
+                                                                     (((_indennitaPrimoSegretario *
+                                                                        _coefficienteDiSede) +
+                                                                       indennitaPrimoSegretario)
+                                                                      * (_percentualeDisagio / 100)));
+
+                                maggiorazioneFigli += indennitaServizioPrimoSegretario *
+                                                       percentualeMaggiorazioniFigli / 100;
+
+
+                                datiFigli.indennitaPrimoSegretario = indennitaPrimoSegretario;
+                                datiFigli.percentualeMaggiorazioniFligli = percentualeMaggiorazioniFigli;
+
+                                lDatiFigli.Add(datiFigli);
+
+                            }
+
+
+
+                        }
+
+
+                    }
+
+
+                }
+                #endregion
+
+                maggiorazioniFimailiri = Math.Round(maggiorazioneConiugeMenoPensione + maggiorazioneFigli, 8);
+
+
+            }
+
+            return maggiorazioniFimailiri;
+
+        }
+
+
         private void CalcolaIndennitaPersonale()
         {
             _indennitaPersonale = Math.Round(_indennitaDiServizio + _maggiorazioniFimailiri, 8);
@@ -905,6 +1080,9 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
         private void CalcolaRichiamo()
         {
+
+            decimal maggiorazioniFamiliariRichiamo = 0;
+
             var lRichiamo =
                 _trasferimento.RICHIAMO.Where(
                     a => a.ANNULLATO == false && a.DATARICHIAMO < Convert.ToDateTime("31/12/9999"))
@@ -967,7 +1145,9 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                             var comodo1 = maggiorazione + _indennitaDiBase;
 
-                            var comodo2 = (comodo1 * _coefficenteIndennitaRichiamo) + _maggiorazioniFimailiri;
+                            maggiorazioniFamiliariRichiamo = this.CalcolaMaggiorazioneFamiliareRichiamo(comodo1);
+
+                            var comodo2 = (comodo1 * _coefficenteIndennitaRichiamo) + maggiorazioniFamiliariRichiamo;
 
 
 
