@@ -1774,6 +1774,7 @@
           <Property Name="IDTIPOVOCE" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CODICEVOCE" Type="varchar2" MaxLength="30" Nullable="false" />
           <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="COMPTRATTENUTA" Type="char" MaxLength="1" Nullable="false" />
         </EntityType>
         <Association Name="R_AA_A">
           <End Role="ATTIVITAANTICIPI" Type="Self.ATTIVITAANTICIPI" Multiplicity="1">
@@ -9679,6 +9680,7 @@
           <Property Name="IDTIPOVOCE" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="CODICEVOCE" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="COMPTRATTENUTA" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="AUTOMATISMOVOCIMANUALI" Relationship="DBISE.R_V_AVM" FromRole="VOCI" ToRole="AUTOMATISMOVOCIMANUALI" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_V_T" FromRole="VOCI" ToRole="TEORICI" />
           <NavigationProperty Name="TIPOLIQUIDAZIONE" Relationship="DBISE.R_TL_V" FromRole="VOCI" ToRole="TIPOLIQUIDAZIONE" />
@@ -13604,6 +13606,7 @@
           <EntitySetMapping Name="VOCI">
             <EntityTypeMapping TypeName="DBISE.VOCI">
               <MappingFragment StoreEntitySet="VOCI">
+                <ScalarProperty Name="COMPTRATTENUTA" ColumnName="COMPTRATTENUTA" />
                 <ScalarProperty Name="DESCRIZIONE" ColumnName="DESCRIZIONE" />
                 <ScalarProperty Name="CODICEVOCE" ColumnName="CODICEVOCE" />
                 <ScalarProperty Name="IDTIPOVOCE" ColumnName="IDTIPOVOCE" />

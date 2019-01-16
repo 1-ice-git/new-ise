@@ -271,7 +271,9 @@ namespace NewISE.Models.Enumeratori
         Ind_Prima_Sist_IPS = 10,
         MAB = 11,
         Ind_Richiamo_IRI = 12,
-        TRAT_MAGG_FIGLI_SU_ISE_ISE = 16
+        TRAT_MAGG_FIGLI_SU_ISE_ISE = 16,
+        Prov_Scolastiche_PSC = 17,
+        Viaggio_Trasferimento_TRA = 18
 
     }
 

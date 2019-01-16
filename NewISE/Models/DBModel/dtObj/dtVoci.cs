@@ -28,7 +28,6 @@ namespace NewISE.Models.DBModel.dtObj
                 var lvm =
                     db.VOCI.Where(
                         a =>
-                            a.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe &&
                             a.IDTIPOVOCE == (decimal)EnumTipoVoce.Manuale)
                         .OrderBy(a => a.CODICEVOCE)
                         .ThenBy(a => a.DESCRIZIONE)

@@ -1167,7 +1167,7 @@ namespace NewISE.Controllers
             {
                 if (avmm != null)
                 {
-                    if (avmm.idDipendente <= 0 || avmm.IdVoce <= 0 || avmm.Importo <= 0 || avmm.AnnoDa <= 0 || avmm.MeseDa <= 0 || avmm.AnnoA <= 0 || avmm.MeseA <= 0)
+                    if (avmm.idDipendente <= 0 || avmm.IdVoce <= 0 || avmm.Importo == 0 || avmm.AnnoDa <= 0 || avmm.MeseDa <= 0 || avmm.AnnoA <= 0 || avmm.MeseA <= 0)
                     {
                         throw new Exception("I campi con asterisco sono obbligatori.");
                     }
