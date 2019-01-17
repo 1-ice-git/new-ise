@@ -391,7 +391,7 @@ namespace NewISE.Controllers
                     }
                     else
                     {
-                        var client = new RestSharp.RestClient("http://bell.ice.it:5000");
+                        var client = new RestSharp.RestClient("http://indennita-estera-ws.ice.it");
                         var req = new RestSharp.RestRequest("api/login", RestSharp.Method.POST);
                         req.RequestFormat = RestSharp.DataFormat.Json;
                         req.AddParameter("username", account.username);

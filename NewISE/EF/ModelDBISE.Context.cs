@@ -159,5 +159,10 @@ namespace NewISE.EF
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ALLINEA", aVVIOParameter, eMAILParameter, wRK);
         }
+    
+        public virtual int ANNULLA_ALLINEA(ObjectParameter wRK)
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ANNULLA_ALLINEA", wRK);
+        }
     }
 }

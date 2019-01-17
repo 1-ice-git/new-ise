@@ -1306,6 +1306,19 @@
           </Key>
           <Property Name="IDPRIMASISTEMAZIONE" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'ISESIM.PRIMO_CAR' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="PRIMO_CAR">
+          <Property Name="MAT" Type="number" Precision="38" Scale="0" />
+          <Property Name="SEDE" Type="varchar2" MaxLength="4" />
+          <Property Name="PARTENZA" Type="date" />
+          <Property Name="RUOLO" Type="number" Precision="38" Scale="0" />
+          <Property Name="TCOAN" Type="number" Precision="38" Scale="0" />
+          <Property Name="COAN" Type="varchar2" MaxLength="16" />
+          <Property Name="FASCIA" Type="number" Precision="38" Scale="0" />
+          <Property Name="TIPO_T" Type="number" Precision="38" Scale="0" />
+          <Property Name="STATO_CAR" Type="varchar2" MaxLength="2" />
+        </EntityType>-->
         <EntityType Name="PROVVIDENZESCOLASTICHE">
           <Key>
             <PropertyRef Name="IDTRASFPROVSCOLASTICHE" />
@@ -5634,194 +5647,198 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="ALIQUOTA_ISE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISESVIL" ReturnType="number">
+        <Function Name="ALIQUOTA_ISE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISESIM" ReturnType="number">
           <Parameter Name="VDIP" Type="number" Mode="In" />
           <Parameter Name="IMPORTO" Type="number" Mode="In" />
         </Function>
-        <Function Name="ALLINEA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISESVIL">
+        <Function Name="ALLINEA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISESIM">
           <Parameter Name="AVVIO" Type="date" Mode="In" />
           <Parameter Name="EMAIL" Type="varchar2" Mode="In" />
           <Parameter Name="WRK" Type="varchar2" Mode="Out" />
         </Function>
+        <Function Name="ANNULLA_ALLINEA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ISESIM">
+          <Parameter Name="WRK" Type="varchar2" Mode="Out" />
+        </Function>
+        
         
         
         <EntityContainer Name="DBISEStoreContainer">
-          <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ADF_C" EntityType="Self.ADF_C" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ADF_F" EntityType="Self.ADF_F" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="Self.ALIQUOTECONTRIBUTIVE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ALTRIDATIFAM" EntityType="Self.ALTRIDATIFAM" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="AMAB_DOC" EntityType="Self.AMAB_DOC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="AMF_C" EntityType="Self.AMF_C" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="AMF_F" EntityType="Self.AMF_F" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ANTICIPI" EntityType="Self.ANTICIPI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ANTICIPOANNUALEMAB" EntityType="Self.ANTICIPOANNUALEMAB" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ANTICIPOSALDOTE" EntityType="Self.ANTICIPOSALDOTE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="APS_DOC" EntityType="Self.APS_DOC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATT_ADF" EntityType="Self.ATT_ADF" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATT_PENSIONE" EntityType="Self.ATT_PENSIONE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATT_RMF" EntityType="Self.ATT_RMF" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATTIVAZIONEMAB" EntityType="Self.ATTIVAZIONEMAB" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATTIVAZIONETITOLIVIAGGIO" EntityType="Self.ATTIVAZIONETITOLIVIAGGIO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATTIVAZIONIMAGFAM" EntityType="Self.ATTIVAZIONIMAGFAM" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATTIVAZIONIPASSAPORTI" EntityType="Self.ATTIVAZIONIPASSAPORTI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATTIVAZIONIPROVSCOLASTICHE" EntityType="Self.ATTIVAZIONIPROVSCOLASTICHE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATTIVAZIONIVIAGGICONGEDO" EntityType="Self.ATTIVAZIONIVIAGGICONGEDO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATTIVITAANTICIPI" EntityType="Self.ATTIVITAANTICIPI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATTIVITACRUD" EntityType="Self.ATTIVITACRUD" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATTIVITATEPARTENZA" EntityType="Self.ATTIVITATEPARTENZA" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATTIVITATERIENTRO" EntityType="Self.ATTIVITATERIENTRO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATTMAGFAM_DOC" EntityType="Self.ATTMAGFAM_DOC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ATV_DOC" EntityType="Self.ATV_DOC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="AUTOMATISMOVOCIMANUALI" EntityType="Self.AUTOMATISMOVOCIMANUALI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="C_CP" EntityType="Self.C_CP" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="C_CTV" EntityType="Self.C_CTV" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="C_P" EntityType="Self.C_P" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="C_PC" EntityType="Self.C_PC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="CALENDARIOEVENTI" EntityType="Self.CALENDARIOEVENTI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="CANONEMAB" EntityType="Self.CANONEMAB" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="CDCGEPE" EntityType="Self.CDCGEPE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="CIR_R" EntityType="Self.CIR_R" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="CMAB_TFR" EntityType="Self.CMAB_TFR" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="COEFFICIENTEINDRICHIAMO" EntityType="Self.COEFFICIENTEINDRICHIAMO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="COEFFICIENTESEDE" EntityType="Self.COEFFICIENTESEDE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="CONIUGE" EntityType="Self.CONIUGE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="CONIUGE_DOC" EntityType="Self.CONIUGE_DOC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="CONIUGEPASSAPORTO" EntityType="Self.CONIUGEPASSAPORTO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="CONIUGETITOLIVIAGGIO" EntityType="Self.CONIUGETITOLIVIAGGIO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="CP_DOC" EntityType="Self.CP_DOC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="CTV_DOC" EntityType="Self.CTV_DOC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="DESTINATARI" EntityType="Self.DESTINATARI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="DIPENDENTI" EntityType="Self.DIPENDENTI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="DOC_ATEP" EntityType="Self.DOC_ATEP" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="DOC_ATER" EntityType="Self.DOC_ATER" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="DOCUMENTI" EntityType="Self.DOCUMENTI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="DOCUMENTO_NORMACALCOLO" EntityType="Self.DOCUMENTO_NORMACALCOLO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="DOCVC" EntityType="Self.DOCVC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ELABDATIFIGLI" EntityType="Self.ELABDATIFIGLI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ELABIND_TEORICI" EntityType="Self.ELABIND_TEORICI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ELABINDENNITA" EntityType="Self.ELABINDENNITA" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ELABINDRICHIAMO" EntityType="Self.ELABINDRICHIAMO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ELABINDSISTEMAZIONE" EntityType="Self.ELABINDSISTEMAZIONE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ELABMAB" EntityType="Self.ELABMAB" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ELABORAZIONI" EntityType="Self.ELABORAZIONI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="ELABTRASPEFFETTI" EntityType="Self.ELABTRASPEFFETTI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="EMAB_ALIQ" EntityType="Self.EMAB_ALIQ" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="EMAB_T" EntityType="Self.EMAB_T" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="EMAILSECONDARIEDIP" EntityType="Self.EMAILSECONDARIEDIP" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="F_FP" EntityType="Self.F_FP" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="F_FTV" EntityType="Self.F_FTV" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="F_IPS" EntityType="Self.F_IPS" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="FASCIA_KM" EntityType="Self.FASCIA_KM" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="FASEPASSAPORTI" EntityType="Self.FASEPASSAPORTI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="FASEVIAGGICONGEDO" EntityType="Self.FASEVIAGGICONGEDO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="FIGLI" EntityType="Self.FIGLI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="FIGLI_DOC" EntityType="Self.FIGLI_DOC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="FIGLIPASSAPORTO" EntityType="Self.FIGLIPASSAPORTO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="FIGLITITOLIVIAGGIO" EntityType="Self.FIGLITITOLIVIAGGIO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="FLUSSICEDOLINO" EntityType="Self.FLUSSICEDOLINO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="FP_DOC" EntityType="Self.FP_DOC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="FTV_DOC" EntityType="Self.FTV_DOC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="FUNZIONERIDUZIONE" EntityType="Self.FUNZIONERIDUZIONE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="FUNZIONIEVENTI" EntityType="Self.FUNZIONIEVENTI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="GRUPPO_FKM" EntityType="Self.GRUPPO_FKM" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="IB_R" EntityType="Self.IB_R" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="IND_ALIQ" EntityType="Self.IND_ALIQ" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="IND_COEFFICENTESEDE" EntityType="Self.IND_COEFFICENTESEDE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="INDENNITA" EntityType="Self.INDENNITA" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="INDENNITA_INDENNITABASE" EntityType="Self.INDENNITA_INDENNITABASE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="INDENNITA_LIVELLIDIPENDENTI" EntityType="Self.INDENNITA_LIVELLIDIPENDENTI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="INDENNITA_PERCDISAGIO" EntityType="Self.INDENNITA_PERCDISAGIO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="INDENNITA_TFR" EntityType="Self.INDENNITA_TFR" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="INDENNITABASE" EntityType="Self.INDENNITABASE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="INDENNITAPRIMOSEGRETARIO" EntityType="Self.INDENNITAPRIMOSEGRETARIO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="INDENNITASISTEMAZIONE" EntityType="Self.INDENNITASISTEMAZIONE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="IS_PS" EntityType="Self.IS_PS" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="IS_R" EntityType="Self.IS_R" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="LIVELLI" EntityType="Self.LIVELLI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="LIVELLIDIPENDENTI" EntityType="Self.LIVELLIDIPENDENTI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="LOG_ALLINEAMENTO" EntityType="Self.LOG_ALLINEAMENTO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="LOGATTIVITA" EntityType="Self.LOGATTIVITA" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="MAB" EntityType="Self.MAB" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="MAB_MA" EntityType="Self.MAB_MA" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="Self.MAGGIORAZIONIANNUALI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="MAGGIORAZIONIFAMILIARI" EntityType="Self.MAGGIORAZIONIFAMILIARI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="MESEANNOELABORAZIONE" EntityType="Self.MESEANNOELABORAZIONE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="MODIFICHE_MAB" EntityType="Self.MODIFICHE_MAB" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="MODIFICHEMAGFAM" EntityType="Self.MODIFICHEMAGFAM" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="NORMACALCOLO" EntityType="Self.NORMACALCOLO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="NOTIFICHE" EntityType="Self.NOTIFICHE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="OA" EntityType="Self.OA" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PAGATOCONDIVISOMAB" EntityType="Self.PAGATOCONDIVISOMAB" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PAGCOND_PERCCOND" EntityType="Self.PAGCOND_PERCCOND" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PASSAPORTI" EntityType="Self.PASSAPORTI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PASSAPORTORICHIEDENTE" EntityType="Self.PASSAPORTORICHIEDENTE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PASSRICH_DOC" EntityType="Self.PASSRICH_DOC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PENSIONE" EntityType="Self.PENSIONE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PERCENTUALEANTICIPOTE" EntityType="Self.PERCENTUALEANTICIPOTE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PERCENTUALECONDIVISIONE" EntityType="Self.PERCENTUALECONDIVISIONE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PERCENTUALEDISAGIO" EntityType="Self.PERCENTUALEDISAGIO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PERCENTUALEFKM" EntityType="Self.PERCENTUALEFKM" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PERCENTUALEMAB" EntityType="Self.PERCENTUALEMAB" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PERCENTUALEMAGCONIUGE" EntityType="Self.PERCENTUALEMAGCONIUGE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PERCENTUALEMAGFIGLI" EntityType="Self.PERCENTUALEMAGFIGLI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PERIODOMAB" EntityType="Self.PERIODOMAB" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PERMAB_PERCMAB" EntityType="Self.PERMAB_PERCMAB" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PMF_F" EntityType="Self.PMF_F" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PRIMASITEMAZIONE" EntityType="Self.PRIMASITEMAZIONE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PROVVIDENZESCOLASTICHE" EntityType="Self.PROVVIDENZESCOLASTICHE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="PS_PFKM" EntityType="Self.PS_PFKM" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="REGOLECALCOLO" EntityType="Self.REGOLECALCOLO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="RIC_PFKM" EntityType="Self.RIC_PFKM" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="RICH_ALIQ" EntityType="Self.RICH_ALIQ" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="RICHIAMO" EntityType="Self.RICHIAMO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="RICHIAMO_COEFFRICH" EntityType="Self.RICHIAMO_COEFFRICH" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="RIDUZIONI" EntityType="Self.RIDUZIONI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="RINUNCIA_TE_P" EntityType="Self.RINUNCIA_TE_P" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="RINUNCIA_TE_R" EntityType="Self.RINUNCIA_TE_R" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="RINUNCIAANTICIPI" EntityType="Self.RINUNCIAANTICIPI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="RINUNCIAMAGGIORAZIONIFAMILIARI" EntityType="Self.RINUNCIAMAGGIORAZIONIFAMILIARI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="RUOLOACCESSO" EntityType="Self.RUOLOACCESSO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="RUOLODIPENDENTE" EntityType="Self.RUOLODIPENDENTE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="RUOLOUFFICIO" EntityType="Self.RUOLOUFFICIO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="SELECTDOCVC" EntityType="Self.SELECTDOCVC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="SIST_ALIQ" EntityType="Self.SIST_ALIQ" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="SOSPENSIONE" EntityType="Self.SOSPENSIONE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="STATORECORD" EntityType="Self.STATORECORD" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="STATOTRASFERIMENTO" EntityType="Self.STATOTRASFERIMENTO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="T_RC" EntityType="Self.T_RC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TEORICI" EntityType="Self.TEORICI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TEP_PATE" EntityType="Self.TEP_PATE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TEPARTENZA" EntityType="Self.TEPARTENZA" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TER_PATE" EntityType="Self.TER_PATE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TERIENTRO" EntityType="Self.TERIENTRO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TFR" EntityType="Self.TFR" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOALIQUOTECONTRIBUTIVE" EntityType="Self.TIPOALIQUOTECONTRIBUTIVE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOANTICIPOTRASPORTOEFFETTI" EntityType="Self.TIPOANTICIPOTRASPORTOEFFETTI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOCOEFFICIENTERICHIAMO" EntityType="Self.TIPOCOEFFICIENTERICHIAMO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPODOCUMENTI" EntityType="Self.TIPODOCUMENTI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOLIQUIDAZIONE" EntityType="Self.TIPOLIQUIDAZIONE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOLOGIAANTICIPI" EntityType="Self.TIPOLOGIAANTICIPI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOLOGIACOAN" EntityType="Self.TIPOLOGIACOAN" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOLOGIACONIUGE" EntityType="Self.TIPOLOGIACONIUGE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOLOGIAFIGLIO" EntityType="Self.TIPOLOGIAFIGLIO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOLOGIAMODIFICHE" EntityType="Self.TIPOLOGIAMODIFICHE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOMOVIMENTO" EntityType="Self.TIPOMOVIMENTO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOREGOLACALCOLO" EntityType="Self.TIPOREGOLACALCOLO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOSOSPENSIONE" EntityType="Self.TIPOSOSPENSIONE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOTRASFERIMENTO" EntityType="Self.TIPOTRASFERIMENTO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TIPOVOCE" EntityType="Self.TIPOVOCE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TITOLIVIAGGIO" EntityType="Self.TITOLIVIAGGIO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TITOLIVIAGGIORICHIEDENTE" EntityType="Self.TITOLIVIAGGIORICHIEDENTE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TRASF_DOC" EntityType="Self.TRASF_DOC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TRASFERIMENTO" EntityType="Self.TRASFERIMENTO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="TVR_DOC" EntityType="Self.TVR_DOC" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="UFFICI" EntityType="Self.UFFICI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="UTENTIAUTORIZZATI" EntityType="Self.UTENTIAUTORIZZATI" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="VALUTAUFFICIO" EntityType="Self.VALUTAUFFICIO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="VALUTE" EntityType="Self.VALUTE" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="VIAGGICONGEDO" EntityType="Self.VIAGGICONGEDO" Schema="ISESVIL" store:Type="Tables" />
-          <EntitySet Name="VOCI" EntityType="Self.VOCI" Schema="ISESVIL" store:Type="Tables" />
+          <EntitySet Name="ACCESSI" EntityType="Self.ACCESSI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ADF_C" EntityType="Self.ADF_C" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ADF_F" EntityType="Self.ADF_F" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="Self.ALIQUOTECONTRIBUTIVE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ALTRIDATIFAM" EntityType="Self.ALTRIDATIFAM" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="AMAB_DOC" EntityType="Self.AMAB_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="AMF_C" EntityType="Self.AMF_C" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="AMF_F" EntityType="Self.AMF_F" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ANTICIPI" EntityType="Self.ANTICIPI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ANTICIPOANNUALEMAB" EntityType="Self.ANTICIPOANNUALEMAB" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ANTICIPOSALDOTE" EntityType="Self.ANTICIPOSALDOTE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="APS_DOC" EntityType="Self.APS_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATT_ADF" EntityType="Self.ATT_ADF" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATT_PENSIONE" EntityType="Self.ATT_PENSIONE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATT_RMF" EntityType="Self.ATT_RMF" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATTIVAZIONEMAB" EntityType="Self.ATTIVAZIONEMAB" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATTIVAZIONETITOLIVIAGGIO" EntityType="Self.ATTIVAZIONETITOLIVIAGGIO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATTIVAZIONIMAGFAM" EntityType="Self.ATTIVAZIONIMAGFAM" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATTIVAZIONIPASSAPORTI" EntityType="Self.ATTIVAZIONIPASSAPORTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATTIVAZIONIPROVSCOLASTICHE" EntityType="Self.ATTIVAZIONIPROVSCOLASTICHE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATTIVAZIONIVIAGGICONGEDO" EntityType="Self.ATTIVAZIONIVIAGGICONGEDO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATTIVITAANTICIPI" EntityType="Self.ATTIVITAANTICIPI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATTIVITACRUD" EntityType="Self.ATTIVITACRUD" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATTIVITATEPARTENZA" EntityType="Self.ATTIVITATEPARTENZA" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATTIVITATERIENTRO" EntityType="Self.ATTIVITATERIENTRO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATTMAGFAM_DOC" EntityType="Self.ATTMAGFAM_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ATV_DOC" EntityType="Self.ATV_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="AUTOMATISMOVOCIMANUALI" EntityType="Self.AUTOMATISMOVOCIMANUALI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="C_CP" EntityType="Self.C_CP" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="C_CTV" EntityType="Self.C_CTV" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="C_P" EntityType="Self.C_P" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="C_PC" EntityType="Self.C_PC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="CALENDARIOEVENTI" EntityType="Self.CALENDARIOEVENTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="CANONEMAB" EntityType="Self.CANONEMAB" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="CDCGEPE" EntityType="Self.CDCGEPE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="CIR_R" EntityType="Self.CIR_R" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="CMAB_TFR" EntityType="Self.CMAB_TFR" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="COEFFICIENTEINDRICHIAMO" EntityType="Self.COEFFICIENTEINDRICHIAMO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="COEFFICIENTESEDE" EntityType="Self.COEFFICIENTESEDE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="CONIUGE" EntityType="Self.CONIUGE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="CONIUGE_DOC" EntityType="Self.CONIUGE_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="CONIUGEPASSAPORTO" EntityType="Self.CONIUGEPASSAPORTO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="CONIUGETITOLIVIAGGIO" EntityType="Self.CONIUGETITOLIVIAGGIO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="CP_DOC" EntityType="Self.CP_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="CTV_DOC" EntityType="Self.CTV_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="DESTINATARI" EntityType="Self.DESTINATARI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="DIPENDENTI" EntityType="Self.DIPENDENTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="DOC_ATEP" EntityType="Self.DOC_ATEP" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="DOC_ATER" EntityType="Self.DOC_ATER" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="DOCUMENTI" EntityType="Self.DOCUMENTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="DOCUMENTO_NORMACALCOLO" EntityType="Self.DOCUMENTO_NORMACALCOLO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="DOCVC" EntityType="Self.DOCVC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ELABDATIFIGLI" EntityType="Self.ELABDATIFIGLI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ELABIND_TEORICI" EntityType="Self.ELABIND_TEORICI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ELABINDENNITA" EntityType="Self.ELABINDENNITA" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ELABINDRICHIAMO" EntityType="Self.ELABINDRICHIAMO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ELABINDSISTEMAZIONE" EntityType="Self.ELABINDSISTEMAZIONE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ELABMAB" EntityType="Self.ELABMAB" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ELABORAZIONI" EntityType="Self.ELABORAZIONI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="ELABTRASPEFFETTI" EntityType="Self.ELABTRASPEFFETTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="EMAB_ALIQ" EntityType="Self.EMAB_ALIQ" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="EMAB_T" EntityType="Self.EMAB_T" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="EMAILSECONDARIEDIP" EntityType="Self.EMAILSECONDARIEDIP" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="F_FP" EntityType="Self.F_FP" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="F_FTV" EntityType="Self.F_FTV" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="F_IPS" EntityType="Self.F_IPS" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="FASCIA_KM" EntityType="Self.FASCIA_KM" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="FASEPASSAPORTI" EntityType="Self.FASEPASSAPORTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="FASEVIAGGICONGEDO" EntityType="Self.FASEVIAGGICONGEDO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="FIGLI" EntityType="Self.FIGLI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="FIGLI_DOC" EntityType="Self.FIGLI_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="FIGLIPASSAPORTO" EntityType="Self.FIGLIPASSAPORTO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="FIGLITITOLIVIAGGIO" EntityType="Self.FIGLITITOLIVIAGGIO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="FLUSSICEDOLINO" EntityType="Self.FLUSSICEDOLINO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="FP_DOC" EntityType="Self.FP_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="FTV_DOC" EntityType="Self.FTV_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="FUNZIONERIDUZIONE" EntityType="Self.FUNZIONERIDUZIONE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="FUNZIONIEVENTI" EntityType="Self.FUNZIONIEVENTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="GRUPPO_FKM" EntityType="Self.GRUPPO_FKM" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="IB_R" EntityType="Self.IB_R" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="IND_ALIQ" EntityType="Self.IND_ALIQ" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="IND_COEFFICENTESEDE" EntityType="Self.IND_COEFFICENTESEDE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="INDENNITA" EntityType="Self.INDENNITA" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="INDENNITA_INDENNITABASE" EntityType="Self.INDENNITA_INDENNITABASE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="INDENNITA_LIVELLIDIPENDENTI" EntityType="Self.INDENNITA_LIVELLIDIPENDENTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="INDENNITA_PERCDISAGIO" EntityType="Self.INDENNITA_PERCDISAGIO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="INDENNITA_TFR" EntityType="Self.INDENNITA_TFR" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="INDENNITABASE" EntityType="Self.INDENNITABASE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="INDENNITAPRIMOSEGRETARIO" EntityType="Self.INDENNITAPRIMOSEGRETARIO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="INDENNITASISTEMAZIONE" EntityType="Self.INDENNITASISTEMAZIONE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="IS_PS" EntityType="Self.IS_PS" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="IS_R" EntityType="Self.IS_R" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="LIVELLI" EntityType="Self.LIVELLI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="LIVELLIDIPENDENTI" EntityType="Self.LIVELLIDIPENDENTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="LOG_ALLINEAMENTO" EntityType="Self.LOG_ALLINEAMENTO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="LOGATTIVITA" EntityType="Self.LOGATTIVITA" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="MAB" EntityType="Self.MAB" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="MAB_MA" EntityType="Self.MAB_MA" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="MAGGIORAZIONIANNUALI" EntityType="Self.MAGGIORAZIONIANNUALI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="MAGGIORAZIONIFAMILIARI" EntityType="Self.MAGGIORAZIONIFAMILIARI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="MESEANNOELABORAZIONE" EntityType="Self.MESEANNOELABORAZIONE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="MODIFICHE_MAB" EntityType="Self.MODIFICHE_MAB" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="MODIFICHEMAGFAM" EntityType="Self.MODIFICHEMAGFAM" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="NORMACALCOLO" EntityType="Self.NORMACALCOLO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="NOTIFICHE" EntityType="Self.NOTIFICHE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="OA" EntityType="Self.OA" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PAGATOCONDIVISOMAB" EntityType="Self.PAGATOCONDIVISOMAB" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PAGCOND_PERCCOND" EntityType="Self.PAGCOND_PERCCOND" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PASSAPORTI" EntityType="Self.PASSAPORTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PASSAPORTORICHIEDENTE" EntityType="Self.PASSAPORTORICHIEDENTE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PASSRICH_DOC" EntityType="Self.PASSRICH_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PENSIONE" EntityType="Self.PENSIONE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PERCENTUALEANTICIPOTE" EntityType="Self.PERCENTUALEANTICIPOTE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PERCENTUALECONDIVISIONE" EntityType="Self.PERCENTUALECONDIVISIONE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PERCENTUALEDISAGIO" EntityType="Self.PERCENTUALEDISAGIO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PERCENTUALEFKM" EntityType="Self.PERCENTUALEFKM" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PERCENTUALEMAB" EntityType="Self.PERCENTUALEMAB" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PERCENTUALEMAGCONIUGE" EntityType="Self.PERCENTUALEMAGCONIUGE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PERCENTUALEMAGFIGLI" EntityType="Self.PERCENTUALEMAGFIGLI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PERIODOMAB" EntityType="Self.PERIODOMAB" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PERMAB_PERCMAB" EntityType="Self.PERMAB_PERCMAB" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PMF_F" EntityType="Self.PMF_F" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PRIMASITEMAZIONE" EntityType="Self.PRIMASITEMAZIONE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PROVVIDENZESCOLASTICHE" EntityType="Self.PROVVIDENZESCOLASTICHE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="PS_PFKM" EntityType="Self.PS_PFKM" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="REGOLECALCOLO" EntityType="Self.REGOLECALCOLO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RIC_PFKM" EntityType="Self.RIC_PFKM" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RICH_ALIQ" EntityType="Self.RICH_ALIQ" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RICHIAMO" EntityType="Self.RICHIAMO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RICHIAMO_COEFFRICH" EntityType="Self.RICHIAMO_COEFFRICH" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RIDUZIONI" EntityType="Self.RIDUZIONI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RINUNCIA_TE_P" EntityType="Self.RINUNCIA_TE_P" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RINUNCIA_TE_R" EntityType="Self.RINUNCIA_TE_R" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RINUNCIAANTICIPI" EntityType="Self.RINUNCIAANTICIPI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RINUNCIAMAGGIORAZIONIFAMILIARI" EntityType="Self.RINUNCIAMAGGIORAZIONIFAMILIARI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RUOLOACCESSO" EntityType="Self.RUOLOACCESSO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RUOLODIPENDENTE" EntityType="Self.RUOLODIPENDENTE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="RUOLOUFFICIO" EntityType="Self.RUOLOUFFICIO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="SELECTDOCVC" EntityType="Self.SELECTDOCVC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="SIST_ALIQ" EntityType="Self.SIST_ALIQ" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="SOSPENSIONE" EntityType="Self.SOSPENSIONE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="STATORECORD" EntityType="Self.STATORECORD" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="STATOTRASFERIMENTO" EntityType="Self.STATOTRASFERIMENTO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="T_RC" EntityType="Self.T_RC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TEORICI" EntityType="Self.TEORICI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TEP_PATE" EntityType="Self.TEP_PATE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TEPARTENZA" EntityType="Self.TEPARTENZA" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TER_PATE" EntityType="Self.TER_PATE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TERIENTRO" EntityType="Self.TERIENTRO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TFR" EntityType="Self.TFR" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOALIQUOTECONTRIBUTIVE" EntityType="Self.TIPOALIQUOTECONTRIBUTIVE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOANTICIPOTRASPORTOEFFETTI" EntityType="Self.TIPOANTICIPOTRASPORTOEFFETTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOCOEFFICIENTERICHIAMO" EntityType="Self.TIPOCOEFFICIENTERICHIAMO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPODOCUMENTI" EntityType="Self.TIPODOCUMENTI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOLIQUIDAZIONE" EntityType="Self.TIPOLIQUIDAZIONE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOLOGIAANTICIPI" EntityType="Self.TIPOLOGIAANTICIPI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOLOGIACOAN" EntityType="Self.TIPOLOGIACOAN" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOLOGIACONIUGE" EntityType="Self.TIPOLOGIACONIUGE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOLOGIAFIGLIO" EntityType="Self.TIPOLOGIAFIGLIO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOLOGIAMODIFICHE" EntityType="Self.TIPOLOGIAMODIFICHE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOMOVIMENTO" EntityType="Self.TIPOMOVIMENTO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOREGOLACALCOLO" EntityType="Self.TIPOREGOLACALCOLO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOSOSPENSIONE" EntityType="Self.TIPOSOSPENSIONE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOTRASFERIMENTO" EntityType="Self.TIPOTRASFERIMENTO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TIPOVOCE" EntityType="Self.TIPOVOCE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TITOLIVIAGGIO" EntityType="Self.TITOLIVIAGGIO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TITOLIVIAGGIORICHIEDENTE" EntityType="Self.TITOLIVIAGGIORICHIEDENTE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TRASF_DOC" EntityType="Self.TRASF_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TRASFERIMENTO" EntityType="Self.TRASFERIMENTO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="TVR_DOC" EntityType="Self.TVR_DOC" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="UFFICI" EntityType="Self.UFFICI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="UTENTIAUTORIZZATI" EntityType="Self.UTENTIAUTORIZZATI" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="VALUTAUFFICIO" EntityType="Self.VALUTAUFFICIO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="VALUTE" EntityType="Self.VALUTE" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="VIAGGICONGEDO" EntityType="Self.VIAGGICONGEDO" Schema="ISESIM" store:Type="Tables" />
+          <EntitySet Name="VOCI" EntityType="Self.VOCI" Schema="ISESIM" store:Type="Tables" />
           <AssociationSet Name="R_AA_A" Association="Self.R_AA_A">
             <End Role="ATTIVITAANTICIPI" EntitySet="ATTIVITAANTICIPI" />
             <End Role="ANTICIPI" EntitySet="ANTICIPI" />
@@ -7930,6 +7947,9 @@
           <FunctionImport Name="ALLINEA">
             <Parameter Name="AVVIO" Mode="In" Type="DateTime" />
             <Parameter Name="EMAIL" Mode="In" Type="String" />
+            <Parameter Name="WRK" Mode="Out" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ANNULLA_ALLINEA">
             <Parameter Name="WRK" Mode="Out" Type="String" />
           </FunctionImport>
         </EntityContainer>
@@ -14072,6 +14092,7 @@
             </EndProperty>
           </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="ALLINEA" FunctionName="DBISE.Store.ALLINEA" />
+          <FunctionImportMapping FunctionImportName="ANNULLA_ALLINEA" FunctionName="DBISE.Store.ANNULLA_ALLINEA" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
