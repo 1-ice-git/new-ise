@@ -32,22 +32,22 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (t != null && t.IDTRASFERIMENTO > 0)
                     {
-                        var ps = t.PRIMASITEMAZIONE;
-                        var ind = t.INDENNITA;
-                        var tep = t.TEPARTENZA;
-                        var ter = t.TERIENTRO;
-                     
+                        //var ps = t.PRIMASITEMAZIONE;
+                        //var ind = t.INDENNITA;
+                        //var tep = t.TEPARTENZA;
+                        //var ter = t.TERIENTRO;
+
                         DateTime DataLimiteRiepilogoVoci = Convert.ToDateTime(System.Configuration.ConfigurationManager.AppSettings["DataLimiteRiepilogoVoci"]);
 
                         decimal idMeseAnnoElaborazioneLimite = 0;
                         using (CalcoloMeseAnnoElaborazione cmem = new CalcoloMeseAnnoElaborazione(db))
                         {
-                            lmaem = cmem.Mae.Where(a=>
-                                                    a.mese>= Convert.ToDecimal(DataLimiteRiepilogoVoci.Month) &&
+                            lmaem = cmem.Mae.Where(a =>
+                                                    a.mese >= Convert.ToDecimal(DataLimiteRiepilogoVoci.Month) &&
                                                     a.anno >= Convert.ToDecimal(DataLimiteRiepilogoVoci.Year))
-                                            .OrderBy(a=>a.idMeseAnnoElab)
+                                            .OrderBy(a => a.idMeseAnnoElab)
                                             .ToList();
-                            if(lmaem?.Any()??false)
+                            if (lmaem?.Any() ?? false)
                             {
                                 idMeseAnnoElaborazioneLimite = lmaem.First().idMeseAnnoElab;
                             }
@@ -56,9 +56,9 @@ namespace NewISE.Models.DBModel.dtObj
                         var lTeorici =
                                trasferimento.TEORICI.Where(
                                          a =>
-                                            a.ANNULLATO == false && 
-                                            a.ELABORATO == true && 
-                                            a.IDMESEANNOELAB>=idMeseAnnoElaborazioneLimite)
+                                            a.ANNULLATO == false &&
+                                            a.ELABORATO == true &&
+                                            a.IDMESEANNOELAB >= idMeseAnnoElaborazioneLimite)
                                         .OrderBy(a => a.ANNORIFERIMENTO)
                                         .ThenBy(a => a.MESERIFERIMENTO)
                                         .ToList();

@@ -5084,14 +5084,27 @@ namespace NewISE.Models.DBModel.dtObj
                                                 {
                                                     foreach (var coniuge in lc)
                                                     {
+                                                        DateTime dtIniConiuge = coniuge.DATAINIZIOVALIDITA;
+                                                        DateTime dtFinConiuge = coniuge.DATAFINEVALIDITA;
+
+                                                        if (dtIniConiuge < dataIniCiclo)
+                                                        {
+                                                            dtIniConiuge = dataIniCiclo;
+                                                        }
+
+                                                        if (dtFinConiuge > dataFineCiclo)
+                                                        {
+                                                            dtFinConiuge = dataFineCiclo;
+                                                        }
+
                                                         var lpmc =
                                                             coniuge.PERCENTUALEMAGCONIUGE.Where(
                                                                     a =>
                                                                         a.ANNULLATO == false &&
                                                                         a.IDTIPOLOGIACONIUGE ==
                                                                         coniuge.IDTIPOLOGIACONIUGE &&
-                                                                        a.DATAFINEVALIDITA >= dataIniCiclo &&
-                                                                        a.DATAINIZIOVALIDITA <= dataFineCiclo)
+                                                                        a.DATAFINEVALIDITA >= dtIniConiuge &&
+                                                                        a.DATAINIZIOVALIDITA <= dtFinConiuge)
                                                                 .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                                                         if (lpmc?.Any() ?? false)
@@ -5100,9 +5113,9 @@ namespace NewISE.Models.DBModel.dtObj
                                                             {
                                                                 DateTime dtVar = new DateTime();
 
-                                                                if (pmc.DATAINIZIOVALIDITA < dataIniCiclo)
+                                                                if (pmc.DATAINIZIOVALIDITA < dtIniConiuge)
                                                                 {
-                                                                    dtVar = dataIniCiclo;
+                                                                    dtVar = dtIniConiuge;
                                                                 }
                                                                 else
                                                                 {
@@ -5121,8 +5134,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                                     a =>
                                                                         a.IDSTATORECORD !=
                                                                         (decimal)EnumStatoRecord.Annullato &&
-                                                                        a.DATAFINE >= dataIniCiclo &&
-                                                                        a.DATAINIZIO <= dataFineCiclo)
+                                                                        a.DATAFINE >= dtIniConiuge &&
+                                                                        a.DATAINIZIO <= dtFinConiuge)
                                                                 .OrderByDescending(a => a.DATAINIZIO)
                                                                 .ToList();
 
@@ -5132,9 +5145,9 @@ namespace NewISE.Models.DBModel.dtObj
                                                             {
                                                                 DateTime dtVar = new DateTime();
 
-                                                                if (pensioni.DATAINIZIO < dataIniCiclo)
+                                                                if (pensioni.DATAINIZIO < dtIniConiuge)
                                                                 {
-                                                                    dtVar = dataIniCiclo;
+                                                                    dtVar = dtIniConiuge;
                                                                 }
                                                                 else
                                                                 {
@@ -5163,12 +5176,25 @@ namespace NewISE.Models.DBModel.dtObj
                                                 {
                                                     foreach (var f in lf)
                                                     {
+                                                        DateTime dtIniFiglio = f.DATAINIZIOVALIDITA;
+                                                        DateTime dtFinFiglio = f.DATAFINEVALIDITA;
+
+                                                        if (dtIniFiglio < dataIniCiclo)
+                                                        {
+                                                            dtIniFiglio = dataIniCiclo;
+                                                        }
+
+                                                        if (dtFinFiglio > dataFineCiclo)
+                                                        {
+                                                            dtFinFiglio = dataFineCiclo;
+                                                        }
+
                                                         var lpmf =
                                                             f.PERCENTUALEMAGFIGLI.Where(
                                                                     a =>
                                                                         a.ANNULLATO == false &&
-                                                                        a.DATAFINEVALIDITA >= dataIniCiclo &&
-                                                                        a.DATAINIZIOVALIDITA <= dataFineCiclo)
+                                                                        a.DATAFINEVALIDITA >= dtIniFiglio &&
+                                                                        a.DATAINIZIOVALIDITA <= dtFinFiglio)
                                                                 .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                                                         if (lpmf?.Any() ?? false)
@@ -5177,9 +5203,9 @@ namespace NewISE.Models.DBModel.dtObj
                                                             {
                                                                 DateTime dtVar = new DateTime();
 
-                                                                if (pmf.DATAINIZIOVALIDITA < dataIniCiclo)
+                                                                if (pmf.DATAINIZIOVALIDITA < dtIniFiglio)
                                                                 {
-                                                                    dtVar = dataIniCiclo;
+                                                                    dtVar = dtIniFiglio;
                                                                 }
                                                                 else
                                                                 {
@@ -5211,9 +5237,24 @@ namespace NewISE.Models.DBModel.dtObj
                                             foreach (var cl in lcl)
                                             {
                                                 DateTime dtVar = new DateTime();
-                                                if (cl.DATAINIZIOVALIDITA < dataIniCiclo)
+
+                                                DateTime dtIniCanone = cl.DATAINIZIOVALIDITA;
+                                                DateTime dtFinCanone = cl.DATAFINEVALIDITA;
+
+                                                if (dtIniCanone < dataIniCiclo)
                                                 {
-                                                    dtVar = dataIniCiclo;
+                                                    dtIniCanone = dataIniCiclo;
+                                                }
+
+                                                if (dtFinCanone > dataFineCiclo)
+                                                {
+                                                    dtFinCanone = dataFineCiclo;
+                                                }
+
+
+                                                if (cl.DATAINIZIOVALIDITA < dtIniCanone)
+                                                {
+                                                    dtVar = dtIniCanone;
                                                 }
                                                 else
                                                 {
@@ -5229,16 +5270,16 @@ namespace NewISE.Models.DBModel.dtObj
                                                     cl.TFR.Where(
                                                             a =>
                                                                 a.ANNULLATO == false && a.IDVALUTA == cl.IDVALUTA &&
-                                                                a.DATAFINEVALIDITA >= dataIniCiclo &&
-                                                                a.DATAINIZIOVALIDITA <= dataFineCiclo)
+                                                                a.DATAFINEVALIDITA >= dtIniCanone &&
+                                                                a.DATAINIZIOVALIDITA <= dtFinCanone)
                                                         .OrderBy(a => a.DATAINIZIOVALIDITA)
                                                         .ToList();
                                                 foreach (var tfr in ltfr)
                                                 {
                                                     DateTime dtVarTfr = new DateTime();
-                                                    if (tfr.DATAINIZIOVALIDITA < dataIniCiclo)
+                                                    if (tfr.DATAINIZIOVALIDITA < dtIniCanone)
                                                     {
-                                                        dtVarTfr = dataIniCiclo;
+                                                        dtVarTfr = dtIniCanone;
                                                     }
                                                     else
                                                     {
@@ -5270,11 +5311,26 @@ namespace NewISE.Models.DBModel.dtObj
                                                 foreach (var pc in lpc)
                                                 {
                                                     DateTime dtVar = new DateTime();
+
+                                                    DateTime dtInipc = pc.DATAINIZIOVALIDITA;
+                                                    DateTime dtFinpc = pc.DATAFINEVALIDITA;
+
+                                                    if (dtInipc < dataIniCiclo)
+                                                    {
+                                                        dtInipc = dataIniCiclo;
+                                                    }
+
+                                                    if (dtFinpc > dataFineCiclo)
+                                                    {
+                                                        dtInipc = dataFineCiclo;
+                                                    }
+
+
                                                     if (pc.CONDIVISO == true)
                                                     {
-                                                        if (pc.DATAINIZIOVALIDITA < dataIniCiclo)
+                                                        if (pc.DATAINIZIOVALIDITA < dtInipc)
                                                         {
-                                                            dtVar = dataIniCiclo;
+                                                            dtVar = dtInipc;
                                                         }
                                                         else
                                                         {
@@ -5292,8 +5348,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                                 pc.PERCENTUALECONDIVISIONE.Where(
                                                                         a =>
                                                                             a.ANNULLATO == false &&
-                                                                            a.DATAFINEVALIDITA >= dataIniCiclo &&
-                                                                            a.DATAINIZIOVALIDITA <= dataFineCiclo)
+                                                                            a.DATAFINEVALIDITA >= dtInipc &&
+                                                                            a.DATAINIZIOVALIDITA <= dtFinpc)
                                                                     .OrderBy(a => a.DATAINIZIOVALIDITA)
                                                                     .ToList();
 
@@ -5303,9 +5359,9 @@ namespace NewISE.Models.DBModel.dtObj
                                                                 {
                                                                     DateTime dtVarPC = new DateTime();
 
-                                                                    if (percCond.DATAINIZIOVALIDITA < dataIniCiclo)
+                                                                    if (percCond.DATAINIZIOVALIDITA < dtInipc)
                                                                     {
-                                                                        dtVarPC = dataIniCiclo;
+                                                                        dtVarPC = dtInipc;
                                                                     }
                                                                     else
                                                                     {
@@ -7295,12 +7351,12 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
             var ltPercepite =
-                db.TEORICI.Where(
+                trasferimento.TEORICI.Where(
                         a =>
                             a.ANNULLATO == false && a.ELABORATO == true && a.DIRETTO == false &&
-                            a.INSERIMENTOMANUALE == false &&
+                            a.INSERIMENTOMANUALE == false && a.RECUPERO == false &&
                             a.VOCI.IDVOCI == (decimal)EnumVociContabili.MAB &&
-                            a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
+                            a.ELABMAB.Any(b => b.ANNULLATO == false && b.CONGUAGLIO == false))
                     .OrderBy(a => a.ANNORIFERIMENTO)
                     .ThenBy(a => a.MESERIFERIMENTO)
                     .ToList();
@@ -7385,15 +7441,13 @@ namespace NewISE.Models.DBModel.dtObj
                     }
 
                     var lteoriciOld =
-                        db.TEORICI.Where(
-                                a =>
-                                    a.ANNULLATO == false && a.IDVOCI == (decimal)EnumVociContabili.MAB &&
-                                    a.INSERIMENTOMANUALE == false && a.ELABORATO == true &&
-                                    a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
-                                    a.ANNORIFERIMENTO == dataIniCiclo.Year &&
-                                    a.MESERIFERIMENTO == dataIniCiclo.Month &&
-                                    a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
-                            //a.ELABMAB.Any(b => b.ANNULLATO == false && b.IDTRASFINDENNITA == indennita.IDTRASFINDENNITA))
+                        trasferimento.TEORICI.Where(
+                            a =>
+                                a.ANNULLATO == false && a.IDVOCI == (decimal)EnumVociContabili.MAB &&
+                                a.INSERIMENTOMANUALE == false && a.ELABORATO == true &&
+                                a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
+                                a.ANNORIFERIMENTO == dataIniCiclo.Year &&
+                                a.MESERIFERIMENTO == dataIniCiclo.Month)
                             .ToList();
 
                     List<DateTime> lDateVariazioni = new List<DateTime>();
@@ -7535,13 +7589,27 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     foreach (var coniuge in lc)
                                     {
+                                        DateTime dtIniConiuge = coniuge.DATAINIZIOVALIDITA;
+                                        DateTime dtFinConiuge = coniuge.DATAFINEVALIDITA;
+
+                                        if (dtIniConiuge < dataIniCiclo)
+                                        {
+                                            dtIniConiuge = dataIniCiclo;
+                                        }
+
+                                        if (dtFinConiuge > dataFineCiclo)
+                                        {
+                                            dtFinConiuge = dataFineCiclo;
+                                        }
+
+
                                         var lpmc =
                                             coniuge.PERCENTUALEMAGCONIUGE.Where(
                                                     a =>
                                                         a.ANNULLATO == false &&
                                                         a.IDTIPOLOGIACONIUGE == coniuge.IDTIPOLOGIACONIUGE &&
-                                                        a.DATAFINEVALIDITA >= dataIniCiclo &&
-                                                        a.DATAINIZIOVALIDITA <= dataFineCiclo)
+                                                        a.DATAFINEVALIDITA >= dtIniConiuge &&
+                                                        a.DATAINIZIOVALIDITA <= dtFinConiuge)
                                                 .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                                         if (lpmc?.Any() ?? false)
@@ -7550,9 +7618,9 @@ namespace NewISE.Models.DBModel.dtObj
                                             {
                                                 DateTime dtVar = new DateTime();
 
-                                                if (pmc.DATAINIZIOVALIDITA < dataIniCiclo)
+                                                if (pmc.DATAINIZIOVALIDITA < dtIniConiuge)
                                                 {
-                                                    dtVar = dataIniCiclo;
+                                                    dtVar = dtIniConiuge;
                                                 }
                                                 else
                                                 {
@@ -7570,8 +7638,8 @@ namespace NewISE.Models.DBModel.dtObj
                                             coniuge.PENSIONE.Where(
                                                     a =>
                                                         a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                                                        a.DATAFINE >= dataIniCiclo &&
-                                                        a.DATAINIZIO <= dataFineCiclo)
+                                                        a.DATAFINE >= dtIniConiuge &&
+                                                        a.DATAINIZIO <= dtFinConiuge)
                                                 .OrderByDescending(a => a.DATAINIZIO)
                                                 .ToList();
 
@@ -7581,9 +7649,9 @@ namespace NewISE.Models.DBModel.dtObj
                                             {
                                                 DateTime dtVar = new DateTime();
 
-                                                if (pensioni.DATAINIZIO < dataIniCiclo)
+                                                if (pensioni.DATAINIZIO < dtIniConiuge)
                                                 {
-                                                    dtVar = dataIniCiclo;
+                                                    dtVar = dtIniConiuge;
                                                 }
                                                 else
                                                 {
@@ -7612,12 +7680,25 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     foreach (var f in lf)
                                     {
+                                        DateTime dtIniFigli = f.DATAINIZIOVALIDITA;
+                                        DateTime dtFinFigli = f.DATAFINEVALIDITA;
+
+                                        if (dtIniFigli < dataIniCiclo)
+                                        {
+                                            dtIniFigli = dataIniCiclo;
+                                        }
+
+                                        if (dtFinFigli > dataFineCiclo)
+                                        {
+                                            dtFinFigli = dataFineCiclo;
+                                        }
+
                                         var lpmf =
                                             f.PERCENTUALEMAGFIGLI.Where(
                                                     a =>
                                                         a.ANNULLATO == false &&
-                                                        a.DATAFINEVALIDITA >= dataIniCiclo &&
-                                                        a.DATAINIZIOVALIDITA <= dataFineCiclo)
+                                                        a.DATAFINEVALIDITA >= dtIniFigli &&
+                                                        a.DATAINIZIOVALIDITA <= dtFinFigli)
                                                 .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                                         if (lpmf?.Any() ?? false)
@@ -7626,9 +7707,9 @@ namespace NewISE.Models.DBModel.dtObj
                                             {
                                                 DateTime dtVar = new DateTime();
 
-                                                if (pmf.DATAINIZIOVALIDITA < dataIniCiclo)
+                                                if (pmf.DATAINIZIOVALIDITA < dtIniFigli)
                                                 {
-                                                    dtVar = dataIniCiclo;
+                                                    dtVar = dtIniFigli;
                                                 }
                                                 else
                                                 {
@@ -7660,9 +7741,23 @@ namespace NewISE.Models.DBModel.dtObj
                             foreach (var cl in lcl)
                             {
                                 DateTime dtVar = new DateTime();
-                                if (cl.DATAINIZIOVALIDITA < dataIniCiclo)
+
+                                DateTime dtIniCanone = cl.DATAINIZIOVALIDITA;
+                                DateTime dtFinCanone = cl.DATAFINEVALIDITA;
+
+                                if (dtIniCanone < dataIniCiclo)
                                 {
-                                    dtVar = dataIniCiclo;
+                                    dtIniCanone = dataIniCiclo;
+                                }
+
+                                if (dtFinCanone > dataFineCiclo)
+                                {
+                                    dtFinCanone = dataFineCiclo;
+                                }
+
+                                if (cl.DATAINIZIOVALIDITA < dtIniCanone)
+                                {
+                                    dtVar = dtIniCanone;
                                 }
                                 else
                                 {
@@ -7678,17 +7773,17 @@ namespace NewISE.Models.DBModel.dtObj
                                     cl.TFR.Where(
                                             a =>
                                                 a.ANNULLATO == false && a.IDVALUTA == cl.IDVALUTA &&
-                                                a.DATAFINEVALIDITA >= dataIniCiclo &&
-                                                a.DATAINIZIOVALIDITA <= dataFineCiclo)
+                                                a.DATAFINEVALIDITA >= dtIniCanone &&
+                                                a.DATAINIZIOVALIDITA <= dtFinCanone)
                                         .OrderBy(a => a.DATAINIZIOVALIDITA)
                                         .ToList();
 
                                 foreach (var tfr in ltfr)
                                 {
                                     DateTime dtVarTfr = new DateTime();
-                                    if (tfr.DATAINIZIOVALIDITA < dataIniCiclo)
+                                    if (tfr.DATAINIZIOVALIDITA < dtIniCanone)
                                     {
-                                        dtVarTfr = dataIniCiclo;
+                                        dtVarTfr = dtIniCanone;
                                     }
                                     else
                                     {
@@ -7720,11 +7815,26 @@ namespace NewISE.Models.DBModel.dtObj
                                 foreach (var pc in lpc)
                                 {
                                     DateTime dtVar = new DateTime();
+
+                                    DateTime dtInipc = pc.DATAINIZIOVALIDITA;
+                                    DateTime dtFinpc = pc.DATAFINEVALIDITA;
+
+                                    if (dtInipc < dataIniCiclo)
+                                    {
+                                        dtInipc = dataIniCiclo;
+                                    }
+
+                                    if (dtFinpc > dataFineCiclo)
+                                    {
+                                        dtFinpc = dataFineCiclo;
+                                    }
+
+
                                     if (pc.CONDIVISO == true)
                                     {
-                                        if (pc.DATAINIZIOVALIDITA < dataIniCiclo)
+                                        if (pc.DATAINIZIOVALIDITA < dtInipc)
                                         {
-                                            dtVar = dataIniCiclo;
+                                            dtVar = dtInipc;
                                         }
                                         else
                                         {
@@ -7742,8 +7852,8 @@ namespace NewISE.Models.DBModel.dtObj
                                                 pc.PERCENTUALECONDIVISIONE.Where(
                                                         a =>
                                                             a.ANNULLATO == false &&
-                                                            a.DATAFINEVALIDITA >= dataIniCiclo &&
-                                                            a.DATAINIZIOVALIDITA <= dataFineCiclo)
+                                                            a.DATAFINEVALIDITA >= dtInipc &&
+                                                            a.DATAINIZIOVALIDITA <= dtFinpc)
                                                     .OrderBy(a => a.DATAINIZIOVALIDITA)
                                                     .ToList();
 
@@ -7753,9 +7863,9 @@ namespace NewISE.Models.DBModel.dtObj
                                                 {
                                                     DateTime dtVarPC = new DateTime();
 
-                                                    if (percCond.DATAINIZIOVALIDITA < dataIniCiclo)
+                                                    if (percCond.DATAINIZIOVALIDITA < dtInipc)
                                                     {
-                                                        dtVarPC = dataIniCiclo;
+                                                        dtVarPC = dtInipc;
                                                     }
                                                     else
                                                     {
@@ -8173,13 +8283,26 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 foreach (var coniuge in lc)
                                 {
+                                    DateTime dtIniConiuge = coniuge.DATAINIZIOVALIDITA;
+                                    DateTime dtFinConiuge = coniuge.DATAFINEVALIDITA;
+
+                                    if (dtIniConiuge < dataInizioCiclo)
+                                    {
+                                        dtIniConiuge = dataInizioCiclo;
+                                    }
+
+                                    if (dtFinConiuge > dataFineCiclo)
+                                    {
+                                        dtFinConiuge = dataFineCiclo;
+                                    }
+
                                     var lpmc =
                                         coniuge.PERCENTUALEMAGCONIUGE.Where(
                                                 a =>
                                                     a.ANNULLATO == false &&
                                                     a.IDTIPOLOGIACONIUGE == coniuge.IDTIPOLOGIACONIUGE &&
-                                                    a.DATAFINEVALIDITA >= dataInizioCiclo &&
-                                                    a.DATAINIZIOVALIDITA <= dataFineCiclo)
+                                                    a.DATAFINEVALIDITA >= dtIniConiuge &&
+                                                    a.DATAINIZIOVALIDITA <= dtFinConiuge)
                                             .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                                     if (lpmc?.Any() ?? false)
@@ -8188,9 +8311,9 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             DateTime dtVar = new DateTime();
 
-                                            if (pmc.DATAINIZIOVALIDITA < dataInizioCiclo)
+                                            if (pmc.DATAINIZIOVALIDITA < dtIniConiuge)
                                             {
-                                                dtVar = dataInizioCiclo;
+                                                dtVar = dtIniConiuge;
                                             }
                                             else
                                             {
@@ -8206,10 +8329,10 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     var lpensioni =
                                         coniuge.PENSIONE.Where(
-                                                a =>
-                                                    a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                                                    a.DATAFINE >= dataInizioCiclo &&
-                                                    a.DATAINIZIO <= dataFineCiclo)
+                                            a =>
+                                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                                a.DATAFINE >= dtIniConiuge &&
+                                                a.DATAINIZIO <= dtFinConiuge)
                                             .OrderByDescending(a => a.DATAINIZIO)
                                             .ToList();
 
@@ -8219,9 +8342,9 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             DateTime dtVar = new DateTime();
 
-                                            if (pensioni.DATAINIZIO < dataInizioCiclo)
+                                            if (pensioni.DATAINIZIO < dtIniConiuge)
                                             {
-                                                dtVar = dataInizioCiclo;
+                                                dtVar = dtIniConiuge;
                                             }
                                             else
                                             {
@@ -8250,11 +8373,24 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 foreach (var f in lf)
                                 {
+                                    DateTime dtIniFigli = f.DATAFINEVALIDITA;
+                                    DateTime dtFinFigli = f.DATAFINEVALIDITA;
+
+                                    if (dtIniFigli < dataInizioCiclo)
+                                    {
+                                        dtIniFigli = dataInizioCiclo;
+                                    }
+
+                                    if (dtFinFigli > dataFineCiclo)
+                                    {
+                                        dtFinFigli = dataFineCiclo;
+                                    }
+
                                     var lpmf =
                                         f.PERCENTUALEMAGFIGLI.Where(
                                                 a =>
-                                                    a.ANNULLATO == false && a.DATAFINEVALIDITA >= dataInizioCiclo &&
-                                                    a.DATAINIZIOVALIDITA <= dataFineCiclo)
+                                                    a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIniFigli &&
+                                                    a.DATAINIZIOVALIDITA <= dtFinFigli)
                                             .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                                     if (lpmf?.Any() ?? false)
@@ -8263,9 +8399,9 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             DateTime dtVar = new DateTime();
 
-                                            if (pmf.DATAINIZIOVALIDITA < dataInizioCiclo)
+                                            if (pmf.DATAINIZIOVALIDITA < dtIniFigli)
                                             {
-                                                dtVar = dataInizioCiclo;
+                                                dtVar = dtIniFigli;
                                             }
                                             else
                                             {
@@ -8294,15 +8430,14 @@ namespace NewISE.Models.DBModel.dtObj
 
 
                         var lTeoriciOld =
-                            db.TEORICI.Where(
+                            trasferimento.TEORICI.Where(
                                     a =>
                                         a.ANNULLATO == false &&
                                         a.ELABORATO == true &&
                                         a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Contabilità &&
                                         a.ANNORIFERIMENTO == dataInizioCiclo.Year &&
                                         a.MESERIFERIMENTO == dataInizioCiclo.Month &&
-                                        a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera &&
-                                        a.IDTRASFERIMENTO == trasferimento.IDTRASFERIMENTO)
+                                        a.VOCI.IDVOCI == (decimal)EnumVociContabili.Ind_Sede_Estera)
                                 .ToList();
 
                         if (lTeoriciOld?.Any() ?? false)
@@ -8310,7 +8445,12 @@ namespace NewISE.Models.DBModel.dtObj
                             sumImportoOld = lTeoriciOld.Where(a => a.ELABORATO == true).Sum(a => a.IMPORTO);
                             //var aa = lTeoriciOld.Where(a => a.ELABORATO == true).Sum(a => a.IMPORTO);
                             //var bb = lTeoriciOld.Sum(a => a.IMPORTO);
-                            sumGiorniOld = lTeoriciOld.Where(a => a.ELABORATO == true).Sum(a => a.GIORNI);
+                            sumGiorniOld =
+                                lTeoriciOld.Where(
+                                    a =>
+                                        a.ELABORATO == true &&
+                                        a.ELABINDENNITA.Any(b => b.ANNULLATO == false && b.CONGUAGLIO == false))
+                                    .Sum(a => a.GIORNI);
 
 
                         }
@@ -8468,7 +8608,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     GIORNI = numeroGiorniNew
                                 };
 
-                                db.TEORICI.Add(teorico);
+                                trasferimento.TEORICI.Add(teorico);
 
                                 int k = db.SaveChanges();
 
@@ -8738,13 +8878,27 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 foreach (var coniuge in lc)
                                 {
+                                    DateTime dtIniConiuge = coniuge.DATAINIZIOVALIDITA;
+                                    DateTime dtFinConiuge = coniuge.DATAFINEVALIDITA;
+
+                                    if (dtIniConiuge < dataIniCiclo)
+                                    {
+                                        dtIniConiuge = dataIniCiclo;
+                                    }
+
+                                    if (dtFinConiuge > dataFineCiclo)
+                                    {
+                                        dtFinConiuge = dataFineCiclo;
+                                    }
+
+
                                     var lpmc =
                                         coniuge.PERCENTUALEMAGCONIUGE.Where(
                                                 a =>
                                                     a.ANNULLATO == false &&
                                                     a.IDTIPOLOGIACONIUGE == coniuge.IDTIPOLOGIACONIUGE &&
-                                                    a.DATAFINEVALIDITA >= dataIniCiclo &&
-                                                    a.DATAINIZIOVALIDITA <= dataFineCiclo)
+                                                    a.DATAFINEVALIDITA >= dtIniConiuge &&
+                                                    a.DATAINIZIOVALIDITA <= dtFinConiuge)
                                             .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                                     if (lpmc?.Any() ?? false)
@@ -8753,9 +8907,9 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             DateTime dtVar = new DateTime();
 
-                                            if (pmc.DATAINIZIOVALIDITA < dataIniCiclo)
+                                            if (pmc.DATAINIZIOVALIDITA < dtIniConiuge)
                                             {
-                                                dtVar = dataIniCiclo;
+                                                dtVar = dtIniConiuge;
                                             }
                                             else
                                             {
@@ -8773,8 +8927,8 @@ namespace NewISE.Models.DBModel.dtObj
                                         coniuge.PENSIONE.Where(
                                                 a =>
                                                     a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
-                                                    a.DATAFINE >= dataIniCiclo &&
-                                                    a.DATAINIZIO <= dataFineCiclo)
+                                                    a.DATAFINE >= dtIniConiuge &&
+                                                    a.DATAINIZIO <= dtFinConiuge)
                                             .OrderByDescending(a => a.DATAINIZIO)
                                             .ToList();
 
@@ -8784,9 +8938,9 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             DateTime dtVar = new DateTime();
 
-                                            if (pensioni.DATAINIZIO < dataIniCiclo)
+                                            if (pensioni.DATAINIZIO < dtIniConiuge)
                                             {
-                                                dtVar = dataIniCiclo;
+                                                dtVar = dtIniConiuge;
                                             }
                                             else
                                             {
@@ -8815,11 +8969,25 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 foreach (var f in lf)
                                 {
+                                    DateTime dtIniFigli = f.DATAINIZIOVALIDITA;
+                                    DateTime dtFinFigli = f.DATAFINEVALIDITA;
+
+                                    if (dtIniFigli < dataIniCiclo)
+                                    {
+                                        dtIniFigli = dataIniCiclo;
+                                    }
+
+                                    if (dtFinFigli > dataFineCiclo)
+                                    {
+                                        dtFinFigli = dataFineCiclo;
+                                    }
+
+
                                     var lpmf =
                                         f.PERCENTUALEMAGFIGLI.Where(
-                                                a =>
-                                                    a.ANNULLATO == false && a.DATAFINEVALIDITA >= dataIniCiclo &&
-                                                    a.DATAINIZIOVALIDITA <= dataFineCiclo)
+                                            a =>
+                                                a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIniFigli &&
+                                                a.DATAINIZIOVALIDITA <= dtFinFigli)
                                             .OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
 
                                     if (lpmf?.Any() ?? false)
@@ -8828,9 +8996,9 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             DateTime dtVar = new DateTime();
 
-                                            if (pmf.DATAINIZIOVALIDITA < dataIniCiclo)
+                                            if (pmf.DATAINIZIOVALIDITA < dtIniFigli)
                                             {
-                                                dtVar = dataIniCiclo;
+                                                dtVar = dtIniFigli;
                                             }
                                             else
                                             {
@@ -11610,8 +11778,8 @@ namespace NewISE.Models.DBModel.dtObj
                     db.TRASFERIMENTO.Where(
                         a =>
                             a.IDDIPENDENTE == avmm.idDipendente &&
-                            a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
-                            a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
+                            (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                            a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato))
                         .OrderBy(a => a.DATAPARTENZA)
                         .ToList();
 
@@ -11634,7 +11802,7 @@ namespace NewISE.Models.DBModel.dtObj
                         IMPORTO = avmm.Importo
                     };
 
-                    db.AUTOMATISMOVOCIMANUALI.Add(avm);
+                    t.AUTOMATISMOVOCIMANUALI.Add(avm);
 
                     int i = db.SaveChanges();
 
