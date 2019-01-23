@@ -35,12 +35,17 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
 
 
-        public GiorniRateo(DateTime dtInizio, DateTime dtFine)
+        public GiorniRateo(DateTime dtInizio, DateTime dtFine, bool noGiorno = false)
         {
             int nGiorni = 0;
             int annoIni = dtInizio.Year;
             int annoFin = dtFine.Year;
+            int giorno = 1;
 
+            if (noGiorno)
+            {
+                giorno = 0;
+            }
 
             for (int i = annoIni; i <= annoFin; i++)
             {
@@ -70,12 +75,12 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                                     }
                                     else
                                     {
-                                        nGiorni = 30 - giornoIni + 1;
+                                        nGiorni = 30 - giornoIni + giorno;
                                     }
                                 }
                                 else
                                 {
-                                    nGiorni = giornoFin - giornoIni + 1;
+                                    nGiorni = giornoFin - giornoIni + giorno;
                                 }
                             }
                         }
@@ -94,11 +99,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                                 {
                                     if (giornoIni == 31)
                                     {
-                                        nGiorni += 31 - giornoIni + 1;
+                                        nGiorni += 31 - giornoIni + giorno;
                                     }
                                     else
                                     {
-                                        nGiorni += 30 - giornoIni + 1;
+                                        nGiorni += 30 - giornoIni + giorno;
                                     }
                                 }
                             }
