@@ -12205,7 +12205,7 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="DBISEStoreContainer" CdmEntityContainer="ModelDBISE">
-          <EntitySetMapping Name="ACCESSI">
+        <EntitySetMapping Name="ACCESSI">
             <EntityTypeMapping TypeName="DBISE.ACCESSI">
               <MappingFragment StoreEntitySet="ACCESSI">
                 <ScalarProperty Name="IDDIPENDENTE" ColumnName="IDDIPENDENTE" />

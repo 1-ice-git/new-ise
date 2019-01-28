@@ -5473,7 +5473,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                     {
                                                         using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                                         {
-                                                            using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc, noGiorno))
+                                                            using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc))
                                                             {
                                                                 ELABMAB emab = new ELABMAB()
                                                                 {
@@ -5556,7 +5556,7 @@ namespace NewISE.Models.DBModel.dtObj
                                                     {
                                                         using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                                         {
-                                                            using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc, noGiorno))
+                                                            using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc))
                                                             {
                                                                 ELABMAB emab = new ELABMAB()
                                                                 {
@@ -8070,7 +8070,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         {
                                             using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                             {
-                                                using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc, noGiorno))
+                                                using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc))
                                                 {
                                                     giorniElabTotali += grVariazione.RateoGiorni;
 

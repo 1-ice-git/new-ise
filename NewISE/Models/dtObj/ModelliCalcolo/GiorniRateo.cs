@@ -35,17 +35,17 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
 
 
-        public GiorniRateo(DateTime dtInizio, DateTime dtFine, bool noGiorno = false)
+        public GiorniRateo(DateTime dtInizio, DateTime dtFine)
         {
             int nGiorni = 0;
             int annoIni = dtInizio.Year;
             int annoFin = dtFine.Year;
             int giorno = 1;
 
-            if (noGiorno)
-            {
-                giorno = 0;
-            }
+            //if (noGiorno)
+            //{
+            //    giorno = 0;
+            //}
 
             for (int i = annoIni; i <= annoFin; i++)
             {
@@ -67,21 +67,64 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                             }
                             else
                             {
-                                if (this.VerificaFineMese(giornoFin, meseFin, annoFin))
+                                //if (this.VerificaFineMese(giornoFin, meseFin, annoFin))
+                                //{
+                                //    if (giornoIni == 31)
+                                //    {
+                                //        nGiorni = 31 - giornoIni + 1;
+                                //    }
+                                //    else
+                                //    {
+                                //        nGiorni = 30 - giornoIni + giorno;
+                                //    }
+                                //}
+                                //else
+                                //{
+                                //    nGiorni = giornoFin - giornoIni + giorno;
+                                //}
+
+                                if (giornoIni == 31 && giornoFin == 31)
                                 {
-                                    if (giornoIni == 31)
-                                    {
-                                        nGiorni = 31 - giornoIni + 1;
-                                    }
-                                    else
-                                    {
-                                        nGiorni = 30 - giornoIni + giorno;
-                                    }
+                                    nGiorni = 1;
+                                }
+                                else if (giornoIni == 30 && giornoFin == 30)
+                                {
+                                    nGiorni = 1;
+                                }
+                                else if (giornoIni == 30 && giornoFin == 31)
+                                {
+                                    nGiorni = 1;
                                 }
                                 else
                                 {
-                                    nGiorni = giornoFin - giornoIni + giorno;
+                                    if (giornoFin == 31)
+                                    {
+                                        nGiorni = giornoFin - giornoIni;
+                                    }
+                                    else
+                                    {
+                                        if (meseIni == 2 && meseFin == 2)
+                                        {
+                                            if ((giornoFin == 28 || giornoFin == 29) && this.VerificaFineMese(giornoFin, meseFin, annoFin))
+                                            {
+
+                                                nGiorni = 30 - giornoIni + giorno;
+                                            }
+                                            else
+                                            {
+                                                nGiorni = giornoFin - giornoIni + giorno;
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            nGiorni = giornoFin - giornoIni + giorno;
+                                        }
+
+                                    }
+
                                 }
+
                             }
                         }
                         else
@@ -89,7 +132,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                             int giornoIni = dtInizio.Day;
                             int giornoFin = dtFine.Day;
 
-                            if (j == meseIni)
+                            if (j == meseIni && j < meseFin)
                             {
                                 if (giornoIni == 1)
                                 {
@@ -97,9 +140,22 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                                 }
                                 else
                                 {
+                                    //if (giornoIni == 31)
+                                    //{
+                                    //    nGiorni += 31 - giornoIni + giorno;
+                                    //}
+                                    //else
+                                    //{
+                                    //    nGiorni += 30 - giornoIni + giorno;
+                                    //}
+
                                     if (giornoIni == 31)
                                     {
-                                        nGiorni += 31 - giornoIni + giorno;
+                                        nGiorni += 1;
+                                    }
+                                    else if (giornoIni == 30)
+                                    {
+                                        nGiorni += 1;
                                     }
                                     else
                                     {
@@ -127,7 +183,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 }
                 else
                 {
-                    if (i == annoIni)
+                    if (i == annoIni && i < annoFin)
                     {
                         int meseIni = dtInizio.Month;
                         int giornoIni = dtInizio.Day;
@@ -141,7 +197,11 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                                 if (giornoIni == 31)
                                 {
-                                    nGiorni += 31 - giornoIni + 1;
+                                    nGiorni += 1;
+                                }
+                                else if (giornoIni == 30)
+                                {
+                                    nGiorni += 1;
                                 }
                                 else
                                 {
