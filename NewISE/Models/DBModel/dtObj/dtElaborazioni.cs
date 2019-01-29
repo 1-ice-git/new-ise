@@ -1583,7 +1583,11 @@ namespace NewISE.Models.DBModel.dtObj
 
                 }
             }
-            #endregion 
+            #endregion
+
+            #region Trattenute varie su ise
+
+            #endregion
             #endregion
         }
 
@@ -8632,7 +8636,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     DateTime dvSucc = lDateVariazioni[(j + 1)];
                                     //Se la data successiva corrisponde all'ultima data delle variazioni 
                                     //significa che stiamo parlando della fine del mese e non togliamo il giorno perché non è una variazione successiva.
-                                    if (dvSucc < lDateVariazioni.Last())
+                                    if (dvSucc < lDateVariazioni.Last() && dvSucc < Utility.GetDtFineMese(dvSucc))
                                     {
                                         dvSucc = dvSucc.AddDays(-1);
                                     }
@@ -8650,75 +8654,79 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     if (annoMeseVariazione == annoMeseVariazioneSucc)
                                     {
-                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        if (numeroGiorniNew < 30)
                                         {
-                                            using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc))
+                                            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                             {
-                                                int oGiorniSospensione = 0;
-                                                decimal oImportoAbbattimentoSospensione = 0;
-
-                                                ci.CalcolaGiorniSospensione(dv, dvSucc, grVariazione.RateoGiorni,
-                                                    out oGiorniSospensione, out oImportoAbbattimentoSospensione);
-                                                decimal ImportorateoIndPers =
-                                                    ci.RateoIndennitaPersonale(grVariazione.RateoGiorni);
-
-                                                sumImportoNew += ImportorateoIndPers - oImportoAbbattimentoSospensione;
-                                                numeroGiorniNew += grVariazione.RateoGiorni;
-
-                                                //rateoImportoOld += (sumImportoOld / sumGiorniOld) * numeroGiorniNew;
-                                                //differenzaGiorni += Convert.ToInt16(numeroGiorniNew - sumGiorniOld);
-
-                                                ELABINDENNITA ei = new ELABINDENNITA()
+                                                using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc))
                                                 {
-                                                    IDTRASFINDENNITA = trasferimento.IDTRASFERIMENTO,
-                                                    IDLIVELLO = ci.Livello.IDLIVELLO,
-                                                    INDENNITABASE = ci.IndennitaDiBase,
-                                                    COEFFICENTESEDE = ci.CoefficienteDiSede,
-                                                    PERCENTUALEDISAGIO = ci.PercentualeDisagio,
-                                                    PERCENTUALEMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
-                                                    PENSIONECONIUGE = ci.PensioneConiuge,
-                                                    GIORNISOSPENSIONE = oGiorniSospensione,
-                                                    DAL = dv,
-                                                    AL = dvSucc,
-                                                    GIORNI = grVariazione.RateoGiorni,
-                                                    DATAOPERAZIONE = DateTime.Now,
-                                                    PROGRESSIVO = progMax,
-                                                    ANNULLATO = false,
-                                                    CONGUAGLIO = true
-                                                };
+                                                    int oGiorniSospensione = 0;
+                                                    decimal oImportoAbbattimentoSospensione = 0;
 
-                                                indennita.ELABINDENNITA.Add(ei);
+                                                    ci.CalcolaGiorniSospensione(dv, dvSucc, grVariazione.RateoGiorni,
+                                                        out oGiorniSospensione, out oImportoAbbattimentoSospensione);
+                                                    decimal ImportorateoIndPers =
+                                                        ci.RateoIndennitaPersonale(grVariazione.RateoGiorni);
 
-                                                int n = db.SaveChanges();
+                                                    sumImportoNew += ImportorateoIndPers - oImportoAbbattimentoSospensione;
+                                                    numeroGiorniNew += grVariazione.RateoGiorni;
 
-                                                if (n > 0)
-                                                {
-                                                    lIdElabInd.Add(ei.IDELABIND);
+                                                    //rateoImportoOld += (sumImportoOld / sumGiorniOld) * numeroGiorniNew;
+                                                    //differenzaGiorni += Convert.ToInt16(numeroGiorniNew - sumGiorniOld);
 
-                                                    foreach (var df in ci.lDatiFigli)
+                                                    ELABINDENNITA ei = new ELABINDENNITA()
                                                     {
-                                                        ELABDATIFIGLI edf = new ELABDATIFIGLI()
+                                                        IDTRASFINDENNITA = trasferimento.IDTRASFERIMENTO,
+                                                        IDLIVELLO = ci.Livello.IDLIVELLO,
+                                                        INDENNITABASE = ci.IndennitaDiBase,
+                                                        COEFFICENTESEDE = ci.CoefficienteDiSede,
+                                                        PERCENTUALEDISAGIO = ci.PercentualeDisagio,
+                                                        PERCENTUALEMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
+                                                        PENSIONECONIUGE = ci.PensioneConiuge,
+                                                        GIORNISOSPENSIONE = oGiorniSospensione,
+                                                        DAL = dv,
+                                                        AL = dvSucc,
+                                                        GIORNI = grVariazione.RateoGiorni,
+                                                        DATAOPERAZIONE = DateTime.Now,
+                                                        PROGRESSIVO = progMax,
+                                                        ANNULLATO = false,
+                                                        CONGUAGLIO = true
+                                                    };
+
+                                                    indennita.ELABINDENNITA.Add(ei);
+
+                                                    int n = db.SaveChanges();
+
+                                                    if (n > 0)
+                                                    {
+                                                        lIdElabInd.Add(ei.IDELABIND);
+
+                                                        foreach (var df in ci.lDatiFigli)
                                                         {
-                                                            IDELABIND = ei.IDELABIND,
-                                                            INDENNITAPRIMOSEGRETARIO = df.indennitaPrimoSegretario,
-                                                            PERCENTUALEMAGGIORAZIONEFIGLI =
-                                                                df.percentualeMaggiorazioniFligli
-                                                        };
+                                                            ELABDATIFIGLI edf = new ELABDATIFIGLI()
+                                                            {
+                                                                IDELABIND = ei.IDELABIND,
+                                                                INDENNITAPRIMOSEGRETARIO = df.indennitaPrimoSegretario,
+                                                                PERCENTUALEMAGGIORAZIONEFIGLI =
+                                                                    df.percentualeMaggiorazioniFligli
+                                                            };
 
-                                                        ei.ELABDATIFIGLI.Add(edf);
+                                                            ei.ELABDATIFIGLI.Add(edf);
+                                                        }
+
+
+                                                        db.SaveChanges();
+
                                                     }
-
-
-                                                    db.SaveChanges();
-
-                                                }
-                                                else
-                                                {
-                                                    throw new Exception(
-                                                        "Impossibile inserire l'informazione di elaborazione indennità.");
+                                                    else
+                                                    {
+                                                        throw new Exception(
+                                                            "Impossibile inserire l'informazione di elaborazione indennità.");
+                                                    }
                                                 }
                                             }
                                         }
+
                                     }
                                 }
                             }
@@ -9209,7 +9217,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     DateTime dvSucc = lDateVariazioni[(j + 1)];
                                     //Se la data successiva corrisponde all'ultima data delle variazioni 
                                     //significa che stiamo parlando della fine del mese e non togliamo il giorno perché non è una variazione successiva.
-                                    if (dvSucc < lDateVariazioni.Last())
+                                    if (dvSucc < lDateVariazioni.Last() && dvSucc < Utility.GetDtFineMese(dvSucc))
                                     {
                                         dvSucc = dvSucc.AddDays(-1);
                                     }
@@ -9228,74 +9236,78 @@ namespace NewISE.Models.DBModel.dtObj
 
                                     if (annoMeseVariazione == annoMeseVariazioneSucc)
                                     {
-                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        if (totGiorni < 30)
                                         {
-                                            using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc))
+                                            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                             {
-
-                                                int oGiorniSospensione = 0;
-                                                decimal oImportoAbbattimentoSospensione = 0;
-
-                                                ci.CalcolaGiorniSospensione(dv, dvSucc, grVariazione.RateoGiorni,
-                                                    out oGiorniSospensione, out oImportoAbbattimentoSospensione);
-                                                decimal ImportorateoIndPers =
-                                                    ci.RateoIndennitaPersonale(grVariazione.RateoGiorni);
-
-                                                totImportoTeoricoMensile +=
-                                                    ImportorateoIndPers - oImportoAbbattimentoSospensione;
-                                                totGiorni += grVariazione.RateoGiorni;
-
-
-                                                ELABINDENNITA ei = new ELABINDENNITA()
+                                                using (GiorniRateo grVariazione = new GiorniRateo(dv, dvSucc))
                                                 {
-                                                    IDTRASFINDENNITA = indennita.IDTRASFINDENNITA,
-                                                    IDLIVELLO = ci.Livello.IDLIVELLO,
-                                                    INDENNITABASE = ci.IndennitaDiBase,
-                                                    COEFFICENTESEDE = ci.CoefficienteDiSede,
-                                                    PERCENTUALEDISAGIO = ci.PercentualeDisagio,
-                                                    PERCENTUALEMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
-                                                    PENSIONECONIUGE = ci.PensioneConiuge,
-                                                    GIORNISOSPENSIONE = oGiorniSospensione,
-                                                    DAL = dv,
-                                                    AL = dvSucc,
-                                                    GIORNI = grVariazione.RateoGiorni,
-                                                    DATAOPERAZIONE = DateTime.Now,
-                                                    PROGRESSIVO = progMax,
-                                                    ANNULLATO = false
-                                                };
 
-                                                indennita.ELABINDENNITA.Add(ei);
+                                                    int oGiorniSospensione = 0;
+                                                    decimal oImportoAbbattimentoSospensione = 0;
 
-                                                int n = db.SaveChanges();
+                                                    ci.CalcolaGiorniSospensione(dv, dvSucc, grVariazione.RateoGiorni,
+                                                        out oGiorniSospensione, out oImportoAbbattimentoSospensione);
+                                                    decimal ImportorateoIndPers =
+                                                        ci.RateoIndennitaPersonale(grVariazione.RateoGiorni);
 
-                                                if (n > 0)
-                                                {
-                                                    //var elabInd = new { id = ei.IDELABIND, dtRif = dv };
+                                                    totImportoTeoricoMensile +=
+                                                        ImportorateoIndPers - oImportoAbbattimentoSospensione;
+                                                    totGiorni += grVariazione.RateoGiorni;
 
-                                                    lIdElabInd.Add(ei.IDELABIND);
 
-                                                    foreach (var df in ci.lDatiFigli)
+                                                    ELABINDENNITA ei = new ELABINDENNITA()
                                                     {
-                                                        ELABDATIFIGLI edf = new ELABDATIFIGLI()
+                                                        IDTRASFINDENNITA = indennita.IDTRASFINDENNITA,
+                                                        IDLIVELLO = ci.Livello.IDLIVELLO,
+                                                        INDENNITABASE = ci.IndennitaDiBase,
+                                                        COEFFICENTESEDE = ci.CoefficienteDiSede,
+                                                        PERCENTUALEDISAGIO = ci.PercentualeDisagio,
+                                                        PERCENTUALEMAGCONIUGE = ci.PercentualeMaggiorazioneConiuge,
+                                                        PENSIONECONIUGE = ci.PensioneConiuge,
+                                                        GIORNISOSPENSIONE = oGiorniSospensione,
+                                                        DAL = dv,
+                                                        AL = dvSucc,
+                                                        GIORNI = grVariazione.RateoGiorni,
+                                                        DATAOPERAZIONE = DateTime.Now,
+                                                        PROGRESSIVO = progMax,
+                                                        ANNULLATO = false
+                                                    };
+
+                                                    indennita.ELABINDENNITA.Add(ei);
+
+                                                    int n = db.SaveChanges();
+
+                                                    if (n > 0)
+                                                    {
+                                                        //var elabInd = new { id = ei.IDELABIND, dtRif = dv };
+
+                                                        lIdElabInd.Add(ei.IDELABIND);
+
+                                                        foreach (var df in ci.lDatiFigli)
                                                         {
-                                                            IDELABIND = ei.IDELABIND,
-                                                            INDENNITAPRIMOSEGRETARIO = df.indennitaPrimoSegretario,
-                                                            PERCENTUALEMAGGIORAZIONEFIGLI =
-                                                                df.percentualeMaggiorazioniFligli
-                                                        };
+                                                            ELABDATIFIGLI edf = new ELABDATIFIGLI()
+                                                            {
+                                                                IDELABIND = ei.IDELABIND,
+                                                                INDENNITAPRIMOSEGRETARIO = df.indennitaPrimoSegretario,
+                                                                PERCENTUALEMAGGIORAZIONEFIGLI =
+                                                                    df.percentualeMaggiorazioniFligli
+                                                            };
 
-                                                        ei.ELABDATIFIGLI.Add(edf);
+                                                            ei.ELABDATIFIGLI.Add(edf);
+                                                        }
+
+                                                        db.SaveChanges();
                                                     }
-
-                                                    db.SaveChanges();
-                                                }
-                                                else
-                                                {
-                                                    throw new Exception(
-                                                        "Impossibile inserire l'informazione di elaborazione indennità.");
+                                                    else
+                                                    {
+                                                        throw new Exception(
+                                                            "Impossibile inserire l'informazione di elaborazione indennità.");
+                                                    }
                                                 }
                                             }
                                         }
+
                                     }
                                 }
                                 else if ((j + 1) == 1 && (j + 1) == lDateVariazioni.Count)
