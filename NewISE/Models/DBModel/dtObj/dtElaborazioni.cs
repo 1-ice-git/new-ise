@@ -1349,12 +1349,10 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 throw new Exception("Impossibile inserire le informazioni in oracle application.");
                             }
-
-
                         }
                         else
                         {
-                            throw new Exception("Impostare un valore assoluto per i viaggi di trasferimento.");
+                            throw new Exception("Impostare un valore diverso da zero.");
                         }
                     }
                     catch (Exception e)
@@ -1453,7 +1451,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            throw new Exception("Impostare un valore assoluto per le provvidenze scolastiche.");
+                            throw new Exception("Impostare un valore diverso da zero.");
                         }
                     }
                     catch (Exception e)
@@ -1467,7 +1465,7 @@ namespace NewISE.Models.DBModel.dtObj
             #endregion
 
             #region Trattenute su ISE
-            if (t.AUTOMATISMOVOCIMANUALI?.IDVOCI == (decimal)EnumVociContabili.TRAT_MAGG_FIGLI_SU_ISE_ISE)
+            if (t.AUTOMATISMOVOCIMANUALI?.IDVOCI == (decimal)EnumVociContabili.Trat_Magg_Figli_Su_ISE_ISE)
             {
                 if (t.INSERIMENTOMANUALE == true)
                 {
@@ -1564,16 +1562,7 @@ namespace NewISE.Models.DBModel.dtObj
                         }
                         else
                         {
-                            //t.ELABORATO = true;
-
-                            //int j = db.SaveChanges();
-
-                            //if (j <= 0)
-                            //{
-                            //    throw new Exception("Impossibile impostare la fase di elaborato a vero per i teorici.");
-                            //}
-
-                            throw new Exception("Impostare un valore assoluto per le trattenute delle maggiorazioni figli.");
+                            throw new Exception("Impostare un valore diverso da zero.");
                         }
                     }
                     catch (Exception ex)
@@ -1587,6 +1576,111 @@ namespace NewISE.Models.DBModel.dtObj
 
             #region Trattenute varie su ise
 
+            if (t.AUTOMATISMOVOCIMANUALI?.IDVOCI == (decimal)EnumVociContabili.Trattenute_Varie_Su_ISE_ISE)
+            {
+                if (t.INSERIMENTOMANUALE == true)
+                {
+
+                    DateTime dt = Utility.GetDtFineMese(Convert.ToDateTime("01/" + t.MESERIFERIMENTO.ToString().PadLeft(2, '0') + "/" + t.ANNORIFERIMENTO));
+
+                    var trasferimento = t.TRASFERIMENTO;
+
+                    if (trasferimento.DATARIENTRO < dt)
+                    {
+                        dt = trasferimento.DATARIENTRO;
+                    }
+
+                    var dip = trasferimento.DIPENDENTI;
+                    var indennita = trasferimento.INDENNITA;
+                    var liv =
+                        indennita.LIVELLIDIPENDENTI.Where(
+                            a => a.ANNULLATO == false && dt >= a.DATAINIZIOVALIDITA && dt <= a.DATAFINEVALIDITA)
+                            .OrderByDescending(a => a.DATAINIZIOVALIDITA).First();
+
+                    var ufficio = trasferimento.UFFICI;
+                    var voce = t.VOCI;
+                    char delimitatore = Convert.ToChar("-");
+                    string tipoMovimento = "M";
+                    string descVociEnd = string.Empty;
+
+                    if (t.IDTIPOMOVIMENTO == (decimal)EnumTipoMovimento.MeseCorrente_M)
+                    {
+                        tipoMovimento = "M";
+                        descVociEnd = " - Mese Corr.";
+                    }
+                    else
+                    {
+                        tipoMovimento = "C";
+                        descVociEnd = " - Conguaglio";
+                    }
+
+                    string numeroDoc = string.Empty;
+
+                    try
+                    {
+                        if (t.IMPORTO != 0)
+                        {
+                            string tipoVoce = voce.CODICEVOCE.Split(delimitatore)[0];
+
+                            decimal idOA = db.Database.SqlQuery<decimal>("SELECT seq_oa.nextval ID_OA FROM dual").First();
+
+                            numeroDoc = this.NumeroDoc(trasferimento, tipoVoce, tipoMovimento, idOA);
+
+                            OA oa = new OA()
+                            {
+                                IDTEORICI = t.IDTEORICI,
+                                CTB_ID_RECORD = idOA,
+                                CTB_MATRICOLA = (short)dip.MATRICOLA,
+                                CTB_QUALIFICA = liv.LIVELLI.LIVELLO == "D" ? "D" : "I",
+                                CTB_COD_SEDE = ufficio.CODICEUFFICIO,
+                                CTB_TIPO_VOCE = tipoVoce,
+                                CTB_TIPO_MOVIMENTO = tipoMovimento,
+                                CTB_DESCRIZIONE = voce.DESCRIZIONE + descVociEnd,
+                                CTB_COAN = trasferimento.COAN != null ? trasferimento.COAN : "S",
+                                CTB_DT_RIFERIMENTO =
+                                    Convert.ToDateTime(
+                                        "01/" + t.MESERIFERIMENTO.ToString().PadLeft(2, Convert.ToChar("0")) + "/" +
+                                        t.ANNORIFERIMENTO),
+                                CTB_DT_OPERAZIONE = DateTime.Now,
+                                CTB_NUM_DOC = numeroDoc,
+                                CTB_NUM_DOC_RIF = null,
+                                CTB_IMPORTO = t.IMPORTO,
+                                CTB_IMPORTO_RIF = 0,
+                                CTB_OPER_99 = operazione99.ToString()
+                            };
+
+                            db.OA.Add(oa);
+
+                            int i = db.SaveChanges();
+
+                            if (i > 0)
+                            {
+                                t.ELABORATO = true;
+
+                                int j = db.SaveChanges();
+
+                                if (j <= 0)
+                                {
+                                    throw new Exception("Impossibile impostare la fase di elaborato a vero per i teorici.");
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("Impossibile inserire le informazioni in oracle application.");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Impostare un valore diverso da zero.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+
+                }
+            }
             #endregion
             #endregion
         }

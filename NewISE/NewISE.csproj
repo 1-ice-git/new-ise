@@ -6187,6 +6187,8 @@
     <Compile Include="Models\Tools\EmailTrasferimento.cs" />
     <Compile Include="Models\Tools\EmailCredenziali.cs" />
     <Compile Include="Areas\Statistiche\Models\ElencoCoanModel.cs" />
+    <Compile Include="Models\Tools\ReplaceConnectionInterceptor.cs" />
+    <Compile Include="Models\Tools\ReplaceSchemaInterceptor.cs" />
     <Compile Include="Models\ViewModel\CalendarViewModel.cs" />
     <Compile Include="Models\PassaportoRichiedenteModel.cs" />
     <Compile Include="Models\ViewModel\DatiTrasferimentoDipendenteModel.cs" />
