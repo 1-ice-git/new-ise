@@ -521,7 +521,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var ld = db.DIPENDENTI.ToList();
+                var ld = db.DIPENDENTI.Where(a => a.NOSISTEMA == false).ToList();
 
                 ldm = (from e in ld
                        select new DipendentiModel()

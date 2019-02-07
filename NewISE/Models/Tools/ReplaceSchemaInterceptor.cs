@@ -54,6 +54,10 @@ namespace NewISE.Models.Tools
             {
                 ret = command.CommandText.Replace("ISESIM", _newSchema);
             }
+            else if (command.CommandText.Contains("ISEPRO"))
+            {
+                ret = command.CommandText.Replace("ISEPRO", _newSchema);
+            }
             else
             {
                 ret = command.CommandText;

@@ -20,15 +20,15 @@ namespace NewISE.Models.DBModel.dtObj
         {
             List<DestinatarioModel> ldes = new List<DestinatarioModel>();
             ldes = (from d in db.DESTINATARI
-                        where d.IDNOTIFICA == idNotifica
-                        orderby d.DIPENDENTI.NOME
-                        select new DestinatarioModel()
-                        {
-                            idNotifica = d.IDNOTIFICA,
-                            idDipendente = d.IDDIPENDENTE,
-                            Nominativi = d.DIPENDENTI.NOME + "  " + d.DIPENDENTI.COGNOME,
-                            ToCc = d.TOCC
-                        }).ToList();
+                    where d.IDNOTIFICA == idNotifica
+                    orderby d.DIPENDENTI.NOME
+                    select new DestinatarioModel()
+                    {
+                        idNotifica = d.IDNOTIFICA,
+                        idDipendente = d.IDDIPENDENTE,
+                        Nominativi = d.DIPENDENTI.NOME + "  " + d.DIPENDENTI.COGNOME,
+                        ToCc = d.TOCC
+                    }).ToList();
             return ldes;
         }
 
@@ -135,6 +135,7 @@ namespace NewISE.Models.DBModel.dtObj
                     var ld =
                     db.DIPENDENTI.Where(
                         a =>
+                            a.NOSISTEMA == false &&
                             a.ABILITATO == true &&
                             a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Utente &&
                             a.TRASFERIMENTO.Where(
@@ -173,6 +174,7 @@ namespace NewISE.Models.DBModel.dtObj
                         db.DIPENDENTI.Where(
                             a =>
                                 a.ABILITATO == true &&
+                                a.NOSISTEMA == false &&
                                 a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Amministratore).ToList();
 
                     if (ld?.Any() ?? false)
@@ -428,7 +430,7 @@ namespace NewISE.Models.DBModel.dtObj
                 nuovo.ESTENSIONEDOC = NM.Estensione;
                 //db.Database.BeginTransaction();
                 db.NOTIFICHE.Add(nuovo);
-                if(db.SaveChanges()<=0)
+                if (db.SaveChanges() <= 0)
                 {
                     throw new Exception("Errore in fase di inserimento notifica");
                 }
@@ -443,7 +445,7 @@ namespace NewISE.Models.DBModel.dtObj
                 //    //return false;
                 //}
             }
-            
+
             if (listDest.Count != 0)
                 return true;
             else
@@ -583,6 +585,7 @@ namespace NewISE.Models.DBModel.dtObj
                     db.DIPENDENTI.Where(
                         a =>
                             a.ABILITATO == true &&
+                            a.NOSISTEMA == false &&
                             a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Utente &&
                             a.TRASFERIMENTO.Where(
                                 c =>
@@ -620,6 +623,7 @@ namespace NewISE.Models.DBModel.dtObj
                         db.DIPENDENTI.Where(
                             a =>
                                 a.ABILITATO == true &&
+                                a.NOSISTEMA == false &&
                                 a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Amministratore).ToList();
 
                     if (ld?.Any() ?? false)
