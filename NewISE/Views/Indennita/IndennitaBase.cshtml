@@ -1,0 +1,331 @@
+﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaBaseModel>
+@using NewISE.Models.Enumeratori
+@using NewISE.Models.Tools
+
+<link href="~/Views/Content/NoScroller.css" rel="stylesheet" />
+
+@{
+
+    decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
+    decimal idRuoloUfficio = Convert.ToDecimal(ViewBag.idRuoloUfficio);
+    decimal idLivello = Convert.ToDecimal(ViewBag.idLivello);
+
+}
+
+@Html.Hidden("hidTrasferimento")
+@Html.Hidden("hididLivello")
+
+@*<div id="divContentpartial" class="row">
+    <div id="divPViewIndennita1" class="col-xs-12">
+    </div>
+</div>*@
+
+<div id="dialog" title=""></div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <h4>Indennità Base</h4>                                   
+        </div>
+    </div>
+</div>
+
+<table id="tbIndennitaBase" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.DescLivello)
+            </th>
+            @*<th class="text-center">
+                @Html.DisplayNameFor(model => model.RuoloUfficio.DescrizioneRuolo)
+            </th>*@
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
+            </th>
+            <th class="text-center">
+
+                @Html.DisplayNameFor(model => model.dataFineValidita)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.IndennitaBase)
+            </th>
+            @*@if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
+            {
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.valore)
+                </th>
+            }
+            else
+            {
+                <td></td>
+            }
+
+            @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Dirigente || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Responsabile)
+            {
+
+                <th class="text-center">
+                    
+                    @Html.DisplayNameFor(model => model.valoreResponsabile)
+                </th>
+            }
+            else
+            {
+            <td></td>
+            }*@
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.DescLivello)
+                </td>
+                @*<td style="text-align:center;">
+                    
+                    @Html.DisplayFor(modelItem => item.RuoloUfficio.DescrizioneRuolo)
+                </td>*@
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                </td>
+
+                @if (item.dataFineValidita == Utility.DataFineStop())
+                {
+                    <td style="text-align:center;"></td>
+                }
+                else
+                { 
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataFineValidita)
+                </td>
+                }
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.IndennitaBase)
+                </td>
+                    @*@if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
+                    {
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(modelItem => item.valore)
+                        </td>
+                    }
+                    else
+                        {
+                            <td></td>
+                        }
+
+                    @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Dirigente || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Responsabile)
+                    {
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(modelItem => item.valoreResponsabile)
+                        </td>
+                        
+                    }
+                    else
+                    {
+                        <td></td>
+                    }*@
+                
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
+       
+        @*<button class="btn btn-default btn-sm" onclick="DownloadReport();">
+            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+            Stampa
+        </button>*@
+
+        <button class="btn btn-default btn-sm" id="opener">
+            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+            Stampa
+        </button>
+
+    </div>
+</div>
+
+<div class="modal fade modal-fullscreen force-fullscreen" id="ModalReport" tabindex="-1" role="dialog" aria-labelledby="ModalReportLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:980px; align-content:center" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="DownloadReportLabel">Indennita Base</h3>
+            </div>
+            <div class="modal-body">
+                <div id="divPViewIndennita1">
+                    @*@Html.Action("RptIndennitaBase", "Indennita")*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#tbIndennitaBase').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "columnDefs": [
+                { "targets": [1, 2], "type": 'date-euro' },
+                { "targets": [3], "type": 'numeric-comma' }
+        ],
+        "order": [[0, "asc"]]
+    });
+
+    function DownloadReport() {
+        $('#ModalReport').modal().show();
+        
+    }
+    
+
+    function myFunction() {
+        window.print();
+    }
+
+     function invia() {
+        //debugger
+         var idTrasferimento = $("#hidTrasferimento").val();
+
+         window.location.href = "/Indennita/RptIndennitaBase?idTrasferimento=" + idTrasferimento;
+         target = "_blank";
+     };
+
+     var windowWidth = $(window).width();
+     var windowHeight = $(window).height();
+
+     $(function () {
+         $("#dialog").dialog({
+             autoOpen: false,
+             show: {
+                 //effect: "blind",
+                 //duration: 1000
+             },
+             hide: {
+                 //effect: "explode",
+                 //duration: 1000
+             },
+             close: function (event, ui) {
+                 $('.container').removeClass("NoOverflow");
+             },
+             height: windowHeight, width: windowWidth
+
+
+         });
+
+         $("#opener").on("click", function () {
+             $('.container').addClass("NoOverflow");
+
+             $("#dialog").dialog("open");
+             $("#dialog").css("background-color", "#ffffff");
+
+             var rotta = "/Indennita/RptIndennitaBase";
+
+             var idTrasferimento = $("#hidTrasferimento").val();
+
+
+             $.ajax({
+                 type: "POST",
+                 url: rotta,
+                 data: { idTrasferimento: idTrasferimento },
+                 dataType: 'html',
+                 beforeSend: function () {
+                     //debugger;
+                     $("#dialog").empty();
+
+                 },
+                 success: function (result) {
+                     //debugger;
+                     $("#dialog").html(result);
+
+
+                 },
+                 complete: function () {
+                     //$("#divEffettoLoadAutNoDoc").hide("slow");
+                     //                $("#Centro").getNiceScroll().resize();
+                 },
+                 error: function (jqXHR, textStatus, errorThrow) {
+                     //debugger;
+                     var msg = errorThrow.err;
+                     AlertDialog(msg);
+                 }
+
+             });
+
+         });
+     });
+
+     function RptIndennitaBase() {
+         //debugger;
+         var rotta = "/Indennita/RptIndennitaBase";
+
+         var idTrasferimento = 0;
+
+         if (!isNaN(idTrasf)) {
+             idTrasferimento = idTrasf;
+         } else {
+             idTrasferimento = $("#hidTrasferimento").val();
+         }
+         @*var idTrasferimento = parseInt('@idTrasferimento');*@
+
+                 $.ajax({
+                     type: "POST",
+                     url: rotta,
+                     data: { idTrasferimento: idTrasferimento },
+                     dataType: 'html',
+                     beforeSend: function () {
+                         //debugger;
+                         VerificaAutenticazione();
+                     },
+                     success: function (result) {
+                         //debugger;
+
+                         $("#divPViewIndennita1").empty();
+                         $("#divPViewIndennita1").html(result);
+                     },
+                     complete: function () {
+                     },
+                     error: function (jqXHR, textStatus, errorThrow) {
+                         //debugger;
+                         var msg = errorThrow.err;
+                         ErroreElaborazioneAjax(msg);
+                     }
+
+                 });
+
+     }
+</script>

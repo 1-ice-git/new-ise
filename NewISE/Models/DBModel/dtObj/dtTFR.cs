@@ -101,6 +101,7 @@ namespace NewISE.Models.DBModel.dtObj
                         v.TFR.Where(
                             a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAINIZIOVALIDITA <= dtFin)
                             .OrderBy(a => a.DATAINIZIOVALIDITA);
+
                     if (ltfr?.Any() ?? false)
                     {
                         ltfrm = (from tfr in ltfr
@@ -248,45 +249,48 @@ namespace NewISE.Models.DBModel.dtObj
             return tfrm;
         }
 
-        public List<TFRModel> GetListaTfrByValuta_RangeDate(decimal idUfficio,decimal idValuta, DateTime dtIni, DateTime dtFin, ModelDBISE db)
+        public List<TFRModel> GetListaTfrByValuta_RangeDate(TrasferimentoModel trm, decimal idValuta, DateTime dtIni, DateTime dtFin, ModelDBISE db)
         {
             List<TFRModel> ltfrm = new List<TFRModel>();
 
-            using (dtUffici dtu = new dtUffici())
+            //using (dtUffici dtu = new dtUffici())
+            //{
+            //var t = db.TRASFERIMENTO.Find(trm.idTrasferimento);
+            //UFFICI u = t.UFFICI;
+
+            //UfficiModel ufm = dtu.GetUffici(u.IDUFFICIO, db);
+
+            //if (ufm.pagatoValutaUfficio == false)
+            //{
+            //using (dtValute dtv = new dtValute())
+            //{
+            var ltfr = db.TFR.Where(a => a.ANNULLATO == false &&
+                                    a.IDVALUTA == idValuta &&
+                                    a.DATAINIZIOVALIDITA <= dtFin &&
+                                    a.DATAFINEVALIDITA >= dtIni)
+                                 .OrderByDescending(a => a.DATAINIZIOVALIDITA)
+                                 .ToList();
+
+            if (ltfr != null && ltfr.Count > 0)
             {
-                UfficiModel ufm = dtu.GetUffici(idUfficio, db);
-
-                if (ufm.pagatoValutaUfficio == false)
+                foreach (var tfr in ltfr)
                 {
-                    using (dtValute dtv = new dtValute())
+                    TFRModel tfrm = new TFRModel()
                     {
-                        var ltfr = db.TFR.Where(a => a.ANNULLATO == false &&
-                                                a.IDVALUTA == idValuta &&
-                                                dtIni >= a.DATAINIZIOVALIDITA &&
-                                                dtFin <= a.DATAFINEVALIDITA)
-                                             .OrderByDescending(a => a.DATAINIZIOVALIDITA)
-                                             .ToList();
-
-                        if (ltfr != null && ltfr.Count > 0)
-                        {
-                            foreach(var tfr in ltfr)
-                            {
-                                TFRModel tfrm = new TFRModel()
-                                {
-                                    idTFR = tfr.IDTFR,
-                                    idValuta = tfr.IDVALUTA,
-                                    dataInizioValidita = tfr.DATAINIZIOVALIDITA,
-                                    dataFineValidita = tfr.DATAFINEVALIDITA, //== Utility.DataFineStop() ? new DateTime?() : tfr.DATAFINEVALIDITA,
-                                    dataAggiornamento = tfr.DATAAGGIORNAMENTO,
-                                    tassoCambio = tfr.TASSOCAMBIO,
-                                    Annullato = tfr.ANNULLATO
-                                };
-                                ltfrm.Add(tfrm);
-                            }
-                        }
-                    }
+                        idTFR = tfr.IDTFR,
+                        idValuta = tfr.IDVALUTA,
+                        dataInizioValidita = tfr.DATAINIZIOVALIDITA,
+                        dataFineValidita = tfr.DATAFINEVALIDITA, //== Utility.DataFineStop() ? new DateTime?() : tfr.DATAFINEVALIDITA,
+                        dataAggiornamento = tfr.DATAAGGIORNAMENTO,
+                        tassoCambio = tfr.TASSOCAMBIO,
+                        Annullato = tfr.ANNULLATO
+                    };
+                    ltfrm.Add(tfrm);
                 }
             }
+            //}
+            //}
+            //}
 
             return ltfrm;
         }

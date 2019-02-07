@@ -19,9 +19,9 @@
 @using (@Ajax.BeginForm("InserisciAltriDatiFamiliariConiuge", "AltriDatiFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewADF" }))
 {
     @Html.AntiForgeryToken()
-    <div style="padding-left: 15px; padding-right:5px;">
+    <div>
         <div class="form-horizontal">
-            <h4> Inserisci Altri Dati Familiari</h4>
+            <h4> Inserisci Altri Dati Familiari Coniuge</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -169,6 +169,7 @@
 <script src="~/Scripts/MyValidateDate.js"></script>
 
 <script type="text/javascript">
+    PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
 
     //$.culture = Globalize.culture("it-IT");
     //$.validator.methods.date = function (value, element) {

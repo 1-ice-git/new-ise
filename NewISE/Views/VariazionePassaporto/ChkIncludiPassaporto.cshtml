@@ -1,0 +1,18 @@
+﻿@using NewISE.Models.Enumeratori
+@using NewISE.Models.DBModel
+
+@model NewISE.Models.ViewModel.GestioneChkincludiPassaportoModel
+
+
+@if (Model.esisteDoc == false || Model.disabilitaChk == true )
+{
+
+    @Html.CheckBoxFor(model => model.includiPassaporto, new { @onclick = "return null;", @disabled = "disabled" })
+
+}
+else
+{
+
+    @Html.CheckBoxFor(model => model.includiPassaporto, new { @onclick = "ConfermaIncludiEscludiPassaporto_var(this," + @Model.idFamiliare + ", " + Convert.ToDecimal(Model.parentela) + ");" })
+
+}

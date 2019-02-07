@@ -1,22 +1,35 @@
 ﻿@using NewISE.Models.Tools
+@using NewISE.Models.Enumeratori
+
 @model IEnumerable<NewISE.Models.DBModel.PensioneConiugeModel>
 
 @{
     decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    bool trasfSolaLettura = Convert.ToBoolean(ViewData["trasfSolaLettura"]);
+    string nominativo = Convert.ToString(ViewData["nominativo"]);
+    bool pensioniModificate = Convert.ToBoolean(ViewData["pensioniModificate"]);
+    bool esistonoPensioni = Convert.ToBoolean(ViewData["esistonoPensioni"]);
 }
 
 @Html.Hidden("hdIdImportoPensione")
+@Html.Hidden("hdNominativo",nominativo)
 
 <p style="margin-top: 5px; padding-left:15px;">
-    @if (solaLettura) 
+    @if (solaLettura || trasfSolaLettura) 
     {
-        <button class="btn btn-default disabled">Nuovo importo</button>
+        <button class="btn btn-default disabled">
+            <i class="fas fa-euro-sign"></i>
+            &nbsp;Nuovo Importo
+        </button>
     }
     else
     {
-        @Ajax.ActionLink("Nuovo importo", "NuovoImportoPensione", "VariazioneMaggiorazioniFamiliari", new { idConiuge = idConiuge }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success" })
+        <button class="btn btn-success" id="btAnnullaModifichePensioni" onclick="NuovoImportoPensione(@idConiuge);">
+            <i class="fas fa-euro-sign"></i>
+            &nbsp;Nuovo Importo
+        </button>
     }
 </p>
 <div style="padding-left:15px; padding-right:10px;">
@@ -32,8 +45,8 @@
                 <th class="text-center">
                     @Html.DisplayNameFor(model => model.importoPensione)
                 </th>
-                <th>
-                </th>
+                @*<th>
+                </th>*@
             </tr>
         </thead>
         <tbody>
@@ -54,20 +67,8 @@
                         <td></td>
                     }
 
-                    <td class="text-right">
-                        @Html.DisplayFor(modelItem => item.importoPensione)
-                    </td>
                     <td class="text-center">
-                        @if (solaLettura)
-                        {
-                            <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
-                        }
-                        else
-                        {
-                            <a href="#" onclick="ModelEliminaPensione(@item.idPensioneConiuge, '@item.importoPensione')" id="linkEliminaPensione">
-                                <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Pensione" />
-                            </a>
-                        }
+                        @Html.DisplayFor(modelItem => item.importoPensione)
                     </td>
                 </tr>
             }
@@ -76,32 +77,44 @@
 </div>
 
 <p style="padding-left: 15px;">
+    @if (solaLettura || trasfSolaLettura || pensioniModificate==false)
+    {
+        <button class="btn btn-default disabled">
+            <i class="fas fa-undo-alt"></i>
+            Annulla Modifiche  
+        </button>
+    }
+    else
+    {
+        <button class="btn btn-success" id="btAnnullaModifichePensioni" onclick="AnnullaModifichePensioneModal(@idConiuge);">
+            <i class="fas fa-undo-alt"></i>
+            Annulla Modifiche
+        </button>
+    }
+    @if (solaLettura || trasfSolaLettura || esistonoPensioni==false)
+    {
+        <button class="btn btn-default disabled">
+            <i class="fab fa-creative-commons-nc-eu"></i>
+            &nbsp;Cessazione
+        </button>
+
+    }
+    else
+    {
+        <button class="btn btn-success" id="btCessazionePensioni" onclick="CessazionePensione(@idConiuge);">
+            <i class="fab fa-creative-commons-nc-eu"></i>
+            &nbsp;Cessazione
+        </button>
+    }
+    |
     @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
-<div class="modal fade" id="ModalEliminaPensioneModal" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaPensioneModalLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
-            </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="viewPensione">
-                    <label>Eliminare l&rsquo;importo della pensione selezionato (<span id="spanImportoPensione">0,00</span>)?</label>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button id="btSalvaPensione" type="button" class="btn btn-info" onclick="EliminaPensione();">Salva</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-            </div>
-        </div>
-    </div>
-</div>
+
+
 
 <script type="text/javascript">
+    
     PulsantiNotificaAttivaMagFam();
 
     $('#TabPensioni').DataTable({
@@ -139,55 +152,70 @@
 
     });
 
-    function ModelEliminaPensione(idImportoPensione, importoPensione) {
-        //debugger;
-        $('#hdIdImportoPensione').val(idImportoPensione);
-        $("#spanImportoPensione").text(number_format(importoPensione.replace(',', '.'), 2, ',', '.'));
+    
 
-        $('#ModalEliminaPensioneModal').modal().show();
+    function CessazionePensione(idConiuge) {
+        //debugger;
+        $("#divValidazioneCessazione").hide();
+        $('#hi_idConiuge').val(idConiuge);
+        $('#dataCessazionePensione').val('');
+        $('#CessazionePensioneModal').modal().show();
     }
 
-    function EliminaPensione() {
+    $('#CessazionePensioneModal').on('hidden.bs.modal', function (e) {
         //debugger;
-        var idPensioneConiuge = $('#hdIdImportoPensione').val();
-        var idConiuge = parseInt('@idConiuge');
-        var rotta = "/VariazioneMaggiorazioniFamiliari/EliminaPensione";
+        $("#divValidazioneCessazione").hide();
+        //$(this).remove();
+    });
 
+    function AnnullaModifichePensioneModal(idConiuge) {
+        //debugger;
+        var nominativo = $('#hdNominativo').val();
+        $('#hi_idConiuge').val(idConiuge);
+        $("#spanAnnullaModifichePensione").text(nominativo);
+        $('#AnnullaModifichePensioneModal').modal().show();
+    }
+
+       $('#dataCessazionePensione').datepicker({
+        //showButtonPanel: true,
+        showAnim: "slide",
+        changeMonth: true,
+        changeYear: true,
+    });
+
+    function NuovoImportoPensione(idConiuge) {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/NuovoImportoPensione";
+        var idConiuge = parseInt('@idConiuge');
 
         $.ajax({
+            type: "POST",
             url: rotta,
-            type: "POST", //Le info testuali saranno passate in POST
-            data: { idPensione: idPensioneConiuge, idConiuge: idConiuge },
+
+            data: {idConiuge: idConiuge},
             dataType: 'html',
-            async: true,
             beforeSend: function () {
                 //debugger;
                 VerificaAutenticazione();
-
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
+                Blocca();
 
             },
             success: function (result) {
                 //debugger;
                 $("#tabFamiliari").empty();
                 $("#tabFamiliari").html(result);
-                PulsantiNotificaAttivaMagFam();
             },
             complete: function () {
-                AggiornaElencoPensioni();
+                PulsantiNotificaAttivaMagFam();
+                Sblocca();
             },
             error: function (error) {
                 //debugger;
-                //Sblocca();
+                Sblocca();
                 var msg = error.responseText;
                 ErroreElaborazioneAjax(msg);
             }
         });
-    }
-
-    function AggiornaElencoPensioni() {
-        Pensione(@idConiuge);
     }
 
 </script>

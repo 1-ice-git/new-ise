@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using NewISE.EF;
 using Newtonsoft.Json.Schema;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -19,7 +20,6 @@ namespace NewISE.Models.DBModel.dtObj
         {
             PrimaSistemazioneModel psm = new PrimaSistemazioneModel();
 
-
             var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
             var ps = t.PRIMASITEMAZIONE;
@@ -30,11 +30,10 @@ namespace NewISE.Models.DBModel.dtObj
 
             };
 
-
             return psm;
         }
 
-        public PrimaSistemazioneModel GetPrimaSistemazioneBtIdTrasf(decimal idTrasferimento)
+        public PrimaSistemazioneModel GetPrimaSistemazioneByIdTrasf(decimal idTrasferimento)
         {
             PrimaSistemazioneModel psm = new PrimaSistemazioneModel();
 
@@ -76,7 +75,6 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void InserisciPrimaSistemazione(PrimaSistemazioneModel psm, ModelDBISE db)
         {
-
             using (dtTrasferimento dttr = new dtTrasferimento())
             {
                 var trm = dttr.GetTrasferimentoById(psm.idPrimaSistemazione, db);
@@ -89,22 +87,23 @@ namespace NewISE.Models.DBModel.dtObj
 
                         var lism = dtis.GetListIndennitaSistemazione((EnumTipoTrasferimento)trm.idTipoTrasferimento, trm.dataPartenza, db);
 
-                        foreach (var ism in lism)
+                        if (lism?.Any() ?? false)
                         {
-                            this.AssociaIndennitaSistemazione(psm.idPrimaSistemazione, ism.idIndSist, db);
+                            foreach (var ism in lism)
+                            {
+                                this.AssociaIndennitaSistemazione(psm.idPrimaSistemazione, ism.idIndSist, db);
+                            }
+                        }else
+                        {
+                            throw new Exception("Indennita Prima Sistemazione non trovata.");
                         }
-
                     }
                 }
                 else
                 {
                     throw new Exception("Nessun trasferimento rilevato per l'inserimento della prima sistemazione.");
                 }
-
-
             }
-
-
         }
 
         public void AssociaIndennitaSistemazione(decimal idPrimaSitemazione, decimal idIndennitaSitemazione, ModelDBISE db)

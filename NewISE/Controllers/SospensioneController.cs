@@ -11,9 +11,11 @@ using System.Web.Routing;
 using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.Tools;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {
+
     public class SospensioneController : Controller
     {
         // GET: Sospensione
@@ -50,6 +52,8 @@ namespace NewISE.Controllers
                 return Json(new { err = ex.Message });
             }
         }
+
+        [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult DeleteSospensione(decimal idSospensione, decimal idTrasferimento)
         {
@@ -71,9 +75,9 @@ namespace NewISE.Controllers
                 //    var tm = dtt.GetTrasferimentoByIdSosp(idSospensione);
                 //    idTrasferimento = tm.idTrasferimento;
                 //}
-            
-            var r = new List<SelectListItem>();
-            
+
+                var r = new List<SelectListItem>();
+
                 using (dtSospensione dttc = new dtSospensione())
                 {
                     var ltcm = dttc.GetListTipologiaSospensione();
@@ -100,15 +104,18 @@ namespace NewISE.Controllers
             tmp.idTrasferimento = (decimal)ViewData["idTrasferimento"];
             return PartialView(tmp);
         }
+
+
+        [Authorize(Roles = "1 ,2")]
         public ActionResult Elimina_Sospensione(decimal idSospensione, bool permesso = true)
         {
             //decimal idSospensione =(decimal)ViewBag.idSospensione;
             using (dtTrasferimento dtt = new dtTrasferimento())
             {
                 var tm = dtt.GetTrasferimentoByIdSosp(idSospensione);
-                ViewData["idTrasferimento"]  = tm.idTrasferimento;
+                ViewData["idTrasferimento"] = tm.idTrasferimento;
             }
-            
+
             SospensioneModel tmp = new SospensioneModel();
             using (dtSospensione ds = new dtSospensione())
             {
@@ -120,6 +127,10 @@ namespace NewISE.Controllers
         public ActionResult DatiTabElencoSospensione(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
+
+            bool admin = Utility.Amministratore();
+            ViewBag.Amministratore = admin;
+
             List<SospensioneModel> tmp = new List<SospensioneModel>();
             try
             {
@@ -136,12 +147,15 @@ namespace NewISE.Controllers
 
         }
 
-        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
-        [Authorize(Roles = "1 ,2")]
+        //[AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
+        //[Authorize(Roles = "1 ,2")]
         public ActionResult ElencoSospensioni(decimal idTrasferimento)
         {
-             ViewData["idTrasferimento"] = idTrasferimento;
-            
+            ViewData["idTrasferimento"] = idTrasferimento;
+
+            bool admin = Utility.Amministratore();
+            ViewBag.Amministratore = admin;
+
             try
             {
                 return PartialView();
@@ -151,6 +165,8 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
+
+        [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult NuovaSospensione(decimal idTrasferimento)
         {
@@ -158,8 +174,8 @@ namespace NewISE.Controllers
             List<SelectListItem> lTipologiaSospensione;
             try
             {
-            lTipologiaSospensione = new List<SelectListItem>();
-            var r = new List<SelectListItem>();
+                lTipologiaSospensione = new List<SelectListItem>();
+                var r = new List<SelectListItem>();
                 using (dtSospensione dttc = new dtSospensione())
                 {
                     var ltcm = dttc.GetListTipologiaSospensione();
@@ -191,14 +207,14 @@ namespace NewISE.Controllers
         {
             try
             {
-                 ViewData["idTrasferimento"] = idTrasferimento;
+                ViewData["idTrasferimento"] = idTrasferimento;
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-           return PartialView("AttivitaSospensione");
+            return PartialView("AttivitaSospensione");
         }
 
         [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
@@ -206,7 +222,7 @@ namespace NewISE.Controllers
         public ActionResult InserisciSospensione(SospensioneModel sm, decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
-            string[] my_array=null;
+            string[] my_array = null;
             try
             {
                 if (ModelState.IsValid)
@@ -245,9 +261,8 @@ namespace NewISE.Controllers
                 }
                 else
                 {
-                    List<SelectListItem> lTipologiaSospensione;
+                    List<SelectListItem> lTipologiaSospensione = new List<SelectListItem>();
 
-                    lTipologiaSospensione = new List<SelectListItem>();
                     var r = new List<SelectListItem>();
                     using (dtSospensione dttc = new dtSospensione())
                     {
@@ -270,11 +285,14 @@ namespace NewISE.Controllers
                 }
             }
             catch (Exception ex)
-            {               
+            {
+
                 return PartialView("ErrorPartial", new MsgErr() { msg = my_array[1] });
             }
             return PartialView("AttivitaSospensione");
         }
+
+        [Authorize(Roles = "1 ,2")]
         public ActionResult EditSospensione(decimal idSospensione, decimal idTrasferimento)
         {
             ViewData["idSospensione"] = idSospensione;
@@ -313,6 +331,8 @@ namespace NewISE.Controllers
             tmp.idTrasferimento = (decimal)ViewData["idTrasferimento"];
             return PartialView(tmp);
         }
+
+        [Authorize(Roles = "1 ,2")]
         public ActionResult ModificaSospensione(SospensioneModel sm, decimal idSospensione, decimal idTrasferimento)
         {
             string[] my_array = null;

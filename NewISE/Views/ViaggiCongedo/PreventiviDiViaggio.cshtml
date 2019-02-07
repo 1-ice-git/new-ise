@@ -1,0 +1,320 @@
+﻿@using NewISE.Models.DBModel
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idTitoliViaggio = 0;// Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+}
+
+<link href="~/Content/css/CssCheckBox.css" rel="stylesheet" />
+
+<div class="row" style="padding-right: 15px;">
+    <div class="col-xs-12">
+        <div id="divViaggio_CongedioMain_" style="padding-top: 5px;border-bottom:solid;border-width:1px;border-color:limegreen">
+            @Html.Action("ElencoPreventiviDiViaggio", "ViaggiCongedo", new { idTrasferimento = idTrasferimento })
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:30px ">
+        @*        <div class="col-md-7 col-md-offset-5" style="margin-top: 10px; margin-bottom: 10px;border:solid">*@
+        <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btNotificaPreventiviRichiestaTV" onclick="ModalNotificaPreventiviRichiesta();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Notifica richiesta
+        </button>
+        <button class="btn btn-default btn-sm hidden disabled " hidden disabled id="btAttivaPreventiviRichiestaTV" onclick="ModalAttivaPreventiviRichiesta();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Attiva richiesta
+        </button>
+        <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btAnnullaPreventiviRichiestaTV" onclick="ModalAnnullaPreventiviRichiesta();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Annulla richiesta
+        </button>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalNotificaPreventiviRichiestaTV" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaPreventiviRichiestaTVLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewNotificaRichiestaTV">
+                    <label>Procedere con la notifica della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaNotificaRichiestaTV" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaNotificaPreventiviRichiestaTV();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAttivaPreventiviRichiestaTV" tabindex="-1" role="dialog" aria-labelledby="ModalAttivaPreventiviRichiestaTVLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="AttivaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAttivaRichiestaTV">
+                    <label>Procedere con l'attivazione della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAttivazioneRichiestaTV" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAttivaRichiestaTV();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalAnnullaPreventiviRichiestaTV" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaPreventiviRichiestaTVLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAnnullaRichiestaTV">
+                    <label>Procedere con l'annullamento della richiesta?</label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btConfermaAnnullaRichiestaTV" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAnnullaRichiestaTV();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
+
+    function GestionePulsantiNotificaAttivaAnnullaTitoliViaggio() {
+        //debugger;
+        var rotta = "/TitoliViaggio/GestionePulsantiNotificaAttivaAnnulla";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+
+        //$.ajax({
+        //    type: "POST",
+        //    url: rotta,
+        //    data: { idTitoliViaggio: idTitoliViaggio },
+        //    dataType: 'json',
+        //    beforeSend: function () {
+        //        //debugger;
+        //        VerificaAutenticazione();
+        //    },
+        //    success: function (result) {
+        //        //debugger;
+        //        if (result.err == "") {
+        //            var admin = result.admin;
+        //            var richiediNotifica = result.richiediNotifica;
+        //            var richiediAnnulla = result.richiediAnnulla;
+        //            var richiediAttivazione = result.richiediAttivazione;
+        //            var inLavorazione = result.inLavorazione;
+        //            var trasfAnnullato=result.trasfAnnullato;
+
+        //            $("#btNotificaRichiestaTV").attr("disabled", "disabled");
+        //            $("#btNotificaRichiestaTV").addClass("disabled");
+
+        //            $("#btNotificaRichiestaTV").removeAttr("hidden");
+        //            $("#btNotificaRichiestaTV").removeClass("hidden");
+
+        //            //se amministratore vedo i pulsanti altrimenti solo notifica
+        //            if (admin) {
+        //                $("#btAttivaRichiestaTV").attr("disabled", "disabled");
+        //                $("#btAttivaRichiestaTV").addClass("disabled");
+
+        //                $("#btAnnullaRichiestaTV").attr("disabled", "disabled");
+        //                $("#btAnnullaRichiestaTV").addClass("disabled");
+
+        //                $("#btAttivaRichiestaTV").removeAttr("hidden");
+        //                $("#btAttivaRichiestaTV").removeClass("hidden");
+
+        //                $("#btAnnullaRichiestaTV").removeAttr("hidden");
+        //                $("#btAnnullaRichiestaTV").removeClass("hidden");
+        //            }
+
+        //            //Se risulta in lavorazione abilito la il pulsante notifica
+        //            if (inLavorazione && richiediNotifica && trasfAnnullato==false) {
+        //                $("#btNotificaRichiestaTV").removeAttr("disabled");
+        //                $("#btNotificaRichiestaTV").removeClass("disabled");
+        //            } else {
+        //                if (admin) {
+        //                    if (richiediAttivazione && trasfAnnullato==false) {
+        //                        $("#btAttivaRichiestaTV").removeAttr("disabled");
+        //                        $("#btAttivaRichiestaTV").removeClass("disabled");
+        //                        $("#btAnnullaRichiestaTV").removeAttr("disabled");
+        //                        $("#btAnnullaRichiestaTV").removeClass("disabled");
+        //                    } else {
+        //                        if (richiediNotifica && trasfAnnullato==false) {
+        //                            $("#btNotificaRichiestaTV").removeAttr("disabled");
+        //                            $("#btNotificaRichiestaTV").removeClass("disabled");
+
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //          //  GestioneAttivitaTrasferimento();
+        //        } else {
+        //            ErroreElaborazioneAjax(result.err);
+        //        }
+        //    },
+        //    complete: function () {
+
+        //    },
+        //    error: function (jqXHR, textStatus, errorThrow) {
+        //        //debugger;
+        //        var msg = errorThrow.err;
+        //        ErroreElaborazioneAjax(msg);
+        //    }
+        //});
+    }
+
+
+   
+
+    function ModalNotificaPreventiviRichiesta() {
+        //debugger;
+        $('#ModalNotificaPreventiviRichiestaTV').modal().show();
+    }
+
+    function ModalAnnullaPreventiviRichiesta() {
+        //debugger;
+        MessaggioAnnullaRichiestaTV();
+        $('#ModalAnnullaPreventiviRichiestaTV').modal().show();
+    }
+
+    function ModalAttivaPreventiviRichiesta() {
+        //debugger;
+        $('#ModalAttivaPreventiviRichiestaTV').modal().show();
+    }
+
+    $("#ModalNotificaPreventiviRichiestaTV").on('hide.bs.modal', function () {
+        //debugger;
+        //$('.modal-backdrop').hide();
+        $(this).data('bs.modal', null);
+    });
+
+    $("#ModalAnnullaPreventiviRichiestaTV").on('hide.bs.modal', function () {
+        //debugger;
+        //$('.modal-backdrop').hide();
+        $(this).data('bs.modal', null);
+    });
+
+
+    
+    function ConfermaAnnullaRichiestaTV() {
+        //debugger;
+        var rotta = "/TitoliViaggio/ConfermaAnnullaRichiestaTV";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        var testoAnnullaTV = $('#FullDescription').val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoliViaggio: idTitoliViaggio, msg:testoAnnullaTV },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    ElencoTitoliViaggio();
+                    GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ConfermaAttivaRichiestaTV() {
+        //debugger;
+        var rotta = "/TitoliViaggio/ConfermaAttivaRichiestaTV";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoliViaggio: idTitoliViaggio },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    ElencoTitoliViaggio();
+                    GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
+                    //InfoElaborazioneAjax(result.msg);
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function MessaggioAnnullaRichiestaTV() {
+        //debugger;
+        var rotta = "/TitoliViaggio/MessaggioAnnullaTV";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoliViaggio: idTitoliViaggio },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiestaTV").empty();
+                $("#viewAnnullaRichiestaTV").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+</script>

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using NewISE.Models;
 
 namespace NewISE.Areas.Parametri.Controllers
 {
@@ -30,7 +31,11 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                MsgErr msg = new MsgErr()
+                {
+                    msg = ex.Message
+                };
+                return PartialView("ErrorPartial", msg);
             }
             return PartialView(libm);
         }
@@ -112,6 +117,7 @@ namespace NewISE.Areas.Parametri.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "1, 2")]
+        [ValidateAntiForgeryToken]
         public ActionResult InserisciValuta(ValuteModel ibm)
         {
             var r = new List<SelectListItem>();

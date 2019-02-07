@@ -1,4 +1,5 @@
 ﻿using NewISE.EF;
+using NewISE.Models.Enumeratori;
 using NewISE.Models.Tools;
 using NewISE.Models.ViewModel;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -31,22 +33,113 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (cm.dataInizio < t.DATAPARTENZA)
                     {
-                        vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore della data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                        vr = new ValidationResult(string.Format("Impossibile inserire la Data Inizio Validità minore della data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
                     }
                     else
                     {
-                        vr = ValidationResult.Success;
+                        List<CONIUGE> lc_prec = new List<CONIUGE>();
+                        //verifica se esiste un coniuge precedente verificando se è nuovo o modificato
+                        if (cm.FK_idConiuge > 0)
+                        {
+                            //modificato
+                            lc_prec = t.MAGGIORAZIONIFAMILIARI.CONIUGE
+                                    .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                            a.DATAINIZIOVALIDITA != null &&
+                                            a.DATAFINEVALIDITA != Utility.DataFineStop() &&
+                                            a.IDCONIUGE < cm.FK_idConiuge).OrderByDescending(a => a.IDCONIUGE).ToList();
+                        }
+                        else
+                        {
+                            //nuovo
+                            lc_prec = t.MAGGIORAZIONIFAMILIARI.CONIUGE
+                                    .Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                            a.DATAINIZIOVALIDITA != null &&
+                                            a.DATAFINEVALIDITA != Utility.DataFineStop() &&
+                                            a.DATAFINEVALIDITA >= cm.dataInizio
+                                            ).OrderByDescending(a => a.IDCONIUGE).ToList();
+                        }
+                        if (lc_prec?.Any() ?? false)
+                        {
+                            //se esiste controlla validita data inizio
+                            var c_prec = lc_prec.First();
+                            if (cm.dataInizio > c_prec.DATAFINEVALIDITA)
+                            {
+                                vr = ValidationResult.Success;
+                            }
+                            else
+                            {
+                                vr = new ValidationResult(string.Format("La Data Inizio Validità deve essere superiore alla Data Fine Validità del coniuge precedente ({0}).", c_prec.DATAFINEVALIDITA.ToShortDateString()));
+                            }
+                        }
+                        else
+                        {
+                            if (cm.dataInizio > t.DATARIENTRO)
+                            {
+                                vr = new ValidationResult(string.Format("La Data Inizio Validità non può essere superiore alla data rientro del trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
+                            }
+                            else
+                            {
+                                vr = ValidationResult.Success;
+                            }
+                        }
                     }
                 }
 
             }
             else
             {
-                vr = new ValidationResult("La data di inizio validità è richiesta.");
+                vr = new ValidationResult("La Data Inizio Validità è richiesta.");
             }
 
             return vr;
         }
+
+        public static ValidationResult VerificaDataFine(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+
+            var cm = context.ObjectInstance as ConiugeModel;
+
+            if (cm != null)
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var t = db.ATTIVAZIONIMAGFAM.Find(cm.idAttivazioneMagFam).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+
+                    if (cm.dataInizio != null)
+                    {
+                        if (cm.dataFine != null)
+                        {
+                            if (cm.dataFine <= t.DATARIENTRO)
+                            {
+                                if (cm.dataInizio >= cm.dataFine)
+                                {
+                                    vr = new ValidationResult(string.Format("La Data Fine Validità deve essere superiore alla Data Inizio Validità ({0}).", cm.dataInizio.Value.ToShortDateString()));
+                                }
+                                else
+                                {
+                                    if (cm.dataFine <= t.DATAPARTENZA)
+                                    {
+                                        vr = new ValidationResult(string.Format("La Data Fine Validità non può essere inferiore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                                    }
+                                    else
+                                    {
+                                        vr = ValidationResult.Success;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                vr = new ValidationResult(string.Format("La Data Fine Validità non può essere superiore alla data di rientro del trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
+                            }
+                        }
+                    }
+                }
+            }
+
+            return vr;
+        }
+
 
         public static ValidationResult VerificaCodiceFiscale(string v, ValidationContext context)
         {
@@ -79,6 +172,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             return vr;
         }
+
         #endregion
 
 
@@ -249,6 +343,7 @@ namespace NewISE.Models.DBModel.dtObj
                             dataInizio = c.DATAINIZIOVALIDITA,
                             dataFine = c.DATAFINEVALIDITA,
                             dataAggiornamento = c.DATAAGGIORNAMENTO,
+                            FK_idConiuge = c.FK_IDCONIUGE
                         };
                     }
 
@@ -281,6 +376,7 @@ namespace NewISE.Models.DBModel.dtObj
                     dataInizio = c.DATAINIZIOVALIDITA,
                     dataFine = c.DATAFINEVALIDITA,
                     dataAggiornamento = c.DATAAGGIORNAMENTO,
+                    FK_idConiuge = c.FK_IDCONIUGE
                 };
             }
 
@@ -294,6 +390,37 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var c = db.CONIUGE.Find(idConiuge);
+                var t = c.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+
+                if (c != null && c.IDCONIUGE > 0)
+                {
+                    cm = new ConiugeModel()
+                    {
+                        idConiuge = c.IDCONIUGE,
+                        idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
+                        idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
+                        nome = c.NOME,
+                        cognome = c.COGNOME,
+                        codiceFiscale = c.CODICEFISCALE,
+                        dataInizio = c.DATAINIZIOVALIDITA,
+                        dataFine = c.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:c.DATAFINEVALIDITA,
+                        dataAggiornamento = c.DATAAGGIORNAMENTO,
+                        idStatoRecord = c.IDSTATORECORD,
+                        FK_idConiuge = c.FK_IDCONIUGE
+                    };
+                }
+            }
+
+            return cm;
+        }
+
+        public ConiugeModel GetConiugeOldbyID(decimal? idConiugeOld)
+        {
+            ConiugeModel cm = new ConiugeModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var c = db.CONIUGE.Find(idConiugeOld);
 
                 if (c != null && c.IDCONIUGE > 0)
                 {
@@ -308,6 +435,9 @@ namespace NewISE.Models.DBModel.dtObj
                         dataInizio = c.DATAINIZIOVALIDITA,
                         dataFine = c.DATAFINEVALIDITA,
                         dataAggiornamento = c.DATAAGGIORNAMENTO,
+                        idStatoRecord = c.IDSTATORECORD,
+                        FK_idConiuge = c.FK_IDCONIUGE
+
                     };
                 }
             }
@@ -324,8 +454,11 @@ namespace NewISE.Models.DBModel.dtObj
             {
 
                 var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+                var t = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
-                lc = amf.CONIUGE.OrderByDescending(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
+                lc = amf.CONIUGE.Where(a=>
+                            (a.DATAINIZIOVALIDITA<=t.DATARIENTRO && a.DATAFINEVALIDITA>=t.DATARIENTRO) || a.DATAFINEVALIDITA<t.DATARIENTRO)
+                            .OrderByDescending(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
 
 
                 if (lc?.Any() ?? false)
@@ -340,11 +473,11 @@ namespace NewISE.Models.DBModel.dtObj
                                cognome = e.COGNOME,
                                codiceFiscale = e.CODICEFISCALE,
                                dataInizio = e.DATAINIZIOVALIDITA,
-                               dataFine = e.DATAFINEVALIDITA,
+                               dataFine = e.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:e.DATAFINEVALIDITA,
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                FK_idConiuge = e.FK_IDCONIUGE,
                                idAttivazioneMagFam = idAttivazioneMagFam,
-                               Modificato = e.MODIFICATO
+                               idStatoRecord = e.IDSTATORECORD
 
                            }).ToList();
                 }
@@ -366,7 +499,7 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAINIZIOVALIDITA = cm.dataInizio.Value,
                 DATAFINEVALIDITA = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = cm.dataAggiornamento,
-                MODIFICATO = cm.Modificato,
+                IDSTATORECORD = cm.idStatoRecord,
                 FK_IDCONIUGE = cm.FK_idConiuge
 
 
@@ -404,9 +537,6 @@ namespace NewISE.Models.DBModel.dtObj
                 //    dtap.AssociaConiuge(apm.idAttivazioniPassaporti, cm.idConiuge, db);
 
                 //}
-
-
-
 
             }
         }
@@ -470,48 +600,86 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 using (dtVariazioniMaggiorazioneFamiliare dtvmf = new dtVariazioniMaggiorazioneFamiliare())
                 {
-
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                    var t = mf.TRASFERIMENTO;
 
-                    var amfl = mf.ATTIVAZIONIMAGFAM
-                            .Where(e => ((e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false))
-                            .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
-
-                    //var amf = dtvmf.GetAttivazioneById(idMaggiorazioniFamiliari, EnumTipoTabella.MaggiorazioniFamiliari, db);
-
-
-                    bool modificabile = false;
-
-                    if (amfl?.Any() ?? false)
+                    lc = mf.CONIUGE.Where(y =>
+                                    y.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato
+                                ).ToList();
+                    if (lc?.Any() ?? false)
                     {
-                        foreach (var e in amfl)
+                        foreach (var c in lc)
                         {
-                            //var e = amfl.First();
-
-                            lc = e.CONIUGE.Where(y => y.MODIFICATO == false).ToList();
-                            if (lc?.Any() ?? false)
+                            if (db.CONIUGE.Where(a => 
+                                a.FK_IDCONIUGE == c.IDCONIUGE && 
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && 
+                                ((a.DATAINIZIOVALIDITA<=t.DATARIENTRO &&
+                                a.DATAFINEVALIDITA>=t.DATARIENTRO) || a.DATAFINEVALIDITA<t.DATARIENTRO))
+                                .Count() == 0)
                             {
-                                foreach (var c in lc)
+
+                                VariazioneConiugeModel cm = new VariazioneConiugeModel()
                                 {
-                                    VariazioneConiugeModel cm = new VariazioneConiugeModel()
-                                    {
-                                        eliminabile = ((c.FK_IDCONIUGE > 0 || c.MODIFICATO == true) || e.ATTIVAZIONEMAGFAM) ? false : true,
-                                        modificabile = modificabile,
-                                        idConiuge = c.IDCONIUGE,
-                                        idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
-                                        idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
-                                        nome = c.NOME,
-                                        cognome = c.COGNOME,
-                                        codiceFiscale = c.CODICEFISCALE,
-                                        dataInizio = c.DATAINIZIOVALIDITA,
-                                        dataFine = c.DATAFINEVALIDITA,
-                                        dataAggiornamento = c.DATAAGGIORNAMENTO,
-                                        Modificato = c.MODIFICATO,
-                                        FK_idConiuge = c.FK_IDCONIUGE
-                                    };
-                                    lcm.Add(cm);
-                                    //break;
+                                    eliminabile = (c.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && c.FK_IDCONIUGE == null) ? true : false,
+                                    modificabile = (c.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && c.IDSTATORECORD != (decimal)EnumStatoRecord.Da_Attivare) ? true : false,
+                                    idConiuge = c.IDCONIUGE,
+                                    idMaggiorazioniFamiliari = c.IDMAGGIORAZIONIFAMILIARI,
+                                    idTipologiaConiuge = (EnumTipologiaConiuge)c.IDTIPOLOGIACONIUGE,
+                                    nome = c.NOME,
+                                    cognome = c.COGNOME,
+                                    codiceFiscale = c.CODICEFISCALE,
+                                    dataInizio = c.DATAINIZIOVALIDITA,
+                                    dataFine = c.DATAFINEVALIDITA>t.DATARIENTRO? t.DATARIENTRO :c.DATAFINEVALIDITA,
+                                    dataAggiornamento = c.DATAAGGIORNAMENTO,
+                                    idStatoRecord = c.IDSTATORECORD,
+                                    FK_idConiuge = c.FK_IDCONIUGE,
+                                    //visualizzabile = (db.CONIUGE.Where(a => a.FK_IDCONIUGE == c.IDCONIUGE).Count() > 0) ? false : true,
+                                    visualizzabile = true,
+                                    modificato = (c.FK_IDCONIUGE > 0 && c.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && c.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato) ? true : false,
+                                    nuovo = (c.FK_IDCONIUGE == null && c.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && c.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato) ? true : false
+                                };
+
+                                //VERIFICA SE CI SONO VARIAZIONI SUGLI ALTRI DATI
+                                var adf = dtvmf.GetAltriDatiFamiliariConiuge(c.IDCONIUGE);
+                                if (adf.FK_idAltriDatiFam > 0 && adf.idStatoRecord != (decimal)EnumStatoRecord.Annullato && adf.idStatoRecord != (decimal)EnumStatoRecord.Attivato && cm.nuovo == false)
+                                {
+                                    cm.modificato = true;
                                 }
+
+                                //elenca eventuali documenti inseriti
+                                var ldc = db.CONIUGE.Find(cm.idConiuge).DOCUMENTI.Where(a =>
+                                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
+                                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                            a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato)
+                                        .OrderByDescending(a => a.IDDOCUMENTO).ToList();
+
+                                //var ldc = c.DOCUMENTI.Where(a => 
+                                //    a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && 
+                                //    a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato).ToList();
+                                if (ldc.Count() > 0 && cm.nuovo == false)
+                                {
+                                    cm.modificato = true;
+                                }
+                                var lpc = c.PENSIONE.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato && a.NASCONDI == false).ToList();
+                                if (lpc.Count() > 0 && cm.nuovo == false)
+                                {
+                                    cm.modificato = true;
+                                }
+                                //se è nuovo non è modificato
+                                if (cm.nuovo)
+                                {
+                                    cm.modificato = false;
+                                }
+                                //nel caso che sia stata inserita la datafine ed esiste un coniuge successivo
+                                //non è modificabile
+                                if (dtvmf.ConiugeModificabile(c.IDCONIUGE, idMaggiorazioniFamiliari) == false)
+                                //var last_coniuge = lc.First();
+                                //if(c.DATAFINEVALIDITA!=null && c.DATAFINEVALIDITA!=Utility.DataFineStop() && c.IDCONIUGE!=last_coniuge.IDCONIUGE)
+                                {
+                                    cm.modificabile = false;
+                                }
+
+                                lcm.Add(cm);
                             }
                         }
                     }
@@ -520,34 +688,6 @@ namespace NewISE.Models.DBModel.dtObj
             return lcm;
         }
 
-        public static ValidationResult VerificaDataFine(string v, ValidationContext context)
-        {
-            ValidationResult vr = ValidationResult.Success;
-
-            var cm = context.ObjectInstance as ConiugeModel;
-
-            if (cm != null)
-            {
-                using (ModelDBISE db = new ModelDBISE())
-                {
-                    var t = db.ATTIVAZIONIMAGFAM.Find(cm.idAttivazioneMagFam).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
-
-                    if (cm.dataInizio != null && cm.dataFine < Utility.DataFineStop())
-                    {
-                        if (cm.dataInizio >= cm.dataFine)
-                        {
-                            vr = new ValidationResult(string.Format("La data fine deve essere superiore alla data inizio ({0}).", cm.dataInizio.Value.ToShortDateString()));
-                        }
-                        else
-                        {
-                            vr = ValidationResult.Success;
-                        }
-                    }
-                }
-            }
-
-            return vr;
-        }
 
 
     }

@@ -1,0 +1,95 @@
+﻿
+@using NewISE.Models.Tools
+@model IEnumerable<NewISE.Models.DBModel.PensioneConiugeModel>
+
+@{
+    decimal idConiuge = Convert.ToDecimal(ViewData["idConiuge"]);
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+    bool trasfSolaLettura = Convert.ToBoolean(ViewData["trasfSolaLettura"]);
+}
+
+
+<div style="padding-left:15px; padding-right:10px;">
+    <table id="TabPensioniPrecedenti" cellspacing="0">
+        <thead>
+            <tr>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.dataInizioValidita)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.dataFineValidita)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.importoPensione)
+                </th>
+           
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                    </td>
+                    @if (item.dataFineValidita != Utility.DataFineStop())
+                    {
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.dataFineValidita)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+
+                    <td class="text-right">
+                        @Html.DisplayFor(modelItem => item.importoPensione)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script type="text/javascript">
+
+    $('#TabPensioniPrecedenti').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": true,
+        "ordering": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+
+    });
+
+    
+
+</script>

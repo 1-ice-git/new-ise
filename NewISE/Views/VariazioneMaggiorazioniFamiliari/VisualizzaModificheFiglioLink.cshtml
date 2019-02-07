@@ -1,0 +1,20 @@
+﻿@using NewISE.Models.Enumeratori
+
+@{
+    decimal idFigli = Convert.ToDecimal(ViewData["idFigli"]);
+    decimal idParentela = Convert.ToDecimal(EnumParentela.Figlio);
+    decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
+}
+
+<div style="padding-left: 15px;padding-right:50px;padding-bottom:20px">
+    <div class="form-horizontal">
+        <div class="row">
+            <div class="col-xs-1">
+                <button id="btModificheFiglioAdf" type="button" class="btn btn-success" data-dismiss="modal" onclick="VisualizzaDettaglioAdfFiglio(@idFigli);">Altri Dati</button>
+            </div>
+            <div class="col-xs-1">
+                <button id="btModificheFiglioDocumenti" type="button" class="btn btn-success" data-dismiss="modal" onclick="VisualizzaDocumentiPrecedentiFiglio(@idFigli, @idParentela, @idMaggiorazioniFamiliari);">Documenti</button>
+            </div>
+        </div>
+    </div>
+</div>

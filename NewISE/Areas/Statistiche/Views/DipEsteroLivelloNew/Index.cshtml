@@ -1,0 +1,254 @@
+﻿<div id="dialog" class="text-center"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="form-group">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center" style="background-color:lightgrey"><h4><b>Dipendenti all'Estero per Livello</b></h4></div>
+                <div class="panel-body" style="font-size:1.2em">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <strong>Data Inizio</strong>
+                        </div>
+                        <div class="col-xs-3">
+                            <strong>Data Fine</strong>
+                        </div>
+                        <div class="col-xs-3">
+                            <strong>Livello</strong>
+                        </div>
+                        <div class="col-xs-3">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-3 date">
+                            <div class="input-group input-append date">
+                                <input type="text" class="form-control" id="data1" />
+                                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            <div id="divDataDa" hidden>
+                                <i class="fa fa-asterisk text-danger"></i>
+                                <span class="text-danger">Campo obbligatorio</span>
+                            </div>
+                        </div>         
+                        <div class="col-xs-3 date">
+                            <div class="input-group input-append date">
+                                <input type="text" class="form-control" id="data2" />
+                                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            <div id="divDataA" hidden>
+                                <i class="fa fa-asterisk text-danger"></i>
+                                <span class="text-danger">Campo obbligatorio</span>
+                            </div>                
+                        </div>
+    
+                        <div class="col-xs-3 date">
+                            <div class="input-group input-append date">
+                                @Html.DropDownList("idLivello", ViewBag.LivelliList as IEnumerable<SelectListItem>, new { @id = "idLivello", @class = "form-control select2 select2-select" })
+                            </div>
+                            <div id="divLivello" hidden>
+                                <i class="fa fa-asterisk text-danger"></i>
+                                <span class="text-danger">Campo obbligatorio</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-3" >
+                            <center>
+                                <button class="btn btn-small btn-success" id="opener">
+                                    <i aria-hidden="true" class="fa fa-2x fa-print"></i>   
+                                    Stampa
+                                </button>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    //$(".form-control:input").datepicker();
+
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+   
+
+    $("#dialog").dialog({
+        autoOpen: false,
+        show: {
+            //effect: "blind",
+            //duration: 1000
+        },
+        hide: {
+            //effect: "explode",
+            //duration: 1000
+        },
+        close: function (event, ui) {
+            $('.container').removeClass("NoOverflow");
+        },
+        height: windowHeight, width: windowWidth
+
+
+    });
+
+    function Validazione() {
+        //debugger;
+
+        var ret = false;
+        var c1 = false;
+        var c2 = false;
+        var c3 = false;
+
+        var dataDa = $("#data1").val();
+        var dataA = $("#data2").val();
+        var livello = $("#idLivello").val();
+
+        if (dataDa != "" && dataDa != undefined) {
+            $("#divDataDa").hide();
+            c1 = true;
+        }
+        else {
+            $("#divDataDa").show();
+            c1 = false;
+        }
+
+        if (dataA != "" && dataA != undefined) {
+            $("#divDataA").hide();
+            c2 = true;
+        }
+        else {
+            $("#divDataA").show();
+            c2 = false;
+        }
+
+        if (livello != "" && livello != undefined) {
+            $("#divLivello").hide();
+            c3 = true;
+        }
+        else {
+            $("#divLivello").show();
+            c3 = false;
+        }
+
+        if (c1 == false || c2 == false || c3 == false)
+        {
+            ret = false;
+        }
+        else {
+            ret = true;
+        }
+
+        return ret;
+    }
+
+    $("#opener").on("click", function () {
+        //debugger;
+        if (Validazione()) {
+            if (ValidazioneDateEsteroLivello()==1) {
+                $('.container').addClass("NoOverflow");
+                $("#dialog").dialog("open");
+                $("#dialog").css("background-color", "#ffffff");
+
+                var rotta = "/Statistiche/DipEsteroLivelloNew/RptDipEsteroLivello";
+                var data1 = $("#data1").datepicker().val()
+                var data2 = $("#data2").datepicker().val()
+                var idLivello = $("#idLivello").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {
+                        dtIni: data1,
+                        dtFin: data2,
+                        idLivello: idLivello
+                    },
+                    dataType: 'html',
+                    beforeSend: function () {
+                        //debugger;
+                        $("#dialog").empty();
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#dialog").html(result);
+                    },
+                    complete: function () {
+                        //$("#divEffettoLoadAutNoDoc").hide("slow");
+                        //                $("#Centro").getNiceScroll().resize();
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+                });          
+            } else {
+                $("#msgModalStatistiche").html("La Data Inizio non può essere superiore alla Data Fine");
+                $('#myModalErrorStatistiche').modal('toggle');
+            }
+        }
+    });
+
+    $("#idLivello").select2({
+        placeholder: "Seleziona il Livello",
+        allowClear: true,
+        width: "150px",
+        language: "it"
+    });
+
+    $('#data1').datepicker({
+        //showButtonPanel: true,
+        showAnim: "slide",
+        changeMonth: true,
+        changeYear: true,
+    });
+
+    $('#data2').datepicker({
+        //showButtonPanel: true,
+        showAnim: "slide",
+        changeMonth: true,
+        changeYear: true,
+    });
+    
+    function ValidazioneDateEsteroLivello() {
+        //debugger;
+        var rotta = "/Statistiche/DipEsteroLivelloNew/ValidazioneDateEsteroLivello";
+        var data1 = $("#data1").datepicker().val()
+        var data2 = $("#data2").datepicker().val()
+        var valoreRitorno = 0;
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { 
+                dtIni:data1,
+                dtFin:data2
+            },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "" || result.err == undefined) {
+                    if (result.datevalide != 0) {
+                        valoreRitorno = 1;
+                    }
+                    else {
+                        valoreRitorno = 0;
+                    }
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+        return valoreRitorno;
+    }
+
+</script>

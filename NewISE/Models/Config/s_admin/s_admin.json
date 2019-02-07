@@ -1,13 +1,6 @@
 ﻿{
   "s_admin": [
     {
-      "username": "yoravas",
-      "password": "aspnet",
-      "nome": "Mauro",
-      "cognome": "Arduini",
-      "email": "mauro.arduini@ritspa.it"
-    },
-    {
       "username": "fantomas",
       "password": "ise",
       "nome": "Daniele",
@@ -15,25 +8,25 @@
       "email": "daniele.fantini@ritspa.it"
     },
     {
-      "username": "francesco",
-      "password": "ise",
-      "nome": "Francesco",
-      "cognome": "Salierno",
-      "email": "francesco.salierno@ritspa.it"
-    },
-    {
       "username": "andrea",
       "password": "ise",
       "nome": "Andrea",
       "cognome": "Gull",
-      "email": "andrea.gull@valueson.it"
+      "email": "a.gull@infordata.net"
     },
     {
-      "username": "rick",
+      "username": "3272",
       "password": "ise",
-      "nome": "Jean",
-      "cognome": "Ravelo",
-      "email": "jean.ravelomanantsoa@valueson.it"
+      "nome": "Luigi",
+      "cognome": "Puca",
+      "email": "mauro.arduini@ritspa.it"
+    },
+    {
+      "username": "3409",
+      "password": "ise",
+      "nome": "Giampiero",
+      "cognome": "Testardi",
+      "email": "progetto.ise@gmail.com"
     }
   ]
 

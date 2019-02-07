@@ -1,0 +1,341 @@
+﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
+@using NewISE.Models.Tools
+@using NewISE.Models.ViewModel
+@model IEnumerable<ElencoFamiliariPassaportoModel>
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idFaseCorrente = Convert.ToDecimal(ViewData["idFaseCorrente"]);
+}
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <h4>Elaborazione Passaporti - Richiesta</h4>
+        <hr />
+        <table cellspacing="0" id="tabElencoFamiliariPass_var" class="table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.nominativo)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.codiceFiscale)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.dataInizio)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.dataFine)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.parentela)
+                    </th>
+                    <th style="width: 20px;" class="text-center">
+                        @Html.DisplayNameFor(model => model.idAltriDati)
+                    </th>
+
+                    <th class="text-center">
+                        Doc. Iden.
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.richiedi)
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.HiddenFor(modelItem => item.ordinamento) </td>
+                        <td style="text-align: left;">
+                            @Html.DisplayFor(modelItem => item.nominativo)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.codiceFiscale)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.dataInizio)
+                        </td>
+                        <td class="text-center">
+                            @if (item.dataFine != Utility.DataFineStop())
+                            {
+                                @Html.DisplayFor(modelItem => item.dataFine)
+                            }
+                        </td>
+                        <td class="text-center">
+                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.parentela)</span>
+                        </td>
+                        @if (item.idAltriDati > 0)
+                        {
+                            switch (item.parentela)
+                            {
+                                case EnumParentela.Coniuge:
+                                    <td class="text-center">
+                                        <a href="#" id="linkAltriDatiFam" onclick="AltriDatiFamiliariConiuge_var(@item.idAltriDati, @idFaseCorrente); ">
+                                            <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
+                                        </a>
+                                    </td>
+                                    break;
+                                case EnumParentela.Figlio:
+                                    <td class="text-center">
+                                        <a href="#" id="linkAltriDatiFam" onclick="AltriDatiFamiliariFiglio_var(@item.idAltriDati, @idFaseCorrente); ">
+                                            <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
+                                        </a>
+                                    </td>
+                                    break;
+
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        }
+                        else
+                        {
+                            <td class="text-center"></td>
+                        }
+
+                        <td class="text-center">
+                            <input id="hColElencoDocIdFamiliare" type="hidden" value="@item.idFamiliarePassaporto" />
+                            <input id="hColElencoDocParentela" type="hidden" value="@Convert.ToDecimal(item.parentela)" />
+                            <div id="divColElencoDoc">
+                                @Html.Action("ColonnaElencoDoc", "VariazionePassaporto", new { idAttivazionePassaporto = item.idAttivazionePassaporti, idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela, idFaseCorrente = idFaseCorrente })
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            @Html.Action("ChkIncludiPassaporto", "VariazionePassaporto", new { idAttivitaPassaporto = item.idAttivazionePassaporti, idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela, esisteDoc = item.HasDoc.esisteDoc, includiPassaporto = item.richiedi, notificato = item.notificato })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#tabElencoFamiliariPass_var").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "bSort": true,
+        "bSortable": true,
+        "columnDefs": [
+            { "visible": false, "targets": [0] },
+        ],
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "columnDefs": [
+                     { "targets": [3, 4], "type": 'date-euro' },
+                     { "targets": [0, 6, 7, 8], "orderable": false },
+                     { "targets": [0], "visible": false },
+        ],
+        "order": [[5, "asc"], [3, "asc"]]
+    });
+
+
+    function DisabilitaCheckBox_var() {
+        //debugger;
+        var row = $("#tabElencoFamiliariPass_var tr");
+        var objChk = row.find("#includiPassaporto");
+
+        try {
+            for (var i = 0; i < objChk.length; i++) {
+                $(objChk[i]).attr("disabled", "disabled");
+                $(objChk[i]).addClass("disabled");
+            }
+        }
+        catch (e) {
+            var msg = e;
+            ErroreElaborazioneAjax(msg);
+        }
+    }
+
+    function AggiornaColElencoDoc_var(result, idFamiliare, parentela) {
+        //debugger;
+        var row = $("#tabElencoFamiliariPass_var tr");
+        var objIdFamiliare = row.find("#hColElencoDocIdFamiliare");
+        var objParentela = row.find("#hColElencoDocParentela");
+        var ldiv = row.find("#divColElencoDoc");
+
+        try {
+            for (var i = 0; i < objIdFamiliare.length; i++) {
+                var valIdFam = objIdFamiliare[i].value;
+                var valParentela = objParentela[i].value;
+                if (valIdFam == idFamiliare && valParentela == parentela) {
+                    //var id = obj[i].id;
+                    //var unicoId = obj[i].uniqueID;
+                    var div = ldiv[i];
+
+                    $(div).empty();
+                    $(div).html(result);
+
+                    return;
+                }
+            }
+        }
+        catch (e) {
+            var msg = e;
+            ErroreElaborazioneAjax(msg);
+        }
+
+    }
+
+    function ColElencoDoc_var(idAttivazioniPassaporto, idFamiliare, parentela, idFaseCorrente) {
+        //debugger;
+        var rotta = "/VariazionePassaporto/ColonnaElencoDoc";
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idAttivazionePassaporto: idAttivazioniPassaporto,
+                idFamiliarePassaporto: idFamiliare,
+                parentela: parentela,
+                idFaseCorrente: idFaseCorrente
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$('#ModalPensione').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                AggiornaColElencoDoc_var(result, idFamiliare, parentela);
+
+                //$("#divColElencoDoc").empty();
+                //$("#divColElencoDoc").html(result);
+
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+    function ConfermaIncludiEscludiPassaporto_var(chkEscludi, id, parentela) {
+        //debugger;
+        var idFaseCorrente = parseInt('@idFaseCorrente');
+
+        var rotta = "/VariazionePassaporto/ConfermaIncludiEscludiPassaporto_var";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { id: id, parentela: parentela },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                if (result.err == "") {
+                    chkEscludi.checked = result.chk;
+                    ColElencoDoc_var(result.idAttivazioniPassaporto, id, parentela, idFaseCorrente);
+                    GestionePulsantiNotificaAndConcludiPassaporto_Richiesta_var();
+
+                } else {
+                    chkEscludi.checked = !chkEscludi.checked;
+                    ErroreElaborazioneAjax(result.err);
+                }
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+
+    function ElencoDocumenti_var(idFamiliarePassaporto, tipoDoc, idParentela) {
+        //debugger;
+        var rotta = "/VariazionePassaporto/ElencoDocumentiPassaporto";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idFamiliarePassaporto: idFamiliarePassaporto,
+                tipoDoc: tipoDoc,
+                parentela: idParentela
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+                //$('#DocModal').modal('show');
+            },
+            success: function (result) {
+                //debugger;
+
+                $("#divPassaporto_var").empty();
+                $("#divPassaporto_var").html(result);
+                //GestionePulsantiNotificaAndConcludiPassaporto();
+            },
+            complete: function () {
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+
+
+    </script>

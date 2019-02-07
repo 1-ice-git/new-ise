@@ -21,8 +21,8 @@ namespace NewISE.Areas.Parametri.Controllers
                 r.Add(new SelectListItem() { Text = "", Value = "", Selected = true });
                 r.Add(new SelectListItem() { Text = "Aliquote Contributive", Value = "0" });
                 r.Add(new SelectListItem() { Text = "Percentuale Chilometrica", Value = "1" });
-                r.Add(new SelectListItem() { Text = "Coefficente di Richiamo", Value = "2" });
-                r.Add(new SelectListItem() { Text = "Coefficente di Sede", Value = "3" });
+                r.Add(new SelectListItem() { Text = "Coefficiente di Richiamo", Value = "2" });
+                r.Add(new SelectListItem() { Text = "Coefficiente di Sede", Value = "3" });
                 r.Add(new SelectListItem() { Text = "Indennita Base", Value = "4" });
                 r.Add(new SelectListItem() { Text = "Indennità Primo Segretario", Value = "5" });
                 r.Add(new SelectListItem() { Text = "Indennità Sistemazione", Value = "6" });
@@ -36,13 +36,18 @@ namespace NewISE.Areas.Parametri.Controllers
                 r.Add(new SelectListItem() { Text = "Valuta Ufficio", Value = "14" });
                 r.Add(new SelectListItem() { Text = "Percentuale Disagio", Value = "15" });
                 r.Add(new SelectListItem() { Text = "Percentuale Anticipo TE", Value = "16" });
+                r.Add(new SelectListItem() { Text = "Percentuale Condivisione MAB", Value = "17" });
+
+                r = r.OrderBy(x => x.Text).ToList();
 
                 ViewBag.ParametriList = r;
                 return View();
             }
             catch (Exception ex)
             {
-                return View("Error");
+                HandleErrorInfo her = new HandleErrorInfo(ex, "Parametri", "index");
+
+                return View("Error", her);
             }
         }
     }

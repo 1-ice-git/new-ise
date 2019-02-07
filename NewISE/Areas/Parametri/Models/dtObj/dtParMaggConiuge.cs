@@ -8,6 +8,8 @@ using System.Linq;
 using System.Web;
 using NewISE.Models.Tools;
 using System.ComponentModel.DataAnnotations;
+using NewISE.Models.dtObj;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -110,7 +112,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idPercentualeConiuge = e.IDPERCMAGCONIUGE,
                                 idTipologiaConiuge = (EnumTipologiaConiuge)e.IDTIPOLOGIACONIUGE,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA ,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
+                                dataFineValidita = e.DATAFINEVALIDITA,//!= Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,
                                 annullato = e.ANNULLATO,
                                 Coniuge = new TipologiaConiugeModel()
@@ -139,10 +141,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     //var lib = db.PERCENTUALEMAGCONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == idTipologiaConiuge && a.ANNULLATO == escludiAnnullati).ToList();
                     List<PERCENTUALEMAGCONIUGE> lib = new List<PERCENTUALEMAGCONIUGE>();
-                    if(escludiAnnullati==true)
+                    if (escludiAnnullati == true)
                         lib = db.PERCENTUALEMAGCONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == idTipologiaConiuge && a.ANNULLATO == false).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
                     else
-                        lib = db.PERCENTUALEMAGCONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == idTipologiaConiuge).OrderBy(b=>b.DATAINIZIOVALIDITA).ThenBy(c=>c.DATAFINEVALIDITA).ToList();
+                        lib = db.PERCENTUALEMAGCONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == idTipologiaConiuge).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
 
                     libm = (from e in lib
                             select new PercentualeMagConiugeModel()
@@ -153,7 +155,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
                                 dataFineValidita = e.DATAFINEVALIDITA,// != Utility.DataFineStop() ? e.DATAFINEVALIDITA : new PercentualeMagConiugeModel().dataFineValidita,
                                 percentualeConiuge = e.PERCENTUALECONIUGE,
-                                dataAggiornamento=e.DATAAGGIORNAMENTO,
+                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
                                 Coniuge = new TipologiaConiugeModel()
                                 {
@@ -366,10 +368,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             List<PERCENTUALEMAGCONIUGE> libNew = new List<PERCENTUALEMAGCONIUGE>();
 
-            PERCENTUALEMAGCONIUGE ibPrecedente = new PERCENTUALEMAGCONIUGE();
+            //PERCENTUALEMAGCONIUGE ibPrecedente = new PERCENTUALEMAGCONIUGE();
             PERCENTUALEMAGCONIUGE ibNew1 = new PERCENTUALEMAGCONIUGE();
             PERCENTUALEMAGCONIUGE ibNew2 = new PERCENTUALEMAGCONIUGE();
-            List<PERCENTUALEMAGCONIUGE> lArchivioIB = new List<PERCENTUALEMAGCONIUGE>();
+            //List<PERCENTUALEMAGCONIUGE> lArchivioIB = new List<PERCENTUALEMAGCONIUGE>();
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -379,18 +381,19 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     using (dtParMaggConiuge dtal = new dtParMaggConiuge())
                     {
                         //Se la data variazione coincide con una data inizio esistente
-                        lista = dtal.DataVariazioneCoincideConDataInizio(ibm.dataInizioValidita,Convert.ToDecimal(ibm.idTipologiaConiuge));
+                        lista = dtal.DataVariazioneCoincideConDataInizio(ibm.dataInizioValidita, Convert.ToDecimal(ibm.idTipologiaConiuge));
+
                         if (lista.Count != 0)
                         {
                             giafatta = true;
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal percConiugeFirst = Convert.ToDecimal(lista[3]);
+                            //decimal percConiugeFirst = Convert.ToDecimal(lista[3]);
 
                             ibNew1 = new PERCENTUALEMAGCONIUGE()
                             {
-                                IDTIPOLOGIACONIUGE =Convert.ToDecimal(ibm.idTipologiaConiuge),
+                                IDTIPOLOGIACONIUGE = Convert.ToDecimal(ibm.idTipologiaConiuge),
                                 DATAINIZIOVALIDITA = dataInizioFirst,
                                 DATAFINEVALIDITA = dataFineFirst,
                                 // ALIQUOTA = ibm.aliquota,
@@ -410,7 +413,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                 };
                                 //qui annullo tutti i record rimanenti dalla data inizio inserita
-                                libNew = db.PERCENTUALEMAGCONIUGE.Where(a =>a.ANNULLATO == false).ToList()
+                                libNew = db.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false).ToList()
                                     .Where(a => a.DATAINIZIOVALIDITA > dataInizioFirst &&
                                     a.IDTIPOLOGIACONIUGE == Convert.ToDecimal(ibm.idTipologiaConiuge)).ToList();
                                 foreach (var elem in libNew)
@@ -423,12 +426,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
 
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaConiuge_PMC(ibNew1.IDPERCMAGCONIUGE, db, ibm.dataInizioValidita);
+                            }
+
                             db.Database.CurrentTransaction.Commit();
                         }
                         ///se la data variazione coincide con una data fine esistente(diversa da 31/12/9999)
                         if (giafatta == false)
                         {
                             lista = dtal.DataVariazioneCoincideConDataFine(ibm.dataInizioValidita, Convert.ToDecimal(ibm.idTipologiaConiuge));
+
                             if (lista.Count != 0)
                             {
                                 giafatta = true;
@@ -479,6 +488,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var pmag in libNew)
+                                    {
+                                        dtrp.AssociaConiuge_PMC(pmag.IDPERCMAGCONIUGE, db, ibm.dataInizioValidita);
+                                    }
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -511,7 +529,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = dataFine,
                                     // ALIQUOTA = ibm.aliquota,
-                                    PERCENTUALECONIUGE = ibm.percentualeConiuge,                                    
+                                    PERCENTUALECONIUGE = ibm.percentualeConiuge,
                                     DATAAGGIORNAMENTO = DateTime.Now
                                 };
 
@@ -527,7 +545,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     decimal tmpii = Convert.ToDecimal(ibm.idTipologiaConiuge);
-                                    libNew = db.PERCENTUALEMAGCONIUGE.Where(a => a.IDTIPOLOGIACONIUGE ==tmpii
+                                    libNew = db.PERCENTUALEMAGCONIUGE.Where(a => a.IDTIPOLOGIACONIUGE == tmpii
                                     && a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
                                     foreach (var elem in libNew)
                                     {
@@ -542,6 +560,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var pmag in libNew)
+                                    {
+                                        dtrp.AssociaConiuge_PMC(pmag.IDPERCMAGCONIUGE, db, ibm.dataInizioValidita);
+                                    }
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -565,6 +592,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.PERCENTUALEMAGCONIUGE.Add(ibNew1);
                                 db.SaveChanges();
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+
+                                    dtrp.AssociaConiuge_PMC(ibNew1.IDPERCMAGCONIUGE, db, ibm.dataInizioValidita);
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
 
@@ -587,7 +622,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = dataInizioUltimo,
                                         DATAFINEVALIDITA = dataFineUltimo,
                                         // ALIQUOTA = ibm.aliquota,//nuova aliquota rispetto alla vecchia registrata
-                                        PERCENTUALECONIUGE = ibm.percentualeConiuge,                                        
+                                        PERCENTUALECONIUGE = ibm.percentualeConiuge,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew.Add(ibNew1);
@@ -595,6 +630,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALEMAGCONIUGE.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+
+                                        dtrp.AssociaConiuge_PMC(ibNew1.IDPERCMAGCONIUGE, db, ibm.dataInizioValidita);
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -622,6 +665,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALEMAGCONIUGE.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var pmag in libNew)
+                                        {
+                                            dtrp.AssociaConiuge_PMC(pmag.IDPERCMAGCONIUGE, db, ibm.dataInizioValidita);
+                                        }
+
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }
@@ -680,7 +734,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        
+
         public void DelPercMagConiuge(decimal idMagCon)
         {
             PERCENTUALEMAGCONIUGE precedenteIB = new PERCENTUALEMAGCONIUGE();
@@ -706,17 +760,25 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             DATAINIZIOVALIDITA = precedenteIB.DATAINIZIOVALIDITA,
                             DATAFINEVALIDITA = delIB.DATAFINEVALIDITA,
                             //ALIQUOTA = precedenteIB.ALIQUOTA,
-                            PERCENTUALECONIUGE = precedenteIB.PERCENTUALECONIUGE,                            
+                            PERCENTUALECONIUGE = precedenteIB.PERCENTUALECONIUGE,
                             DATAAGGIORNAMENTO = DateTime.Now,// precedenteIB.DATAAGGIORNAMENTO,
                             ANNULLATO = false
                         };
                         db.PERCENTUALEMAGCONIUGE.Add(NuovoPrecedente);
+
+                        db.SaveChanges();
+
+                        using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                        {
+                            dtrp.AssociaConiuge_PMC(NuovoPrecedente.IDPERCMAGCONIUGE, db, delIB.DATAINIZIOVALIDITA);
+                        }
+
+                        using (objLogAttivita log = new objLogAttivita())
+                        {
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Percentuale Maggiorazione Coniugi.", "PERCENTUALECONIUGE", idMagCon);
+                        }
                     }
-                    db.SaveChanges();
-                    using (objLogAttivita log = new objLogAttivita())
-                    {
-                        log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Percentuale Maggiorazione Coniugi.", "PERCENTUALECONIUGE", idMagCon);
-                    }
+
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -727,8 +789,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-       
-      
+
+
         public static DateTime DataInizioMinimaNonAnnullata(decimal idLivello)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -792,7 +854,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
             return vr;
         }
-        
+
         public bool PercMaggiorazioneConiugeAnnullato(PercentualeMagConiugeModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -852,7 +914,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
             return tmp;
         }
-              
+
         public List<string> RestituisciIntervalloDiUnaData(DateTime DataCampione, decimal IDTIPOLOGIACONIUGE)
         {
             List<string> tmp = new List<string>();

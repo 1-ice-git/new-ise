@@ -162,7 +162,7 @@ namespace NewISE.Models.DBModel.dtObj
                         a =>
                             a.ANNULLATO == false && dataIntercettazioneFascia >= a.DATAINIZIOVALIDITA &&
                             dataIntercettazioneFascia <= a.DATAFINEVALIDITA)
-                        .OrderByDescending(a => a.DATAFINEVALIDITA);
+                        .OrderByDescending(a => a.DATAFINEVALIDITA).ToList();
 
                 if (lgfkm?.Any() ?? false)
                 {

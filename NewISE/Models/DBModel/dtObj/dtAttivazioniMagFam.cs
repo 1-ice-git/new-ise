@@ -6,6 +6,7 @@ using System.Web;
 using NewISE.EF;
 using NewISE.Models.Tools;
 using Newtonsoft.Json.Schema;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -86,10 +87,11 @@ namespace NewISE.Models.DBModel.dtObj
                     var lamf =
                         mf.ATTIVAZIONIMAGFAM.Where(
                             a =>
-                                ((a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true && a.ANNULLATO == false) ||
-                                 (a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false && a.ANNULLATO == false) ||
-                                 (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == false && a.ANNULLATO == false)))
-                            .OrderBy(a => a.IDATTIVAZIONEMAGFAM);
+                                (
+                                    (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == true && a.ANNULLATO == false) ||
+                                    (a.RICHIESTAATTIVAZIONE == false && a.ATTIVAZIONEMAGFAM == false && a.ANNULLATO == false) ||
+                                    (a.RICHIESTAATTIVAZIONE == true && a.ATTIVAZIONEMAGFAM == false && a.ANNULLATO == false))
+                                ).OrderBy(a => a.IDATTIVAZIONEMAGFAM);
                     if (lamf?.Any() ?? false)
                     {
                         var amf = lamf.First();
@@ -451,6 +453,31 @@ namespace NewISE.Models.DBModel.dtObj
                 if (i <= 0)
                 {
                     throw new Exception(string.Format("Impossibile associare il i dati per l'attivazione familiare {0}.", idAttivazioneFamiliare));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public void AssociaAltriDatiFamiliari_Coniuge(decimal idConiuge, decimal idAltriDatiFamiliari, ModelDBISE db)
+        {
+            try
+            {
+                var c = db.CONIUGE.Find(idConiuge);
+                var item = db.Entry<CONIUGE>(c);
+                item.State = EntityState.Modified;
+                item.Collection(a => a.ALTRIDATIFAM).Load();
+                var adf = db.ALTRIDATIFAM.Find(idAltriDatiFamiliari);
+                c.ALTRIDATIFAM.Add(adf);
+
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile associare il coniuge a altri dati familiari");
                 }
             }
             catch (Exception ex)

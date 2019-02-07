@@ -10,11 +10,11 @@ namespace NewISE.Models.ViewModel
 {
     public class AnticipiViewModel : AnticipiModel
     {
-        [Display(Name = "Importo Previsto")]
+        [Display(Name = "Anticipo Lordo")]
         public decimal ImportoPrevisto { get; set; }
-        [Display(Name = "% Anticipo Richiesto")]
+        [Display(Name = "% Richiesta")]
         public decimal PercentualeAnticipoRichiesto { get; set; }
-        [Display(Name = "Importo Percepito")]
+        [Display(Name = "Imp. Richiesto Lordo")]
         public string ImportoPercepito { get; set; }
 
     }

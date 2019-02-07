@@ -2,7 +2,9 @@
 using NewISE.Areas.Statistiche.Models;
 using NewISE.Areas.Statistiche.Models.dtObj;
 using NewISE.Areas.Statistiche.RPTDataSet;
+using NewISE.EF;
 using NewISE.Models;
+using NewISE.Models.DBModel.dtObj;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -23,6 +25,13 @@ namespace NewISE.Areas.Statistiche.Controllers
         public ActionResult Index()
         {
             return View("Index");
+        }
+
+
+        [Authorize(Roles = "1 ,2")]
+        public ActionResult AttivitaStatistiche()
+        {
+            return PartialView();
         }
 
     }

@@ -28,7 +28,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     libm = dtib.getListRiduzioni(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }
             }
-            catch 
+            catch
             {
                 return PartialView("ErrorPartial");
             }
@@ -92,7 +92,11 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                MsgErr msg = new MsgErr()
+                {
+                    msg = ex.Message
+                };
+                return PartialView("ErrorPartial", msg);
             }
             return PartialView("Riduzioni", libm);
         }
@@ -116,7 +120,8 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciRiduzione(RiduzioniModel ibm, bool escludiAnnullati = true,bool aggiornaTutto=false)
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciRiduzione(RiduzioniModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
             var r = new List<SelectListItem>();

@@ -1,0 +1,292 @@
+﻿@model IEnumerable<NewISE.Models.DBModel.percCondivisioneMABModel>
+@using NewISE.Areas.Parametri.Models.dtObj;
+@using NewISE.Models.Tools;
+@{
+    bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
+    decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
+}
+
+<p>
+    <a id="btnInsCondivisioneMAB" href="#" onclick="NuovaCondivisioneMab();">Inserisci Nuova Condivisione MAB</a>
+</p>
+
+<table id="tbIndBase" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataFineValidita)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Percentuale)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.annullato)
+            </th>
+            <th class="text-center"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                </td>
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td style="text-align:center;">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Percentuale) %
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.annullato)
+                </td>
+                <td style="text-align:center;">
+                    @using (dtCondivisioneMAB dtib = new dtCondivisioneMAB())
+                    {
+                        if (dtib.IndCondivisioneMABAnnullato(item))
+                        {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            if (item.idPercCond == idMinimoNonAnnullato)
+                            {
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="EliminaCondivisioneMab(@item.idPercCond);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div id="dialog-confirm" title="Elimina indennità di primo segretario?" class="hide">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Si vuole procedere con l'eliminazione dell'indennità di primo segretario?</p>
+</div>
+
+<script type="text/javascript">
+    $('.display').DataTable({
+        "ordering": false,
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        }
+    });
+
+    $("#idIndPrimoSegr").select2({
+        placeholder: "Seleziona indennità primo segretario",
+        allowClear: true,
+        language: "it",
+        width: '150'
+
+    });
+
+    $("#btnInsCondivisioneMAB").button();
+
+    function PrelevaPVIndPrimoSegr() {
+      //  debugger;
+        rotta = "/Parametri/ParamPrimoIndSegr/IndennitaPrimoSegretarioLivello";
+
+       // var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
+       // $("#hiTipoContributo").val(idIndPrimoSegr);
+
+        //if (isNaN(idIndPrimoSegr)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
+
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function NuovaCondivisioneMab() {
+      //  debugger;
+
+        var rotta = "/Parametri/ParamPercCondivisioneMAB/NuovaCondivisioneMab";
+        // var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
+        //if (isNaN(idIndPrimoSegr)) {
+        //    //$("#divPViewParametri").empty();
+        //    AlertDialog("Selezionare una indennita per procedere.");
+        //    return false;
+        //}
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            //data: { idIndPrimoSegr: idIndPrimoSegr, escludiAnnullati: chk },
+            data: { escludiAnnullati: chk },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divPViewParametri").empty();
+                $("#divPViewParametri").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                //                $("#Centro").getNiceScroll().resize();
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    function EliminaCondivisioneMab(id) {
+        //debugger;
+        var rotta = "/Parametri/ParamPercCondivisioneMAB/EliminaCondivisioneMab";
+
+        //var idIndPrimoSegr = ($("#idIndPrimoSegr").select2('val'));
+
+        //var chk = true;
+
+        //if (isNaN(idIndPrimoSegr)) {
+        //    $("#divPViewParametri").empty();
+        //    return false;
+        //}
+
+        var chk = false;
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
+
+        $('#dialog-confirm').dialog({
+            autoOpen: true,
+            width: 400,
+            buttons: [
+                {
+                    text: "OK",
+                    click: function () {
+                        $(this).dialog("close");
+                        $.ajax({
+                            type: "POST",
+                            url: rotta,
+                            data: { escludiAnnullati: chk, idIndPrimoSegr: id },
+                            dataType: 'html',
+                            beforeSend: function () {
+                                //debugger;
+                                //VerificaAutenticazione();
+                                //$("#DialogNewDoc").dialog("destroy");
+                                //$("#divEffettoLoadAutNoDoc").show("slow");
+
+                            },
+                            success: function (result) {
+                                //debugger;
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                $("#divPViewParametri").empty();
+                                $("#divPViewParametri").html(result);
+
+                                //RicercaDocumenti();
+
+                            },
+                            complete: function () {
+                                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                                //                $("#Centro").getNiceScroll().resize();
+                            },
+                            error: function (jqXHR, textStatus, errorThrow) {
+                                //debugger;
+                                var msg = errorThrow.err;
+                                AlertDialog(msg);
+                            }
+
+                        });
+                    },
+                    "class": "ui-button-danger"
+                },
+                {
+                    text: "Annulla",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+
+    }
+</script>

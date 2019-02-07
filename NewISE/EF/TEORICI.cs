@@ -17,26 +17,48 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TEORICI()
         {
-            this.CONTABILITA = new HashSet<CONTABILITA>();
-            this.STIPENDI = new HashSet<STIPENDI>();
+            this.ELABINDENNITA = new HashSet<ELABINDENNITA>();
+            this.ELABMAB = new HashSet<ELABMAB>();
         }
     
         public decimal IDTEORICI { get; set; }
+        public decimal IDTRASFERIMENTO { get; set; }
+        public decimal IDMESEANNOELAB { get; set; }
         public decimal IDVOCI { get; set; }
         public decimal IDTIPOMOVIMENTO { get; set; }
-        public decimal IDTRASFERIMENTO { get; set; }
-        public byte MESERIFERIMENTO { get; set; }
-        public short ANNORIFERIMENTO { get; set; }
+        public Nullable<decimal> IDINDSISTLORDA { get; set; }
+        public Nullable<decimal> IDELABTRASPEFFETTI { get; set; }
+        public Nullable<decimal> IDELABINDRICHIAMO { get; set; }
+        public Nullable<decimal> IDAUTOVOCIMANUALI { get; set; }
+        public decimal MESERIFERIMENTO { get; set; }
+        public decimal ANNORIFERIMENTO { get; set; }
+        public decimal GIORNI { get; set; }
         public decimal IMPORTO { get; set; }
+        public decimal IMPORTOLORDO { get; set; }
+        public decimal ALIQUOTAFISCALE { get; set; }
+        public decimal DETRAZIONIAPPLICATE { get; set; }
+        public decimal CONTRIBUTOAGGIUNTIVO { get; set; }
+        public decimal MASSIMALECA { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
+        public bool INSERIMENTOMANUALE { get; set; }
+        public bool ELABORATO { get; set; }
+        public bool DIRETTO { get; set; }
         public bool ANNULLATO { get; set; }
+        public bool RECUPERO { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CONTABILITA> CONTABILITA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<STIPENDI> STIPENDI { get; set; }
+        public virtual AUTOMATISMOVOCIMANUALI AUTOMATISMOVOCIMANUALI { get; set; }
+        public virtual ELABINDRICHIAMO ELABINDRICHIAMO { get; set; }
+        public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE { get; set; }
+        public virtual ELABTRASPEFFETTI ELABTRASPEFFETTI { get; set; }
+        public virtual FLUSSICEDOLINO FLUSSICEDOLINO { get; set; }
+        public virtual MESEANNOELABORAZIONE MESEANNOELABORAZIONE { get; set; }
+        public virtual OA OA { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         public virtual TIPOMOVIMENTO TIPOMOVIMENTO { get; set; }
         public virtual VOCI VOCI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABINDENNITA> ELABINDENNITA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABMAB> ELABMAB { get; set; }
     }
 }

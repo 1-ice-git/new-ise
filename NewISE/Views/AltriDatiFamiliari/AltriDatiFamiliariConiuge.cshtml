@@ -12,7 +12,7 @@
 
 
 
-<div style="padding-left: 15px;">
+<div>
     <h4>Altri Dati Familiari</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -25,43 +25,6 @@
             <span class="text-uppercase">@Html.DisplayFor(model => model.Coniuge.nominativo)</span>
         </dd>
 
-        @*<dt>
-                @Html.DisplayNameFor(model => model.dataNascita)
-            </dt>
-            @if (Model.dataNascita.HasValue)
-            {
-                <dd>
-                    <span class="text-uppercase">@Model.dataNascita.Value.ToShortDateString()</span>
-                </dd>
-            }
-            else
-            {
-                <dd></dd>
-            }
-
-            <dt>
-                @Html.DisplayNameFor(model => model.capNascita)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.capNascita)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.comuneNascita)
-            </dt>
-
-            <dd>
-                <span class="text-uppercase">@Html.DisplayFor(model => model.comuneNascita)</span>
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.provinciaNascita)
-            </dt>
-
-            <dd>
-                <span class="text-uppercase">@Html.DisplayFor(model => model.provinciaNascita)</span>
-            </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.nazionalita)
@@ -134,3 +97,7 @@
     | @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 
 </p>
+
+<script type="text/javascript">
+    PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
+</script>

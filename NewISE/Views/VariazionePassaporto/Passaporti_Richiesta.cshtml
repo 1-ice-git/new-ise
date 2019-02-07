@@ -1,0 +1,18 @@
+﻿@using NewISE.Models.Enumeratori
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div id="divPassaporto_var" style="padding-top: 5px;padding-bottom:10px;border-bottom:solid;border-width:1px;border-color:limegreen">
+            @Html.Action("ElencoFamiliariPassaporti_Richiesta", "VariazionePassaporto", new { idTrasferimento = idTrasferimento })
+        </div>
+    </div>
+</div>
+
+<div id="divPusantiNotificaAndConcludiPassaporto_var">
+    @Html.Action("GestPulsantiNotificaAndPraticaConclusa_Richiesta", "VariazionePassaporto", new { idTrasferimento = idTrasferimento })
+</div>
+

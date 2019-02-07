@@ -1,0 +1,213 @@
+﻿@model IEnumerable<NewISE.Models.DBModel.EvoluzioneIndennitaModel>
+@using NewISE.Models.Tools
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
+
+@{
+
+    decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
+
+}
+
+@Html.Hidden("hidTrasferimento")
+<div id="dialog" title=""></div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <h4>Contributo Omnicomprensivo Rientro</h4>
+        </div>
+    </div>
+</div>
+
+<table id="tbContributoOmnicomprensivoRientro" class="display" cellspacing="0">
+    <thead>
+        <tr>
+
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataRientro)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.IndennitaRichiamo)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.PercentualeFasciaKmR)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.AnticipoContributoOmnicomprensivoRientro)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.SaldoContributoOmnicomprensivoRientro)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.TotaleContributoOmnicomprensivoRientro)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (item.dataRientro == Utility.DataFineStop())
+                {
+                    <td style="text-align:center;"></td>
+                }
+                else
+                {
+                    <td style="text-align:center;">
+                        @Html.DisplayFor(modelItem => item.dataRientro)
+                    </td>
+                }
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.IndennitaRichiamo)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.PercentualeFasciaKmR)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.AnticipoContributoOmnicomprensivoRientro)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.SaldoContributoOmnicomprensivoRientro)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.TotaleContributoOmnicomprensivoRientro)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
+
+        <button class="btn btn-default btn-sm" id="opener">
+            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+            Stampa
+        </button>
+
+    </div>
+</div>
+
+<br />
+
+<script type="text/javascript">
+
+    $('#tbContributoOmnicomprensivoRientro').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "columnDefs": [
+                { "targets": [0], "type": 'date-euro' },
+                { "targets": [2], "type": 'numeric-comma' },
+                { "targets": [1, 3, 4, 5], "orderable": false },
+        ],
+        "order": [[0, "asc"]]
+    });
+
+
+
+
+    // Report Contributo Omnicomprensivo Rientro
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight, width: windowWidth
+
+
+        });
+
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
+
+            var rotta = "/Indennita/RptContributoOmnicomprensivoRientro";
+
+            var idTrasferimento = $("#hidTrasferimento").val();
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
+    });
+
+
+
+
+
+
+
+
+</script>
+
+
+
+

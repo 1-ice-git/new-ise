@@ -1,5 +1,6 @@
 ﻿@using System.Diagnostics
 @using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
 @model IEnumerable<NewISE.Models.DBModel.DocumentiModel>
 
 
@@ -33,7 +34,7 @@
 
 @Html.Hidden("hiEliminaDoc")
 
-<p style="padding-left: 15px;">
+<p style="padding-top: 5px;">
     @*@Ajax.ActionLink("Nuovo documento", "NuovoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge" })*@
 
     @if (solaLettura)
@@ -47,7 +48,7 @@
 
 </p>
 
-<div style="padding-left: 15px; padding-right: 5px; padding-top: 0px;">
+<div style="padding-top: 0px;">
     <table id="tabElencoDoc" cellspacing="0">
         <thead>
             <tr>
@@ -79,7 +80,7 @@
                     <td class="text-center" style="width: 10%;">
                         @Html.DisplayFor(modelItem => item.dataInserimento)
                     </td>
-                    <td style="text-align: center; width: 10%;">
+                    <td class="text-center" style="width: 10%;">
                         <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" onclick="" target="_blank">
                             <img class="SfondoBordoImg" width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                         </a>
@@ -135,7 +136,7 @@
         case EnumChiamante.Passaporti:
             @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti", "PratichePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
             break;
-        case EnumChiamante.VariazioneMaggiorazioniFamiliari:
+        case EnumChiamante.Variazione_Maggiorazioni_Familiari:
             @Ajax.ActionLink("Torna indietro", "ElencoFamiliari", "VariazioneMaggiorazioniFamiliari", new { idMaggiorazioniFamiliari = idMaggiorazioniFamiliari }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFamiliari", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
             break;
         default:
@@ -196,11 +197,16 @@
     var nuovoIDTable = "tabElencoDoc" + guid;
     var nuovoIdModalDelete = "DelDocModal" + guid;
     var nuovoModalIns = "NewDocModal" + guid;
+    var nuovoNewViewDocumento = "NewViewDocumento" + guid;
+    var nuovotitoloPagina =  "titoloPagina" + guid;
+    var nuovoNewnotificaModelLabel = "NewnotificaModelLabel" + guid;
 
     $("#tabElencoDoc").prop("id", nuovoIDTable);
     $("#DelDocModal").prop("id", nuovoIdModalDelete);
     $("#NewDocModal").prop("id", nuovoModalIns);
-
+    $("#NewViewDocumento").prop("id", nuovoNewViewDocumento);
+    $("#titoloPagina").prop("id", nuovotitoloPagina);
+    $("#NewnotificaModelLabel").prop("id", nuovoNewnotificaModelLabel);
 
     $("#" + nuovoIDTable).DataTable({
         "language": {
@@ -234,37 +240,15 @@
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "destroy": true,
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "width": "150px"
-        //    }
-
-        //]
-        //dom: 'Bfrtip',
-        //buttons: [
-        //    {
-        //        text: 'Nuovo Coniuge',
-        //        className: 'green',
-        //        action: function (e, dt, node, config) {
-        //            NuovoConiuge();
-        //        }
-        //    }
-        //],
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "visible": false,
-        //        "searchable": false
-        //    },
-
-        //]
+        "columnDefs": [
+             { "targets": [2], "type": 'date-euro' },
+             { "targets": [3, 4], "orderable": false },
+        ],
+        "order": [[0, "asc"]]
     });
 
 
-
-
-
+    PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
 
     function EliminaDoc(idDocumento) {
         $('#' + nuovoIdModalDelete).modal('show');
@@ -388,7 +372,13 @@
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: { tipoDoc: TipoDocumento, id: id, parentela: Parentela, chiamante: Chiamante, idAttivazioneMagFam: idAttivazioneMagFam },
+            
+            data: {  id: id, 
+                tipoDoc:TipoDocumento,
+                parentela:Parentela,
+                Chiamante:Chiamante,
+                idAttivazioneMagFam:idAttivazioneMagFam
+            },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -399,12 +389,12 @@
             },
             success: function (result) {
                 //debugger;
-                $("#NewViewDocumento").empty();
-                $("#NewViewDocumento").html(result);
+                $('#' + nuovoNewViewDocumento).empty();
+                $('#' + nuovoNewViewDocumento).html(result);
 
-                var titoloPagina = $("#titoloPagina").val();
-                $("#NewnotificaModelLabel").empty();
-                $("#NewnotificaModelLabel").html('Documenti ' + titoloPagina);
+                var titoloPagina = $('#' + nuovotitoloPagina).val();
+                $('#' + nuovoNewnotificaModelLabel).empty();
+                $('#' + nuovoNewnotificaModelLabel).html('Documenti ' + titoloPagina);
 
 
             },
@@ -413,7 +403,7 @@
 
             },
             error: function (error) {
-                //debugger;
+                debugger;
                 //Sblocca();
                 var msg = error.responseText;
                 ErroreElaborazioneAjax(msg);

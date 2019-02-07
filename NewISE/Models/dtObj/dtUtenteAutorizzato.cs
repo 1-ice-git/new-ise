@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.dtObj
 {
@@ -18,24 +19,25 @@ namespace NewISE.Models.dtObj
         {
             var dip = db.DIPENDENTI.Find(idDipendente);
 
-            if (dip.ABILITATO == false)
-            {
-                dip.ABILITATO = true;
-            }
+            //if (dip.ABILITATO == false)
+            //{
+            //    dip.ABILITATO = true;
+            //}
 
             //Effettuo una ricerca della matricola che voglio autorizzare per capire se già risulta autorizzata precedentemente.
             var luamAttivoOld = dip.UTENTIAUTORIZZATI;
 
-            if (!luamAttivoOld?.Any() ?? false)
+            if (luamAttivoOld == null || luamAttivoOld.IDDIPENDENTE <= 0)
             {
                 UTENTIAUTORIZZATI ua = new UTENTIAUTORIZZATI()
                 {
                     IDRUOLOUTENTE = (decimal)EnumRuoloAccesso.Utente,
                     IDDIPENDENTE = idDipendente,
-                    UTENTE = dip.MATRICOLA.ToString()
+                    UTENTE = dip.MATRICOLA.ToString(),
+                    PSW = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["PasswordDefaultTEST"])
                 };
 
-                dip.UTENTIAUTORIZZATI.Add(ua);
+                db.UTENTIAUTORIZZATI.Add(ua);
 
                 int i = db.SaveChanges();
 

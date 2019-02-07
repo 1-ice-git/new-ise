@@ -5,6 +5,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
+using NewISE.EF;
+using NewISE.Models.Tools;
+using NewISE.Models.Enumeratori;
+
 namespace NewISE.Models.DBModel
 {
     public class RuoloDipendenteModel
@@ -49,6 +53,16 @@ namespace NewISE.Models.DBModel
 
             return ret;
 
+        }
+
+        public void AnnullaRecord(ModelDBISE db)
+        {
+            var rd = db.RUOLODIPENDENTE.Find(this.idRuoloDipendente);
+            if (rd != null && rd.IDRUOLODIPENDENTE > 0)
+            {
+                rd.ANNULLATO = true;
+                db.SaveChanges();
+            }
         }
 
 

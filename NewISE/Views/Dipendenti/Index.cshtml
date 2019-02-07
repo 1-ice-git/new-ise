@@ -21,7 +21,7 @@
 
 <div class="row">
     <div id="divPanelDipendenti" class="col-xs-5">
-        <div id="ContenitoreDipendentiGepe">
+        <div id="ContenitoreDipendentiGepe" class="animated fadeInLeft">
             @Html.Action("DipendentiGepe", "Dipendenti")
         </div>
     </div>
@@ -31,7 +31,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-12 animated fadeInUpBig">
         <div id="tabIntestazione" class="nav nav-tabs nav-justified">
             <ul id="tabsGestioneTrasferimento" class="nav nav-tabs tabs-destro">
                 @if (admin)
@@ -43,9 +43,33 @@
                     <li class="disabled" id="mnNuovoTrasferimento"><a id="lkNuovoTrasferimento" disabled href="#tabNuovoTrasferimento" data-toggle="tab">Nuovo Trasferimento</a></li>
                 }
                 <li class="disabled" id="mnGestioneTrasferimento"><a id="lkGestioneTrasferimento" disabled href="#tabGestioneTrasferimento" data-toggle="tab">Gestione Trasferimento</a></li>
-                <li class="disabled" id="mnMaggiorazioneFamiliare"><a id="lkMaggiorazioneFamiliare" disabled href="#tabMaggiorazioneFamiliare" data-toggle="tab">Maggiorazione Familiare</a></li>
-                <li class="disabled" id="mnMaggiorazioneAbitazione"><a id="lkMaggiorazioneAbitazione" disabled href="#tabMaggiorazioneAbitazione" data-toggle="tab">Maggiorazione Abitazione</a></li>
-                <li class="disabled" id="mnCongediPermessi"><a id="lkCongediPermessi" disabled href="#tabCongediPermessi" data-toggle="tab">Viaggi di congedo</a></li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle disabled" style="font-size:1.2rem" disabled role="button" id="ddVariazioneTrasferimento" data-toggle="dropdown">
+                        Variazioni Trasferimento
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                        <li role="presentation" class="disabled" id="mnMaggiorazioneFamiliare"><a role="menuitem" tabindex="-1" id="lkMaggiorazioneFamiliare" disabled href="#tabMaggiorazioneFamiliare" data-toggle="tab" style="font-size:1.2rem">Maggiorazione Familiare</a></li>
+                        <li role="presentation" class="disabled" id="mnPassaporto"><a role="menuitem" tabindex="-1" id="lkPassaporto" disabled href="#tabPassaporto" data-toggle="tab" style="font-size:1.2rem">Richiesta Passaporto</a></li>
+                        <li role="presentation" class="disabled" id="mnTitoliViaggio"><a role="menuitem" tabindex="-1" id="lkTitoliViaggio" disabled href="#tabTitoliViaggio" data-toggle="tab" style="font-size:1.2rem">Richiesta Titoli di Viaggio</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation" class="disabled" id="mnSaldoTrasportoEffetti"><a role="menuitem" tabindex="-1" id="lkSaldoTrasportoEffetti" disabled href="#tabSaldoTrasportoEffetti" data-toggle="tab" style="font-size:1.2rem">Saldo Trasporto Effetti</a></li>
+                        <li role="presentation" class="disabled" id="mnMaggiorazioneAbitazione"><a role="menuitem" tabindex="-1" id="lkMaggiorazioneAbitazione" disabled href="#tabMaggiorazioneAbitazione" data-toggle="tab" style="font-size:1.2rem">Maggiorazione Abitazione</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation" class="disabled" id="mnRuoloDipendente"><a role="menuitem" tabindex="-1" id="lkRuoloDipendente" disabled href="#tabRuoloDipendente" data-toggle="tab" style="font-size:1.2rem">Ruolo Dipendente</a></li>
+                    </ul>
+                </li>
+
+
+                @if (admin)
+                {
+                    <li class="disabled" id="mnCongediPermessi"><a id="lkCongediPermessi" disabled href="#tabCongediPermessi" data-toggle="tab" onclick="ViaggiCongedoPermesso();">Viaggi di Congedo</a></li>
+                }
+                else
+                {
+                    <li class="disabled" id="mnCongediPermessi"><a id="lkCongediPermessi" disabled href="#tabCongediPermessi" data-toggle="tab">Viaggi di Congedo</a></li>
+                }
                 @if (admin)
                 {
                     <li class="disabled" id="mnSospensione"><a id="lkSospensione" disabled href="#tabSospensione" data-toggle="tab" onclick="Sospensione();">Sospensione</a></li>
@@ -54,18 +78,32 @@
                 {
                     <li class="disabled" id="mnSospensione"><a id="lkSospensione" disabled href="#tabSospensione" data-toggle="tab">Sospensione</a></li>
                 }
+                <li class="dropdown">
+                    <a class="dropdown-toggle disabled" style="font-size:1.2rem" disabled role="button" id="ddRientro" data-toggle="dropdown">
+                        Rientro
+                        <span class="caret"></span>
+                    </a>
+                 
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                        <li role="presentation" class="disabled" id="mnRichiamo"><a role="menuitem" tabindex="-1" id="lkRichiamo" disabled href="#tabRichiamo" data-toggle="tab" style="font-size:1.2rem">Richiamo</a></li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation" class="disabled dropdown-header" id="mnHeaderTE" style="font-size:1.2rem"><b>Richiesta Trasporto Effetti</b></li>
+                        <li role="presentation" class="disabled" id="mnTrasportoEffettiRientroAnticipo"><a role="menuitem" tabindex="-1" id="lkTrasportoEffettiRientroAnticipo" disabled href="#tabTrasportoEffettiRientroAnticipo" data-toggle="tab" style="font-size:1.2rem">Anticipo</a></li>
+                        <li role="presentation" class="disabled" id="mnTrasportoEffettiRientroSaldo"><a role="menuitem" tabindex="-1" id="lkTrasportoEffettiRientroSaldo" disabled href="#tabTrasportoEffettiRientroSaldo" data-toggle="tab" style="font-size:1.2rem">Saldo</a></li>
+                    </ul>
+                </li>
+
+                <li class="disabled" id="mnIndennita"><a id="lkIndennita" disabled href="#tabIndennita" data-toggle="tab" onclick="GestioneIndennita();">Indennità</a></li>
                 @if (admin)
                 {
-                    <li class="disabled" id="mnRichiamo"><a id="lkRichiamo" disabled href="#tabRichiamo" data-toggle="tab" onclick="Richiamo();">Richiamo</a></li>
+                    <li class="disabled" id="mnRiepilogoVoci"><a id="lkRiepilogoVoci" disabled href="#tabRiepilogoVoci" data-toggle="tab" onclick="RiepilogoVoci();">Riepilogo Voci</a></li>
                 }
                 else
                 {
-                    <li class="disabled" id="mnRichiamo"><a id="lkRichiamo" disabled href="#tabRichiamo" data-toggle="tab">Richiamo</a></li>
+                    <li class="disabled" id="mnRiepilogoVoci"><a id="lkRiepilogoVoci" disabled href="#tabRiepilogoVoci" data-toggle="tab">Riepilogo Voci</a></li>
 
                 }
-
-                <li class="disabled" id="mnIndennità"><a id="lkIndennità" disabled href="#tabIndennita" data-toggle="tab">Indennità</a></li>
-                <li class="disabled" id="mnRiepilogoVoci"><a id="lkRiepilogoVoci" disabled href="#RiepilogoVoci" data-toggle="tab">Riepilogo Voci</a></li>
+                <li class="disabled" id="mnProvvidenzeScolastiche"><a id="lkProvvidenzeScolastiche" disabled href="#tabProvvidenzeScolastiche" data-toggle="tab" onclick="ProvvidenzeScolastiche();">Provv. Socio Scolastiche</a></li>
             </ul>
         </div>
         <div id="tabContenuti" class="tab-content">
@@ -73,15 +111,43 @@
             <div class="tab-pane" id="tabGestioneTrasferimento"></div>
             <div class="tab-pane" id="tabMaggiorazioneFamiliare"></div>
             <div class="tab-pane" id="tabMaggiorazioneAbitazione"></div>
+            <div class="tab-pane" id="tabSaldoTrasportoEffetti"></div>
+            <div class="tab-pane" id="tabPassaporto"></div>
+            <div class="tab-pane" id="tabTitoliViaggio"></div>
             <div class="tab-pane" id="tabCongediPermessi"></div>
             <div class="tab-pane" id="tabSospensione"></div>
             <div class="tab-pane" id="tabRichiamo"></div>
+            <div class="tab-pane" id="tabTrasportoEffettiRientroAnticipo"></div>
+            <div class="tab-pane" id="tabTrasportoEffettiRientroSaldo"></div>
             <div class="tab-pane" id="tabIndennita"></div>
-            <div class="tab-pane" id="RiepilogoVoci"></div>
+            <div class="tab-pane" id="tabRiepilogoVoci"></div>
+            <div class="tab-pane" id="tabProvvidenzeScolastiche"></div>
+            <div class="tab-pane" id="tabRuoloDipendente"></div>
         </div>
     </div>
 </div>
 
+
+
+<div class="modal fade" id="eliminaModal" tabindex="-2" role="dialog" aria-labelledby="eliminaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="eliminaModelLabel">Eliminazione del Trasferimento</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1.5em;">
+                <p>Procedere con l'eliminazione del trasferimento?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal" onclick="EliminaTrasferimento();">Conferma Eliminazione</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
 
@@ -90,8 +156,6 @@
 
         $("#hMenuInLavorazione").val("mnNuovoTrasferimento");
     });
-
-
 
     function NuovoTrasferimento() {
         //debugger;
@@ -170,6 +234,43 @@
         });
     }
 
+    function GestioneIndennita() {
+        //debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/Indennita/GestioneIndennita";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabIndennita").empty();
+                $("#tabIndennita").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnIndennita");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
     function MaggiorazioneFamiliare() {
         var idTrasferimento = $("#hidTrasferimento").val();
         rotta = "/VariazioneMaggiorazioniFamiliari/AttivitaMaggiorazioneFamiliare";
@@ -196,6 +297,149 @@
             },
             complete: function () {
                 $("#hMenuInLavorazione").val("mnMaggiorazioneFamiliare");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function MaggiorazioneAbitazione() {
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/VariazioneMaggiorazioneAbitazione/VariazioneMaggiorazioneAbitazione";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //svuoto il contenitore di gestione trasferimento per evitare conflitti di oggetti
+                $("#tabGestioneTrasferimento").empty();
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabMaggiorazioneAbitazione").empty();
+                $("#tabMaggiorazioneAbitazione").html(result);
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnMaggiorazioneAbitazione");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function SaldoTrasportoEffetti() {
+        //debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/VariazioneTrasportoEffetti/VariazioneTE";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //svuoto il contenitore di gestione trasferimento per evitare conflitti di oggetti
+                $("#tabGestioneTrasferimento").empty();
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabSaldoTrasportoEffetti").empty();
+                $("#tabSaldoTrasportoEffetti").html(result);
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnSaldoTrasportoEffetti");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function Passaporto() {
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/VariazionePassaporto/VariazionePassaporto";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //svuoto il contenitore di gestione trasferimento per evitare conflitti di oggetti
+                //$("#tabGestioneTrasferimento").empty();
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabPassaporto").empty();
+                $("#tabPassaporto").html(result);
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnPassaporto");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function TitoliViaggio() {
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/VariazioneTitoliViaggio/VariazioneTV";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //svuoto il contenitore di gestione trasferimento per evitare conflitti di oggetti
+                //$("#tabGestioneTrasferimento").empty();
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabTitoliViaggio").empty();
+                $("#tabTitoliViaggio").html(result);
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnTitoliViaggio");
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
@@ -247,7 +491,109 @@
         //debugger;
         var idTrasferimento = $("#hidTrasferimento").val();
         //var dataPartenza = $("#hiddataPartenza").val();
-        rotta = "/Richiamo/AttivitaRichiamo";
+        var dataRichiamo;
+        rotta = "/Richiamo/Richiamo";
+        var nuovo = 0;
+        var idFKm = 0;
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento, idFKm: idFKm, nuovo: nuovo, dataRichiamo: dataRichiamo },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabGestioneTrasferimento").empty();
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabRichiamo").empty();
+                $("#tabRichiamo").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnRichiamo");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function TrasportoEffettiRientroAnticipo() {
+        //debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/TrasportoEffetti/TERientro";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabGestioneTrasferimento").empty();
+                $("#tabTrasportoEffettiRientroAnticipo").empty();
+                $("#tabTrasportoEffettiRientroAnticipo").html(result);
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnTrasportoEffettiRientroAnticipo");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function TrasportoEffettiRientroSaldo() {
+        //debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/VariazioneTrasportoEffetti/VariazioneTERientro";
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabGestioneTrasferimento").empty();
+                $("#tabTrasportoEffettiRientroSaldo").empty();
+                $("#tabTrasportoEffettiRientroSaldo").html(result);
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnTrasportoEffettiRientroSaldo");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function ProvvidenzeScolastiche() {
+        //debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/ProvvidenzeScolastiche/AttivitaProvvidenze";
 
         $.ajax({
             type: "POST",
@@ -263,14 +609,85 @@
             success: function (result) {
                 //debugger;
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
-                $("#tabRichiamo").empty();
-                $("#tabRichiamo").html(result);
+                $("#tabProvvidenzeScolastiche").empty();
+                $("#tabProvvidenzeScolastiche").html(result);
 
                 //RicercaDocumenti();
 
             },
             complete: function () {
-                $("#hMenuInLavorazione").val("mnRichiamo");
+                $("#hMenuInLavorazione").val("mnProvvidenzeScolastiche");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function GestioneRuoloDipendente() {
+        //debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/RuoloDipendente/RuoloDipendente";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabRuoloDipendente").empty();
+                $("#tabRuoloDipendente").html(result);
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnRuoloDipendente");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+
+
+    function RiepilogoVoci() {
+        //debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/RiepilogoVoci/AttivitaRiepilogoVoci";
+        //rotta = "/RiepilogoVoci/GestioneRiepilogoVoci";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#tabRiepilogoVoci").empty();
+                $("#tabRiepilogoVoci").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnRiepilogoVoci");
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
@@ -358,11 +775,10 @@
                 },
                 success: function (result) {
                     //debugger;
-
                     $("#ContenitoreDipendentiGepe").empty();
                     $("#ContenitoreDipendentiGepe").html(result);
-
                     ElencoTrasferimento();
+                    
                 },
                 complete: function () {
                     MenuDaVisualizzare();
@@ -403,11 +819,27 @@
             $("#mnGestioneTrasferimento").attr("disabled", "disabled");
             $("#mnGestioneTrasferimento").addClass("disabled");
 
+
+            $("#ddVariazioneTrasferimento").attr("disabled", "disabled");
+            $("#ddVariazioneTrasferimento").addClass("disabled");
+
+            $("#ddRientro").attr("disabled", "disabled");
+            $("#ddRientro").addClass("disabled");
+
             $("#lkMaggiorazioneFamiliare").attr("disabled", "disabled");
             $("#mnMaggiorazioneFamiliare").addClass("disabled");
 
             $("#lkMaggiorazioneAbitazione").attr("disabled", "disabled");
             $("#mnMaggiorazioneAbitazione").addClass("disabled");
+
+            $("#lkSaldoTrasportoEffetti").attr("disabled", "disabled");
+            $("#mnSaldoTrasportoEffetti").addClass("disabled");
+
+            $("#lkPassaporto").attr("disabled", "disabled");
+            $("#mnPassaporto").addClass("disabled");
+
+            $("#lkTitoliViaggio").attr("disabled", "disabled");
+            $("#mnTitoliViaggio").addClass("disabled");
 
             $("#lkCongediPermessi").attr("disabled", "disabled");
             $("#mnCongediPermessi").addClass("disabled");
@@ -418,11 +850,23 @@
             $("#lkRichiamo").attr("disabled", "disabled");
             $("#mnRichiamo").addClass("disabled");
 
-            $("#lkIndennità").attr("disabled", "disabled");
-            $("#mnIndennità").addClass("disabled");
+            $("#lkTrasportoEffettiRientroAnticipo").attr("disabled", "disabled");
+            $("#mnTrasportoEffettiRientroAnticipo").addClass("disabled");
+
+            $("#lkTrasportoEffettiRientroSaldo").attr("disabled", "disabled");
+            $("#mnTrasportoEffettiRientroSaldo").addClass("disabled");
+
+            $("#lkIndennita").attr("disabled", "disabled");
+            $("#mnIndennita").addClass("disabled");
 
             $("#lkRiepilogoVoci").attr("disabled", "disabled");
             $("#mnRiepilogoVoci").addClass("disabled");
+
+            $("#lkProvvidenzeScolastiche").attr("disabled", "disabled");
+            $("#mnProvvidenzeScolastiche").addClass("disabled");
+
+            $("#lkRuoloDipendente").attr("disabled", "disabled");
+            $("#mnRuoloDipendente").addClass("disabled");
 
         }
 
@@ -430,6 +874,7 @@
 
     function GestioneAbilitazioneMenu(idTrasferimento) {
         //debugger;
+        var admin = '@admin';
 
         if (MenuGestioneTrasferimento(idTrasferimento) == 1) {
             $("#lkGestioneTrasferimento").removeAttr("disabled");
@@ -440,6 +885,15 @@
             $("#lkGestioneTrasferimento").attr("disabled", "disabled");
             $("#mnGestioneTrasferimento").addClass("disabled");
             $("#lkGestioneTrasferimento").removeAttr("onClick");
+        }
+
+        if (MenuVariazioneTrasferimento(idTrasferimento) == 1) {
+            $("#ddVariazioneTrasferimento").removeAttr("disabled");
+            $("#ddVariazioneTrasferimento").removeClass("disabled");
+        }
+        else {
+            $("#ddVariazioneTrasferimento").attr("disabled", "disabled");
+            $("#ddVariazioneTrasferimento").addClass("disabled");
         }
 
         if (MenuMaggiorazioneFamiliare(idTrasferimento) == 1) {
@@ -453,6 +907,50 @@
             $("#lkMaggiorazioneFamiliare").removeAttr("onClick");
         }
 
+        if (MenuMaggiorazioneAbitazione(idTrasferimento) == 1) {
+            $("#lkMaggiorazioneAbitazione").removeAttr("disabled");
+            $("#mnMaggiorazioneAbitazione").removeClass("disabled");
+            $('#lkMaggiorazioneAbitazione').attr('onClick', 'MaggiorazioneAbitazione();');
+        }
+        else {
+            $("#lkMaggiorazioneAbitazione").attr("disabled", "disabled");
+            $("#mnMaggiorazioneAbitazione").addClass("disabled");
+            $("#lkMaggiorazioneAbitazione").removeAttr("onClick");
+        }
+
+        if (MenuSaldoTrasportoEffetti(idTrasferimento) == 1) {
+            $("#lkSaldoTrasportoEffetti").removeAttr("disabled");
+            $("#mnSaldoTrasportoEffetti").removeClass("disabled");
+            $('#lkSaldoTrasportoEffetti').attr('onClick', 'SaldoTrasportoEffetti();');
+        }
+        else {
+            $("#lkSaldoTrasportoEffetti").attr("disabled", "disabled");
+            $("#mnSaldoTrasportoEffetti").addClass("disabled");
+            $("#lkSaldoTrasportoEffetti").removeAttr("onClick");
+        }
+
+        if (MenuPassaporto(idTrasferimento) == 1) {
+            $("#lkPassaporto").removeAttr("disabled");
+            $("#mnPassaporto").removeClass("disabled");
+            $('#lkPassaporto').attr('onClick', 'Passaporto();');
+        }
+        else {
+            $("#lkPassaporto").attr("disabled", "disabled");
+            $("#mnPassaporto").addClass("disabled");
+            $("#lkPassaporto").removeAttr("onClick");
+        }
+
+        if (MenuTitoliViaggio(idTrasferimento) == 1) {
+            $("#lkTitoliViaggio").removeAttr("disabled");
+            $("#mnTitoliViaggio").removeClass("disabled");
+            $('#lkTitoliViaggio').attr('onClick', 'TitoliViaggio();');
+        }
+        else {
+            $("#lkTitoliViaggio").attr("disabled", "disabled");
+            $("#mnTitoliViaggio").addClass("disabled");
+            $("#lkTitoliViaggio").removeAttr("onClick");
+        }
+
         if (MenuSospensione(idTrasferimento) == 1) {
             $("#lkSospensione").removeAttr("disabled");
             $("#mnSospensione").removeClass("disabled");
@@ -464,24 +962,112 @@
             $("#lkSospensione").removeAttr("onClick");
         }
 
-        //if (MenuRichiamo(idTrasferimento) == 1) {
-        //    $("#lkRichiamo").removeAttr("disabled");
-        //    $("#mnRichiamo").removeClass("disabled");
-        //    $('#lkRichiamo').attr('onClick', 'Richiamo();');
-        //}
-        //else {
-        //    $("#lkRichiamo").attr("disabled", "disabled");
-        //    $("#mnRichiamo").addClass("disabled");
-        //    $("#lkRichiamo").removeAttr("onClick");
-        //}
+        if (MenuViaggiCongedo(idTrasferimento) == 1) {
+            //  debugger;
+            $("#lkCongediPermessi").removeAttr("disabled");
+            $("#mnCongediPermessi").removeClass("disabled");
+            $('#lkCongediPermessi').attr('onClick', 'ViaggiCongedoPermesso();');
+        }
+        else {
+            //debugger;
+            $("#lkCongediPermessi").attr("disabled", "disabled");
+            $("#mnCongediPermessi").addClass("disabled");
+            $("#lkCongediPermessi").removeAttr("onClick");
+        }
 
-        //$("#lkSospensione").removeAttr("disabled");
-        //$("#mnSospensione").removeClass("disabled");
-        //$('#lkSospensione').attr('onClick', 'Sospensione();');
+        if (MenuRientro(idTrasferimento) == 1) {
+            $("#ddRientro").removeAttr("disabled");
+            $("#ddRientro").removeClass("disabled");
+        }
+        else {
+            $("#ddRientro").attr("disabled", "disabled");
+            $("#ddRientro").addClass("disabled");
+        }
 
-        $("#lkRichiamo").removeAttr("disabled");
-        $("#mnRichiamo").removeClass("disabled");
-        $('#lkRichiamo').attr('onClick', 'Richiamo();');
+
+        if (MenuRichiamo(idTrasferimento) == 1) {
+            $("#lkRichiamo").removeAttr("disabled");
+            $("#mnRichiamo").removeClass("disabled");
+            $('#lkRichiamo').attr('onClick', 'Richiamo();');
+        }
+        else {
+
+            $("#lkRichiamo").attr("disabled", "disabled");
+            $("#mnRichiamo").addClass("disabled");
+            $("#lkRichiamo").removeAttr("onClick");
+        }
+
+        if (MenuTERientroAnticipo(idTrasferimento) == 1) {
+            $("#lkTrasportoEffettiRientroAnticipo").removeAttr("disabled");
+            $("#mnTrasportoEffettiRientroAnticipo").removeClass("disabled");
+            $('#lkTrasportoEffettiRientroAnticipo').attr('onClick', 'TrasportoEffettiRientroAnticipo();');
+        }
+        else {
+
+            $("#lkTrasportoEffettiRientroAnticipo").attr("disabled", "disabled");
+            $("#mnTrasportoEffettiRientroAnticipo").addClass("disabled");
+            $("#lkTrasportoEffettiRientroAnticipo").removeAttr("onClick");
+        }
+
+        if (MenuTERientroSaldo(idTrasferimento) == 1) {
+            $("#lkTrasportoEffettiRientroSaldo").removeAttr("disabled");
+            $("#mnTrasportoEffettiRientroSaldo").removeClass("disabled");
+            $('#lkTrasportoEffettiRientroSaldo').attr('onClick', 'TrasportoEffettiRientroSaldo();');
+        }
+        else {
+
+            $("#lkTrasportoEffettiRientroSaldo").attr("disabled", "disabled");
+            $("#mnTrasportoEffettiRientroSaldo").addClass("disabled");
+            $("#lkTrasportoEffettiRientroSaldo").removeAttr("onClick");
+        }
+
+        if (MenuProvvidenzeScolastiche(idTrasferimento) == 1) {
+            $("#lkProvvidenzeScolastiche").removeAttr("disabled");
+            $("#mnProvvidenzeScolastiche").removeClass("disabled");
+            $('#lkProvvidenzeScolastiche').attr('onClick', 'ProvvidenzeScolastiche();');
+        }
+        else {
+            $("#lkProvvidenzeScolastiche").attr("disabled", "disabled");
+            $("#mnProvvidenzeScolastiche").addClass("disabled");
+            $("#lkProvvidenzeScolastiche").removeAttr("onClick");
+        }
+
+        if (MenuRiepilogoVoci(idTrasferimento) == 1) {
+            $("#lkRiepilogoVoci").removeAttr("disabled");
+            $("#mnRiepilogoVoci").removeClass("disabled");
+            $('#lkRiepilogoVoci').attr('onClick', 'RiepilogoVoci();');
+        }
+        else {
+            $("#lkRiepilogoVoci").attr("disabled", "disabled");
+            $("#mnRiepilogoVoci").addClass("disabled");
+            $("#lkRiepilogoVoci").removeAttr("onClick");
+        }
+
+        if (MenuIndennita(idTrasferimento) == 1) {
+            //debugger;
+            $("#lkIndennita").removeAttr("disabled");
+            $("#mnIndennita").removeClass("disabled");
+            $('#lkIndennita').attr('onClick', 'GestioneIndennita();');
+        }
+        else {
+            //debugger;
+            $("#lkIndennita").attr("disabled", "disabled");
+            $("#mnIndennita").addClass("disabled");
+            $("#lkIndennita").removeAttr("onClick");
+        }
+
+        if (MenuRuoloDipendente(idTrasferimento) == 1 && admin=='True') {
+            //debugger;
+            $("#lkRuoloDipendente").removeAttr("disabled");
+            $("#mnRuoloDipendente").removeClass("disabled");
+            $('#lkRuoloDipendente').attr('onClick', 'GestioneRuoloDipendente();');
+        }
+        else {
+            //debugger;
+            $("#lkRuoloDipendente").attr("disabled", "disabled");
+            $("#mnRuoloDipendente").addClass("disabled");
+            $("#lkRuoloDipendente").removeAttr("onClick");
+        }
 
     }
 
@@ -492,12 +1078,18 @@
         $("#tabGestioneTrasferimento").empty();
         $("#tabMaggiorazioneFamiliare").empty();
         $("#tabMaggiorazioneAbitazione").empty();
+        $("#tabSaldoTrasportoEffetti").empty();
+        $("#tabPassaporto").empty();
+        $("#tabTitoliViaggio").empty();
         $("#tabCongediPermessi").empty();
         $("#tabSospensione").empty();
         $("#tabRichiamo").empty();
+        $("#tabTrasportoEffettiRientroAnticipo").empty();
+        $("#tabTrasportoEffettiRientroSaldo").empty();
         $("#tabIndennita").empty();
-        $("#RiepilogoVoci").empty();
-
+        $("#tabRiepilogoVoci").empty();
+        $("#tabProvvidenzeScolastiche").empty();
+        $("#tabRuoloDipendente").empty();
 
     }
 
@@ -549,6 +1141,102 @@
         return valoreRitorno;
     }
 
+    function MenuVariazioneTrasferimento(idTrasferimento) {
+        //debugger;
+        var rotta = "/Trasferimento/VerificaStatoStrasferimentoJsonResult";
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.StatoTrasferimento == 1) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuRientro(idTrasferimento) {
+        //debugger;
+        var rotta = "/Trasferimento/VerificaRientro";
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.RientroAbilitato == 1) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
     function MenuMaggiorazioneFamiliare(idTrasferimento) {
         //debugger;
         //var rotta = "/Trasferimento/VerificaMaggiorazioneFamiliare";
@@ -573,6 +1261,198 @@
 
                     if (result.err == "" || result.err == undefined) {
                         if (result.idmaggiorazione != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuMaggiorazioneAbitazione(idTrasferimento) {
+        //debugger;
+        var rotta = "/Trasferimento/VerificaMaggiorazioneAbitazione";
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.idMAB != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuSaldoTrasportoEffetti(idTrasferimento) {
+        //debugger;
+        var rotta = "/Trasferimento/VerificaSaldoTEPartenza";
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.idTEPartenza != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuPassaporto(idTrasferimento) {
+        //debugger;
+        var rotta = "/Trasferimento/VerificaPassaporto";
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.idPassaporto != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuTitoliViaggio(idTrasferimento) {
+        //debugger;
+        var rotta = "/Trasferimento/VerificaTitoliViaggio";
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.idTitoloViaggio != 0) {
                             valoreRitorno = 1;
                         }
                         else {
@@ -650,8 +1530,105 @@
 
     function MenuRichiamo(idTrasferimento) {
         //debugger;
-        //var rotta = "/Richiamo/Richiamo";
-        var rotta = "/Sospensione/VerificaRichiamo";
+        var rotta = "/Richiamo/VerificaRichiamo";
+
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.VerificaRichiamo != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuTERientroAnticipo(idTrasferimento) {
+        //debugger;
+        var rotta = "/TrasportoEffetti/VerificaTERientroAnticipo";
+
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.VerificaTERientroAnticipo != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuTERientroSaldo(idTrasferimento) {
+        //debugger;
+        var rotta = "/VariazioneTrasportoEffetti/VerificaTERientroSaldo";
 
         var valoreRitorno = 0;
 
@@ -671,7 +1648,7 @@
                     // debugger;
 
                     if (result.err == "" || result.err == undefined) {
-                        if (result.VerificaSospensione != 0) {
+                        if (result.VerificaTERientroSaldo != 0) {
                             valoreRitorno = 1;
                         }
                         else {
@@ -685,6 +1662,280 @@
                 complete: function () {
                     //$("#divEffettoLoadAutNoDoc").hide("slow");
                     //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuViaggiCongedo(idTrasferimento) {
+        //debugger;
+        var rotta = "/ViaggiCongedo/VerificaViaggiCongedo";
+
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.VerificaViaggiCongedo != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function ViaggiCongedoPermesso() {
+        //debugger;
+        var idTrasferimento = $("#hidTrasferimento").val();
+        rotta = "/ViaggiCongedo/ElencoPreventiviDiViaggio";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                // debugger;
+
+                $("#tabCongediPermessi").empty();
+                $("#tabCongediPermessi").html(result);
+
+            },
+            complete: function () {
+                $("#hMenuInLavorazione").val("mnCongediPermessi");
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+    }
+
+    function MenuProvvidenzeScolastiche(idTrasferimento) {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/VerificaProvvidenze";
+
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    // debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.VerificaProvvidenze != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuRiepilogoVoci(idTrasferimento) {
+        //debugger;
+        var rotta = "/RiepilogoVoci/VerificaRiepilogoVoci";
+
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    // debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.VerificaRiepilogoVoci != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuIndennita(idTrasferimento) {
+        //debugger;
+        var rotta = "/Indennita/VerificaIndennita";
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.VerificaIndennita != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                    //InfoTrasferimento(matricola);
+                    //GestioneMenu();
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+        }
+
+        return valoreRitorno;
+    }
+
+    function MenuRuoloDipendente(idTrasferimento) {
+        //debugger;
+        var rotta = "/RuoloDipendente/VerificaRuoloDipendente";
+        var valoreRitorno = 0;
+
+        if (idTrasferimento != "" && idTrasferimento != undefined) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+
+                },
+                success: function (result) {
+                    //debugger;
+
+                    if (result.err == "" || result.err == undefined) {
+                        if (result.idRuoloDipendente != 0) {
+                            valoreRitorno = 1;
+                        }
+                        else {
+                            valoreRitorno = 0;
+                        }
+                    }
+
+                },
+                complete: function () {
                 },
                 error: function (jqXHR, textStatus, errorThrow) {
                     //debugger;

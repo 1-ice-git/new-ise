@@ -1,33 +1,31 @@
 ﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
 @model NewISE.Models.ViewModel.ElencoFamiliariPassaportoModel
 
+@{ 
+    decimal idFasePassaportiCorrente = Convert.ToDecimal(ViewData["idFasePassaportiCorrente"]);
+    decimal idFaseRichiesta = Convert.ToDecimal(EnumFasePassaporti.Richiesta_Passaporti);
+}
 
 @if (Model.HasDoc.esisteDoc)
 {
-
-    <a href="#" onclick=" ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(Model.HasDoc.tipoDoc) , @Convert.ToDecimal(Model.parentela) ) ">
-        <img class="SfondoBordoImg" height="17px" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
+    <a href="#" onclick="ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(Model.HasDoc.tipoDoc) , @Convert.ToDecimal(Model.parentela) )">
+        <img class="SfondoBordoImg" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
     </a>
-
-
 }
 else
 {
-
-    <a href="#" onclick=" ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(EnumTipoDoc.Documento_Identita) , @Convert.ToDecimal(Model.parentela) ) ">
+    <a href="#" onclick="ElencoDocumentiPassaporto(@Model.idFamiliarePassaporto, @Convert.ToDecimal(EnumTipoDoc.Documento_Identita) , @Convert.ToDecimal(Model.parentela) )">
         <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" height="17" title="Documenti" />
     </a>
-
-
 }
-
-
 
 <script type="text/javascript">
     function ElencoDocumentiPassaporto(idFamiliarePassaporto, tipoDoc, idParentela) {
         //debugger;
         var rotta = "/Documenti/ElencoDocumentiPassaporto";
-
+        var idFasePassaportiCorrente = parseInt('@idFasePassaportiCorrente');
+        var idFaseRichiesta = parseInt('@idFaseRichiesta');
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
@@ -51,7 +49,11 @@ else
                 //$("#viewPensione").html(result);
                 $("#divPassaporto").empty();
                 $("#divPassaporto").html(result);
-                GestionePulsantiNotificaAndConcludiPassaporto();
+                if (idFasePassaportiCorrente == idFaseRichiesta) {
+                    GestionePulsantiNotificaAndConcludiPassaporto_Richiesta();
+                } else {
+                    GestionePulsantiNotificaAndConcludiPassaporto_Invio();
+                }
             },
             complete: function () {
 

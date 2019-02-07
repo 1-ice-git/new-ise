@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.dtObj;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Ricalcoli;
 
@@ -223,9 +224,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
 
-                            using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                            //using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                            //{
+                            //    rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                            //}
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                             {
-                                rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                dtrp.AssociaPrimaSistemazione_IS(ibNew1.IDINDSIST, db,ibm.dataInizioValidita);
+                                dtrp.AssociaRiduzioni_IS(ibNew1.IDINDSIST, db, ibm.dataInizioValidita);
                             }
 
                             db.Database.CurrentTransaction.Commit();
@@ -286,9 +293,19 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
 
 
-                                using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                //using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                //{
+                                //    rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                //}
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
-                                    rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                    foreach (var ps in libNew)
+                                    {
+                                        dtrp.AssociaPrimaSistemazione_IS(ps.IDINDSIST, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioni_IS(ps.IDINDSIST, db, ibm.dataInizioValidita);
+                                    }
+
                                 }
 
                                 db.Database.CurrentTransaction.Commit();
@@ -352,9 +369,19 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
 
 
-                                using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                //using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                //{
+                                //    rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                //}
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
-                                    rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                    foreach (var ps in libNew)
+                                    {
+                                        dtrp.AssociaPrimaSistemazione_IS(ps.IDINDSIST, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioni_IS(ps.IDINDSIST, db, ibm.dataInizioValidita);
+                                    }
+
                                 }
 
                                 db.Database.CurrentTransaction.Commit();
@@ -382,9 +409,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
 
 
-                                using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                //using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                //{
+                                //    rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                //}
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                 {
-                                    rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+
+                                    dtrp.AssociaPrimaSistemazione_IS(ibNew1.IDINDSIST, db, ibm.dataInizioValidita);
+                                    dtrp.AssociaRiduzioni_IS(ibNew1.IDINDSIST, db, ibm.dataInizioValidita);
+
                                 }
 
                                 db.Database.CurrentTransaction.Commit();
@@ -416,9 +451,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
 
-                                    using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                    //using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                    //{
+                                    //    rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                    //}
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
-                                        rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+
+                                        dtrp.AssociaPrimaSistemazione_IS(ibNew1.IDINDSIST, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioni_IS(ibNew1.IDINDSIST, db, ibm.dataInizioValidita);
+
                                     }
 
                                     db.Database.CurrentTransaction.Commit();
@@ -449,9 +492,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
 
-                                    using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                    //using (RicalcoloPrimaSistemazione rps = new RicalcoloPrimaSistemazione())
+                                    //{
+                                    //    rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                    //}
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
                                     {
-                                        rps.RicalcoloPS(ibm.dataInizioValidita, Utility.DataFineStop(), (EnumTipoTrasferimento)ibm.idTipoTrasferimento, db);
+                                        foreach (var ps in libNew)
+                                        {
+                                            dtrp.AssociaPrimaSistemazione_IS(ps.IDINDSIST, db, ibm.dataInizioValidita);
+                                            dtrp.AssociaRiduzioni_IS(ps.IDINDSIST, db, ibm.dataInizioValidita);
+                                        }
                                     }
 
                                     db.Database.CurrentTransaction.Commit();
@@ -553,9 +605,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             };
 
                             db.INDENNITASISTEMAZIONE.Add(ibOld1);
+
+                            db.SaveChanges();
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaPrimaSistemazione_IS(ibOld1.IDINDSIST, db, delIB.DATAINIZIOVALIDITA);
+                                dtrp.AssociaRiduzioni_IS(ibOld1.IDINDSIST, db, delIB.DATAINIZIOVALIDITA);
+                            }
                         }
 
-                        db.SaveChanges();
+
 
                         using (objLogAttivita log = new objLogAttivita())
                         {

@@ -69,9 +69,13 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                MsgErr msg = new MsgErr()
+                {
+                    msg = ex.Message
+                };
+                return PartialView("ErrorPartial", msg);
             }
-           
+
             return PartialView(libm);
         }
 
@@ -94,9 +98,13 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                MsgErr msg = new MsgErr()
+                {
+                    msg = ex.Message
+                };
+                return PartialView("ErrorPartial", msg);
             }
-           
+
             return PartialView("MaggiorazioneFigli", libm);
         }
 
@@ -114,7 +122,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     var lm = dtl.GetTipologiaFiglio(idTipologiaFiglio);
                     ViewBag.Figlio = lm;
                 }
-              
+
                 return PartialView();
             }
             catch (Exception ex)
@@ -125,7 +133,8 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciPercMaggiorazioneFiglio(PercMagFigliModel ibm, bool escludiAnnullati = true,bool aggiornaTutto=false)
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciPercMaggiorazioneFiglio(PercMagFigliModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             var r = new List<SelectListItem>();
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -174,9 +183,9 @@ namespace NewISE.Areas.Parametri.Controllers
                 using (dtMaggFigli dtib = new dtMaggFigli())
                 {
                     dtib.DelMaggiorazioneFiglio(idMaggFiglio);
-                
+
                     idTipologiaFiglio = CaricaComboTipoFiglio(idTipologiaFiglio);
-                
+
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualFiglioPrimoNonAnnullato(idTipologiaFiglio);
                     libm = dtib.getListMaggiorazioneFiglio(idTipologiaFiglio, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                 }

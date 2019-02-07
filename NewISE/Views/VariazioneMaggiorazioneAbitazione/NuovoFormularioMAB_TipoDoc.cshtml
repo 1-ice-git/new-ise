@@ -1,0 +1,108 @@
+﻿@model NewISE.Models.DBModel.VariazioneDocumentiModel
+@{
+    decimal idMab = Convert.ToDecimal(ViewData["idMab"]);
+    var errori = ViewData.ModelState;
+
+}
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-xs-10">
+            <div id="divCombo" class="col-xs-12">
+                <div class="form-group">
+                    <div class="select2-container select2-container--classic col-xs-12" style="font-size:medium">
+                        @Html.DisplayNameFor(model => model.DescrizioneTipoDocumento)
+                    </div>
+                    <div class="select2-container select2-container--classic col-xs-12" style="font-size:medium">
+                        @Html.DropDownListFor(Model => Model.idTipoDocumento, ViewBag.ldescrizioneTipoDoc as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
+                        <i class="fa fa-asterisk text-danger" aria-hidden="true"></i>
+                        <span id="txterror" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+         
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $("#idTipoDocumento").select2({
+        placeholder: "Seleziona il tipo di documento",
+        allowClear: true,
+        language: "it",
+        width: '400',
+        allowClear: false
+
+    });
+
+    function Validazione() {
+        //debugger;
+        var ret = false;
+        var desc = $("#idTipoDocumento").val();
+        if (desc != null && desc != undefined && desc != "") {
+            $("#divCombo").removeClass('BordoRosso');
+            ret = true;
+        }
+        else {
+            $("#divCombo").addClass('BordoRosso');
+            ret = false;
+        }
+        return ret;
+    }
+
+
+    function NuovoFormularioMAB_VaiDoc() {
+        //debugger;
+        var datiForm = new FormData();
+        var rotta = "/VariazioneMaggiorazioneAbitazione/NuovoFormularioMAB_Doc";
+        var idTipo = $("#idTipoDocumento").val();
+        $('#hiIdTipoDocumento').val(idTipo);
+
+
+        if (Validazione()) {
+            datiForm.append("idMab", @idMab);
+            datiForm.append("idTipo", idTipo);
+
+            $.ajax({
+                url: rotta,
+                type: "POST", //Le info testuali saranno passate in POST
+                data: datiForm, //I dati, forniti sotto forma di oggetto FormData
+                dataType: 'html',
+                cache: false,
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    VerificaAutenticazione();
+                    //Blocca();
+                    $("#ModalNuovoFormularioMAB_TipoDoc").modal("hide");
+                    $("#ModalNuovoFormularioMAB_Doc").modal("show");
+                },
+                processData: false, //Serve per NON far convertire l’oggetto
+                //FormData in una stringa, preservando il file
+                contentType: false, //Serve per NON far inserire automaticamente
+                //un content type errato
+                success: function (result) {
+                    //debugger;
+
+                    $("#divViewNuovoFormularioMAB_Doc").empty();
+                    $("#divViewNuovoFormularioMAB_Doc").html(result);
+
+                },
+                complete: function () {
+                },
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+        }else{
+            $("#txterror").html("Selezionare il tipo documento.");
+        }
+    }
+</script>
+
+

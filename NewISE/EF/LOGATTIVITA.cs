@@ -15,9 +15,9 @@ namespace NewISE.EF
     public partial class LOGATTIVITA
     {
         public decimal IDLOG { get; set; }
-        public decimal IDUTENTELOGGATO { get; set; }
         public Nullable<decimal> IDTRASFERIMENTO { get; set; }
         public decimal IDATTIVITACRUD { get; set; }
+        public decimal IDDIPENDENTE { get; set; }
         public System.DateTime DATAOPERAZIONE { get; set; }
         public string DESCATTIVITASVOLTA { get; set; }
         public string TABELLACOINVOLTA { get; set; }

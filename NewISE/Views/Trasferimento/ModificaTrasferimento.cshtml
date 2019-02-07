@@ -2,6 +2,7 @@
 
 @using System.Web.Optimization
 @using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
 
 @{
     bool ricaricaInfoTrasf = (bool)ViewBag.ricaricaInfoTrasf;
@@ -14,15 +15,18 @@
     bool abilitaNotifica = false;
     bool abilitaNuovoTrasferimento = false;
     bool abilitaSalva = false;
+    bool abilitaElimina = false;
 
     bool ricaricaTrasferimenti = Convert.ToBoolean(ViewData["ricaricaTrasferimenti"]);
 
     decimal idRuoloDipendente = Convert.ToDecimal(ViewBag.idRuoloDipendente);
+    decimal idFasciaKM = Convert.ToDecimal(ViewBag.idFKM);
 
     if (Model.idStatoTrasferimento == EnumStatoTraferimento.Terminato || Model.idStatoTrasferimento == EnumStatoTraferimento.Terminato || Model.idStatoTrasferimento == EnumStatoTraferimento.Annullato)
     {
         abilitaNuovoTrasferimento = true;
         abilitaSalva = false;
+        abilitaElimina = false;
         abilitaNotifica = false;
     }
     else if (Model.notificaTrasferimento == false)
@@ -37,6 +41,7 @@
             Model.idTipoCoan > 0 &&
             Model.dataPartenza > DateTime.MinValue &&
             Model.idRuoloUfficio > 0 &&
+            Model.idFKM > 0 &&
             Model.protocolloLettera != string.Empty &&
             Model.dataLettera > DateTime.MinValue &&
             Model.Documento != null &&
@@ -49,23 +54,40 @@
             abilitaNotifica = false;
         }
 
+
+        if (Model.idTipoTrasferimento > 0 &&
+            Model.idUfficio > 0 &&
+            Model.idStatoTrasferimento > 0 &&
+            Model.idDipendente > 0 &&
+            Model.idTipoCoan > 0 &&
+            Model.dataPartenza > DateTime.MinValue &&
+            Model.idRuoloUfficio > 0 &&
+            Model.idFKM > 0)
+        {
+            abilitaElimina = true;
+        }
+        else
+        {
+            abilitaElimina = false;
+        }
+
     }
     else if (Model.notificaTrasferimento == true)
     {
         abilitaSalva = false;
+        abilitaElimina = false;
         abilitaNotifica = false;
         abilitaNuovoTrasferimento = false;
     }
 
-
-
-
 }
 
 @Html.Hidden("habilitaNotifica", abilitaNotifica)
+@Html.Hidden("habilitaElimina", abilitaElimina)
 @Html.Hidden("habilitaNuovoTrasferimento", abilitaNuovoTrasferimento)
 @Html.Hidden("habilitaSalva", abilitaSalva)
 @Html.Hidden("htrasfSucc", trasfSucc)
+@Html.Hidden("hmatricola", vMatricola)
 
 <div class="form-horizontal">
     @using (@Ajax.BeginForm("ConfermaModificaTrasferimento", "Trasferimento", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabNuovoTrasferimento", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formEditTrasf" }))
@@ -81,8 +103,13 @@
         @Html.Hidden("matricola", vMatricola)
         @Html.Hidden("ricaricaInfoTrasf", ricaricaInfoTrasf)
         @Html.Hidden("idRuoloDipendente", idRuoloDipendente)
+        @Html.Hidden("idFasciaKM", idFasciaKM)
 
-
+        @*@Html.HiddenFor(model => model.idTipoTrasferimento)
+        @Html.HiddenFor(model => model.idUfficio)
+        @Html.HiddenFor(model => model.dataPartenza)
+        @Html.HiddenFor(model => model.idRuoloUfficio)
+        @Html.HiddenFor(model => model.idFKM)*@
 
         <div style="padding-top: 3px;">
             <div class="form-group">
@@ -114,8 +141,23 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.dataPartenza, htmlAttributes: new { @class = "control-label col-xs-3" })
                 <div class="col-xs-9 form-inline">
+
+                @if (abilitaSalva || abilitaNuovoTrasferimento || (abilitaNotifica==false && abilitaSalva==false))
+                {
+                    @*@Html.TextBoxFor(model => model.dataPartenza, "{0:dd/MM/yyyy}", new { @class = "form-control", disabled="disabled", style = "max-width:200px;" })
+                    <input type="text" hidden maxlength="10" name="dataPartenza" value="@Model.dataPartenza" class="form-control " disabled style="text-align: left;max-width:200px;" />*@
+
+                    <input type="text" id="dataPartenza" value="@Model.dataPartenza.ToString("dd/MM/yyyy")" readonly disabled class="form-control col-xs-2 text-left" />
+                    <input type="hidden" value="@Model.dataPartenza" name="dataPartenza" />
+
+                }
+                else
+                {
                     @Html.TextBoxFor(model => model.dataPartenza, "{0:dd/MM/yyyy}", new { @class = "form-control", style = "max-width:200px;" })
                     @Html.ValidationMessageFor(model => model.dataPartenza, "", new { @class = "text-danger" })
+                }
+
+
                 </div>
             </div>
             <div class="form-group">
@@ -139,7 +181,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.coan, htmlAttributes: new { @class = "control-label col-xs-3" })
-                <div class="col-xs-9">
+                <div class="col-xs-9 form-inline">
                     @Html.EditorFor(model => model.coan, new { htmlAttributes = new { @class = "form-control", @style = "max-width:200px;" } })
                     @Html.ValidationMessageFor(model => model.coan, "", new { @class = "text-danger" })
                 </div>
@@ -191,21 +233,27 @@
 
     <div class="form-group">
 
-        <div class="col-xs-offset-7 col-xs-1">
-            <button type="button" class="btn btn-default btn-sm" id="btModifica">
-                <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
-                Salva
-            </button>
-        </div>
+        <div class="row">
+            <div class="col-xs-offset-7 col-xs-1">
+                <button class="btn btn-default btn-sm " id="btElimina" onclick="EliminaModal();">
+                    <i class="fa fa-2x fa-remove" aria-hidden="true"></i>
+                    Elimina
+                </button>
+            </div>
 
+            <div class="col-xs-1">
+                <button type = "button" class="btn btn-default btn-sm" id="btModifica">
+                    <i class="fa fa-2x fa-floppy-o" aria-hidden="true"></i>
+                    Salva
+                </button>
+            </div>
 
-
-
-        <div class="col-xs-1">
-            <button class="btn btn-default btn-sm " id="btNotifica" onclick="NotifcaModal();">
-                <i class="fa fa-2x fa-envelope" aria-hidden="true"></i>
-                Notifica
-            </button>
+            <div class="col-xs-1">
+                <button class="btn btn-default btn-sm " id="btNotifica" onclick="NotifcaModal();">
+                    <i class="fa fa-2x fa-envelope" aria-hidden="true"></i>
+                    Notifica
+                </button>
+            </div>
         </div>
 
     </div>
@@ -216,16 +264,16 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type = "button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title alert alert-info text-info" id="myModalLabel">Info!!!</h4>
             </div>
             <div class="modal-body alert alert-info text-info">
-                <p id="msgModalInfo" class="text-info"></p>
+                <p id = "msgModalInfo" class="text-info"></p>
             </div>
             <div class="modal-footer">
-                <button id="btProcedi" type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+                <button id = "btProcedi" type="button" class="btn btn-info" data-dismiss="modal">OK</button>
             </div>
         </div>
     </div>
@@ -235,7 +283,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type = "button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Notifica del trasferimento</h3>
@@ -244,51 +292,56 @@
                 <p>Procedere con la notifica del trasferimento?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal" onclick="NotificaTrasferimento();">Invia notifica</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                <button type = "button" class="btn btn-info" data-dismiss="modal" onclick="NotificaTrasferimento();">Invia notifica</button>
+                  <button type = "button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
             </div>
         </div>
     </div>
 </div>
+
+
 
 <div class="modal fade" id="inviaDocModal" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type = "button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Lettera di trasferimento</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <p id="viewDocumento">
+                <p id = "viewDocumento" >
                     <img src="~/Immagini/Loading/ajax-loader (1).gif" />
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="btUploadLett" type="button" class="btn btn-info" onclick="SalvaDocumento();">Salva</button>
-                <button id="btAnnullaLett" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                <button id = "btUploadLett" type="button" class="btn btn-info" onclick="SalvaDocumento();">Salva</button>
+                <button id = "btAnnullaLett" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
             </div>
         </div>
     </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+@section Scripts
+    {
+        @Scripts.Render("~/bundles/jqueryval")
 }
 
-<script type="text/javascript">
+<script type = "text/javascript" >
 
 
-    @if (ricaricaTrasferimenti)
+    @if(ricaricaTrasferimenti)
     {
          @:ElencoTrasferimento();
-                                                                                                        }
+    }
 
-
+    
 
     LetturaParametriGestioneTrasferimento();
+
     AbilitaDisabilitaCoan();
+    
 
 
     function LetturaParametriGestioneTrasferimento() {
@@ -304,10 +357,10 @@
         var rotta = "/Trasferimento/LetturaParametriGestioneTrasferimento";
 
         $.ajax({
-            type: "POST",
+        type: "POST",
             url: rotta,
             data: {
-                idTrasferimento: idTrasferimento
+            idTrasferimento: idTrasferimento
             },
             dataType: 'json',
             async: false,
@@ -323,6 +376,7 @@
                 if (result.err == "" || typeof result.err == "undefined") {
 
                     $('#habilitaNotifica').val(result.abilitaNotifica);
+                    $('#habilitaElimina').val(result.abilitaElimina);
                     $('#habilitaNuovoTrasferimento').val(result.abilitaNuovoTrasferimento);
                     $('#habilitaSalva').val(result.abilitaSalva);
                     $('#htrasfSucc').val(result.trasferimentoSuccessivo);
@@ -360,12 +414,14 @@
         var vabilitaNuovoTrasferimento = $('#habilitaNuovoTrasferimento').val();
         var vAbilitaSalva = $('#habilitaSalva').val();
         var vAbilitaNotofica = $('#habilitaNotifica').val();
+        var vAbilitaElimina = $('#habilitaElimina').val();
         var vTrasfSucc = $('#htrasfSucc').val();
 
 
         var abilitaNuovoTrasferimento = vabilitaNuovoTrasferimento == "true" ? true : false;
         var abilitaSalva = vAbilitaSalva == "true" ? true : false;
         var abilitaNotifica = vAbilitaNotofica == "true" ? true : false;
+        var abilitaElimina = vAbilitaElimina == "true" ? true : false;
         var trasfSucc = vTrasfSucc == "true" ? true : false;
 
         if (trasfSucc) {
@@ -379,39 +435,62 @@
 
             $("#btModifica").attr("disabled", "disabled");
             $("#btNotifica").attr("disabled", "disabled");
+            $("#btElimina").attr("disabled", "disabled");
 
             $("#idTipoTrasferimento").attr("disabled", "disabled");
             $("#idUfficio").attr("disabled", "disabled");
-            $("#dataPartenza").attr("disabled", "disabled");
+            //$("#dataPartenza").attr("disabled", "disabled");
             $("#idRuoloUfficio").attr("disabled", "disabled");
             $("#idTipoCoan").attr("disabled", "disabled");
             $("#coan").attr("disabled", "disabled");
+            $("#idFKM").attr("disabled", "disabled");
             $("#btLetteraTrsf").attr("disabled", "disabled");
         }
         else if (abilitaSalva == true && abilitaNotifica == false && abilitaNuovoTrasferimento == false) {
             $('#divBtNuovoTrasferimento').hide();
 
             $("#btModifica").removeAttr("disabled");
+            $("#btElimina").removeAttr("disabled");
             $("#btNotifica").attr("disabled", "disabled");
 
             $("#idTipoTrasferimento").removeAttr("disabled");
             $("#idUfficio").removeAttr("disabled");
-            $("#dataPartenza").removeAttr("disabled");
+            //$("#dataPartenza").removeAttr("disabled");
+            //$("#dataPartenza").attr("disabled", "disabled");
             $("#idRuoloUfficio").removeAttr("disabled");
+            $("#idFKM").removeAttr("disabled");
+
+            //modificati in disabilitati
+            //$("#idTipoTrasferimento").attr("disabled", "disabled");
+            //$("#idUfficio").attr("disabled", "disabled");
+            //$("#dataPartenza").attr("disabled", "disabled");
+            //$("#idRuoloUfficio").attr("disabled", "disabled");
+            //$("#idFKM").attr("disabled", "disabled");
+
             $("#idTipoCoan").removeAttr("disabled");
             $("#coan").removeAttr("disabled");
+
             $("#btLetteraTrsf").removeAttr("disabled");
         }
         else if (abilitaSalva == true && abilitaNotifica == true && abilitaNuovoTrasferimento == false) {
             $('#divBtNuovoTrasferimento').hide();
             $("#btModifica").removeAttr("disabled");
             $("#btNotifica").removeAttr("disabled");
-
+            $("#btElimina").removeAttr("disabled");
 
             $("#idTipoTrasferimento").removeAttr("disabled");
             $("#idUfficio").removeAttr("disabled");
-            $("#dataPartenza").removeAttr("disabled");
+            //$("#dataPartenza").removeAttr("disabled");
             $("#idRuoloUfficio").removeAttr("disabled");
+            $("#idFKM").removeAttr("disabled");
+
+            //modificati in disabilitati
+            //$("#idTipoTrasferimento").attr("disabled", "disabled");
+            //$("#idUfficio").attr("disabled", "disabled");
+            //$("#dataPartenza").attr("disabled", "disabled");
+            //$("#idRuoloUfficio").attr("disabled", "disabled");
+            //$("#idFKM").attr("disabled", "disabled");
+
             $("#idTipoCoan").removeAttr("disabled");
             $("#coan").removeAttr("disabled");
             $("#btLetteraTrsf").removeAttr("disabled");
@@ -420,24 +499,24 @@
 
             $("#btModifica").attr("disabled", "disabled");
             $("#btNotifica").attr("disabled", "disabled");
+            $("#btElimina").attr("disabled", "disabled");
 
             $("#idTipoTrasferimento").attr("disabled", "disabled");
             $("#idUfficio").attr("disabled", "disabled");
-            $("#dataPartenza").attr("disabled", "disabled");
+            //$("#dataPartenza").attr("disabled", "disabled");
             $("#idRuoloUfficio").attr("disabled", "disabled");
             $("#idTipoCoan").attr("disabled", "disabled");
+            $("#idFKM").attr("disabled", "disabled");
             $("#coan").attr("disabled", "disabled");
             $("#btLetteraTrsf").attr("disabled", "disabled");
         }
-
-
-
-
-
     }
 
     function NotifcaModal() {
         $('#notificaModal').modal().show();
+    }
+    function EliminaModal() {
+        $('#eliminaModal').modal().show();
     }
 
     $("#btModifica").click(function () {
@@ -466,7 +545,7 @@
         var idTrasferimento = parseInt($("#idTrasferimento").val());
 
         $.ajax({
-            url: rotta,
+        url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
             data: { idTrasferimento: idTrasferimento },
             dataType: 'html',
@@ -496,7 +575,7 @@
 
 
     $("#idTipoTrasferimento").select2({
-        placeholder: "Seleziona il tipo trasferimento",
+    placeholder: "Seleziona il tipo trasferimento",
         allowClear: true,
         language: "it",
         width: '350'
@@ -504,7 +583,7 @@
     });
 
     $("#idUfficio").select2({
-        placeholder: "Seleziona l'ufficio",
+    placeholder: "Seleziona l'ufficio",
         allowClear: true,
         language: "it",
         width: '250'
@@ -512,7 +591,7 @@
     });
 
     $("#idRuoloUfficio").select2({
-        placeholder: "Seleziona il ruolo",
+    placeholder: "Seleziona il ruolo",
         allowClear: true,
         language: "it",
         width: '200'
@@ -520,7 +599,7 @@
     });
 
     $("#idTipoCoan").select2({
-        placeholder: "Seleziona la tipologia del coan",
+    placeholder: "Seleziona la tipologia del coan",
         allowClear: true,
         language: "it",
         width: '200'
@@ -528,7 +607,7 @@
     });
 
     $("#idFKM").select2({
-        placeholder: "Seleziona la fascia chilometrica",
+    placeholder: "Seleziona la fascia chilometrica",
         allowClear: true,
         language: "it",
         width: '200'
@@ -538,8 +617,8 @@
 
 
     $('#dataPartenza').datepicker({
-        //showButtonPanel: true,
-        showAnim: "slide",
+    //showButtonPanel: true,
+    showAnim: "slide",
         changeMonth: true,
         changeYear: true,
     });
@@ -566,11 +645,13 @@
 
         if (valore == "1") {
             $("#coan").attr("disabled", "disabled");
+            $("#coan").val("");
         }
         else {
             $("#coan").removeAttr("disabled");
         }
     }
+
 
     function NotificaTrasferimento() {
         //debugger;
@@ -578,10 +659,10 @@
         var idTrasferimento = parseInt($("#idTrasferimento").val());
 
         $.ajax({
-            type: "POST",
+        type: "POST",
             url: rotta,
             data: {
-                idTrasferimento: idTrasferimento
+            idTrasferimento: idTrasferimento
             },
             dataType: 'json',
             async: false,
@@ -627,6 +708,8 @@
         });
     }
 
+
+
     function RicaricaInfoTrasferimento() {
         //debugger;
         var rit = '@ricaricaInfoTrasf.ToString()';
@@ -653,7 +736,7 @@
         var idRuoloDipendente = @idRuoloDipendente;
 
         $.ajax({
-            url: rotta,
+        url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
             data: { idTrasferimento: idTrasferimento, matricola: matricola, idRuoloDipendente: idRuoloDipendente, ricaricaInfoTrasf: ricaricaInfoTrasf },
             dataType: 'html',

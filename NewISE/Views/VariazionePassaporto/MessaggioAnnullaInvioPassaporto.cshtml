@@ -1,0 +1,27 @@
+﻿
+@model NewISE.Interfacce.ModelloMsgMail
+
+<link href="~/Scripts/cleditor/jquery.cleditor.css" rel="stylesheet" />
+<script src="~/Scripts/cleditor/jquery.cleditor.min.js"></script>
+@{
+    string msgAnnulla = Convert.ToString(Model.corpoMsg);
+    decimal idTrasferimento = ViewBag.idTrasferimento;
+    decimal idAttivazionePassaporto = ViewBag.idAttivazionePassaporto;
+}
+
+@Html.Hidden("idTrasferimento", idTrasferimento)
+@Html.Hidden("idAttivazionePassaporto", idAttivazionePassaporto)
+<div class="form-group">
+    <div ass="col-md-10">
+        @Html.TextAreaFor(model => model.corpoMsg, new { @id = "FullDescriptionAnnullaInvio" })
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#FullDescriptionAnnullaInvio").cleditor();
+
+    $('#FullDescriptionAnnullaInvio').each(function () {
+        this.contentEditable = true;
+    });
+</script>
+

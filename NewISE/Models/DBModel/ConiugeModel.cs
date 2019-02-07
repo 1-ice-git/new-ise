@@ -1,4 +1,5 @@
 ﻿using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.Enumeratori;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Web;
 namespace NewISE.Models.DBModel
 {
 
+
     public class ConiugeModel
     {
         [Key]
@@ -19,7 +21,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Maggiorazione familiari")]
         public decimal idMaggiorazioniFamiliari { get; set; }
         [Required(ErrorMessage = "La tipologia del coniuge è richiesta.")]
-        [Display(Name = "Tipologia coniuge")]
+        [Display(Name = "Tipologia")]
         public EnumTipologiaConiuge idTipologiaConiuge { get; set; }
 
         [Required(ErrorMessage = "Il nome è richiesto.")]
@@ -65,8 +67,6 @@ namespace NewISE.Models.DBModel
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
         public DateTime? dataNotificaTV { get; set; }
 
-        [DefaultValue(false)]
-        public bool Modificato { get; set; }
 
         public decimal? FK_idConiuge { get; set; }
 
@@ -79,6 +79,8 @@ namespace NewISE.Models.DBModel
         public PassaportoModel passaporto { get; set; }
 
         public MaggiorazioniFamiliariModel MaggiorazioniFamiliari { get; set; }
+
+        public decimal idStatoRecord { get; set; }
 
         public bool HasValue()
         {

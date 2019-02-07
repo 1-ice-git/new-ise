@@ -21,7 +21,7 @@
 @using (@Ajax.BeginForm("InserisciAltriDatiFamiliariFiglio", "AltriDatiFamiliari", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { id = "formNewADF" }))
 {
     @Html.AntiForgeryToken()
-    <div style="padding-left: 15px; padding-right:5px;">
+    <div>
         <div class="form-horizontal">
             <h5> Inserisci Altri Dati Familiari (@nominativo)</h5>
 
@@ -42,13 +42,13 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            @*<div class="form-group">
                 @Html.LabelFor(model => model.capNascita, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.TextBoxFor(model => model.capNascita, new { @class = "form-control text-uppercase", @style = "max-width:100px;", @list = "ListaCap" })
                     @Html.ValidationMessageFor(model => model.capNascita, "", new { @class = "text-danger" })
                 </div>
-            </div>
+            </div>*@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.comuneNascita, htmlAttributes: new { @class = "control-label col-md-2" })

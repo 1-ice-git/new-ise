@@ -18,7 +18,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var ltc = db.TIPOLOGIACONIUGE.OrderBy(a => a.TIPOLOGIACONIUGE1).ToList();
+                var ltc = db.TIPOLOGIACONIUGE.OrderBy(a => a.IDTIPOLOGIACONIUGE).ToList();
 
                 if (ltc != null && ltc.Count > 0)
                 {

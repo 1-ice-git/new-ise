@@ -34,13 +34,13 @@
             <dd></dd>
         }
 
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.capNascita)
-        </dt>
+        </dt>*@
 
-        <dd>
+        @*<dd>
             @Html.DisplayFor(model => model.capNascita)
-        </dd>
+        </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.comuneNascita)
@@ -128,3 +128,7 @@
     | @Ajax.ActionLink("Torna indietro", "ElencoFigli", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabFigli", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 
 </p>
+
+<script type="text/javascript">
+    PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
+</script>

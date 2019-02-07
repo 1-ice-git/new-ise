@@ -17,12 +17,14 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ALTRIDATIFAM()
         {
+            this.ALTRIDATIFAM1 = new HashSet<ALTRIDATIFAM>();
+            this.CONIUGE = new HashSet<CONIUGE>();
+            this.FIGLI = new HashSet<FIGLI>();
             this.ATTIVAZIONIMAGFAM = new HashSet<ATTIVAZIONIMAGFAM>();
         }
     
         public decimal IDALTRIDATIFAM { get; set; }
-        public Nullable<decimal> IDCONIUGE { get; set; }
-        public Nullable<decimal> IDFIGLI { get; set; }
+        public decimal IDSTATORECORD { get; set; }
         public System.DateTime DATANASCITA { get; set; }
         public string CAPNASCITA { get; set; }
         public string COMUNENASCITA { get; set; }
@@ -33,10 +35,16 @@ namespace NewISE.EF
         public string COMUNERESIDENZA { get; set; }
         public string PROVINCIARESIDENZA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
-        public bool ANNULLATO { get; set; }
+        public Nullable<decimal> FK_IDALTRIDATIFAM { get; set; }
     
-        public virtual CONIUGE CONIUGE { get; set; }
-        public virtual FIGLI FIGLI { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ALTRIDATIFAM> ALTRIDATIFAM1 { get; set; }
+        public virtual ALTRIDATIFAM ALTRIDATIFAM2 { get; set; }
+        public virtual STATORECORD STATORECORD { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FIGLI> FIGLI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVAZIONIMAGFAM> ATTIVAZIONIMAGFAM { get; set; }
     }

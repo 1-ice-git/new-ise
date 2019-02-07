@@ -5,15 +5,11 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel
 {
-    public enum EnumTipologiaFiglio
-    {
-        Residente = 1,
-        StudenteResidente = 2,
-        StudenteNonResidente = 3
-    }
+
     public class PercentualeMagFigliModel
     {
         [Key]

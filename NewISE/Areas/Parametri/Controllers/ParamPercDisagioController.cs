@@ -23,7 +23,7 @@ namespace NewISE.Areas.Parametri.Controllers
             var r = new List<SelectListItem>();
             List<UfficiModel> llm = new List<UfficiModel>();
             try
-            {                
+            {
                 using (dtUffici dtl = new dtUffici())
                 {
                     llm = dtl.GetUffici().OrderBy(a => a.descUfficio).ToList();
@@ -153,7 +153,8 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciPercentualeDisagio(PercentualeDisagioModel ibm, bool escludiAnnullati = true,bool aggiornaTutto= false)
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciPercentualeDisagio(PercentualeDisagioModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             var r = new List<SelectListItem>();
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -164,7 +165,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtParPercentualeDisagio dtib = new dtParPercentualeDisagio())
                     {
-                        dtib.SetPercentualeDisagio(ibm,aggiornaTutto);
+                        dtib.SetPercentualeDisagio(ibm, aggiornaTutto);
                     }
                     AggiornaLivelliList(ibm.idUfficio);
                     //return RedirectToAction("PercentualeDisagio", new { escludiAnnullati = escludiAnnullati, idUfficio = ibm.idUfficio });
@@ -183,7 +184,7 @@ namespace NewISE.Areas.Parametri.Controllers
                         ViewBag.Descrizione = lm;
                     }
                     ViewBag.escludiAnnullati = escludiAnnullati;
-                    
+
                     return PartialView("NuovaPercentualeDisagio", ibm);
                 }
             }
@@ -195,7 +196,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-       
+
         public ActionResult EliminaPercentualeDisagio(bool escludiAnnullati, decimal idUfficio, decimal idPercDisagio)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;

@@ -64,7 +64,7 @@
                         {
                             <td></td>
                         }
-                <td style="text-align:right;">
+                <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.percentualeFigli)  %
                 </td>
                 <td style="text-align:center;">
@@ -125,7 +125,11 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        }
+        },
+        "columnDefs": [
+                          { "targets": [1, 2, 4], "type": 'date-euro' },
+                          { "targets": [3, 5, 6], "orderable": false },
+        ],
     });
 
     $("#idTipologiaFiglio").select2({

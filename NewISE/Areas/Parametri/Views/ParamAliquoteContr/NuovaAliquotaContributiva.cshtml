@@ -1,7 +1,7 @@
 ﻿@model NewISE.Models.DBModel.AliquoteContributiveModel
 @using NewISE.Models.DBModel;
 
-<script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+<script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
 <script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
 <script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
 
@@ -32,8 +32,8 @@
         </div>
 
         @Html.HiddenFor(model => model.idTipoContributo)
-        <input type="hidden" id="escludiAnnullati" , name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
-        <input type="hidden" id="aggiornaTutto" , name="aggiornaTutto" />
+        <input type="hidden" id="escludiAnnullati" name="escludiAnnullati" value="@escludiAnnullati.ToString()" />
+        <input type="hidden" id="aggiornaTutto" name="aggiornaTutto" />
         <div class="form-group">
             <div class="col-xs-2 text-right">
                 <label>Aliquota Contributiva </label>
@@ -72,7 +72,11 @@
         <div class="form-group ">
             @Html.LabelFor(model => model.aliquota, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.aliquota, new { htmlAttributes = new { @class = "form-control number" } })
+
+                <input type="text" id="aliquotaUI" class="form-control ignore" />
+                <input type="hidden" id="aliquota" name="aliquota" value="" />
+
+
                 @Html.ValidationMessageFor(model => model.aliquota, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -119,7 +123,7 @@
         if(e.Value.Errors.Count>0)
         {
             @:DialogModalError('True');
-                    break;
+                                                    break;
         }
     }
 
@@ -140,43 +144,33 @@
 
     Globalize.culture("it-IT");
 
-    $("#aliquota").autoNumeric('init',
-	{
-	    aSep: '.',
-	    aDec: ',',
-	    aSign: '',
-	    mDec: 8,
-	});
+    //$("#aliquota").autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: '',
+    //    mDec: 8,
+    //});
 
-    //var x= $("#hiTipoContributo").val();
+    anElement = new AutoNumeric('#aliquotaUI', autoNumericOptionsEuroOttoDec);
 
-    $('form').submit(function () {
+    $("#aliquotaUI").blur(function () {
         //debugger;
-        var form = $(this);
-        $('input.number').each(function (i) {
-            //debugger;
-            var self = $(this);
-            try {
-                var v = self.autoNumeric('get');
-                //self.autoNumeric('destroy');
-                var n = v.replace(".", ",");
-                self.val(n);
-            } catch (err) {
-                console.log("Non è un campo autonumeric: " + self.attr("name"));
-            }
-        });
-        return true;
+        var val = anElement.getNumber();
+        $("#aliquota").val(val.toString().replace(".", ","));
     });
 
-    $.validator.methods.range = function (value, element, param) {
-        var globalizedValue = value.replace(",", ".");
-        return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
-    };
+
 
     $.validator.methods.number = function (value, element) {
         //debugger;
-        return this.optional(element) || !isNaN(Globalize.parseFloat(value));
-    };
+        var val = value.replace(".", ",");
+        return this.optional(element) || !isNaN(Globalize.parseFloat(val));
+    }
+
+    $.validator.setDefaults({
+        ignore: ".ignore" // validate all hidden select elements
+    });
 
     $('#dataInizioValidita').datepicker({
         inline: true,

@@ -17,6 +17,9 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public INDENNITA()
         {
+            this.ELABINDENNITA = new HashSet<ELABINDENNITA>();
+            this.ELABMAB = new HashSet<ELABMAB>();
+            this.MAB = new HashSet<MAB>();
             this.COEFFICIENTESEDE = new HashSet<COEFFICIENTESEDE>();
             this.INDENNITABASE = new HashSet<INDENNITABASE>();
             this.LIVELLIDIPENDENTI = new HashSet<LIVELLIDIPENDENTI>();
@@ -27,6 +30,12 @@ namespace NewISE.EF
         public decimal IDTRASFINDENNITA { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABINDENNITA> ELABINDENNITA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABMAB> ELABMAB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MAB> MAB { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<COEFFICIENTESEDE> COEFFICIENTESEDE { get; set; }

@@ -4,8 +4,6 @@
     decimal idMaggiorazioniFamiliari = Convert.ToDecimal(ViewData["idMaggiorazioniFamiliari"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
-}
-@{
     ViewBag.Title = "Home";
 }
 
@@ -14,7 +12,7 @@
 
 <div class="row">
     <div id="divPanelCalendEv" class="col-xs-12">
-        @Html.Action("GetListaHome", "Home")
+        @Html.Action("GetListaHome", "Home", new { idStatoHome = 0 })
     </div>
 </div>
 

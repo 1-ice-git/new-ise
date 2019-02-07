@@ -61,6 +61,16 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;Si notifica che l&apos;invio dei passaporti per il trasferimento presso la sede di &lt;br&gt;&lt;center&gt;&lt;h4&gt;{0}&lt;/h4&gt; &lt;/center&gt;a partire dal giorno  &lt;br&gt;&lt;center&gt;&lt;h4&gt;{1}&lt;/h4&gt;&lt;/center&gt;è stata annullato.&lt;/p&gt;
+        ///&lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli.&lt;/p&gt;.
+        /// </summary>
+        internal static string MessaggioAnnullaInvioPassaporto {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaInvioPassaporto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Si informa il dipendente {0} che il trasferimento per la sede di {1} è stato annullato. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullamentoTrasferimento {
@@ -70,7 +80,25 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta di anticipo è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di viaggio congedo è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullamentoViaggiCongedo {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullamentoViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta di viaggio congedo in FASE 2 è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullamentoViaggiCongedo2 {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullamentoViaggiCongedo2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta di anticipo per il trasferimento presso la sede di {0} dal giorno {1}, è stata annullata . &lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaAnticipi {
             get {
@@ -79,7 +107,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio per il trasferimento presso la sede di {0} dal giorno {1}, è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaInizialeTitoloViaggio {
             get {
@@ -88,7 +116,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta di maggiorazione abitazione è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di maggiorazione abitazione relativa al trasferimento presso la sede di {0}, a partire dal giorno {1}, è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaMaggiorazioneAbitazione {
             get {
@@ -97,7 +125,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento presso la sede di {0} del giorno {1}, è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta delle Maggiorazioni Familiari per il Trasferimento presso la sede di {0} del giorno {1} è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaMaggiorazioniFamiliari {
             get {
@@ -106,10 +134,8 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento presso la sede di &lt;strong&gt;{0}&lt;/strong&gt; del giorno {1}, è stata annullata.&lt;/p&gt;
-        ///&lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli.&lt;/p&gt;
-        ///&lt;hr /&gt;
-        ///&lt;p&gt;&amp;nbsp;&lt;/p&gt;.
+        ///   Looks up a localized string similar to &lt;p&gt;Si notifica che la richiesta per le pratiche del passaporto per il trasferimento presso la sede di &lt;br&gt;&lt;center&gt;&lt;h4&gt;{0}&lt;/h4&gt; &lt;/center&gt;a partire dal giorno  &lt;br&gt;&lt;center&gt;&lt;h4&gt;{1}&lt;/h4&gt;&lt;/center&gt;è stata annullata.&lt;/p&gt;
+        ///&lt;p&gt;Contattare l&apos;amministratore per maggiori dettagli.&lt;/p&gt;.
         /// </summary>
         internal static string MessaggioAnnullaRichiestaPassaporto {
             get {
@@ -118,7 +144,16 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta di invio di ulteriore documentazione dei titoli di viaggio è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di rimborso per le provvidenze scolastiche riferito al trasferimento presso la sede di {0} dal giorno {1} è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullaRichiestaProvvidenzeScolastiche {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaProvvidenzeScolastiche", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta di invio di ulteriore documentazione dei titoli di viaggio relativi al trasferimento presso la sede di {0} dal giorno {1} è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
         internal static string MessaggioAnnullaRichiestaSuccessivaTitoloViaggio {
             get {
@@ -127,25 +162,43 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta di rimborso per trasporto effetti in partenza è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di anticipo del rimborso trasporto effetti in partenza riferito al trasferimento presso la sede di {0} dal giorno {1} è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
-        internal static string MessaggioAnnullaRichiestaTrasportoEffettiPartenza {
+        internal static string MessaggioAnnullaRichiestaTrasportoEffettiPartenzaAnticipo {
             get {
-                return ResourceManager.GetString("MessaggioAnnullaRichiestaTrasportoEffettiPartenza", resourceCulture);
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaTrasportoEffettiPartenzaAnticipo", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta di rimborso per trasporto effetti per il rientro è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di saldo del rimborso  trasporto effetti in partenza riferito al trasferimento presso la sede di {0} dal giorno {1} è stata annullata . Contattare l&apos;amministratore per maggiori dettagli..
         /// </summary>
-        internal static string MessaggioAnnullaRichiestaTrasportoEffettiRientro {
+        internal static string MessaggioAnnullaRichiestaTrasportoEffettiPartenzaSaldo {
             get {
-                return ResourceManager.GetString("MessaggioAnnullaRichiestaTrasportoEffettiRientro", resourceCulture);
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaTrasportoEffettiPartenzaSaldo", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che l&apos;anticipo da lei richiesto per il trasferimento {0} del {1}, è stata confermato..
+        ///   Looks up a localized string similar to Si notifica che la richiesta di anticipo del rimborso trasporto effetti per il rientro è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullaRichiestaTrasportoEffettiRientroAnticipo {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaTrasportoEffettiRientroAnticipo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta di saldo del rimborso trasporto effetti per il rientro è stata annullata. Contattare l&apos;amministratore per maggiori dettagli..
+        /// </summary>
+        internal static string MessaggioAnnullaRichiestaTrasportoEffettiRientroSaldo {
+            get {
+                return ResourceManager.GetString("MessaggioAnnullaRichiestaTrasportoEffettiRientroSaldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che l&apos;anticipo da lei richiesto per il trasferimento presso la sede di {0} del {1}, è stato confermato..
         /// </summary>
         internal static string MessaggioAttivaRichiestaAnticipi {
             get {
@@ -154,7 +207,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio è stata confermata..
+        ///   Looks up a localized string similar to Si notifica che la richiesta dei titoli di viaggio per il trasferimento presso la sede di {0} del {1} è stata confermata..
         /// </summary>
         internal static string MessaggioAttivaRichiestaInizialeTitoliViaggio {
             get {
@@ -163,7 +216,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che l&apos;ulteriore documentazione relativa ai titoli di viaggio richiesti è stata confermata..
+        ///   Looks up a localized string similar to Si notifica che l&apos;ulteriore documentazione relativa ai titoli di viaggio richiesti relativi al trasferimento presso la sede di {0} dal {1} è stata confermata..
         /// </summary>
         internal static string MessaggioAttivaRichiestaSuccessivaTitoliViaggio {
             get {
@@ -172,7 +225,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si informa che il trasferimento del dipendente {0} per la sede di {1} è stato attivato..
+        ///   Looks up a localized string similar to Si informa che il trasferimento del dipendente {0} per la sede di {1}, a partire dal giorno {2}, è stato attivato..
         /// </summary>
         internal static string MessaggioAttivaTrasferimento {
             get {
@@ -181,7 +234,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica della Maggiorazione Abitazione per il dipendente {0}, trasferito il {1} nella sede di {2}..
+        ///   Looks up a localized string similar to Notifica che la richiesta di Maggiorazione Abitazione per il trasferimento presso la sede di {0}, dal giorno {1}, è stata confermata..
         /// </summary>
         internal static string MessaggioAttivazioneMaggiorazioneAbitazione {
             get {
@@ -190,7 +243,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che le Maggiorazioni Familiari da lei richieste per il trasferimento {0} del {1}, sono state confermate..
+        ///   Looks up a localized string similar to Si notifica che le Maggiorazioni Familiari da lei richieste per il trasferimento presso la sede di  {0} del {1}, sono state confermate..
         /// </summary>
         internal static string MessaggioAttivazioneMaggiorazioniFamiliari {
             get {
@@ -199,29 +252,101 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si informa la richiesta di rimborso per il trasporto effetti in fase di partenza è stata accettata..
+        ///   Looks up a localized string similar to Si informa la richiesta di rimborso per le provvidenze scolastiche è stata accettata..
         /// </summary>
-        internal static string MessaggioAttivazioneTrasportoEffettiPartenza {
+        internal static string MessaggioAttivazioneProvvidenzeScolastiche {
             get {
-                return ResourceManager.GetString("MessaggioAttivazioneTrasportoEffettiPartenza", resourceCulture);
+                return ResourceManager.GetString("MessaggioAttivazioneProvvidenzeScolastiche", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si informa la richiesta di rimborso per il trasporto effetti in fase di rientro è stata accettata..
+        ///   Looks up a localized string similar to Si informa la richiesta di anticipo del rimborso trasporto effetti in fase di partenza è stata accettata..
         /// </summary>
-        internal static string MessaggioAttivazioneTrasportoEffettiRientro {
+        internal static string MessaggioAttivazioneTrasportoEffettiPartenzaAnticipo {
             get {
-                return ResourceManager.GetString("MessaggioAttivazioneTrasportoEffettiRientro", resourceCulture);
+                return ResourceManager.GetString("MessaggioAttivazioneTrasportoEffettiPartenzaAnticipo", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta maggiorazione abitazione..
+        ///   Looks up a localized string similar to Si informa la richiesta di saldo del rimborso trasporto effetti in fase di partenza è stata accettata..
+        /// </summary>
+        internal static string MessaggioAttivazioneTrasportoEffettiPartenzaSaldo {
+            get {
+                return ResourceManager.GetString("MessaggioAttivazioneTrasportoEffettiPartenzaSaldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa la richiesta di anticipo del rimborso trasporto effetti in fase di rientro è stata accettata..
+        /// </summary>
+        internal static string MessaggioAttivazioneTrasportoEffettiRientroAnticipo {
+            get {
+                return ResourceManager.GetString("MessaggioAttivazioneTrasportoEffettiRientroAnticipo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa la richiesta di saldo del rimborso trasporto effetti in fase di rientro è stata accettata..
+        /// </summary>
+        internal static string MessaggioAttivazioneTrasportoEffettiRientroSaldo {
+            get {
+                return ResourceManager.GetString("MessaggioAttivazioneTrasportoEffettiRientroSaldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta di viaggio congedo è stata confermata..
+        /// </summary>
+        internal static string MessaggioAttivazioneViaggiCongedo {
+            get {
+                return ResourceManager.GetString("MessaggioAttivazioneViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che la richiesta di viaggio congedo FASE 2 è stata confermata..
+        /// </summary>
+        internal static string MessaggioAttivazioneViaggiCongedo2 {
+            get {
+                return ResourceManager.GetString("MessaggioAttivazioneViaggiCongedo2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;invio dei passaporti/visti per il dipendente {0}, trasferito dal {1} verso l&apos;ufficio di {2}..
+        /// </summary>
+        internal static string MessaggioInvioPratichePassaporto {
+            get {
+                return ResourceManager.GetString("MessaggioInvioPratichePassaporto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che l&apos;invio dei passaporti per il trasferimento presso la sede di {0} del {1} è stato confermato..
+        /// </summary>
+        internal static string MessaggioInvioPratichePassaportoConcluse {
+            get {
+                return ResourceManager.GetString("MessaggioInvioPratichePassaportoConcluse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta di maggiorazione abitazione..
         /// </summary>
         internal static string MessaggioNotificaMaggiorazioneAbitazione {
             get {
                 return ResourceManager.GetString("MessaggioNotificaMaggiorazioneAbitazione", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta per le provvidenze scolastiche..
+        /// </summary>
+        internal static string MessaggioNotificaProvvidenzeScolastiche {
+            get {
+                return ResourceManager.GetString("MessaggioNotificaProvvidenzeScolastiche", resourceCulture);
             }
         }
         
@@ -235,7 +360,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica la richiesta dei titoli di viaggio per {0}.
+        ///   Looks up a localized string similar to Si notifica che il dipendente {0} ha effettuato la richiesta dei titoli di viaggio per la sede di {1} dal {2}..
         /// </summary>
         internal static string MessaggioNotificaRichiestaInizialeTitoliViaggio {
             get {
@@ -253,7 +378,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica la richiesta di invio di ulteriore documentazione relativa ai titoli di viaggio per {0}.
+        ///   Looks up a localized string similar to Si notifica che il dipendente {0} ha effettuato la richiesta di invio di ulteriore documentazione relativa ai titoli di viaggio per il trasferimento presso la sede di {1} dal {2}..
         /// </summary>
         internal static string MessaggioNotificaRichiestaSuccessivaTitoliViaggio {
             get {
@@ -271,25 +396,79 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta di rimborso per il trasporto effetti in fase di partenza..
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta anticipo rimborso per il trasporto effetti in fase di partenza..
         /// </summary>
-        internal static string MessaggioNotificaTrasportoEffettiPartenza {
+        internal static string MessaggioNotificaTrasportoEffettiPartenzaAnticipo {
             get {
-                return ResourceManager.GetString("MessaggioNotificaTrasportoEffettiPartenza", resourceCulture);
+                return ResourceManager.GetString("MessaggioNotificaTrasportoEffettiPartenzaAnticipo", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta di rimborso per il trasporto effetti in fase di rientro..
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta di saldo del rimborso trasporto effetti in fase di partenza..
         /// </summary>
-        internal static string MessaggioNotificaTrasportoEffettiRientro {
+        internal static string MessaggioNotificaTrasportoEffettiPartenzaSaldo {
             get {
-                return ResourceManager.GetString("MessaggioNotificaTrasportoEffettiRientro", resourceCulture);
+                return ResourceManager.GetString("MessaggioNotificaTrasportoEffettiPartenzaSaldo", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito verso l&apos;ufficio {1} dal {2}..
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta di anticipo rimborso  trasporto effetti in fase di rientro..
+        /// </summary>
+        internal static string MessaggioNotificaTrasportoEffettiRientroAnticipo {
+            get {
+                return ResourceManager.GetString("MessaggioNotificaTrasportoEffettiRientroAnticipo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta di saldo del rimborso trasporto effetti in fase di rientro..
+        /// </summary>
+        internal static string MessaggioNotificaTrasportoEffettiRientroSaldo {
+            get {
+                return ResourceManager.GetString("MessaggioNotificaTrasportoEffettiRientroSaldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa che il dipendente ha effettuato la richiesta di viaggio congedo..
+        /// </summary>
+        internal static string MessaggioNotificaViaggiCongedo {
+            get {
+                return ResourceManager.GetString("MessaggioNotificaViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si informa che il dipendente ha effettuato la richiesta di viaggio congedo FASE 2..
+        /// </summary>
+        internal static string MessaggioNotificaViaggiCongedo2 {
+            get {
+                return ResourceManager.GetString("MessaggioNotificaViaggiCongedo2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si notifica che il suo trasferimento attuale nella sede di {0} terminerà il giorno {1}..
+        /// </summary>
+        internal static string MessaggioRichiamoInserisci {
+            get {
+                return ResourceManager.GetString("MessaggioRichiamoInserisci", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E’ stata effettuata una variazione sulla data di rientro per la sede di {0} dal {1} al {2}..
+        /// </summary>
+        internal static string MessaggioRichiamoModifica {
+            get {
+                return ResourceManager.GetString("MessaggioRichiamoModifica", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della richiesta per il passaporto/visto per il dipendente {0}, trasferito dal {1} verso l&apos;ufficio di {2}..
         /// </summary>
         internal static string MessaggioRichiestaPratichePassaporto {
             get {
@@ -298,7 +477,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si notifica che la pratica per la richiesta dei passaporto per il trasferimento {0} del {1} è stata conclusa..
+        ///   Looks up a localized string similar to Si notifica che la pratica per la richiesta del passaporto per il trasferimento presso la sede di {0} del {1} è stata conclusa. Si prega di inviare copia del passaporto, appena ricevuto..
         /// </summary>
         internal static string MessaggioRichiestaPratichePassaportoConcluse {
             get {
@@ -307,11 +486,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta per il rimborso successivo dei titoli di viaggio per il trasferimento {1}..
+        ///   Looks up a localized string similar to Si informa che il dipendente {0} ha effettuato la richiesta per il rimborso successivo dei titoli di viaggio per il trasferimento presso la sede di {1}..
         /// </summary>
         internal static string MessaggioRimborsoSuccessivoTitoliViaggio {
             get {
                 return ResourceManager.GetString("MessaggioRimborsoSuccessivoTitoliViaggio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento dell&apos;invio del passaporto..
+        /// </summary>
+        internal static string OggettoAnnullaInvioPassaporto {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaInvioPassaporto", resourceCulture);
             }
         }
         
@@ -336,9 +524,9 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta dei titoli di viaggio..
         /// </summary>
-        internal static string OggettoAnnullaRichiestaInizialeTitioliViaggio {
+        internal static string OggettoAnnullaRichiestaInizialeTitoliViaggio {
             get {
-                return ResourceManager.GetString("OggettoAnnullaRichiestaInizialeTitioliViaggio", resourceCulture);
+                return ResourceManager.GetString("OggettoAnnullaRichiestaInizialeTitoliViaggio", resourceCulture);
             }
         }
         
@@ -370,6 +558,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta di Provvidenze Scolastiche..
+        /// </summary>
+        internal static string OggettoAnnullaRichiestaProvvidenzeScolastiche {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaRichiestaProvvidenzeScolastiche", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta di ulteriori titoli di viaggio..
         /// </summary>
         internal static string OggettoAnnullaRichiestaSuccessivaTitioliViaggio {
@@ -379,20 +576,56 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta di rimborso per il trasporto effetti (partenza)..
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta di anticipo del rimborso  trasporto effetti (partenza)..
         /// </summary>
-        internal static string OggettoAnnullaRichiestaTrasportoPartenza {
+        internal static string OggettoAnnullaRichiestaTrasportoPartenzaAnticipo {
             get {
-                return ResourceManager.GetString("OggettoAnnullaRichiestaTrasportoPartenza", resourceCulture);
+                return ResourceManager.GetString("OggettoAnnullaRichiestaTrasportoPartenzaAnticipo", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta di rimborso per il trasporto effetti (rientro)..
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta di saldo del rimborso  trasporto effetti (partenza)..
         /// </summary>
-        internal static string OggettoAnnullaRichiestaTrasportoRientro {
+        internal static string OggettoAnnullaRichiestaTrasportoPartenzaSaldo {
             get {
-                return ResourceManager.GetString("OggettoAnnullaRichiestaTrasportoRientro", resourceCulture);
+                return ResourceManager.GetString("OggettoAnnullaRichiestaTrasportoPartenzaSaldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta di anticipo del rimborso trasporto effetti (rientro)..
+        /// </summary>
+        internal static string OggettoAnnullaRichiestaTrasportoRientroAnticipo {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaRichiestaTrasportoRientroAnticipo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta di saldo del rimborso trasporto effetti (rientro)..
+        /// </summary>
+        internal static string OggettoAnnullaRichiestaTrasportoRientroSaldo {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaRichiestaTrasportoRientroSaldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta del viaggio congedo.
+        /// </summary>
+        internal static string OggettoAnnullaViaggiCongedo {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;annullamento della richiesta del viaggio congedo FASE 2.
+        /// </summary>
+        internal static string OggettoAnnullaViaggiCongedo2 {
+            get {
+                return ResourceManager.GetString("OggettoAnnullaViaggiCongedo2", resourceCulture);
             }
         }
         
@@ -433,6 +666,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attivazione Viaggio Congedo.
+        /// </summary>
+        internal static string OggettoAttivaViaggiCongedo {
+            get {
+                return ResourceManager.GetString("OggettoAttivaViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attivazione Viaggio Congedo FASE 2.
+        /// </summary>
+        internal static string OggettoAttivaViaggiCongedo2 {
+            get {
+                return ResourceManager.GetString("OggettoAttivaViaggiCongedo2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Attivazione della maggiorazione abitazione..
         /// </summary>
         internal static string OggettoAttivazioneMaggiorazioneAbitazione {
@@ -451,20 +702,74 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attivazione rimborso trasporto effetti (partenza)..
+        ///   Looks up a localized string similar to Notifica richiesta per le provvidenze scolastiche.
         /// </summary>
-        internal static string OggettoAttivazioneTrasportoEffettiPartenza {
+        internal static string OggettoAttivazioneProvvidenzeScolastiche {
             get {
-                return ResourceManager.GetString("OggettoAttivazioneTrasportoEffettiPartenza", resourceCulture);
+                return ResourceManager.GetString("OggettoAttivazioneProvvidenzeScolastiche", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Attivazione rimborso trasporto effetti (rientro)..
+        ///   Looks up a localized string similar to Attivazione anticipo rimborso trasporto effetti (partenza)..
         /// </summary>
-        internal static string OggettoAttivazioneTrasportoEffettiRientro {
+        internal static string OggettoAttivazioneTrasportoEffettiPartenzaAnticipo {
             get {
-                return ResourceManager.GetString("OggettoAttivazioneTrasportoEffettiRientro", resourceCulture);
+                return ResourceManager.GetString("OggettoAttivazioneTrasportoEffettiPartenzaAnticipo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attivazione saldo rimborso trasporto effetti (partenza)..
+        /// </summary>
+        internal static string OggettoAttivazioneTrasportoEffettiPartenzaSaldo {
+            get {
+                return ResourceManager.GetString("OggettoAttivazioneTrasportoEffettiPartenzaSaldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attivazione anticipo rimborso trasporto effetti (rientro)..
+        /// </summary>
+        internal static string OggettoAttivazioneTrasportoEffettiRientroAnticipo {
+            get {
+                return ResourceManager.GetString("OggettoAttivazioneTrasportoEffettiRientroAnticipo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Attivazione saldo rimborso trasporto effetti (rientro)..
+        /// </summary>
+        internal static string OggettoAttivazioneTrasportoEffettiRientroSaldo {
+            get {
+                return ResourceManager.GetString("OggettoAttivazioneTrasportoEffettiRientroSaldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica dell&apos;invio del passaporto/visti..
+        /// </summary>
+        internal static string OggettoInvioPratichePassaporto {
+            get {
+                return ResourceManager.GetString("OggettoInvioPratichePassaporto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della chiusura della pratica di invio passaporto/visto..
+        /// </summary>
+        internal static string OggettoInvioPratichePassaportoConcluse {
+            get {
+                return ResourceManager.GetString("OggettoInvioPratichePassaportoConcluse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica richiesta provvidenze scolastiche..
+        /// </summary>
+        internal static string OggettoNotificaProvvidenzeScolastiche {
+            get {
+                return ResourceManager.GetString("OggettoNotificaProvvidenzeScolastiche", resourceCulture);
             }
         }
         
@@ -487,7 +792,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica richiesta maggiorazione abitazione..
+        ///   Looks up a localized string similar to Notifica richiesta per la maggiorazione abitazione..
         /// </summary>
         internal static string OggettoNotificaRichiestaMaggiorazioneAbitazione {
             get {
@@ -523,20 +828,74 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica richiesta rimborso trasporto effetti (partenza)..
+        ///   Looks up a localized string similar to Notifica richiesta anticipo rimborso trasporto effetti (partenza)..
         /// </summary>
-        internal static string OggettoNotificaTrasportoEffettiPartenza {
+        internal static string OggettoNotificaTrasportoEffettiPartenzaAnticipo {
             get {
-                return ResourceManager.GetString("OggettoNotificaTrasportoEffettiPartenza", resourceCulture);
+                return ResourceManager.GetString("OggettoNotificaTrasportoEffettiPartenzaAnticipo", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notifica richiesta rimborso trasporto effetti (rientro)..
+        ///   Looks up a localized string similar to Notifica richiesta saldo rimborso trasporto effetti (partenza)..
         /// </summary>
-        internal static string OggettoNotificaTrasportoEffettiRientro {
+        internal static string OggettoNotificaTrasportoEffettiPartenzaSaldo {
             get {
-                return ResourceManager.GetString("OggettoNotificaTrasportoEffettiRientro", resourceCulture);
+                return ResourceManager.GetString("OggettoNotificaTrasportoEffettiPartenzaSaldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica richiesta anticipo rimborso trasporto effetti (rientro)..
+        /// </summary>
+        internal static string OggettoNotificaTrasportoEffettiRientroAnticipo {
+            get {
+                return ResourceManager.GetString("OggettoNotificaTrasportoEffettiRientroAnticipo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica richiesta saldo rimborso trasporto effetti (rientro)..
+        /// </summary>
+        internal static string OggettoNotificaTrasportoEffettiRientroSaldo {
+            get {
+                return ResourceManager.GetString("OggettoNotificaTrasportoEffettiRientroSaldo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica richiesta Viaggio Congedo.
+        /// </summary>
+        internal static string OggettoNotificaViaggiCongedo {
+            get {
+                return ResourceManager.GetString("OggettoNotificaViaggiCongedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica richiesta Viaggio Congedo FASE 2.
+        /// </summary>
+        internal static string OggettoNotificaViaggiCongedo2 {
+            get {
+                return ResourceManager.GetString("OggettoNotificaViaggiCongedo2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica del Richiamo.
+        /// </summary>
+        internal static string OggettoRichiamoInserisci {
+            get {
+                return ResourceManager.GetString("OggettoRichiamoInserisci", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifica della modifica del Richiamo.
+        /// </summary>
+        internal static string OggettoRichiamoModifica {
+            get {
+                return ResourceManager.GetString("OggettoRichiamoModifica", resourceCulture);
             }
         }
         

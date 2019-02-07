@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -17,7 +18,8 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-
+                //try
+                //{
                 var f = db.FIGLI.Find(idFiglio);
 
                 var lpmf =
@@ -43,6 +45,16 @@ namespace NewISE.Models.DBModel.dtObj
                         annullato = pmf.ANNULLATO
                     };
                 }
+                //    else
+                //    { 
+                //        throw new Exception("Errore - Percentuale maggiorazione figli non trovata.");
+                //    }
+
+                //}
+                //catch (Exception ex)
+                //{
+                //    throw ex;
+                //}
             }
 
             return pmfm;
@@ -139,6 +151,22 @@ namespace NewISE.Models.DBModel.dtObj
 
                 throw ex;
             }
+        }
+
+        public void RimuoviAssociazione_Figlio_PercentualeMagFigli(decimal idFiglio, ModelDBISE db)
+        {
+            var f = db.FIGLI.Find(idFiglio);
+            var lpmf = f.PERCENTUALEMAGFIGLI.Where(a => a.ANNULLATO == false).ToList();
+            if (lpmf?.Any() ?? false)
+            {
+                foreach (var pmf in lpmf)
+                {
+                    f.PERCENTUALEMAGFIGLI.Remove(pmf);
+                }
+
+                db.SaveChanges();
+            }
+
         }
 
 

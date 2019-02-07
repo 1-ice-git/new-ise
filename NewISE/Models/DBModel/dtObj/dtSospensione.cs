@@ -8,6 +8,8 @@ using System.Linq;
 using System.Web;
 using NewISE.Models.ViewModel;
 using System.Data.Entity;
+using System.Web.Services.Description;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -18,7 +20,7 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public bool Delete_Sospensione( decimal idSospensione,bool permesso=true)
+        public bool Delete_Sospensione(decimal idSospensione, bool permesso = true)
         {
             bool esito = false;
             if (permesso)
@@ -53,36 +55,37 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 TRASFERIMENTO trasf = db.TRASFERIMENTO.Find(idtrasferimento);
-                var  tmp = (from e in trasf.SOSPENSIONE  where e.ANNULLATO == false
-                            orderby e.DATAINIZIO ascending
-                            select new SospensioneModel()
-                        {
-                            idSospensione=e.IDSOSPENSIONE,
-                            DataInizioSospensione = e.DATAINIZIO,
-                            DataFineSospensione = e.DATAFINE,
-                            TipoSospensione = e.TIPOSOSPENSIONE.DESCRIZIONE,
-                            DataAggiornamento = e.DATAAGGIORNAMENTO,
-                            // NumeroGiorni =DbFunctions.DiffDays(e.DATAINIZIO, e.DATAFINE).Value
-                            NumeroGiorni = Convert.ToInt32((e.DATAFINE.AddDays(1) - e.DATAINIZIO).TotalDays)
-                        }).ToList();
-                    return tmp;
-            }       
+                var tmp = (from e in trasf.SOSPENSIONE
+                           where e.ANNULLATO == false
+                           orderby e.DATAINIZIO ascending
+                           select new SospensioneModel()
+                           {
+                               idSospensione = e.IDSOSPENSIONE,
+                               DataInizioSospensione = e.DATAINIZIO,
+                               DataFineSospensione = e.DATAFINE,
+                               TipoSospensione = e.TIPOSOSPENSIONE.DESCRIZIONE,
+                               DataAggiornamento = e.DATAAGGIORNAMENTO,
+                               // NumeroGiorni =DbFunctions.DiffDays(e.DATAINIZIO, e.DATAFINE).Value
+                               NumeroGiorni = Convert.ToInt32((e.DATAFINE.AddDays(1) - e.DATAINIZIO).TotalDays)
+                           }).ToList();
+                return tmp;
+            }
         }
         public SospensioneModel GetSospensionePerEliminazione(decimal idSospensione)
         {
             SospensioneModel tmp = new SospensioneModel();
             using (ModelDBISE db = new ModelDBISE())
             {
-               var  x = db.SOSPENSIONE.Find(idSospensione);
+                var x = db.SOSPENSIONE.Find(idSospensione);
                 tmp.DataInizioSospensione = x.DATAINIZIO;
                 tmp.DataFineSospensione = x.DATAFINE;
                 tmp.TipoSospensione = x.TIPOSOSPENSIONE.DESCRIZIONE;
-                tmp.DataAggiornamento = x.DATAAGGIORNAMENTO;                
+                tmp.DataAggiornamento = x.DATAAGGIORNAMENTO;
             }
             return tmp;
         }
 
-        public static bool CompresaInUnIntervallo(DateTime inizio,DateTime fine,decimal id_Trasferimento,decimal idSospensione=0)
+        public static bool CompresaInUnIntervallo(DateTime inizio, DateTime fine, decimal id_Trasferimento, decimal idSospensione = 0)
         {
             bool result = false;
             using (ModelDBISE db = new ModelDBISE())
@@ -93,8 +96,8 @@ namespace NewISE.Models.DBModel.dtObj
                 if (idSospensione == 0)
                     nsp = t.SOSPENSIONE.Where(a => a.ANNULLATO == false && (inizio > a.DATAINIZIO && inizio < a.DATAFINE || fine > a.DATAINIZIO && fine < a.DATAFINE)).Count();
                 else
-                    nsp = t.SOSPENSIONE.Where(a => a.ANNULLATO == false && (inizio > a.DATAINIZIO && inizio < a.DATAFINE || fine > a.DATAINIZIO 
-                    && fine < a.DATAFINE && a.IDSOSPENSIONE!=idSospensione)).Count();
+                    nsp = t.SOSPENSIONE.Where(a => a.ANNULLATO == false && (inizio > a.DATAINIZIO && inizio < a.DATAFINE || fine > a.DATAINIZIO
+                    && fine < a.DATAFINE && a.IDSOSPENSIONE != idSospensione)).Count();
 
                 if (nsp != 0) result = true;
             }
@@ -108,8 +111,8 @@ namespace NewISE.Models.DBModel.dtObj
             if (fm != null)
             {
                 if (fm.DataInizioSospensione > fm.DataFineSospensione)
-                { 
-                        vr = new ValidationResult("La data di inizio sospensione deve essere minore della data fine sospensione.");
+                {
+                    vr = new ValidationResult("La data di inizio sospensione deve essere minore della data fine sospensione.");
                 }
                 else
                 {
@@ -125,10 +128,10 @@ namespace NewISE.Models.DBModel.dtObj
                             var nsp = 0;
                             var tr = db.TRASFERIMENTO.Find(fm.idTrasferimento);
                             if (fm.idSospensione == 0)
-                                nsp  = tr.SOSPENSIONE.Where(a => a.ANNULLATO == false && a.IDTIPOSOSPENSIONE == fm.idTipoSospensione && fm.DataInizioSospensione >= a.DATAINIZIO && fm.DataInizioSospensione <= a.DATAFINE).Count();
-                            else                           
-                                nsp = tr.SOSPENSIONE.Where(a => a.ANNULLATO == false && a.IDTIPOSOSPENSIONE == fm.idTipoSospensione && fm.DataInizioSospensione >= a.DATAINIZIO && fm.DataInizioSospensione <= a.DATAFINE 
-                                && a.IDSOSPENSIONE!=fm.idSospensione).Count();
+                                nsp = tr.SOSPENSIONE.Where(a => a.ANNULLATO == false && a.IDTIPOSOSPENSIONE == fm.idTipoSospensione && fm.DataInizioSospensione >= a.DATAINIZIO && fm.DataInizioSospensione <= a.DATAFINE).Count();
+                            else
+                                nsp = tr.SOSPENSIONE.Where(a => a.ANNULLATO == false && a.IDTIPOSOSPENSIONE == fm.idTipoSospensione && fm.DataInizioSospensione >= a.DATAINIZIO && fm.DataInizioSospensione <= a.DATAFINE
+                                && a.IDSOSPENSIONE != fm.idSospensione).Count();
 
                             if (nsp > 0)
                             {
@@ -201,17 +204,17 @@ namespace NewISE.Models.DBModel.dtObj
         //    return vr;
         //}
         #endregion
-        public bool dateValide(DateTime inizio,DateTime fine)
+        public bool dateValide(DateTime inizio, DateTime fine)
         {
             if (inizio > fine) return false;
             return true;
         }
-        public string[] InserisciSospensione(SospensioneModel sosp,decimal idTipoSospensione)
+        public string[] InserisciSospensione(SospensioneModel sosp, decimal idTipoSospensione)
         {
             string[] my_array = new string[] { "0", "0" };
             if (dateValide(sosp.DataInizioSospensione.Value, sosp.DataFineSospensione.Value))
-            { 
-                if (!CompresaInUnIntervallo(sosp.DataInizioSospensione.Value, sosp.DataFineSospensione.Value, sosp.idTrasferimento,sosp.idSospensione))
+            {
+                if (!CompresaInUnIntervallo(sosp.DataInizioSospensione.Value, sosp.DataFineSospensione.Value, sosp.idTrasferimento, sosp.idSospensione))
                 {
                     using (var db = new ModelDBISE())
                     {
@@ -231,6 +234,13 @@ namespace NewISE.Models.DBModel.dtObj
                             if (db.SaveChanges() > 0)
                             {
                                 sosp.idSospensione = sospnew.IDSOSPENSIONE;
+
+                                using (dtDipendenti dtd = new dtDipendenti())
+                                {
+                                    dtd.DataInizioRicalcoliDipendente(sosp.idTrasferimento, sosp.DataInizioSospensione.Value, db, true);
+                                }
+
+
                                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento, "Inserimento sospensione avvenuta con successo", "SOSPENSIONE", db, sospnew.IDTRASFERIMENTO, sospnew.IDSOSPENSIONE);
                                 db.Database.CurrentTransaction.Commit();
                             }
@@ -248,16 +258,16 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 else
                 {
-                    my_array[0] = "2"; my_array[1] = "Impossibile inserire una sopsensione con il periodo incluso in una sopsensione esistente.";                   
+                    my_array[0] = "2"; my_array[1] = "Impossibile inserire una sopsensione con il periodo incluso in una sopsensione esistente.";
                     return my_array;
                     //throw new Exception("Le date non sono valide");
                 }
             }
             else
             {
-                my_array[0] = "1"; my_array[1] = "Data Inizio non deve essere superiore alla data fine";                
+                my_array[0] = "1"; my_array[1] = "Data Inizio non deve essere superiore alla data fine";
                 return my_array;
-               // throw new Exception("Controllare i dati inseriti");
+                // throw new Exception("Controllare i dati inseriti");
             }
             return my_array;
         }
@@ -289,7 +299,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 if (dateValide(sospmod.DataInizioSospensione.Value, sospmod.DataFineSospensione.Value))
                 {
-                    if (!CompresaInUnIntervallo(sospmod.DataInizioSospensione.Value, sospmod.DataFineSospensione.Value, sospmod.idTrasferimento,sospmod.idSospensione))
+                    if (!CompresaInUnIntervallo(sospmod.DataInizioSospensione.Value, sospmod.DataFineSospensione.Value, sospmod.idTrasferimento, sospmod.idSospensione))
                     {
                         using (ModelDBISE db = new ModelDBISE())
                         {
@@ -326,7 +336,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
             catch (Exception ex)
             {
-                 throw ex;
+                throw ex;
             }
             return my_array;
         }
@@ -336,18 +346,18 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 tmp = (from e in db.SOSPENSIONE
-                   where e.IDSOSPENSIONE== idSospensione
-                           select new SospensioneModel()
-                           {
-                               DataInizioSospensione=e.DATAINIZIO,
-                               DataFineSospensione=e.DATAFINE,
-                               DataAggiornamento=e.DATAAGGIORNAMENTO,
-                               ANNULLATO=e.ANNULLATO,
-                               idSospensione=e.IDSOSPENSIONE,
-                               idTipoSospensione=e.IDTIPOSOSPENSIONE,
-                               idTrasferimento=e.IDTRASFERIMENTO,
-                               TipoSospensione=e.TIPOSOSPENSIONE.DESCRIZIONE
-                           }).ToList().FirstOrDefault();
+                       where e.IDSOSPENSIONE == idSospensione
+                       select new SospensioneModel()
+                       {
+                           DataInizioSospensione = e.DATAINIZIO,
+                           DataFineSospensione = e.DATAFINE,
+                           DataAggiornamento = e.DATAAGGIORNAMENTO,
+                           ANNULLATO = e.ANNULLATO,
+                           idSospensione = e.IDSOSPENSIONE,
+                           idTipoSospensione = e.IDTIPOSOSPENSIONE,
+                           idTrasferimento = e.IDTRASFERIMENTO,
+                           TipoSospensione = e.TIPOSOSPENSIONE.DESCRIZIONE
+                       }).ToList().FirstOrDefault();
             }
             return tmp;
         }

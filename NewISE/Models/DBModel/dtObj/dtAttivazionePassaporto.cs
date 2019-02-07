@@ -6,6 +6,7 @@ using System.Web;
 using NewISE.Models.Tools;
 using NewISE.Models.ViewModel;
 using NewISE.EF;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -23,37 +24,66 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                ATTIVAZIONIPASSAPORTI ap = new ATTIVAZIONIPASSAPORTI();
-
-                try
+                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
                 {
+                    ATTIVAZIONIPASSAPORTI ap = new ATTIVAZIONIPASSAPORTI();
 
-                    ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
-
-                    if (ap?.IDATTIVAZIONIPASSAPORTI <= 0)
+                    try
                     {
-                        throw new Exception("Ciclo di attivazione non presente.");
+
+                        ap = db.ATTIVAZIONIPASSAPORTI.Find(idAttivazionePassaporto);
+
+                        if (ap?.IDATTIVAZIONIPASSAPORTI <= 0)
+                        {
+                            throw new Exception("Ciclo di attivazione non presente.");
+                        }
+
+                        //EnumFasePassaporti FasePassaporti = dtpp.GetFasePassaporti(ap.IDPASSAPORTI);
+                        var attivazioneFaseRichiesta = dtpp.FaseRichiestaPassaporti(ap.IDPASSAPORTI);
+                        var attivazioneFaseInvio = dtpp.FaseInvioPassaporti(ap.IDPASSAPORTI);
+
+
+
+                        //bool faseRichiesta = false;
+                        bool faseRichiestaNotificata = false;
+                        //bool faseRichiestaAttivata = false;
+                        //bool faseInvio = false;
+                        bool faseInvioNotificata = false;
+                        bool faseInvioAttivata = false;
+                        if (attivazioneFaseRichiesta.IDATTIVAZIONIPASSAPORTI > 0)
+                        {
+                            //faseRichiesta = true;
+                            //faseRichiestaAttivata = attivazioneFaseRichiesta.PRATICACONCLUSA;
+                            faseRichiestaNotificata = attivazioneFaseRichiesta.NOTIFICARICHIESTA;
+                        }
+                        if (attivazioneFaseInvio.IDATTIVAZIONIPASSAPORTI > 0)
+                        {
+                            //faseInvio = true;
+                            faseInvioNotificata = attivazioneFaseInvio.NOTIFICARICHIESTA;
+                            faseInvioAttivata = attivazioneFaseInvio.PRATICACONCLUSA;
+                        }
+
+                        if (faseRichiestaNotificata || faseInvioAttivata || faseInvioNotificata || ap.PASSAPORTI.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Annullato)
+                        //ap.NOTIFICARICHIESTA == true || ap.PRATICACONCLUSA == true || ap.PASSAPORTI.TRASFERIMENTO.IDSTATOTRASFERIMENTO==(decimal)EnumStatoTraferimento.Attivo )
+                        {
+                            dchk = true;
+                        }
+
+                        gcip = new GestioneChkincludiPassaportoModel()
+                        {
+                            idFamiliare = idFamiliarePassaporto,
+                            parentela = parentela,
+                            esisteDoc = esisteDoc,
+                            includiPassaporto = includiPassaporto,
+                            disabilitaChk = dchk,
+                        };
+
+                        return gcip;
                     }
-
-                    if (ap.NOTIFICARICHIESTA == true || ap.PRATICACONCLUSA == true || ap.PASSAPORTI.TRASFERIMENTO.IDSTATOTRASFERIMENTO==(decimal)EnumStatoTraferimento.Attivo || ap.PASSAPORTI.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Annullato)
+                    catch (Exception ex)
                     {
-                        dchk = true;
+                        throw ex;
                     }
-
-                    gcip = new GestioneChkincludiPassaportoModel()
-                    {
-                        idFamiliare = idFamiliarePassaporto,
-                        parentela = parentela,
-                        esisteDoc = esisteDoc,
-                        includiPassaporto = includiPassaporto,
-                        disabilitaChk = dchk,
-                    };
-
-                    return gcip;
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
                 }
             }
         }
@@ -272,13 +302,7 @@ namespace NewISE.Models.DBModel.dtObj
                 Utility.SetLogAttivita(EnumAttivitaCrud.Inserimento,
                     "Inizializzazione dei dati per il passaporto del richiedente", "PASSAPORTORICHIEDENTE", db,
                     pr.PASSAPORTI.TRASFERIMENTO.IDTRASFERIMENTO, pr.IDPASSAPORTORICHIEDENTE);
-
-
             }
-
-
-
-
         }
 
         public void SetAttivazioniPassaporti(ref AttivazionePassaportiModel apm, ModelDBISE db)
@@ -292,7 +316,8 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAPRATICACONCLUSA = apm.dataPraticaConclusa,
                 //ESCLUDIPASSAPORTO = apm.escludiPassaporto,
                 DATAAGGIORNAMENTO = apm.dataAggiornamento,
-                ANNULLATO = apm.annullato
+                ANNULLATO = apm.annullato,
+                IDFASEPASSAPORTI = apm.idFasePassaporti
             };
 
             var p = db.PASSAPORTI.Find(ap.IDPASSAPORTI);

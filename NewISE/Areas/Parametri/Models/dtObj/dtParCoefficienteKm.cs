@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Dynamic;
+using NewISE.Models.dtObj;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -172,10 +173,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             List<PERCENTUALEFKM> libNew = new List<PERCENTUALEFKM>();
 
-            PERCENTUALEFKM ibPrecedente = new PERCENTUALEFKM();
+            //PERCENTUALEFKM ibPrecedente = new PERCENTUALEFKM();
             PERCENTUALEFKM ibNew1 = new PERCENTUALEFKM();
             PERCENTUALEFKM ibNew2 = new PERCENTUALEFKM();
-            List<PERCENTUALEFKM> lArchivioIB = new List<PERCENTUALEFKM>();
+            //List<PERCENTUALEFKM> lArchivioIB = new List<PERCENTUALEFKM>();
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -192,7 +193,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal aliquotaFirst = Convert.ToDecimal(lista[3]);
+                            //decimal aliquotaFirst = Convert.ToDecimal(lista[3]);
 
                             ibNew1 = new PERCENTUALEFKM()
                             {
@@ -225,6 +226,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.PERCENTUALEFKM.Add(ibNew1);
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDPFKM, db, ibm.dataInizioValidita);
+                                dtrp.AssociaRichiamo_PKM(ibNew1.IDPFKM, db, ibm.dataInizioValidita);
+                            }
+
 
                             db.Database.CurrentTransaction.Commit();
                         }
@@ -282,6 +290,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var cfkm in libNew)
+                                    {
+                                        dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDPFKM, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRichiamo_PKM(cfkm.IDPFKM, db, ibm.dataInizioValidita);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -341,6 +360,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var cfkm in libNew)
+                                    {
+                                        dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDPFKM, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRichiamo_PKM(cfkm.IDPFKM, db, ibm.dataInizioValidita);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -352,7 +382,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             lista = dtal.RestituisciLaRigaMassima(ibm.idDefKm);
                             if (lista.Count == 0)
                             {
-                                ibNew1 = new  PERCENTUALEFKM()
+                                ibNew1 = new PERCENTUALEFKM()
                                 {
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
@@ -363,8 +393,23 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 libNew.Add(ibNew1);
                                 db.Database.BeginTransaction();
                                 db.PERCENTUALEFKM.Add(ibNew1);
-                                db.SaveChanges();
-                                db.Database.CurrentTransaction.Commit();
+                                int i = db.SaveChanges();
+
+                                if (i > 0)
+                                {
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDPFKM, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRichiamo_PKM(ibNew1.IDPFKM, db, ibm.dataInizioValidita);
+                                    }
+
+                                    db.Database.CurrentTransaction.Commit();
+                                }
+                                else
+                                {
+                                    throw new Exception("Errore nella fase di inserimento della percentuale di fascia chilometrica.");
+                                }
+
                             }
 
                             if (lista.Count != 0)
@@ -372,7 +417,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 giafatta = true;
                                 //se il nuovo record rappresenta la data variazione uguale alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
                                 //occorre annullare il record esistente in questione ed aggiungere un nuovo con la stessa data inizio e l'altro campo da aggiornare con il nuovo
-                               
+
                                 decimal idIntervalloUltimo = Convert.ToDecimal(lista[0]);
                                 DateTime dataInizioUltimo = Convert.ToDateTime(lista[1]);
                                 DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
@@ -392,6 +437,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALEFKM.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        dtrp.AssociaPrimaSistemazione_PKM(ibNew1.IDPFKM, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRichiamo_PKM(ibNew1.IDPFKM, db, ibm.dataInizioValidita);
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -419,6 +471,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALEFKM.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var cfkm in libNew)
+                                        {
+                                            dtrp.AssociaPrimaSistemazione_PKM(cfkm.IDPFKM, db, ibm.dataInizioValidita);
+                                            dtrp.AssociaRichiamo_PKM(cfkm.IDPFKM, db, ibm.dataInizioValidita);
+                                        }
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }
@@ -434,7 +496,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-       
+
 
         public void DelCoeffFasciaKm(decimal IDPFKM)
         {
@@ -465,12 +527,20 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ANNULLATO = false
                         };
                         db.PERCENTUALEFKM.Add(NuovoPrecedente);
+
+                        db.SaveChanges();
+                        using (objLogAttivita log = new objLogAttivita())
+                        {
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Percentuala KM.", "PERCENTUALEFKM", IDPFKM);
+                        }
+
+                        using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                        {
+                            dtrp.AssociaPrimaSistemazione_PKM(NuovoPrecedente.IDPFKM, db, delIB.DATAINIZIOVALIDITA);
+                            dtrp.AssociaRichiamo_PKM(NuovoPrecedente.IDPFKM, db, delIB.DATAINIZIOVALIDITA);
+                        }
                     }
-                    db.SaveChanges();
-                    using (objLogAttivita log = new objLogAttivita())
-                    {
-                        log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Percentuala KM.", "PERCENTUALEFKM", IDPFKM);
-                    }
+
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -520,7 +590,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
             if (fm != null)
             {
-                if (fm.coefficienteKm >100)
+                if (fm.coefficienteKm > 100)
                 {
                     vr = new ValidationResult(string.Format("Impossibile inserire percentuale KM maggiore di 100 ({0}).", fm.coefficienteKm.ToString()));
                 }

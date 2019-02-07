@@ -1,7 +1,7 @@
 ﻿@model NewISE.Models.DBModel.IndennitaBaseModel
 @using NewISE.Models.DBModel;
 
-<script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+<script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
 <script src="~/Scripts/globalize.0.1.3/globalize.js"></script>
 <script src="~/Scripts/globalize.0.1.3/cultures/globalize.culture.it-IT.js"></script>
 
@@ -27,7 +27,7 @@
         <hr />
         <div class="row">
             <div class="col-xs-offset-2 col-xs-10">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
             </div>
         </div>
         @Html.HiddenFor(model => model.idLivello)
@@ -71,7 +71,11 @@
         <div class="form-group ">
             @Html.LabelFor(model => model.valore, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.valore, new { htmlAttributes = new { @class = "form-control number" } })
+                @*@Html.Editor("valoreUI", new { htmlAttributes = new { @class = "form-control number" } })*@
+                <input type="text" id="valoreUI" class="form-control ignore" />
+                <input type="hidden" id="valore" name="valore" value="" class="number" />
+
+
                 @Html.ValidationMessageFor(model => model.valore, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -79,14 +83,16 @@
         <div class="form-group">
             @Html.LabelFor(model => model.valoreResponsabile, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.valoreResponsabile, new { htmlAttributes = new { @class = "form-control number" } })
+                @*@Html.Editor("valoreResponsabileUI", new { htmlAttributes = new { @class = "form-control number" } })*@
+                <input type="text" id="valoreResponsabileUI" class="form-control ignore" />
+                <input type="hidden" id="valoreResponsabile" name="valoreResponsabile" value="" class="number" />
                 @Html.ValidationMessageFor(model => model.valoreResponsabile, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Inserisci" class="btn btn-default" />
+                <input id="btSubmit" type="submit" value="Inserisci" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -146,59 +152,71 @@
         }
     }*@
 
-    Globalize.culture("it-IT");
+    $.culture = Globalize.culture("it-IT");
 
-    $("#valore").autoNumeric('init',
-	{
-	    aSep: '.',
-	    aDec: ',',
-	    aSign: '',
-	    mDec: 8,
-	});
+    //$("#valore").autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: '',
+    //    mDec: 5,
+    //});
 
-    $("#valoreResponsabile").autoNumeric('init',
-	{
-	    aSep: '.',
-	    aDec: ',',
-	    aSign: '',
-	    mDec: 8,
-	});
+    //$("#valoreResponsabile").autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: '',
+    //    mDec: 5,
+    //});
+
+
+    anElement = new AutoNumeric('#valoreUI', autoNumericOptionsEuroOttoDec);
+    anElementResp = new AutoNumeric('#valoreResponsabileUI', autoNumericOptionsEuroOttoDec);
+
 
     function AggiornaTutto() {
         var chk = false;
         if ($("#aggiornaTuttoX").is(":checked")) {
             chk = true;
         }
+
         $("#aggiornaTutto").val(chk);
     }
 
-    $('form').submit(function () {
+
+    $("#valoreUI").blur(function () {
         //debugger;
-        var form = $(this);
-        $('input.number').each(function (i) {
-            //debugger;
-            var self = $(this);
-            try {
-                var v = self.autoNumeric('get');
-                //self.autoNumeric('destroy');
-                var n = v.replace(".", ",");
-                self.val(n);
-            } catch (err) {
-                console.log("Non è un campo autonumeric: " + self.attr("name"));
-            }
-        });
-        return true;
+        var val = anElement.getNumber();
+        $("#valore").val(val.toString().replace(".", ","));
     });
 
-    $.validator.methods.range = function (value, element, param) {
-        var globalizedValue = value.replace(",", ".");
-        return this.optional(element) || (globalizedValue >= param[0] && globalizedValue <= param[1]);
-    };
+    $("#valoreResponsabileUI").blur(function () {
+        //debugger;
+
+        var valr = anElementResp.getNumber();
+        $("#valoreResponsabile").val(valr.toString().replace(".", ","));
+    });
 
     $.validator.methods.number = function (value, element) {
         //debugger;
-        return this.optional(element) || !isNaN(Globalize.parseFloat(value));
-    };
+        var val = value.replace(".", ",");
+        return this.optional(element) || !isNaN(Globalize.parseFloat(val));
+    }
+
+    $.validator.setDefaults({
+        ignore: ".ignore"
+    });
+
+    //$.culture = Globalize.culture("it-IT");
+    //$.validator.methods.date = function (value, element) {
+    //    return this.optional(element) || Globalize.parseDate(value, "dd/MM/yyyy", "it-IT");
+    //}
+
+    //$.validator.methods.number = function (value, element) {
+    //    //debugger;
+    //    return this.optional(element) || !isNaN(Globalize.parseFloat(value));
+    //};
 
     $('#dataInizioValidita').datepicker({
         inline: true,

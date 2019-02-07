@@ -126,6 +126,33 @@ namespace NewISE.Models.DBModel.dtObj
             return pdm;
         }
 
+        public PercentualeDisagioModel GetPercentualeDisagioByIdTrasferimento(decimal idTrasferimento)
+        {
+
+            PercentualeDisagioModel pdm = new PercentualeDisagioModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var lrd = db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.PERCENTUALEDISAGIO.Where(a => a.ANNULLATO == false);
+                //var lrd = db.PERCENTUALEDISAGIO.Where(a => a.IDUFFICIO == 79 && a.ANNULLATO == false).ToList();
+
+                var pd = lrd.First();
+                if (lrd?.Any() ?? false)
+                {
+                    pdm = new PercentualeDisagioModel()
+                    {
+                        idPercentualeDisagio = pd.IDPERCENTUALEDISAGIO,
+                        idUfficio = pd.IDUFFICIO,
+                        dataInizioValidita = pd.DATAINIZIOVALIDITA,
+                        dataFineValidita = pd.DATAFINEVALIDITA,
+                        dataAggiornamento = pd.DATAAGGIORNAMENTO,
+                        annullato = pd.ANNULLATO,
+                    };
+                }
+            }
+            return pdm;
+        }
+
         public PercentualeDisagioModel GetPercentualeDisagio(decimal idPercentualeDisagio, ModelDBISE db)
         {
             PercentualeDisagioModel pdm = new PercentualeDisagioModel();
@@ -155,10 +182,13 @@ namespace NewISE.Models.DBModel.dtObj
 
             var u = db.UFFICI.Find(idUfficio);
 
-            var lpd =
+            List<PERCENTUALEDISAGIO> lpd = new List<PERCENTUALEDISAGIO>();
+
+            lpd =
                 u.PERCENTUALEDISAGIO.Where(
-                    a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAFINEVALIDITA <= dtFin)
-                    .OrderBy(a => a.DATAINIZIOVALIDITA);
+                    a => a.ANNULLATO == false && a.DATAFINEVALIDITA >= dtIni && a.DATAINIZIOVALIDITA <= dtFin)
+                    .OrderBy(a => a.DATAFINEVALIDITA)
+                    .ToList();
 
             if (lpd?.Any() ?? false)
             {
@@ -184,8 +214,6 @@ namespace NewISE.Models.DBModel.dtObj
             return lPercentualeDisagio;
 
         }
-
-
 
         public PercentualeDisagioModel GetPercentualeDisagioValida(decimal idUfficio, DateTime dt, ModelDBISE db)
         {

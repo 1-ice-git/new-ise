@@ -1,10 +1,12 @@
 ﻿@using NewISE.Models.ViewModel
 @using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
+
 @model IEnumerable<NewISE.Models.DBModel.VariazioneDocumentiModel>
 
 @{
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
-    EnumChiamante enChiamante = EnumChiamante.VariazioneMaggiorazioniFamiliari;
+    EnumChiamante enChiamante = EnumChiamante.Variazione_Maggiorazioni_Familiari;
 }
 
 <table class="table" id="tabElencoFormulariInseriti_Var">
@@ -118,7 +120,7 @@
                 <p><label>Eliminare il formulario selezionato?</label></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ConfermaEliminaFormularioMF();">Ok</button>
+                <button type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaEliminaFormularioMF();">Ok</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
             </div>
         </div>
@@ -158,7 +160,11 @@
         "paging": true,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        "order": [[0, "desc"], [3, "desc"]]
+        "columnDefs": [
+                     { "targets": [3], "type": 'date-euro' },
+                     { "targets": [4, 5], "orderable": false },
+        ],
+        "order": [[0, "desc"], [1, "asc"], [3, "desc"]]
     });
 
     function EliminaFormulario(idDoc) {

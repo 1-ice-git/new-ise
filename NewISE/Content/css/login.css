@@ -30,7 +30,7 @@
 
 
 
-.form button {
+.form .button {
     text-transform: uppercase;
     outline: 0;
     background: #4CAF50;
@@ -44,8 +44,26 @@
     cursor: pointer;
 }
 
-.form button:hover, .form button:active, .form button:focus {
+.form .button:hover, .form .button:active, .form button:focus {
     background: #43A047;
+}
+
+.form .link {
+    text-transform: uppercase;
+    color: #4CAF50;
+    font-size: 14px;
+    background-color: transparent;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 0;
+    border-color: transparent;
+}
+
+.form .link:hover, .form .link:active, .form .link:focus {
+    color: darkcyan;
+    background-color: transparent;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 
 .form .message {

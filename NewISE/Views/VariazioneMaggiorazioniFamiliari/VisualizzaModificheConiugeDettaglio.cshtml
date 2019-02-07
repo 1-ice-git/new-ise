@@ -1,0 +1,75 @@
+﻿@using NewISE.Models.Tools
+
+@model NewISE.Models.DBModel.VariazioneConiugeModel
+
+<div style="padding-left: 15px;padding-right:50px">
+    <div class="form-horizontal">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="row">
+                    <div class="col-xs-3" style="font-weight:bold">
+                        @Html.DisplayNameFor(model => model.nome)
+                    </div>
+                    <div class="col-xs-4" style="padding-left:10px ">
+                        <span style="@Model.ev_nome" class="text-uppercase">@Html.DisplayFor(model => model.nome)</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3" style="font-weight:bold">
+                        @Html.DisplayNameFor(model => model.cognome)
+                    </div>
+                    <div class="col-xs-4" style="padding-left:10px">
+                        <span style="@Model.ev_cognome" class="text-uppercase">@Html.DisplayFor(model => model.cognome)</span>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-3" style="font-weight:bold">
+                        @Html.DisplayNameFor(model => model.codiceFiscale)
+                    </div>
+                    <div class="col-xs-4" style="padding-left:10px">
+                        <span style="@Model.ev_codiceFiscale" class="text-uppercase">@Html.DisplayFor(model => model.codiceFiscale)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="row">
+                    <div class="col-xs-3" style="font-weight:bold">
+                        @Html.DisplayNameFor(model => model.tipologiaConiuge)
+                    </div>
+                    <div class="col-xs-4" style="padding-left:10px">
+                        <span style="@Model.ev_Tipologia" class="text-uppercase">@Html.DisplayFor(model => model.tipologiaConiuge ) </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3" style="font-weight:bold">
+                        @Html.DisplayNameFor(model => model.dataInizio)
+                    </div>
+                    <div class="col-xs-4" style="padding-left:10px">
+                        <span style="@Model.ev_dataInizio" class="text-uppercase">@Html.DisplayFor(model => model.dataInizio)</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3" style="font-weight:bold">
+                        @Html.DisplayNameFor(model => model.dataFine)
+                    </div>
+                    <div class="col-xs-4" style="padding-left:10px">
+                        @if (Model.dataFine != Utility.DataFineStop())
+                        {
+                            <span style="@Model.ev_dataFine">
+                                @Html.DisplayFor(model => model.dataFine)
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="@Model.ev_dataFine">
+                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />

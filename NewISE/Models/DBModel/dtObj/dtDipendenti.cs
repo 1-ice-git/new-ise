@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Enumeratori;
+using NewISE.Models.Tools;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -106,6 +108,50 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
         #endregion Custom validations
+
+        public DipendentiModel GetDipendenteByEmail(string email, ModelDBISE db)
+        {
+            DipendentiModel dm = new DipendentiModel();
+
+            var ld = db.DIPENDENTI.Where(a => a.EMAIL == email).ToList();
+
+            if (ld?.Any() ?? false)
+            {
+                var d = ld.First();
+
+                dm = new DipendentiModel()
+                {
+                    idDipendente = d.IDDIPENDENTE,
+                    matricola = d.MATRICOLA,
+                    nome = d.NOME,
+                    cognome = d.COGNOME,
+                    dataAssunzione = d.DATAASSUNZIONE,
+                    dataCessazione = d.DATACESSAZIONE,
+                    indirizzo = d.INDIRIZZO,
+                    cap = d.CAP,
+                    citta = d.CITTA,
+                    provincia = d.PROVINCIA,
+                    email = d.EMAIL,
+                    telefono = d.TELEFONO,
+                    fax = d.FAX,
+                    abilitato = d.ABILITATO,
+                    dataInizioRicalcoli = d.DATAINIZIORICALCOLI,
+                    cdcGepe = new CDCGepeModel()
+                    {
+                        iddipendente = d.CDCGEPE.IDDIPENDENTE,
+                        codiceCDC = d.CDCGEPE.CODICECDC,
+                        descCDC = d.CDCGEPE.DESCCDC,
+                        dataInizioValidita = d.CDCGEPE.DATAINIZIOVALIDITA
+                    }
+                };
+
+            }
+
+            return dm;
+
+        }
+
+
 
         /// <summary>
         /// preleva il dipendente in base all'id trasferimento passato.
@@ -273,13 +319,13 @@ namespace NewISE.Models.DBModel.dtObj
                     fax = d.FAX,
                     abilitato = d.ABILITATO,
                     dataInizioRicalcoli = d.DATAINIZIORICALCOLI,
-                    cdcGepe = new CDCGepeModel()
-                    {
-                        iddipendente = d.CDCGEPE.IDDIPENDENTE,
-                        codiceCDC = d.CDCGEPE.CODICECDC,
-                        descCDC = d.CDCGEPE.DESCCDC,
-                        dataInizioValidita = d.CDCGEPE.DATAINIZIOVALIDITA
-                    }
+                    //cdcGepe = new CDCGepeModel()
+                    //{
+                    //    iddipendente = d.CDCGEPE.IDDIPENDENTE,
+                    //    codiceCDC = d.CDCGEPE.CODICECDC,
+                    //    descCDC = d.CDCGEPE.DESCCDC,
+                    //    dataInizioValidita = d.CDCGEPE.DATAINIZIOVALIDITA
+                    //}
                 };
             }
 
@@ -327,7 +373,7 @@ namespace NewISE.Models.DBModel.dtObj
                 }
                 catch (Exception ex)
                 {
-
+                    throw ex;
                 }
 
 
@@ -386,6 +432,8 @@ namespace NewISE.Models.DBModel.dtObj
 
             return dm;
         }
+
+
 
 
         public DipendentiModel GetDipendenteByMatricola(int matricola)
@@ -473,7 +521,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var ld = db.DIPENDENTI.ToList();
+                var ld = db.DIPENDENTI.Where(a => a.NOSISTEMA == false).ToList();
 
                 ldm = (from e in ld
                        select new DipendentiModel()
@@ -506,5 +554,165 @@ namespace NewISE.Models.DBModel.dtObj
             return ldm;
 
         }
+
+
+        /// <summary>
+        /// Imposta la data di inizio ricalcoli per il dipendente passato come parametro.
+        /// </summary>
+        /// <param name="idDipendente"></param>
+        /// <param name="dtIniRicalcoli"></param>
+        /// <param name="db"></param>
+        public void DataInizioRicalcoliDipendente(decimal idTrasferimento, DateTime dtIniRicalcoli, ModelDBISE db, bool saveDb = false)
+        {
+            try
+            {
+
+                dtIniRicalcoli = Utility.GetDataInizioMese(dtIniRicalcoli);
+
+                var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+                var d = t.DIPENDENTI;
+
+                if (d.DATAINIZIORICALCOLI > dtIniRicalcoli)
+                {
+                    d.DATAINIZIORICALCOLI = dtIniRicalcoli;
+                }
+
+                d.RICALCOLARE = true;
+
+                if (saveDb)
+                {
+                    int i = db.SaveChanges();
+
+                    if (d.DATAINIZIORICALCOLI > dtIniRicalcoli)
+                    {
+                        if (i <= 0)
+                        {
+                            throw new Exception("Impossibile aggiornare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
+                        }
+                    }
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+
+        }
+        /// <summary>
+        /// Imposta la data del dipendente trasferito alla data di partenza del trasferimento passato come parametro.
+        /// </summary>
+        /// <param name="idTrasferimento"></param>
+        /// <param name="db"></param>
+        /// <param name="saveDB">Se vero salva immediatamente la modifica effettuata sul database.</param>
+        public void ResetDataInizioRicalcoli(decimal idTrasferimento, ModelDBISE db, bool saveDB = false, bool ricalcolare = false)
+        {
+            var t = db.TRASFERIMENTO.Find(idTrasferimento);
+
+            var d = t.DIPENDENTI;
+
+            d.DATAINIZIORICALCOLI = t.DATAPARTENZA;
+
+            d.RICALCOLARE = ricalcolare;
+
+            if (saveDB)
+            {
+                int i = db.SaveChanges();
+
+                if (i <= 0)
+                {
+                    throw new Exception("Impossibile resettare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
+                }
+            }
+        }
+
+        public void SetLastMeseElabDataInizioRicalcoli(decimal idDipendente, decimal idMeseAnnoElaborato, ModelDBISE db, bool saveDB = false)
+        {
+            var d = db.DIPENDENTI.Find(idDipendente);
+            var mae = db.MESEANNOELABORAZIONE.Find(idMeseAnnoElaborato);
+
+            d.DATAINIZIORICALCOLI = Convert.ToDateTime("01/" + mae.MESE.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + mae.ANNO);
+            d.RICALCOLARE = false;
+            if (saveDB)
+            {
+                int i = db.SaveChanges();
+
+                //if (i <= 0)
+                //{
+                //    throw new Exception("Impossibile resettare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
+                //}
+            }
+        }
+        /// <summary>
+        /// Preleva i dipendenti che hanno avuto almeno un trasferimento.
+        /// </summary>
+        /// <returns></returns>
+        public IList<DipendentiModel> GetDipendentiAnyTrasf()
+        {
+            List<DipendentiModel> ldipm = new List<DipendentiModel>();
+
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var ldip =
+                        db.DIPENDENTI.Where(
+                            a =>
+                                a.NOSISTEMA == false &&
+                                a.TRASFERIMENTO.Any(
+                                    b => b.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato))
+                            .OrderBy(a => a.COGNOME)
+                            .ThenBy(a => a.NOME)
+                            .ToList();
+
+
+                    ldipm = (from d in ldip
+                             select new DipendentiModel()
+                             {
+                                 idDipendente = d.IDDIPENDENTE,
+                                 matricola = d.MATRICOLA,
+                                 nome = d.NOME,
+                                 cognome = d.COGNOME,
+                                 dataAssunzione = d.DATAASSUNZIONE,
+                                 dataCessazione = d.DATACESSAZIONE,
+                                 indirizzo = d.INDIRIZZO,
+                                 cap = d.CAP,
+                                 citta = d.CITTA,
+                                 provincia = d.PROVINCIA,
+                                 email = d.EMAIL,
+                                 telefono = d.TELEFONO,
+                                 fax = d.FAX,
+                                 abilitato = d.ABILITATO,
+                                 dataInizioRicalcoli = d.DATAINIZIORICALCOLI,
+                                 cdcGepe = new CDCGepeModel()
+                                 {
+                                     iddipendente = d.CDCGEPE.IDDIPENDENTE,
+                                     codiceCDC = d.CDCGEPE.CODICECDC,
+                                     descCDC = d.CDCGEPE.DESCCDC,
+                                     dataInizioValidita = d.CDCGEPE.DATAINIZIOVALIDITA
+                                 }
+
+                             }).ToList();
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return ldipm;
+
+        }
+
+
+
     }
 }

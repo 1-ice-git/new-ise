@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.dtObj;
+using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -29,9 +32,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     libm = (from e in lib
                             select new TipoAnticipoTrasportoEffettiModel()
                             {
-                                  idTipoAnticipoTrasportEff = e.IDTIPOANTICIPOTE,
-                                  tipoAnticipoTraspEffetti=e.TIPOANTICIPO
-                                
+                                idTipoAnticipoTrasportEff = e.IDTIPOANTICIPOTE,
+                                tipoAnticipoTraspEffetti = e.TIPOANTICIPO
+
                             }).ToList();
                 }
 
@@ -54,8 +57,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
 
                     lm = new TipoAnticipoTrasportoEffettiModel()
                     {
-                         idTipoAnticipoTrasportEff = liv.IDTIPOANTICIPOTE,
-                         tipoAnticipoTraspEffetti = liv.TIPOANTICIPO,
+                        idTipoAnticipoTrasportEff = liv.IDTIPOANTICIPOTE,
+                        tipoAnticipoTraspEffetti = liv.TIPOANTICIPO,
                     };
                 }
                 return lm;
@@ -83,7 +86,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 dataFineValidita = e.DATAFINEVALIDITA,
                                 percentuale = e.PERCENTUALE,
                                 annullato = e.ANNULLATO,
-                                dataAggiornamento=e.DATAAGGIORNAMENTO
+                                dataAggiornamento = e.DATAAGGIORNAMENTO
                             }).ToList();
                 }
                 return libm;
@@ -198,15 +201,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-       
+
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-                 
-                    
-        
+
+
+
         public bool PercAnticipoTEAnnullato(PercAnticipoTEModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -214,7 +217,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 return db.PERCENTUALEANTICIPOTE.Where(a => a.IDPERCANTICIPOTM == ibm.idPercAnticipoTE).First().ANNULLATO == true ? true : false;
             }
         }
-       
+
         public decimal Get_Id_PercAnticipoTEPrimoNonAnnullato(decimal idTipoAnticipoTE)
         {
             decimal tmp = 0;
@@ -285,7 +288,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
             return Utility.GetData_Inizio_Base();
         }
-       
+
         public bool PercMaggiorazioneFiglioAnnullato(PercAnticipoTEModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -434,8 +437,30 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ANNULLATO = false
                         };
                         db.PERCENTUALEANTICIPOTE.Add(NuovoPrecedente);
+
+                        db.SaveChanges();
+
+                        using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                        {
+
+                            switch ((EnumTipoAnticipoTE)NuovoPrecedente.IDTIPOANTICIPOTE)
+                            {
+                                case EnumTipoAnticipoTE.Partenza:
+                                    dtrp.AssociaPercentualeAnticipoTEP(NuovoPrecedente.IDPERCANTICIPOTM, db, delIB.DATAINIZIOVALIDITA);
+                                    break;
+                                case EnumTipoAnticipoTE.Rientro:
+                                    dtrp.AssociaPercentualeAnticipoTER(NuovoPrecedente.IDPERCANTICIPOTM, db,delIB.DATAINIZIOVALIDITA);
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+
+
+                        }
                     }
-                    db.SaveChanges();
+
+
+
                     using (objLogAttivita log = new objLogAttivita())
                     {
                         log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Percentuale.", "PERCENTUALE", idMagCon);
@@ -453,10 +478,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         public void SetPercAnticipoTE(PercAnticipoTEModel ibm, bool aggiornaTutto)
         {
             List<PERCENTUALEANTICIPOTE> libNew = new List<PERCENTUALEANTICIPOTE>();
-            PERCENTUALEANTICIPOTE ibPrecedente = new PERCENTUALEANTICIPOTE();
+            //PERCENTUALEANTICIPOTE ibPrecedente = new PERCENTUALEANTICIPOTE();
             PERCENTUALEANTICIPOTE ibNew1 = new PERCENTUALEANTICIPOTE();
             PERCENTUALEANTICIPOTE ibNew2 = new PERCENTUALEANTICIPOTE();
-            List<PERCENTUALEANTICIPOTE> lArchivioIB = new List<PERCENTUALEANTICIPOTE>();
+            //List<PERCENTUALEANTICIPOTE> lArchivioIB = new List<PERCENTUALEANTICIPOTE>();
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -473,7 +498,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal percConiugeFirst = Convert.ToDecimal(lista[3]);
+                            //decimal percConiugeFirst = Convert.ToDecimal(lista[3]);
 
                             ibNew1 = new PERCENTUALEANTICIPOTE()
                             {
@@ -509,6 +534,22 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.PERCENTUALEANTICIPOTE.Add(ibNew1);
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                switch ((EnumTipoAnticipoTE)ibNew1.IDTIPOANTICIPOTE)
+                                {
+                                    case EnumTipoAnticipoTE.Partenza:
+                                        dtrp.AssociaPercentualeAnticipoTEP(ibNew1.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
+                                        break;
+                                    case EnumTipoAnticipoTE.Rientro:
+                                        dtrp.AssociaPercentualeAnticipoTER(ibNew1.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
+                                        break;
+                                    default:
+                                        throw new ArgumentOutOfRangeException();
+                                }
+
+                            }
 
                             db.Database.CurrentTransaction.Commit();
                         }
@@ -566,6 +607,27 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var pa in libNew)
+                                    {
+                                        switch ((EnumTipoAnticipoTE)pa.IDTIPOANTICIPOTE)
+                                        {
+                                            case EnumTipoAnticipoTE.Partenza:
+                                                dtrp.AssociaPercentualeAnticipoTEP(pa.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
+                                                break;
+                                            case EnumTipoAnticipoTE.Rientro:
+                                                dtrp.AssociaPercentualeAnticipoTER(pa.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
+                                                break;
+                                            default:
+                                                throw new ArgumentOutOfRangeException();
+                                        }
+                                    }
+
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -629,6 +691,27 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var pa in libNew)
+                                    {
+                                        switch ((EnumTipoAnticipoTE)pa.IDTIPOANTICIPOTE)
+                                        {
+                                            case EnumTipoAnticipoTE.Partenza:
+                                                dtrp.AssociaPercentualeAnticipoTEP(pa.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
+                                                break;
+                                            case EnumTipoAnticipoTE.Rientro:
+                                                dtrp.AssociaPercentualeAnticipoTER(pa.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
+                                                break;
+                                            default:
+                                                throw new ArgumentOutOfRangeException();
+                                        }
+                                    }
+
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -652,6 +735,26 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.PERCENTUALEANTICIPOTE.Add(ibNew1);
                                 db.SaveChanges();
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+
+                                    switch ((EnumTipoAnticipoTE)ibNew1.IDTIPOANTICIPOTE)
+                                    {
+                                        case EnumTipoAnticipoTE.Partenza:
+                                            dtrp.AssociaPercentualeAnticipoTEP(ibNew1.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
+                                            break;
+                                        case EnumTipoAnticipoTE.Rientro:
+                                            dtrp.AssociaPercentualeAnticipoTER(ibNew1.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
+                                            break;
+                                        default:
+                                            throw new ArgumentOutOfRangeException();
+                                    }
+
+
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
 
@@ -682,6 +785,26 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALEANTICIPOTE.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+
+                                        switch ((EnumTipoAnticipoTE)ibNew1.IDTIPOANTICIPOTE)
+                                        {
+                                            case EnumTipoAnticipoTE.Partenza:
+                                                dtrp.AssociaPercentualeAnticipoTEP(ibNew1.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
+                                                break;
+                                            case EnumTipoAnticipoTE.Rientro:
+                                                dtrp.AssociaPercentualeAnticipoTER(ibNew1.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
+                                                break;
+                                            default:
+                                                throw new ArgumentOutOfRangeException();
+                                        }
+
+
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -709,6 +832,26 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALEANTICIPOTE.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var pa in libNew)
+                                        {
+                                            switch ((EnumTipoAnticipoTE)pa.IDTIPOANTICIPOTE)
+                                            {
+                                                case EnumTipoAnticipoTE.Partenza:
+                                                    dtrp.AssociaPercentualeAnticipoTEP(pa.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
+                                                    break;
+                                                case EnumTipoAnticipoTE.Rientro:
+                                                    dtrp.AssociaPercentualeAnticipoTER(pa.IDPERCANTICIPOTM, db, ibm.dataInizioValidita);
+                                                    break;
+                                                default:
+                                                    throw new ArgumentOutOfRangeException();
+                                            }
+                                        }
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }

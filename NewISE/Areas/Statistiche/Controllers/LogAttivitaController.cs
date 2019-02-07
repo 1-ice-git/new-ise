@@ -14,57 +14,57 @@ namespace NewISE.Areas.Statistiche.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         [Authorize(Roles = "1 ,2")]
-        public ActionResult LogAttivita2(decimal idUtenteAutorizzato = 0)
+        public ActionResult LogAttivita2(decimal idDipendente = 0)
         {
-            
-                List<LogAttivitaModel> libm = new List<LogAttivitaModel>();
-                var r = new List<SelectListItem>();
-                List<UtenteAutorizzatoModel> llm = new List<UtenteAutorizzatoModel>();
 
-                try
+            List<LogAttivitaModel> libm = new List<LogAttivitaModel>();
+            var r = new List<SelectListItem>();
+            List<UtenteAutorizzatoModel> llm = new List<UtenteAutorizzatoModel>();
+
+            try
+            {
+                using (dtUtentiAutorizzati dtl = new dtUtentiAutorizzati())
                 {
-                    using (dtUtentiAutorizzati dtl = new dtUtentiAutorizzati())
-                    {
-                        llm = dtl.GetUtentiAutorizzati().OrderBy(a => a.matricola).ToList();
+                    llm = dtl.GetUtentiAutorizzati().OrderBy(a => a.matricola).ToList();
 
-                        if (llm != null && llm.Count > 0)
+                    if (llm != null && llm.Count > 0)
+                    {
+                        r = (from t in llm
+                             select new SelectListItem()
+                             {
+                                 Text = t.matricola,
+                                 Value = t.idDipendente.ToString()
+
+                             }).ToList();
+
+                        if (idDipendente == 0)
                         {
-                            r = (from t in llm
-                                 select new SelectListItem()
-                                 {
-                                     Text = t.matricola,
-                                     Value = t.idUtenteAutorizzato.ToString()
+                            r.First().Selected = true;
+                            idDipendente = Convert.ToDecimal(r.First().Value);
+                        }
+                        else
+                        {
+                            r.Where(a => a.Value == idDipendente.ToString()).First().Selected = true;
+                        }
 
-                                 }).ToList();
-
-                                if (idUtenteAutorizzato == 0)
-                                {
-                                    r.First().Selected = true;
-                                    idUtenteAutorizzato = Convert.ToDecimal(r.First().Value);
-                                }
-                                else
-                                {
-                                    r.Where(a => a.Value == idUtenteAutorizzato.ToString()).First().Selected = true;
-                                }
-
-                            }
-
-                                ViewBag.LivelliList = r;
                     }
-                    
-                    using (dtLogAttivita dtib = new dtLogAttivita())
-                    {
-                        libm = dtib.getListLogAttivita().OrderBy(a => a.idLog).ToList();
-                    }
+
+                    ViewBag.LivelliList = r;
                 }
-                catch (Exception ex)
+
+                using (dtLogAttivita dtib = new dtLogAttivita())
                 {
-                    return PartialView("ErrorPartial");
+                    libm = dtib.getListLogAttivita().OrderBy(a => a.idLog).ToList();
                 }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial");
+            }
 
 
-                return PartialView("LogAttivita2",libm);
-            
+            return PartialView("LogAttivita2", libm);
+
         }
 
     }

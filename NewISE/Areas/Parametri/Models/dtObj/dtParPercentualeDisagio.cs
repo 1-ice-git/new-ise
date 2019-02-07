@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using NewISE.Models.Tools;
 using System.ComponentModel.DataAnnotations;
+using NewISE.Models.dtObj;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -19,7 +20,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             GC.SuppressFinalize(this);
         }
 
-             
+
 
         //public IList<PercentualeDisagioModel> getListPercentualeDisagio(decimal idUfficio)
         //{
@@ -130,15 +131,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-        
+
         public void SetPercentualeDisagio(PercentualeDisagioModel ibm, bool aggiornaTutto)
         {
             List<PERCENTUALEDISAGIO> libNew = new List<PERCENTUALEDISAGIO>();
 
-            PERCENTUALEDISAGIO ibPrecedente = new PERCENTUALEDISAGIO();
+            //PERCENTUALEDISAGIO ibPrecedente = new PERCENTUALEDISAGIO();
             PERCENTUALEDISAGIO ibNew1 = new PERCENTUALEDISAGIO();
             PERCENTUALEDISAGIO ibNew2 = new PERCENTUALEDISAGIO();
-            List<PERCENTUALEDISAGIO> lArchivioIB = new List<PERCENTUALEDISAGIO>();
+            //List<PERCENTUALEDISAGIO> lArchivioIB = new List<PERCENTUALEDISAGIO>();
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -149,13 +150,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     {
                         //Se la data variazione coincide con una data inizio esistente
                         lista = dtal.DataVariazioneCoincideConDataInizio(ibm.dataInizioValidita, ibm.idUfficio);
+
                         if (lista.Count != 0)
                         {
                             giafatta = true;
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal aliquotaFirst = Convert.ToDecimal(lista[3]);
+                            //decimal aliquotaFirst = Convert.ToDecimal(lista[3]);
 
                             ibNew1 = new PERCENTUALEDISAGIO()
                             {
@@ -191,12 +193,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
 
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaIndenita_PD(ibNew1.IDPERCENTUALEDISAGIO, db, ibm.dataInizioValidita);
+                            }
+
                             db.Database.CurrentTransaction.Commit();
                         }
                         ///se la data variazione coincide con una data fine esistente(diversa da 31/12/9999)
                         if (giafatta == false)
                         {
                             lista = dtal.DataVariazioneCoincideConDataFine(ibm.dataInizioValidita, ibm.idUfficio);
+
                             if (lista.Count != 0)
                             {
                                 giafatta = true;
@@ -247,6 +255,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var pd in libNew)
+                                    {
+                                        dtrp.AssociaIndenita_PD(pd.IDPERCENTUALEDISAGIO, db, ibm.dataInizioValidita);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -254,6 +272,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                         if (giafatta == false)
                         {
                             lista = dtal.RestituisciIntervalloDiUnaData(ibm.dataInizioValidita, ibm.idUfficio);
+
                             if (lista.Count != 0)
                             {
                                 giafatta = true;
@@ -309,6 +328,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var pd in libNew)
+                                    {
+                                        dtrp.AssociaIndenita_PD(pd.IDPERCENTUALEDISAGIO, db, ibm.dataInizioValidita);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -332,6 +361,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.PERCENTUALEDISAGIO.Add(ibNew1);
                                 db.SaveChanges();
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+
+                                    dtrp.AssociaIndenita_PD(ibNew1.IDPERCENTUALEDISAGIO, db, ibm.dataInizioValidita);
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
 
@@ -362,6 +399,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALEDISAGIO.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+
+                                        dtrp.AssociaIndenita_PD(ibNew1.IDPERCENTUALEDISAGIO, db, ibm.dataInizioValidita);
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -389,6 +434,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.PERCENTUALEDISAGIO.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var pd in libNew)
+                                        {
+                                            dtrp.AssociaIndenita_PD(pd.IDPERCENTUALEDISAGIO, db, ibm.dataInizioValidita);
+                                        }
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }
@@ -488,14 +543,23 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             };
 
                             db.PERCENTUALEDISAGIO.Add(ibOld1);
+
+                            db.SaveChanges();
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+
+                                dtrp.AssociaIndenita_PD(ibOld1.IDPERCENTUALEDISAGIO, db, delIB.DATAINIZIOVALIDITA);
+
+                            }
+
+                            using (objLogAttivita log = new objLogAttivita())
+                            {
+                                log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di percentuale di disagio.", "PERCENTUALEDISAGIO", idPercDisagio);
+                            }
                         }
 
-                        db.SaveChanges();
 
-                        using (objLogAttivita log = new objLogAttivita())
-                        {
-                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di indennità di base.", "PERCENTUALEDISAGIO", idPercDisagio);
-                        }
 
 
                         db.Database.CurrentTransaction.Commit();

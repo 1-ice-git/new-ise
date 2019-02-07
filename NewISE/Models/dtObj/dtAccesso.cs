@@ -16,11 +16,11 @@ namespace NewISE.Models.dtObj
         public void SetAccesso(AccessoModel am)
         {
 
-            using (ModelDBISE db=new ModelDBISE())
+            using (ModelDBISE db = new ModelDBISE())
             {
                 var a = new ACCESSI()
                 {
-                    IDUTENTELOGGATO = am.idUtenteLoggato,
+                    IDDIPENDENTE = am.idDipendente,
                     DATAACCESSO = am.dataAccesso,
                     GUID = am.guid.ToString()
                 };

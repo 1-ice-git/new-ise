@@ -1,0 +1,183 @@
+﻿@model IEnumerable<NewISE.Models.DBModel.IndennitaBaseModel>
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+
+}
+
+@Html.Hidden("idTrasferimento", idTrasferimento)
+
+
+<div class="row">
+    <div class="col-xs-12" style="padding-left: 10px; padding-right:25px; margin: 10px; border:0">
+        <div class="tab-content" id="tabContenuti_Var" style="border:1px;border-color:red">
+            <div class="active tab-pane" id="tabElencoRiepilogoVoci"></div>
+            <div class="tab-pane" id="tabFormulari_Var">
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<table id="tbIndennitaBase" class="display" cellspacing="0">
+    <thead>
+        <tr>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Livello.DescLivello)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Livello.DescLivello)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Livello.DescLivello)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Livello.DescLivello)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Livello.DescLivello)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Livello.DescLivello)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Livello.DescLivello)
+                </td>
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Livello.DescLivello)
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
+
+        <button class="btn btn-default btn-sm" onclick="DownloadReport();">
+            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+            Stampa
+        </button>
+
+    </div>
+</div>
+
+<div class="modal fade modal-fullscreen force-fullscreen" id="ModalReport" tabindex="-1" role="dialog" aria-labelledby="ModalReportLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:980px; align-content:center" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="DownloadReportLabel">Riepilogo Voci</h3>
+            </div>
+            <div class="modal-body">
+                <div id="divPViewIndennita1">
+                    @Html.Action("RptIndennitaBase", "Indennita")
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#tbIndennitaBase').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "columnDefs": [
+                {
+                    "targets": 'no-sort',
+                    "orderable": false,
+
+                }
+        ],
+        "order": [[0, "desc"]]
+    });
+
+    function DownloadReport() {
+        $('#ModalReport').modal().show();
+
+    }
+
+
+     function RptIndennitaBase() {
+         debugger;
+         var rotta = "/Indennita/RptIndennitaBase";
+
+         var idTrasferimento = 0;
+
+         if (!isNaN(idTrasf)) {
+             idTrasferimento = idTrasf;
+         } else {
+             idTrasferimento = $("#hidTrasferimento").val();
+         }
+         @*var idTrasferimento = parseInt('@idTrasferimento');*@
+
+                 $.ajax({
+                     type: "POST",
+                     url: rotta,
+                     data: { idTrasferimento: idTrasferimento },
+                     dataType: 'html',
+                     beforeSend: function () {
+                         //debugger;
+                         VerificaAutenticazione();
+                     },
+                     success: function (result) {
+                         //debugger;
+
+                         $("#divPViewIndennita1").empty();
+                         $("#divPViewIndennita1").html(result);
+                     },
+                     complete: function () {
+                     },
+                     error: function (jqXHR, textStatus, errorThrow) {
+                         //debugger;
+                         var msg = errorThrow.err;
+                         ErroreElaborazioneAjax(msg);
+                     }
+
+                 });
+
+     }
+</script>
+

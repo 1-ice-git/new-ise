@@ -15,5 +15,9 @@ namespace NewISE.Models.DBModel
         public decimal idDipendente { get; set; }
         public bool ToCc { get; set; }
         public string Nominativi { get; set; }
+
+        public DipendentiModel Dipendenti { get; set; }
+
+        public NotificheModel Notifiche { get; set; }
     }
 }

@@ -5,6 +5,7 @@
     decimal idAttivazione = Convert.ToDecimal(ViewData["idAttivazione"]);
     decimal idFigli = Convert.ToDecimal(ViewData["idFigli"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    bool trasfSolaLettura = Convert.ToBoolean(ViewData["trasfSolaLettura"]);
 }
 
 <div style="padding-left: 15px;">
@@ -37,7 +38,7 @@
                             <td></td>
                         }
                     </tr>
-                    <tr>
+                    @*<tr>
                         <td style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.capNascita)
                         </td>
@@ -45,7 +46,7 @@
                         <td style="padding-left:10px">
                             @Html.DisplayFor(model => model.capNascita)
                         </td>
-                    </tr>
+                    </tr>*@
                     <tr>
                         <td style="font-weight:bold">
                             @Html.DisplayNameFor(model => model.comuneNascita)
@@ -129,7 +130,7 @@
     <hr />
 </div>
 <p style="padding-left: 15px;">
-    @if (solaLettura)
+    @if (solaLettura || trasfSolaLettura)
     {
         <button class="btn btn-default disabled">Modifica</button>
     }

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetIndennitàRichiamo" targetNamespace="http://tempuri.org/DataSetIndennitàRichiamo.xsd" xmlns:mstns="http://tempuri.org/DataSetIndennitàRichiamo.xsd" xmlns="http://tempuri.org/DataSetIndennitàRichiamo.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetIndennitàRichiamo" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetIndennitàRichiamo" msprop:Generator_UserDSName="DataSetIndennitàRichiamo">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DataInizioValidita" msprop:Generator_ColumnVarNameInTable="columnDataInizioValidita" msprop:Generator_ColumnPropNameInRow="DataInizioValidita" msprop:Generator_ColumnPropNameInTable="DataInizioValiditaColumn" msprop:Generator_UserColumnName="DataInizioValidita" type="xs:string" minOccurs="0" />
+              <xs:element name="DataFineValidita" msprop:Generator_ColumnVarNameInTable="columnDataFineValidita" msprop:Generator_ColumnPropNameInRow="DataFineValidita" msprop:Generator_ColumnPropNameInTable="DataFineValiditaColumn" msprop:Generator_UserColumnName="DataFineValidita" type="xs:string" minOccurs="0" />
+              <xs:element name="IndennitaBase" msprop:Generator_ColumnVarNameInTable="columnIndennitaBase" msprop:Generator_ColumnPropNameInRow="IndennitaBase" msprop:Generator_ColumnPropNameInTable="IndennitaBaseColumn" msprop:Generator_UserColumnName="IndennitaBase" type="xs:string" minOccurs="0" />
+              <xs:element name="MaggiorazioneConiuge" msprop:Generator_ColumnVarNameInTable="columnMaggiorazioneConiuge" msprop:Generator_ColumnPropNameInRow="MaggiorazioneConiuge" msprop:Generator_ColumnPropNameInTable="MaggiorazioneConiugeColumn" msprop:Generator_UserColumnName="MaggiorazioneConiuge" type="xs:string" minOccurs="0" />
+              <xs:element name="MaggiorazioneFigli" msprop:Generator_ColumnVarNameInTable="columnMaggiorazioneFigli" msprop:Generator_ColumnPropNameInRow="MaggiorazioneFigli" msprop:Generator_ColumnPropNameInTable="MaggiorazioneFigliColumn" msprop:Generator_UserColumnName="MaggiorazioneFigli" type="xs:string" minOccurs="0" />
+              <xs:element name="IndennitaRichiamo" msprop:Generator_ColumnVarNameInTable="columnIndennitaRichiamo" msprop:Generator_ColumnPropNameInRow="IndennitaRichiamo" msprop:Generator_ColumnPropNameInTable="IndennitaRichiamoColumn" msprop:Generator_UserColumnName="IndennitaRichiamo" type="xs:string" minOccurs="0" />
+              <xs:element name="CoeffIndennitadiRichiamo" msprop:Generator_ColumnVarNameInTable="columnCoeffIndennitadiRichiamo" msprop:Generator_ColumnPropNameInRow="CoeffIndennitadiRichiamo" msprop:Generator_ColumnPropNameInTable="CoeffIndennitadiRichiamoColumn" msprop:Generator_UserColumnName="CoeffIndennitadiRichiamo" type="xs:string" minOccurs="0" />
+              <xs:element name="CoeffMaggIndennitadiRichiamo" msprop:Generator_ColumnVarNameInTable="columnCoeffMaggIndennitadiRichiamo" msprop:Generator_ColumnPropNameInRow="CoeffMaggIndennitadiRichiamo" msprop:Generator_ColumnPropNameInTable="CoeffMaggIndennitadiRichiamoColumn" msprop:Generator_UserColumnName="CoeffMaggIndennitadiRichiamo" type="xs:string" minOccurs="0" />
+              <xs:element name="dtRientro" msprop:Generator_ColumnVarNameInTable="columndtRientro" msprop:Generator_ColumnPropNameInRow="dtRientro" msprop:Generator_ColumnPropNameInTable="dtRientroColumn" msprop:Generator_UserColumnName="dtRientro" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

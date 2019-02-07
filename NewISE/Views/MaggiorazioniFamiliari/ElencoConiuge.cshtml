@@ -1,4 +1,5 @@
 ﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
 @model IEnumerable<NewISE.Models.ViewModel.ElencoFamiliariModel>
 
 @{
@@ -8,16 +9,16 @@
 
 
 
-<p style="padding-left: 15px; margin-top: 10px;">
+<p style="margin-top: 10px">
     @if (Model?.Any() ?? false)
     {
         if (solaLettura)
         {
-            <button href="#" class="btn btn-default disabled" disabled="disabled">Modifica coniuge</button>
+            <button href="#" class="btn btn-default disabled" disabled="disabled">Modifica Coniuge</button>
         }
         else
         {
-            @Ajax.ActionLink("Modifica coniuge", "ModificaConiuge", "MaggiorazioniFamiliari", new { idConiuge = Model.First().idFamiliare, idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge", @id = "linkEditConiuge" })
+            @Ajax.ActionLink("Modifica", "ModificaConiuge", "MaggiorazioniFamiliari", new { idConiuge = Model.First().idFamiliare, idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Modifica il coniuge", @id = "linkEditConiuge" })
         }
 
     }
@@ -25,17 +26,17 @@
     {
         if (solaLettura)
         {
-            <button href="#" class="btn btn-default disabled" disabled="disabled">Nuovo coniuge</button>
+            <button href="#" class="btn btn-default disabled" disabled="disabled">Coniuge</button>
         }
         else
         {
-            @Ajax.ActionLink("Nuovo coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge", @id = "linkNewConiuge" })
+            @Ajax.ActionLink("Coniuge", "NuovoConiuge", "MaggiorazioniFamiliari", new { idAttivazioneMagFam = idAttivazioneMagFam }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Inserisci il coniuge", @id = "linkNewConiuge" })
         }
 
     }
 
 </p>
-<div style="padding-left: 15px; padding-right: 5px; padding-top: 10px;">
+<div style="padding-top: 10px;">
 
     <table id="tabElencoConiuge" cellspacing="0" class="table-striped">
         <thead>
@@ -123,7 +124,7 @@
                     @if (item.Documenti.Any())
                     {
                         <td class="text-center">
-                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idAttivazioneMagFam ) ">
+                            <a href="#" onclick="ElencoDocumenti(@item.idFamiliare, @Convert.ToDecimal(item.Documenti.First().tipoDocumento) , @Convert.ToDecimal(item.parentela) , @Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari) , @idAttivazioneMagFam ) ">
                                 <img class="SfondoBordoImg" width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" />
                             </a>
                         </td>
@@ -131,7 +132,7 @@
                     else
                     {
                         <td class="text-center">
-                            <a href="#" onclick=" ElencoDocumenti(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari), @idAttivazioneMagFam ) ">
+                            <a href="#" onclick="ElencoDocumenti(@item.idFamiliare, 10, @Convert.ToDecimal(item.parentela) ,@Convert.ToDecimal(EnumChiamante.Maggiorazioni_Familiari), @idAttivazioneMagFam ) ">
                                 <img class="SfondoBordoImg" src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti" />
                             </a>
                         </td>
@@ -177,28 +178,14 @@
         "paging": false,
         "bJQueryUI": true,
         "sDom": 'lfrtip',
-        //dom: 'Bfrtip',
-        //buttons: [
-        //    {
-        //        text: 'Nuovo Coniuge',
-        //        className: 'green',
-        //        action: function (e, dt, node, config) {
-        //            NuovoConiuge();
-        //        }
-        //    }
-        //],
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "visible": false,
-        //        "searchable": false
-        //    },
-
-        //]
+        "columnDefs": [
+             { "targets": [2,3], "type": 'date-euro' },
+             { "targets": [4, 5, 6], "orderable": false },
+        ],
+        "order": [[0, "asc"]]
     });
 
-    PulsantiNotificaAttivaMagFam();
-
+    PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
 
     function Pensione(idConiuge, idAttivazioneMagFam) {
         //debugger;
@@ -261,7 +248,8 @@
 
             },
             complete: function () {
-                PulsantiNotificaAttivaMagFam();
+                //PulsantiNotificaAttivaMagFam();
+                PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
             },
             error: function (error) {
                 //debugger;
@@ -300,7 +288,8 @@
 
             },
             complete: function () {
-                PulsantiNotificaAttivaMagFam();
+                //PulsantiNotificaAttivaMagFam();
+                PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
             },
             error: function (error) {
                 //debugger;
@@ -338,7 +327,8 @@
 
             },
             complete: function () {
-                PulsantiNotificaAttivaMagFam();
+                //PulsantiNotificaAttivaMagFam();
+                PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
             },
             error: function (error) {
                 //debugger;

@@ -13,13 +13,13 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
-        public ValuteModel GetValuta(decimal idValuta, ModelDBISE db)
+        public ValuteModel GetValutaModel(decimal idValuta, ModelDBISE db)
         {
             ValuteModel vm = new ValuteModel();
 
             var v = db.VALUTE.Find(idValuta);
 
-            if (v!= null && v.IDVALUTA > 0)
+            if (v != null && v.IDVALUTA > 0)
             {
                 vm = new ValuteModel()
                 {
@@ -29,37 +29,93 @@ namespace NewISE.Models.DBModel.dtObj
                 };
             }
 
-            
+
             return vm;
         }
 
-        public ValuteModel GetValutaByIdCanone(decimal idCanone)
+        public ValuteModel GetValuta(decimal idValuta)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
-                ValuteModel valm = new ValuteModel();
+                ValuteModel vm = new ValuteModel();
 
-                CANONEMAB cm = db.CANONEMAB.Find(idCanone);
+                var v = db.VALUTE.Find(idValuta);
 
-                if (cm.IDCANONE > 0)
+                if (v != null && v.IDVALUTA > 0)
                 {
-                    var tfrl = cm.TFR.Where(X => X.ANNULLATO == false).ToList();
-                    if (tfrl?.Any() ?? false)
+                    vm = new ValuteModel()
                     {
-                        TFR tfr = tfrl.First();
-                        var v = tfr.VALUTE;
-                        ValuteModel vm = new ValuteModel()
-                        {
-                            idValuta = v.IDVALUTA,
-                            descrizioneValuta = v.DESCRIZIONEVALUTA,
-                            valutaUfficiale = v.VALUTAUFFICIALE
-                        };
-                        valm = vm;
-                    }
+                        idValuta = v.IDVALUTA,
+                        descrizioneValuta = v.DESCRIZIONEVALUTA,
+                        valutaUfficiale = v.VALUTAUFFICIALE
+                    };
                 }
 
-                return valm;
+
+                return vm;
             }
+        }
+
+        public ValuteModel GetValutaByCanonePartenza(decimal idCanone, ModelDBISE db)
+        {
+            ValuteModel valm = new ValuteModel();
+
+            CANONEMAB cm = db.CANONEMAB.Find(idCanone);
+
+            if (cm.IDCANONE > 0)
+            {
+                var tfrl =
+                    cm.TFR.Where(
+                        X =>
+                            X.ANNULLATO == false && X.DATAFINEVALIDITA >= cm.DATAINIZIOVALIDITA &&
+                            X.DATAINIZIOVALIDITA <= cm.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                if (tfrl?.Any() ?? false)
+                {
+                    TFR tfr = tfrl.First();
+                    var v = tfr.VALUTE;
+                    ValuteModel vm = new ValuteModel()
+                    {
+                        idValuta = v.IDVALUTA,
+                        descrizioneValuta = v.DESCRIZIONEVALUTA,
+                        valutaUfficiale = v.VALUTAUFFICIALE
+                    };
+                    valm = vm;
+                }
+            }
+
+            return valm;
+        }
+
+        public ValuteModel GetValutaByCanone_Variazione(decimal idCanone, ModelDBISE db)
+        {
+            ValuteModel valm = new ValuteModel();
+
+            CANONEMAB cm = db.CANONEMAB.Find(idCanone);
+
+            if (cm.IDCANONE > 0)
+            {
+                var tfrl =
+                    cm.TFR.Where(
+                        X =>
+                            X.ANNULLATO == false && X.DATAFINEVALIDITA >= cm.DATAINIZIOVALIDITA &&
+                            X.DATAINIZIOVALIDITA <= cm.DATAFINEVALIDITA).OrderByDescending(a => a.DATAINIZIOVALIDITA).ToList();
+
+                if (tfrl?.Any() ?? false)
+                {
+                    TFR tfr = tfrl.First();
+                    var v = tfr.VALUTE;
+                    ValuteModel vm = new ValuteModel()
+                    {
+                        idValuta = v.IDVALUTA,
+                        descrizioneValuta = v.DESCRIZIONEVALUTA,
+                        valutaUfficiale = v.VALUTAUFFICIALE
+                    };
+                    valm = vm;
+                }
+            }
+
+            return valm;
         }
 
 
@@ -82,7 +138,7 @@ namespace NewISE.Models.DBModel.dtObj
                     };
                 }
             }
-                       
+
 
             return vm;
         }

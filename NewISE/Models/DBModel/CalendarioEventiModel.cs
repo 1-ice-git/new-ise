@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NewISE.Models.Enumeratori;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,19 +8,7 @@ using System.Web;
 namespace NewISE.Models.DBModel
 {
 
-    public enum EnumFunzioniEventi
-    {
-        RichiestaMaggiorazioniFamiliari = 1,
-        RichiestePratichePassaporto = 2,
-        RichiestaTitoliViaggio = 3,
-        RichiestaTrasportoEffettiPartenza = 21,
-        RichiestaTrasportoEffettiRientro = 22,
-        RichiestaAnticipi = 23,
-        RichiestaMaggiorazioneAbitazione = 24,
-        AttivaTrasferimento = 25,
-        Funzione9 = 26,
-        Funzione10 = 27
-    }
+
     public class CalendarioEventiModel
     {
         [Key]

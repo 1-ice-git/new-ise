@@ -71,7 +71,7 @@ namespace NewISE.Models.DBModel.dtObj
         public static ValidationResult EmailSecondariaGiaEsistente(string v, ValidationContext context)
         {
             var dNew = context.ObjectInstance as EmailSecondarieDipModel;
-            if(string.IsNullOrEmpty(dNew.Email))
+            if (string.IsNullOrEmpty(dNew.Email))
             {
                 return new ValidationResult("L'E-mail inserita è vuota");
             }
@@ -79,7 +79,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var vli = db.EMAILSECONDARIEDIP.Where(a => a.IDDIPENDENTE == dNew.idDipendente);
                 bool found = false;
-                
+
                 if (vli != null && vli.Count() > 0)
                 {
                     foreach (EMAILSECONDARIEDIP x in vli)
@@ -106,16 +106,18 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var ld = db.UTENTIAUTORIZZATI.ToList();
-                tmp = (from e in ld where e.IDDIPENDENTE!=null && (decimal)e.IDDIPENDENTE!=0
+                tmp = (from e in ld
+                       where e.IDDIPENDENTE != null && (decimal)e.IDDIPENDENTE != 0
                        select new UtentiAutorizzatiModel()
                        {
-                           idUtenteAutorizzato=e.IDUTENTEAUTORIZZATO,
+
                            idDipendente = (decimal)e.IDDIPENDENTE,
-                           idRouloUtente=e.IDRUOLOUTENTE,
-                           Utente=e.UTENTE,
+                           idRouloUtente = e.IDRUOLOUTENTE,
+                           Utente = e.UTENTE,
+                           psw = e.PSW
                        }).ToList();
             }
-             return tmp;
+            return tmp;
         }
 
 
@@ -158,7 +160,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var ld = db.DIPENDENTI.Where(b=>b.IDDIPENDENTE==idd).ToList();
+                var ld = db.DIPENDENTI.Where(b => b.IDDIPENDENTE == idd).ToList();
 
                 ldm = (from e in ld
                        select new DipendentiModel()
@@ -182,7 +184,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return ldm;
         }
-       
+
         public EmailSecondarieDipModel GetDatiEmailSecondaria(decimal idEmailSec)
         {
             EmailSecondarieDipModel ldm = new EmailSecondarieDipModel();
@@ -195,9 +197,9 @@ namespace NewISE.Models.DBModel.dtObj
                        select new EmailSecondarieDipModel()
                        {
                            idEmailSecDip = e.IDEMAILSECONDARIA,
-                            idDipendente=e.IDDIPENDENTE,
-                             Attiva=e.ATTIVA,
-                              Email=e.EMAIL
+                           idDipendente = e.IDDIPENDENTE,
+                           Attiva = e.ATTIVA,
+                           Email = e.EMAIL
                        }).ToList().First();
             }
             return ldm;
@@ -248,8 +250,8 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 DIPENDENTI d = db.DIPENDENTI.Find(idDipendente);
 
-                var lemail =d.EMAILSECONDARIEDIP.Where(
-                        a => a.IDDIPENDENTE== idDipendente).ToList();
+                var lemail = d.EMAILSECONDARIEDIP.Where(
+                        a => a.IDDIPENDENTE == idDipendente && a.ATTIVA).ToList();
 
                 if (lemail?.Any() ?? false)
                 {
@@ -257,10 +259,10 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         var csm = new EmailSecondarieDipModel()
                         {
-                             idEmailSecDip=cs.IDEMAILSECONDARIA,
-                             idDipendente=cs.IDDIPENDENTE,
-                             Email=cs.EMAIL,
-                             Attiva=cs.ATTIVA
+                            idEmailSecDip = cs.IDEMAILSECONDARIA,
+                            idDipendente = cs.IDDIPENDENTE,
+                            Email = cs.EMAIL,
+                            Attiva = cs.ATTIVA
                         };
                         lcsm.Add(csm);
                     }
@@ -276,7 +278,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 try
                 {
-                    EMAILSECONDARIEDIP em =new EMAILSECONDARIEDIP() ;
+                    EMAILSECONDARIEDIP em = new EMAILSECONDARIEDIP();
                     em.EMAIL = emailSec;
                     em.IDDIPENDENTE = idd;
                     em.ATTIVA = true;
@@ -323,7 +325,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
             return false;
         }
-        public  bool emailIsValid(string email)
+        public bool emailIsValid(string email)
         {
             string expresion;
             expresion = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";

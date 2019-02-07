@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace NewISE.Models.dtObj
 {
@@ -47,13 +48,48 @@ namespace NewISE.Models.dtObj
             return ldm;
         }
 
+        public IList<LivelloDipendenteModel> GetLivelloDipendenteByIdTrasferimento(decimal idTrasferimento)
+        {
+            List<LivelloDipendenteModel> lldm = new List<LivelloDipendenteModel>();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var lld = db.INDENNITA.Find(idTrasferimento)
+                        .LIVELLIDIPENDENTI.Where(a => a.ANNULLATO == false)
+                                          .OrderBy(a => a.IDDIPENDENTE)
+                                          .ToList(); 
+                
+                lldm = (from e in lld
+                        select new LivelloDipendenteModel()
+                        {
+                            idLivDipendente = e.IDLIVDIPENDENTE,
+                            idDipendente = e.IDDIPENDENTE,
+                            idLivello = e.IDLIVELLO,
+                            dataInizioValdita = e.DATAINIZIOVALIDITA,
+                            dataFineValidita = e.DATAFINEVALIDITA,
+                            dataAggiornamento = e.DATAAGGIORNAMENTO,
+                            annullato = e.ANNULLATO,
+                            Livello = new LivelloModel()
+                            {
+                                idLivello = e.LIVELLI.IDLIVELLO,
+                                DescLivello = e.LIVELLI.LIVELLO
+                            }
+                        }).ToList();
+                
+            }
+            
+
+            return lldm;
+        }
+
+
         public LivelloDipendenteModel GetLivelloDipendente(decimal idDipendente, DateTime data)
         {
             LivelloDipendenteModel ldm = new LivelloDipendenteModel();
 
             using (ModelDBISE db = new ModelDBISE())
             {
-                var ld = db.LIVELLIDIPENDENTI.Where(a => a.IDDIPENDENTE == idDipendente && data >= a.DATAINIZIOVALIDITA && data.Date <= a.DATAFINEVALIDITA).ToList();
+                var ld = db.LIVELLIDIPENDENTI.Where(a => a.IDDIPENDENTE == idDipendente && data >= a.DATAINIZIOVALIDITA && data <= a.DATAFINEVALIDITA && a.ANNULLATO==false).ToList();
 
                 ldm = (from e in ld
                        select new LivelloDipendenteModel()

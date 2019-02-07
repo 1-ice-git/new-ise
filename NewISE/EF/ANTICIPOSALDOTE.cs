@@ -21,7 +21,7 @@ namespace NewISE.EF
             this.ATTIVITATERIENTRO = new HashSet<ATTIVITATERIENTRO>();
         }
     
-        public decimal IDANTIVIPOSALDOTE { get; set; }
+        public decimal IDANTICIPOSALDOTE { get; set; }
         public string TIPO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

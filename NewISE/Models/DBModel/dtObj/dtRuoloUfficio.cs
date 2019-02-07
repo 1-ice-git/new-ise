@@ -1,4 +1,5 @@
 ﻿using NewISE.EF;
+using NewISE.Models.Enumeratori;
 using NewISE.Models.Tools;
 
 using System;
@@ -31,9 +32,9 @@ namespace NewISE.Models.DBModel.dtObj
 
                 if (tr != null && tr.IDTRASFERIMENTO > 0)
                 {
-                    if (tr.DATARIENTRO.HasValue)
+                    if (tr.DATARIENTRO < Utility.DataFineStop())
                     {
-                        dtRientro = tr.DATARIENTRO.Value;
+                        dtRientro = tr.DATARIENTRO;
 
                         dtDatiParametri = dtRientro > dataFineMeseCorrente ? dataAttuale : dtRientro;
                     }
@@ -127,20 +128,20 @@ namespace NewISE.Models.DBModel.dtObj
         public IList<RuoloUfficioModel> GetListRuoloUfficioByLivello(decimal idLivello)
         {
             List<RuoloUfficioModel> lru = new List<RuoloUfficioModel>();
-            
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 var livello = db.LIVELLI.Find(idLivello);
                 var descLivello = livello.LIVELLO;
 
-                if (descLivello.IndexOf("I") > -1 || descLivello.IndexOf("II")>-1)
+                if (descLivello.IndexOf("I") > -1 || descLivello.IndexOf("II") > -1)
                 {
                     lru = (from e in db.RUOLOUFFICIO
-                        select new RuoloUfficioModel()
-                        {
-                            idRuoloUfficio = e.IDRUOLO,
-                            DescrizioneRuolo = e.DESCRUOLO
-                        }).Where(a => a.idRuoloUfficio == (decimal)EnumRuoloUfficio.Assistente).ToList();
+                           select new RuoloUfficioModel()
+                           {
+                               idRuoloUfficio = e.IDRUOLO,
+                               DescrizioneRuolo = e.DESCRUOLO
+                           }).Where(a => a.idRuoloUfficio == (decimal)EnumRuoloUfficio.Assistente).ToList();
                 }
 
                 if (descLivello.IndexOf("III") > -1)

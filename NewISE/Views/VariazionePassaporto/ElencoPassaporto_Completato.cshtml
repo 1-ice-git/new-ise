@@ -1,0 +1,165 @@
+﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
+
+@using NewISE.Models.Tools
+@using NewISE.Models.ViewModel
+@model IEnumerable<ElencoFamiliariPassaportoModel>
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal idFaseCorrente = Convert.ToDecimal(EnumFasePassaporti.Completati);
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <table cellspacing="0" id="tabElencoPassaportiCompletati_var" class="table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.nominativo)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.codiceFiscale)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.dataInizio)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.dataFine)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.parentela)
+                    </th>
+                    <th style="width: 20px;" class="text-center">
+                        @Html.DisplayNameFor(model => model.idAltriDati)
+                    </th>
+
+                    <th class="text-center">
+                        Doc. Iden.
+                    </th>
+                    <th class="text-center">
+                        Doc. Passaporto
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+            {
+                    <tr>
+                        <td>@Html.HiddenFor(modelItem => item.ordinamento) </td>
+                        <td style="text-align: left;">
+                            @Html.DisplayFor(modelItem => item.nominativo)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.codiceFiscale)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.dataInizio)
+                        </td>
+                        <td class="text-center">
+                            @if (item.dataFine != Utility.DataFineStop())
+                            {
+                                @Html.DisplayFor(modelItem => item.dataFine)
+                            }
+                        </td>
+                        <td class="text-center">
+                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.parentela)</span>
+                        </td>
+                        @if (item.idAltriDati > 0)
+                        {
+                            switch (item.parentela)
+                            {
+                                case EnumParentela.Coniuge:
+                                    <td class="text-center">
+                                        <a href="#" id="linkAltriDatiFam" onclick="AltriDatiFamiliariConiuge_var_Completati(@item.idAltriDati,@idFaseCorrente); ">
+                                            <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
+                                        </a>
+                                    </td>
+                                    break;
+                                case EnumParentela.Figlio:
+                                    <td class="text-center">
+                                        <a href="#" id="linkAltriDatiFam" onclick="AltriDatiFamiliariFiglio_var_Completati(@item.idAltriDati,@idFaseCorrente); ">
+                                            <img src="~/Immagini/Plus_Green.png" title="Altri Dati Familiari" width="17" height="17" />
+                                        </a>
+                                    </td>
+                                    break;
+                                default:
+                                    throw new ArgumentOutOfRangeException();
+                            }
+                        }
+                        else
+                        {
+                            <td class="text-center"></td>
+                        }
+
+                        <td class="text-center">
+                            <input id="hColElencoDocIdFamiliare" type="hidden" value="@item.idFamiliarePassaporto" />
+                            <input id="hColElencoDocParentela" type="hidden" value="@Convert.ToDecimal(item.parentela)" />
+                            <div id="divColElencoDoc">
+                                @Html.Action("ColonnaElencoDoc", "VariazionePassaporto", new { idAttivazionePassaporto = item.idAttivazionePassaporti, idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela, idFaseCorrente = idFaseCorrente })
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div id="divColElencoDocPassaporti">
+                                @Html.Action("ColonnaElencoDocPassaporti", "VariazionePassaporto", new { idAttivazionePassaporto = item.idAttivazionePassaporti, idFamiliarePassaporto = item.idFamiliarePassaporto, parentela = item.parentela })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+
+        </table>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $("#tabElencoPassaportiCompletati_var").DataTable({
+            "language": {
+                "sEmptyTable": "Nessun dato presente nella tabella",
+                "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+                "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+                "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "Visualizza _MENU_ elementi",
+                "sLoadingRecords": "Caricamento...",
+                "sProcessing": "Elaborazione...",
+                "sSearch": "Cerca:",
+                "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+                "oPaginate": {
+                    "sFirst": "Inizio",
+                    "sPrevious": "Precedente",
+                    "sNext": "Successivo",
+                    "sLast": "Fine"
+                },
+                "oAria": {
+                    "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                    "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+                }
+            },
+            "bSort": true,
+            "bSortable": true,
+            "columnDefs": [
+                { "visible": false, "targets": [0] },
+            ],
+            "info": false,
+            "lengthChange": false,
+            "pageLength": 5,
+            "searching": false,
+            "paging": true,
+            "bJQueryUI": true,
+            "sDom": 'lfrtip',
+            "columnDefs": [
+                             { "targets": [3, 4], "type": 'date-euro' },
+                             { "targets": [0, 6, 7, 8], "orderable": false },
+                             { "targets": [0], "visible": false },
+            ],    
+            "order": [[5, "asc"], [3, "asc"] ]
+
+        });
+
+</script>

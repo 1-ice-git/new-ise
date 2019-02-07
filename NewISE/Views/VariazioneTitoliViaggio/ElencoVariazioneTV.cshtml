@@ -1,0 +1,460 @@
+﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
+@using NewISE.Models.Tools
+@model IEnumerable<NewISE.Models.DBModel.ElencoTitoliViaggioModel>
+
+@{
+    decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+    decimal idAttivazioneTV = Convert.ToDecimal(ViewData["idAttivazioneTV"]);
+    bool richiestaEseguita = Convert.ToBoolean(ViewData["richiestaEseguita"]);
+    bool richiestaDocumentiEseguita = Convert.ToBoolean(ViewData["richiestaDocumentiEseguita"]);
+    bool faseRichiesta = Convert.ToBoolean(ViewData["faseRichiesta"]);
+    bool faseRichiestaDocumenti = Convert.ToBoolean(ViewData["faseRichiestaDocumenti"]);
+    EnumStatoTraferimento statoTrasferimento = (EnumStatoTraferimento)Convert.ToDecimal(ViewData["statoTrasferimento"]);
+    decimal idTipoDocTitoloViaggio = (decimal)EnumTipoDoc.Titolo_Viaggio;
+    decimal idTipoDocCartaImbarco = (decimal)EnumTipoDoc.Carta_Imbarco;
+    decimal idTabTV = (decimal)EnumTabTitoloViaggio.Elaborazione;
+}
+
+
+<p style="margin-top: 10px">
+    @*<h4>Richiesta Titoli di viaggio/Carta d'imbarco</h4>
+    <hr />*@
+
+    <div style="padding-top: 10px;">
+        <table id="tabElencoVariazioneTV" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nominativo)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.CodiceFiscale)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.dataInizio)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.dataFine)
+                    </th>
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.parentela)
+                    </th>
+                    <th class="text-center">
+                        Altri dati
+                    </th>
+                    @if (faseRichiesta)
+                    {
+                        <th class="text-center">
+                            Richiedi
+                        </th>
+                    }
+
+                    @if (faseRichiestaDocumenti)
+                    {
+                        <th class="text-center">
+                            Titolo Viaggio
+                        </th>
+                        <th class="text-center">
+                            Carta Imbarco
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.Nominativo)</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.CodiceFiscale)</span>
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.dataInizio)
+                        </td>
+                        @if (item.dataFine.HasValue && item.dataFine.Value < Utility.DataFineStop())
+                        {
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.dataFine)
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="text-center"></td>
+                        }
+                        <td class="text-center">
+                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.parentela)</span>
+                        </td>
+                        @if (item.parentela == EnumParentela.Coniuge || item.parentela == EnumParentela.Figlio)
+                        {
+                            if (item.idAltriDati > 0)
+                            {
+                                if (item.parentela == EnumParentela.Coniuge)
+                                {
+                                    <td class="text-center">
+                                        <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare);" id="linkAltriDatiFam">
+                                            <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                        </a>
+                                    </td>
+                                }
+                                if (item.parentela == EnumParentela.Figlio)
+                                {
+                                    <td class="text-center">
+                                        <a href="#" onclick="AltriDatiFamiliariFiglio(@item.idFamiliare);" id="linkAltriDatiFam">
+                                            <img src="~/Immagini/Plus_Green.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                        </a>
+                                    </td>
+                                }
+                            }
+                            else
+                            {
+                                <td class="text-center">
+                                    <img src="~/Immagini/Plus_Red.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
+                                </td>
+                            }
+                        }
+                        else
+                        {
+                            <td class="text-center"></td>
+                        }
+
+                            @if (faseRichiesta)
+                            {
+                                <td class="text-center">
+                                    @if (statoTrasferimento == EnumStatoTraferimento.Annullato || statoTrasferimento == EnumStatoTraferimento.Terminato)
+                                    {
+                                        if (item.RichiediTitoloViaggio)
+                                        {
+                                            <input type="checkbox" disabled checked="checked">
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" disabled>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (richiestaEseguita == false)
+                                        {
+                                            if (item.RichiediTitoloViaggio)
+                                            {
+                                                <input type="checkbox" checked="checked" onclick="AggiornaStatoRichiediTV(@Convert.ToDecimal(@item.parentela), @item.idFamiliare)">
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" onclick="AggiornaStatoRichiediTV(@Convert.ToDecimal(@item.parentela), @item.idFamiliare)">
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (item.RichiediTitoloViaggio)
+                                            {
+                                                <input type="checkbox" disabled checked="checked">
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" disabled>
+                                            }
+                                        }
+                                    }
+                                </td>
+                            }
+                       
+                            @if (faseRichiestaDocumenti)
+                            {
+                                if (statoTrasferimento != EnumStatoTraferimento.Annullato || statoTrasferimento == EnumStatoTraferimento.Terminato)
+                                {
+                                    if (richiestaDocumentiEseguita)
+                                    {
+                                        <td class="text-center" align="center">
+                                            @if (item.idDoctitoloViaggio > 0)
+                                            {
+                                                <a href="@Url.RouteUrl("LeggiDocumento", new { id = item.idDoctitoloViaggio })" target="_blank">
+                                                    <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Titolo Viaggio @Html.DisplayFor(modelItem => item.parentela)" />
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Titolo viaggio @Html.DisplayFor(modelItem => item.parentela)" />
+                                            }
+                                        </td>
+                                        <td class="text-center" align="center">
+                                            @if (item.idDocCartaImbarco > 0)
+                                            {
+                                                <a href="@Url.RouteUrl("LeggiDocumento", new { id = item.idDocCartaImbarco })" target="_blank">
+                                                    <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Carta di Imbarco @Html.DisplayFor(modelItem => item.parentela)" />
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Carta di Imbarco @Html.DisplayFor(modelItem => item.parentela)" />
+                                            }
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-center" align="center">
+                                            @if (item.idDoctitoloViaggio > 0)
+                                            {
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <a href="@Url.RouteUrl("LeggiDocumento", new { id = item.idDoctitoloViaggio })" target="_blank">
+                                                                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Titolo Viaggio @Html.DisplayFor(modelItem => item.parentela)" />
+                                                            </a>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <a href="#" onclick="InserisciVariazioneDoc(@item.idAttivazioneTitoloViaggio,@item.idFamiliare, @item.idParentela, @idTipoDocTitoloViaggio,@item.idConiugeTitoloViaggio, @item.idFigliTitoloViaggio,@item.idDoctitoloViaggio);" id="linkdocTitoloViaggio">
+                                                                <img src="~/Immagini/switch.png" width="17" title="Sostituisci Titolo Viaggio @Html.DisplayFor(modelItem => item.parentela)" />
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            }
+                                            else
+                                            {
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Titolo viaggio @Html.DisplayFor(modelItem => item.parentela)" />
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <a href="#" onclick="InserisciVariazioneDoc(@item.idAttivazioneTitoloViaggio,@item.idFamiliare, @item.idParentela, @idTipoDocTitoloViaggio,@item.idConiugeTitoloViaggio, @item.idFigliTitoloViaggio,0);" id="linkdocTitoloViaggio">
+                                                                <img src="~/Immagini/Plus_Green.png" width="17" title="Inserisci Titolo Viaggio @Html.DisplayFor(modelItem => item.parentela)" />
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            }
+                                        </td>
+                                        <td class="text-center" align="center">
+                                            @if (item.idDocCartaImbarco > 0)
+                                            {
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <a href="@Url.RouteUrl("LeggiDocumento", new { id = item.idDocCartaImbarco })" target="_blank">
+                                                                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Carta di Imbarco @Html.DisplayFor(modelItem => item.parentela)" />
+                                                            </a>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <a href="#" onclick="InserisciVariazioneDoc(@item.idAttivazioneTitoloViaggio,@item.idFamiliare, @item.idParentela, @idTipoDocCartaImbarco ,@item.idConiugeTitoloViaggio, @item.idFigliTitoloViaggio,@item.idDocCartaImbarco);" id="linkdocCartaImbarco">
+                                                                <img src="~/Immagini/switch.png" width="17" title="Sostituisci Carta di Imbarco @Html.DisplayFor(modelItem => item.parentela)" />
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            }
+                                            else
+                                            {
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Carta di Imbarco @Html.DisplayFor(modelItem => item.parentela)" />
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <a href="#" onclick="InserisciVariazioneDoc(@item.idAttivazioneTitoloViaggio,@item.idFamiliare, @item.idParentela, @idTipoDocCartaImbarco,@item.idConiugeTitoloViaggio, @item.idFigliTitoloViaggio,0);" id="linkdocCartaImbarco">
+                                                                <img src="~/Immagini/Plus_Green.png" width="17" title="Inserisci Carta di Imbarco @Html.DisplayFor(modelItem => item.parentela)" />
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            }
+                                        </td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td class="text-center" align="center">
+                                        @if (item.idDoctitoloViaggio > 0)
+                                        {
+                                            <a href="@Url.RouteUrl("LeggiDocumento", new { id = item.idDoctitoloViaggio })" target="_blank">
+                                                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Titolo Viaggio @Html.DisplayFor(modelItem => item.parentela)" />
+                                            </a>
+                                        }
+                                        else
+                                        {
+
+                                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Titolo viaggio @Html.DisplayFor(modelItem => item.parentela)" />
+                                        }
+                                    </td>
+                                    <td class="text-center" align="center">
+                                        @if (item.idDocCartaImbarco > 0)
+                                        {
+                                            <a href="@Url.RouteUrl("LeggiDocumento", new { id = item.idDocCartaImbarco })" target="_blank">
+                                                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Carta di Imbarco @Html.DisplayFor(modelItem => item.parentela)" />
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Carta di Imbarco @Html.DisplayFor(modelItem => item.parentela)" />
+                                        }
+                                    </td>
+                                }
+                            }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</p>
+
+
+<script type="text/javascript">
+
+    $("#tabElencoVariazioneTV").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "columnDefs": [
+                          { "targets": [2, 3], "type": 'date-euro' },
+                          { "targets": [5, 6], "orderable": false },
+        ], "order": [[4, "desc"]]
+    });
+
+
+    //GestionePulsantiNotificaAttivaAnnullaTitoliViaggio();
+
+    function AggiornaStatoRichiediTV(idParentela, idFamiliare) {
+        //debugger;
+        var idAttivazioneTV = parseInt('@idAttivazioneTV');
+        var rotta = "/VariazioneTitoliViaggio/AggiornaStatoRichiediTV";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idParentela: idParentela, idAttivazioneTV: idAttivazioneTV, idFamiliare: idFamiliare },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.errore === "") {
+                    ElaborazioneTV();
+                } else {
+                    ErroreElaborazioneAjax(result.msg);
+                }
+            },
+            complete: function () {
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function AltriDatiFamiliariConiuge(idFamiliare) {
+        //debugger;
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        var idTabTV = parseInt('@idTabTV');
+        var rotta = "/VariazioneTitoliViaggio/AltriDatiFamiliariConiuge";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {idTitoliViaggio:idTitoliViaggio,idConiuge: idFamiliare, idTabTV:idTabTV },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divElaborazioneTV").empty();
+                $("#divElaborazioneTV").html(result);
+            },
+            complete: function () {
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function AltriDatiFamiliariFiglio(idFamiliare) {
+        //debugger;
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        var idTabTV = parseInt('@idTabTV');
+        var rotta = "/VariazioneTitoliViaggio/AltriDatiFamiliariFiglio";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTitoliViaggio: idTitoliViaggio, idFiglio: idFamiliare, idTabTV: idTabTV },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#divElaborazioneTV").empty();
+                $("#divElaborazioneTV").html(result);
+            },
+            complete: function () {
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+
+</script>
+
+

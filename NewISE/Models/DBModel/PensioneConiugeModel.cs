@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using NewISE.Models.Tools;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel
 {
@@ -14,14 +15,14 @@ namespace NewISE.Models.DBModel
         public decimal idPensioneConiuge { get; set; }
 
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
-        [Display(Name = "Data iniz. valid.")]
+        [Display(Name = "Data Inizio Validità")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime dataInizioValidita { get; set; }
         [Display(Name = "Data fine valid.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
-        public DateTime? dataFineValidita { get; set; }
+        public DateTime dataFineValidita { get; set; }
         [Required(ErrorMessage = "L'importo della pensione è richiesto.")]
         [Display(Name = "Pensione")]
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
@@ -34,7 +35,14 @@ namespace NewISE.Models.DBModel
         public DateTime dataAggiornamento { get; set; }
         [Display(Name = "Annullato", AutoGenerateField = false)]
         [ScaffoldColumn(false)]
-        public bool annullato { get; set; }
+        public decimal idStatoRecord { get; set; }
+
+        public decimal? FK_idPensione { get; set; }
+
+        public bool nascondi { get; set; }
+
+        [Display(Name = "Aggiorna Tutti")]
+        public bool checkAggiornaTutti { get; set; }
 
         public IList<ConiugeModel> Coniugi { get; set; }
 
@@ -49,7 +57,7 @@ namespace NewISE.Models.DBModel
             var p = db.PENSIONE.Find(this.idPensioneConiuge);
             if (p != null && p.IDPENSIONE > 0)
             {
-                p.ANNULLATO = true;
+                p.IDSTATORECORD = (decimal)EnumStatoRecord.Annullato;
 
 
                 int i = db.SaveChanges();
@@ -61,6 +69,26 @@ namespace NewISE.Models.DBModel
                 }
 
 
+            }
+        }
+
+
+        public void NascondiRecord(ModelDBISE db)
+        {
+            var p = db.PENSIONE.Find(this.idPensioneConiuge);
+            if (p != null && p.IDPENSIONE > 0)
+            {
+                p.NASCONDI = true;
+                db.SaveChanges();
+            }
+        }
+        public void MostraRecord(ModelDBISE db)
+        {
+            var p = db.PENSIONE.Find(this.idPensioneConiuge);
+            if (p != null && p.IDPENSIONE > 0)
+            {
+                p.NASCONDI = false;
+                db.SaveChanges();
             }
         }
 

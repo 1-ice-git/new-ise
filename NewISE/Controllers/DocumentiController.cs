@@ -1,6 +1,7 @@
 ﻿using NewISE.EF;
 using NewISE.Models;
 using NewISE.Models.DBModel;
+
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.Tools;
 using System;
@@ -15,6 +16,7 @@ using System.Web.Security;
 using NewISE.Models.ViewModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {
@@ -144,6 +146,52 @@ namespace NewISE.Controllers
             }
         }
 
+        public JsonResult EliminaFormularioMAB(decimal idDocumento, EnumChiamante chiamante)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    using (dtDocumenti dtd = new dtDocumenti())
+                    {
+                        dtd.DeleteDocumento(idDocumento, chiamante, db);
+                    }
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { msg = "Il formulario è stata eliminato." });
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    return Json(new { err = ex.Message });
+                }
+            }
+        }
+
+        public JsonResult EliminaFormularioPS(decimal idDocumento, EnumChiamante chiamante)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    using (dtDocumenti dtd = new dtDocumenti())
+                    {
+                        dtd.DeleteDocumento(idDocumento, chiamante, db);
+                    }
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { msg = "Il formulario è stata eliminato." });
+                }
+                catch (Exception ex)
+                {
+                    db.Database.CurrentTransaction.Rollback();
+                    return Json(new { err = ex.Message });
+                }
+            }
+        }
+
         [HttpPost]
         public JsonResult InserisciFormularioMF(decimal idAttivazioneMagFam, HttpPostedFileBase file)
         {
@@ -201,6 +249,66 @@ namespace NewISE.Controllers
                 }
             }
         }
+
+        [HttpPost]
+
+        public JsonResult InserisciFormularioPS(decimal idProvScolastiche, HttpPostedFileBase file)
+        {
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.Database.BeginTransaction();
+
+                try
+                {
+                    using (dtDocumenti dtd = new dtDocumenti())
+                    {
+                        DocumentiModel dm = new DocumentiModel();
+                        bool esisteFile = false;
+                        bool gestisceEstensioni = false;
+                        bool dimensioneConsentita = false;
+                        string dimensioneMaxConsentita = string.Empty;
+
+                        Utility.PreSetDocumento(file, out dm, out esisteFile, out gestisceEstensioni,
+                            out dimensioneConsentita, out dimensioneMaxConsentita,
+                            EnumTipoDoc.Formulario_Provvidenze_Scolastiche);
+
+                        if (esisteFile)
+                        {
+                            if (gestisceEstensioni == false)
+                            {
+                                throw new Exception(
+                                    "Il documento selezionato non è nel formato consentito. Il formato supportato è: pdf.");
+                            }
+
+                            if (dimensioneConsentita)
+                            {
+                                dtd.SetFormularioProvvidenzeScolastiche(ref dm, idProvScolastiche, db);
+                            }
+                            else
+                            {
+                                throw new Exception(
+                                    "Il documento selezionato supera la dimensione massima consentita (" +
+                                    dimensioneMaxConsentita + " Mb).");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Il documento è obbligatorio.");
+                        }
+                    }
+
+                    db.Database.CurrentTransaction.Commit();
+                    return Json(new { msg = "Il formulario è stata inserito." });
+                }
+                catch (Exception ex)
+                {
+
+                    db.Database.CurrentTransaction.Rollback();
+                    return Json(new { err = ex.Message });
+                }
+            }
+        }
+
 
         [Authorize(Roles = "1 ,2")]
         [AcceptVerbs(HttpVerbs.Post)]
@@ -566,6 +674,13 @@ namespace NewISE.Controllers
                         solaLettura = false;
                     }
 
+                    var idFasePassaportiCorrente = dtpp.GetFasePassaporti_Corrente(apm.idPassaporti);
+                    if (idFasePassaportiCorrente == EnumFasePassaporti.Invio_Passaporti)
+                    {
+                        solaLettura = true;
+                    }
+                    ViewData.Add("idFasePassaportiCorrente", idFasePassaportiCorrente);
+
                 }
 
                 using (dtTrasferimento dtt = new dtTrasferimento())
@@ -596,6 +711,7 @@ namespace NewISE.Controllers
             ViewData.Add("chiamante", (decimal)EnumChiamante.Passaporti);
             ViewData.Add("idTrasferimento", idTrasferimento);
 
+
             return PartialView(ldm);
 
         }
@@ -625,7 +741,7 @@ namespace NewISE.Controllers
                 switch (chiamante)
                 {
                     case EnumChiamante.Maggiorazioni_Familiari:
-                    case EnumChiamante.VariazioneMaggiorazioniFamiliari:
+                    case EnumChiamante.Variazione_Maggiorazioni_Familiari:
 
                         switch (parentela)
                         {
@@ -690,7 +806,7 @@ namespace NewISE.Controllers
                                     out datiFigli, out datiParzialiFigli, out siDocConiuge, out siDocFigli,
                                     out docFormulario, out trasfSolaLettura);
 
-                                if (richiestaAttivazione == true || trasfSolaLettura==true)
+                                if (richiestaAttivazione == true || trasfSolaLettura == true)
                                 {
                                     solaLettura = true;
                                 }

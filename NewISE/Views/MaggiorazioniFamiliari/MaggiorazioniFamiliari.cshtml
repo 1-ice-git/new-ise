@@ -57,8 +57,6 @@
     </div>
 </div>
 
-
-
 <div class="modal fade" id="ModalNotificaRichiesta" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document" style="width:350px">
         <div class="modal-content">
@@ -110,11 +108,11 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Info!!!</h3>
+                <h3 class="modal-title alert alert-info text-info" id="annullaModelLabel">Messaggio di annullamento richiesta Maggiorazioni Familiari</h3>
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="viewAnnullaRichiesta">
-                    <label>Procedere con l'annullamento della richiesta?</label>
+                    @*<label>Procedere con l'annullamento della richiesta?</label>*@
                 </p>
             </div>
             <div class="modal-footer">
@@ -130,7 +128,6 @@
 
     $('#tabsMaggiorazioniFamiliari').tab();
 
-
     @if (callElenco == EnumCallElenco.Coniuge)
     {
         @:ElencoConiuge();
@@ -143,7 +140,6 @@
     {
         @:ElencoFormulariInseriti();
                                                                                                                                                                 }
-
 
     function ElencoFormulariInseriti() {
         //debugger;
@@ -172,7 +168,7 @@
 
             },
             complete: function () {
-                PulsantiNotificaAttivaMagFam();
+                PulsantiNotificaAttivaMagFam(idAttMagFam);
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
@@ -182,7 +178,6 @@
 
         });
     }
-
 
     //PulsantiNotificaAttivaMagFam();
 
@@ -215,7 +210,7 @@
             },
             complete: function () {
                 //debugger;
-                //PulsantiNotificaAttivaMagFam();
+                PulsantiNotificaAttivaMagFam(idAttMagFam);
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
@@ -254,7 +249,7 @@
 
             },
             complete: function () {
-                //PulsantiNotificaAttivaMagFam();
+                PulsantiNotificaAttivaMagFam(idAttMagFam);
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
@@ -274,11 +269,12 @@
     function ConfermaAnnullaRichiesta() {
         var rotta = "/MaggiorazioniFamiliari/AnnullaRichiesta";
         var idAttMagFam = parseInt($('#idAttivitaMagFam').val());
+        var testoAnnullaMF = $('#FullDescription').val();
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idAttivazioneMagFam: idAttMagFam },
+            data: { idAttivazioneMagFam: idAttMagFam, msg: testoAnnullaMF },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -293,7 +289,7 @@
 
                     $('#idAttivitaMagFam').val(result.idAttivazioneMagFamNew);
 
-                    PulsantiNotificaAttivaMagFam();
+                    PulsantiNotificaAttivaMagFam(idAttMagFam);
                     ElencoFormulariInseriti();
                     ElencoConiuge();
                     ElencoFigli();
@@ -313,8 +309,7 @@
         });
 
     }
-
-
+    
     function ConfermaAttivazioneRichiesta() {
         var rotta = "/MaggiorazioniFamiliari/AttivaRichiesta";
         var idAttMagFam = parseInt($('#idAttivitaMagFam').val());
@@ -334,7 +329,7 @@
                 //debugger;
 
                 if (result.err == "") {
-                    PulsantiNotificaAttivaMagFam();
+                    PulsantiNotificaAttivaMagFam(idAttMagFam);
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
@@ -359,6 +354,7 @@
 
     function ModalAnnullaRichiesta() {
         //debugger;
+        MessaggioAnnullaMF();
         $('#ModalAnnullaRichiesta').modal().show();
     }
 
@@ -381,7 +377,7 @@
                 //debugger;
 
                 if (result.err == "") {
-                    PulsantiNotificaAttivaMagFam();
+                    PulsantiNotificaAttivaMagFam(idAttMagFam);
                     ElencoFormulariInseriti();
                     ElencoConiuge();
                     ElencoFigli();
@@ -402,8 +398,6 @@
         });
 
     }
-
-
 
     function PulsantiNotificaAttivaMagFam(idAttivazioneMagFamNew) {
         //debugger;
@@ -439,8 +433,10 @@
                     var docFormulario = result.docFormulario;
                     var trasfSolaLettura = result.trasfSolaLettura;
 
-                    $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
-                    $("#btNotificaRichiestaMagFam").addClass("disabled");
+                    $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                    $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                    //$("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                    //$("#btNotificaRichiestaMagFam").addClass("disabled");
 
                     $("#btAttivaMagFam").attr("disabled", "disabled");
                     $("#btAttivaMagFam").addClass("disabled");
@@ -463,95 +459,224 @@
 
                     //debugger;
 
+                    //if (trasfSolaLettura == false) {
+                    //    ///Attivo il pulsante notifica per poter effettuare la rinuncia delle maggiorazioni familiari.
+                    //    if (rinuncia == false && richiesta == false && attivazione == false && datiConiuge == false && datiFigli == false && docFormulario==false) {
+                    //        $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                    //        $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                    //        $("#btNotificaRichiestaMagFam").html('<i aria-hidden="true" class="fa fa-2x fa-envelope"></i> Notifica Rinuncia Mag. fam.');
+                    //    }
+                    //    //Verifico se ci sono dati inseriti per il coniuge e i figli
+                    //    // LOGICA CORRETTA
+                    //    else if (rinuncia == false && richiesta == false && attivazione == false && (datiConiuge == true || datiFigli == true)) {
+                    //        ///Se per il coniuge o per il figlio l'inserimento risulta parziale allora disabilito tutti i pulsanti.
+                    //        if (datiConiuge && richiesta == false) {
+                    //            if (datiParzialiConiuge || siDocConiuge == false) {
+                    //                $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                    //                $("#btNotificaRichiestaMagFam").addClass("disabled");
+                    //                //blink('#lkConiuge');
+                    //            //} else {
+                    //            //    $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                    //            //    $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                    //            //}
+                    //        }
+                    //        if (datiFigli && richiesta == false) {
+                    //            if (datiParzialiFigli || siDocFigli == false) {
+                    //                $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                    //                $("#btNotificaRichiestaMagFam").addClass("disabled");
+                    //                //blink('#lkFigli');
+
+                    //            //} else {
+                    //            //    $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                    //            //    $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                    //            //}
+                    //        }
+
+                    //    } else {
+                    //        ///Se non esistono dati parziali per il coniuge o per i figli vado a verificare se esiste il documento per il coniuge e/o figli
+                    //        ///e se è stato inserito almeno un formulario.
+                    //        if (datiConiuge && datiParzialiConiuge == false && siDocConiuge && docFormulario && richiesta == false) {
+                    //            //if (datiFigli) {
+                    //            //    if (datiParzialiFigli == false && siDocFigli) {
+                    //                    $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                    //                    $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                    //                //} else {
+                    //                //    $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                    //                //    $("#btNotificaRichiestaMagFam").addClass("disabled");
+                    //                //    //blink('#lkFigli');
+                    //                //}
+                    //            //} else {
+                    //            //    $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                    //            //    $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                    //            //}
+                    //        } else if (siDocFigli && datiFigli && datiParzialiFigli == false && docFormulario && richiesta == false) {
+                    //            //if (datiConiuge) {
+                    //            //    if (datiParzialiConiuge == false && siDocConiuge) {
+                    //            //        $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                    //            //        $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                    //            //    } else {
+                    //            //        $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                    //            //        $("#btNotificaRichiestaMagFam").addClass("disabled");
+                    //            //        //blink('#lkConiuge');
+                    //            //    }
+                    //            //} else {
+                    //                $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                    //                $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                    //            //}
+                    //        }
+                    //    }
+
+                    //    if (datiFigli && richiesta == false) {
+                    //        if (datiParzialiFigli == false && siDocFigli && docFormulario == false) {
+                    //            $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                    //            $("#btNotificaRichiestaMagFam").addClass("disabled");
+                    //            //blink('#lkFormulari');
+                    //        }
+                    //        //else {
+                    //        //    $('#lkFormulari').stop().fadeIn();
+                    //        //}
+                    //    }
+                    //    if (datiConiuge && richiesta == false) {
+                    //        if (datiParzialiConiuge == false && siDocConiuge && docFormulario == false) {
+                    //            $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                    //            $("#btNotificaRichiestaMagFam").addClass("disabled");
+                    //            //blink('#lkFormulari');
+                    //        }
+                    //    }
+                    //    //else {
+                    //    //    $('#lkFormulari').stop().fadeIn();
+                    //    //}
+
+                        //gestione lampeggio tab
+                        // no coniuge, si figli completi, no formulario
+                        // lampeggia formulario
+                        if (    datiConiuge == false &&
+                                datiFigli && datiParzialiFigli == false && siDocFigli &&
+                                docFormulario == false
+                            )
+                        {
+                            blink('#lkFormulari');
+                            $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaMagFam").addClass("disabled");
+
+                        }
+                        
+                        // si coniuge completo, no figli, no formulario
+                        //lampeggia formulario
+                        if  (  datiConiuge && datiParzialiConiuge == false && siDocConiuge &&
+                                datiFigli == false &&
+                                docFormulario == false
+                            )
+                        {
+                            blink('#lkFormulari');
+                            $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaMagFam").addClass("disabled");
+                        }
+
+                        // si coniuge completo, si figli completo, no formulario
+                        //lampeggia formulario
+                        if( datiConiuge && datiParzialiConiuge == false && siDocConiuge &&
+                            datiFigli && datiParzialiFigli == false && siDocFigli &&
+                            docFormulario == false
+                        )
+                        {
+                            blink('#lkFormulari');
+                            $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaMagFam").addClass("disabled");
+                        }
+
+                        // si coniuge completo, si figli incompleto, no formulario
+                        //lampeggia formulario
+                        if (datiConiuge && datiParzialiConiuge == false && siDocConiuge &&
+                            datiFigli && (datiParzialiFigli||siDocFigli==false) &&
+                            docFormulario == false
+                        ) {
+                            blink('#lkFormulari');
+                            $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaMagFam").addClass("disabled");
+                        }
+
+                        // si coniuge incompleto, si figli completo, no formulario
+                        //lampeggia formulario
+                        if (datiConiuge && (datiParzialiConiuge || siDocConiuge == false) &&
+                            datiFigli && datiParzialiFigli==false && siDocFigli &&
+                            docFormulario == false
+                        ) {
+                            blink('#lkFormulari');
+                            $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaMagFam").addClass("disabled");
+                        }
+
+                        // no coniuge, no figli, si formulario
+                        if (docFormulario && datiConiuge == false && datiFigli == false)
+                        {
+                            $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaMagFam").addClass("disabled");
+                        }
+
+
+                        // coniuge incompleto
+                        //lampeggio coniuge
+                        if (
+                            datiConiuge && (datiParzialiConiuge || siDocConiuge == false)
+                        )
+                        {
+                            blink('#lkConiuge');
+                            $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaMagFam").addClass("disabled");
+                        }
+
+                        // figli incompleto
+                        //lampeggio figli
+                        if (
+                            datiFigli && (datiParzialiFigli || siDocFigli == false)
+                        )
+                        {
+                            blink('#lkFigli');
+                            $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaMagFam").addClass("disabled");
+                        }
+
+                        ////gestione lampeggio tab coniuge
+                        //if (datiConiuge) {
+                        //    if (
+                        //        (datiParzialiConiuge && siDocConiuge == false) ||
+                        //        (datiParzialiConiuge && siDocConiuge) ||
+                        //        (datiParzialiConiuge == false && siDocConiuge == false)
+                        //        ) {
+                        //        blink('#lkConiuge');
+                        //    }
+                        //}
+
+                        ////gestione lampeggio tab figli
+                        //if (datiFigli) {
+                        //    if (
+                        //        (datiParzialiFigli && siDocFigli == false) ||
+                        //        (datiParzialiFigli && siDocFigli) ||
+                        //        (datiParzialiFigli == false && siDocFigli == false)
+                        //        ) {
+                        //        blink('#lkFigli');
+                        //    }
+                        //}
+
+                    //}
+
+
+                    //if (trasfSolaLettura == false) {
+                    //    ///Attivo il pulsante notifica per poter effettuare la rinuncia delle maggiorazioni familiari.
+                    //    if (rinuncia == false && richiesta == false && attivazione == false && datiConiuge == false && datiFigli == false && docFormulario==false) {
+                    //        $("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                    //        $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                    //        $("#btNotificaRichiestaMagFam").html('<i aria-hidden="true" class="fa fa-2x fa-envelope"></i> Notifica Rinuncia Mag. fam.');
+                    //    }
+
                     if (trasfSolaLettura == false) {
-                        ///Attivo il pulsante notifica per poter effettuare la rinuncia delle maggiorazioni familiari.
-                        if (rinuncia == false && richiesta == false && attivazione == false && datiConiuge == false && datiFigli == false) {
-                            $("#btNotificaRichiestaMagFam").removeAttr("disabled");
-                            $("#btNotificaRichiestaMagFam").removeClass("disabled");
+                        ///Imposto il pulsante notifica per poter effettuare la rinuncia delle maggiorazioni familiari.
+                        if (rinuncia == false && richiesta == false && attivazione == false && datiConiuge == false && datiFigli == false && docFormulario==false) {
+                            //$("#btNotificaRichiestaMagFam").removeAttr("disabled");
+                            //$("#btNotificaRichiestaMagFam").removeClass("disabled");
                             $("#btNotificaRichiestaMagFam").html('<i aria-hidden="true" class="fa fa-2x fa-envelope"></i> Notifica Rinuncia Mag. fam.');
-                        }///Verifico se ci sono dati inseriti per il coniuge e i figli
-
-
-                            // LOGICA CORRETTA
-                        else if (rinuncia == false && richiesta == false && attivazione == false && (datiConiuge == true || datiFigli == true)) {
-                            ///Se per il coniuge o per il figlio l'inserimento risulta parziale allora disabilito tutti i pulsanti.
-                            if (datiConiuge && richiesta == false) {
-                                if (datiParzialiConiuge || siDocConiuge == false) {
-                                    $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
-                                    $("#btNotificaRichiestaMagFam").addClass("disabled");
-                                    blink('#lkConiuge');
-                                } else {
-                                    $("#btNotificaRichiestaMagFam").removeAttr("disabled");
-                                    $("#btNotificaRichiestaMagFam").removeClass("disabled");
-                                }
-                            }
-                            if (datiFigli && richiesta == false) {
-                                if (datiParzialiFigli || siDocFigli == false) {
-                                    $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
-                                    $("#btNotificaRichiestaMagFam").addClass("disabled");
-                                    blink('#lkFigli');
-                                } else {
-                                    $("#btNotificaRichiestaMagFam").removeAttr("disabled");
-                                    $("#btNotificaRichiestaMagFam").removeClass("disabled");
-                                }
-                            }
-
-                        } else {
-                            ///Se non esistono dati parziali per il coniuge o per i figli vado a verificare se esiste il documento per il coniuge e/o figli
-                            ///e se è stato inserito almeno un formulario.
-                            if (datiConiuge && datiParzialiConiuge == false && siDocConiuge && docFormulario && richiesta == false) {
-                                if (datiFigli) {
-                                    if (datiParzialiFigli == false && siDocFigli) {
-                                        $("#btNotificaRichiestaMagFam").removeAttr("disabled");
-                                        $("#btNotificaRichiestaMagFam").removeClass("disabled");
-                                    } else {
-                                        $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
-                                        $("#btNotificaRichiestaMagFam").addClass("disabled");
-                                        blink('#lkFigli');
-                                    }
-                                } else {
-                                    $("#btNotificaRichiestaMagFam").removeAttr("disabled");
-                                    $("#btNotificaRichiestaMagFam").removeClass("disabled");
-                                }
-                            } else if (siDocFigli && datiFigli && datiParzialiFigli == false && docFormulario && richiesta == false) {
-                                if (datiConiuge) {
-                                    if (datiParzialiConiuge == false && siDocConiuge) {
-                                        $("#btNotificaRichiestaMagFam").removeAttr("disabled");
-                                        $("#btNotificaRichiestaMagFam").removeClass("disabled");
-                                    } else {
-                                        $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
-                                        $("#btNotificaRichiestaMagFam").addClass("disabled");
-                                        blink('#lkConiuge');
-
-                                    }
-                                } else {
-                                    $("#btNotificaRichiestaMagFam").removeAttr("disabled");
-                                    $("#btNotificaRichiestaMagFam").removeClass("disabled");
-                                }
-                            }
-                        }
-
-                        if (datiFigli && richiesta == false) {
-                            if (datiParzialiFigli == false && siDocFigli && docFormulario == false) {
-                                $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
-                                $("#btNotificaRichiestaMagFam").addClass("disabled");
-                                blink('#lkFormulari');
-                            } else {
-                                $('#lkFormulari').stop().fadeIn();
-                            }
-                        }
-                        if (datiConiuge && richiesta == false) {
-                            if (datiParzialiConiuge == false && siDocConiuge && docFormulario == false) {
-                                $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
-                                $("#btNotificaRichiestaMagFam").addClass("disabled");
-                                blink('#lkFormulari');
-                            }
-                        } else {
-                            $('#lkFormulari').stop().fadeIn();
-                        }
-                    }
-
-                    if (trasfSolaLettura == false) {
+                        } else
                         if (rinuncia == true && richiesta == true && attivazione == false && admin == true) {
                             //$("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
                             //$("#btNotificaRichiestaMagFam").addClass("disabled");
@@ -575,8 +700,13 @@
                         }
                     }
 
-                    GestioneAttivitaTrasferimento();
+                    if (trasfSolaLettura || richiesta) {
+                        $("#btNotificaRichiestaMagFam").attr("disabled", "disabled");
+                        $("#btNotificaRichiestaMagFam").addClass("disabled");
+                    }
 
+                    GestioneAttivitaTrasferimento();
+                   
 
                 } else {
                     ErroreElaborazioneAjax(result.err);
@@ -584,7 +714,6 @@
 
             },
             complete: function () {
-
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
@@ -593,9 +722,35 @@
             }
 
         });
-
-
-
     }
+
+    function MessaggioAnnullaMF() {
+        //debugger;
+        var rotta = "/MaggiorazioniFamiliari/MessaggioAnnullaMF";
+        var idAttMagFam = parseInt($('#idAttivitaMagFam').val());
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAttMagFam: idAttMagFam },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiesta").empty();
+                $("#viewAnnullaRichiesta").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
 
 </script>

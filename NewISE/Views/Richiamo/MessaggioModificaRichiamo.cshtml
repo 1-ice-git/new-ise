@@ -1,0 +1,78 @@
+﻿
+@model NewISE.Models.DBModel.RichiamoModel
+@using System.Web.Optimization
+@using NewISE.Models.DBModel
+@{
+    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+    DateTime dataPartenza = Convert.ToDateTime(ViewData["dataPartenza"]);
+    decimal idFKm = (decimal)ViewData["idFKm"];
+    string dataInserita = ViewData["dataInserita"].ToString();
+    string dataRientro =Convert.ToDateTime(ViewData["dataRientro"]).ToShortDateString();
+}
+
+<div class="form-horizontal">
+    <br />
+
+    <div class="form-group">
+        @Html.Label("lblDataPartenzaRichiamo_Modifica", "Data Partenza", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-2">
+            <input id="idDataPartenzaRichiamo_Modifica" name="idDataPartenzaRichiamo_Modifica" disabled type="text" value="@dataPartenza.ToString("dd/MM/yyyy")" class="form-control" />
+        </div>
+        @Html.Label("lblDataRientroRichiamo_Nuovo", "Data Rientro", new { @class = "control-label col-xs-2" })
+            <div class="col-xs-2">
+                <input id="idDataRientroRichiamo_Nuovo" name="idDataRientroRichiamo_Nuovo" type="text" value="@dataRientro" class="form-control" readonly />
+            </div>
+    </div>
+    <div class="form-group disabled">
+        @Html.Label("lblCoeffFasciakM_Modifica", "Coefficente Fascia KM", new { @class = "control-label col-xs-4" })
+        <div class="select2-container select2-container--classic col-xs-5">
+            @Html.DropDownList("idGruppoFKmRichiamo_Modifica", ViewBag.FasciaKM as IEnumerable<SelectListItem>, new { @class = "form-control col-xs-5 disabled", @onchange = "PrelevaPVCoeffFasciaKm_Modifica();", @onClick = "PrelevaPVCoeffFasciaKm_Modifica();" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("lblDataRichiamo_Modifica", "Data Richiamo", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-2">
+            <input id="idDataRichiamo_Modifica" name="idDataRichiamo_Modifica" type="text" value="@dataInserita.ToString()" class="form-control" />
+        </div>
+    </div>
+   
+
+</div>
+<script type="text/javascript">
+    $("#idGruppoFKmRichiamo_Modifica").select2({
+        placeholder: "Seleziona Percentua Km",
+        allowClear: true,
+        language: "it",
+        width: '150'
+    });
+
+    $('#idDataRichiamo_Modifica').datepicker({
+        showAnim: "slide",
+        changeMonth: true,
+        changeYear: true
+        //showButtonPanel: true,
+        //showAnim: "slide",
+    });
+
+    $('#idDataPartenzaRichiamo_Modifica').datepicker({
+        showAnim: "slide",
+        changeMonth: true,
+        changeYear: true
+        //showButtonPanel: true,
+        //showAnim: "slide",
+    });
+
+
+    function PrelevaPVCoeffFasciaKm_Modifica() {
+      //  debugger;
+        var idFKm = parseInt($("#idGruppoFKmRichiamo_Modifica").select2('val'));
+        if (!isNaN(idFKm)) {
+            $("#idGruppoFKmRichiamo").val(idFKm);
+        }
+        else
+        {
+            $("#idGruppoFKmRichiamo").val(9999);
+        }
+    }
+
+</script>

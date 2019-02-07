@@ -17,14 +17,16 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ATTIVAZIONEMAB()
         {
+            this.ANTICIPOANNUALEMAB = new HashSet<ANTICIPOANNUALEMAB>();
             this.CANONEMAB = new HashSet<CANONEMAB>();
-            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
+            this.MODIFICHE_MAB = new HashSet<MODIFICHE_MAB>();
             this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
+            this.PERIODOMAB = new HashSet<PERIODOMAB>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
         public decimal IDATTIVAZIONEMAB { get; set; }
-        public decimal IDTRASFERIMENTO { get; set; }
+        public decimal IDMAB { get; set; }
         public bool NOTIFICARICHIESTA { get; set; }
         public Nullable<System.DateTime> DATANOTIFICARICHIESTA { get; set; }
         public bool ATTIVAZIONE { get; set; }
@@ -34,12 +36,16 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ANTICIPOANNUALEMAB> ANTICIPOANNUALEMAB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CANONEMAB> CANONEMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
+        public virtual ICollection<MODIFICHE_MAB> MODIFICHE_MAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
-        public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERIODOMAB> PERIODOMAB { get; set; }
+        public virtual MAB MAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }

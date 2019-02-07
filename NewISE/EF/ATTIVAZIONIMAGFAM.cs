@@ -17,6 +17,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ATTIVAZIONIMAGFAM()
         {
+            this.MODIFICHEMAGFAM = new HashSet<MODIFICHEMAGFAM>();
             this.CONIUGE = new HashSet<CONIUGE>();
             this.FIGLI = new HashSet<FIGLI>();
             this.ALTRIDATIFAM = new HashSet<ALTRIDATIFAM>();
@@ -35,6 +36,8 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MODIFICHEMAGFAM> MODIFICHEMAGFAM { get; set; }
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CONIUGE> CONIUGE { get; set; }

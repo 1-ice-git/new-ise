@@ -2,10 +2,19 @@
 
 @{
     decimal idMagFam = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal ValRinunciaMagFam = Convert.ToDecimal(ViewData["rinunciaMagFam"]);
+    string dataText = Convert.ToString(ViewData["DataOdierna"]);
 }
 
+@Html.Hidden("hi_idTrasferimento", idMagFam)
+@Html.Hidden("hi_idConiuge")
 <div class="row">
-    <div class="col-xs-12" style="padding-left: 10px; padding-right:25px; margin: 10px; border:0">
+    <div class="col-xs-12" style="text-align:center">
+        <h4><strong>MAGGIORAZIONE FAMILIARE</strong></h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12" style="padding-left: 15px; padding-right:35px; margin-right: 10px; margin-left:10px; border:0">
         <div class="nav nav-justified nav-tabs">
             <ul class="nav nav-tabs tabs-destro" id="tabsAttivitaMaggiorazioniFamiliari_var">
                 <li id="mnFamiliari">
@@ -23,20 +32,26 @@
     </div>
 </div>
 
+
 <div class="row">
-    <div class="col-xs-5" style="margin-top: 10px; margin-bottom: 10px;">
-        <button class="btn btn-default btn-sm disabled" disabled id="btNotificaRichiestaMagFam_Var" onclick="ModelNotificaRichiesta();">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Notifica richiesta
-        </button>
-        <button class="btn btn-default btn-sm disabled" disabled id="btAttivaMagFam_Var" onclick="ModelAttivaRichiesta();">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Attiva maggiorazioni
-        </button>
-        <button class="btn btn-default btn-sm disabled" disabled id="btAnnullaMagFam_Var" onclick="ModalAnnullaRichiesta();">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Annulla richiesta
-        </button>
+    <div class="col-xs-12">
+        <div style="padding-right: 10px;padding-left:15px">
+            <hr />
+            <div class="pull-right" style="margin-top: 0px; margin-bottom: 10px;margin-right:0px ">
+                <button class="btn btn-default btn-sm  disabled" disabled id="btNotificaRichiestaMagFam_Var" onclick="ModelNotificaRichiesta();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Notifica richiesta
+                </button>
+                <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btAttivaMagFam_Var" onclick="ModelAttivaRichiesta();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Attiva maggiorazioni
+                </button>
+                <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btAnnullaMagFam_Var" onclick="ModalAnnullaRichiesta();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Annulla richiesta
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -95,11 +110,71 @@
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="viewAnnullaRichiesta">
-                    <label>Procedere con l'annullamento della richiesta?</label>
+                    @*<label>Procedere con l'annullamento della richiesta?</label>*@
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="btConfermaAnnulla_Var" type="button" class="btn btn-info" data-dismiss="modal" onclick=" ConfermaAnnullaRichiesta(); ">Procedi</button>
+                <button id="btConfermaAnnulla_Var" type="button" class="btn btn-info" data-dismiss="modal" onclick="ConfermaAnnullaRichiesta();">Procedi</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="AnnullaModifichePensioneModal" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaModifichePensioneLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Attenzione!!!</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <p id="viewAnnullaModifichePensione">
+                    <label>
+                        Sei sicuro di voler annullare le correnti modifiche apportate alla pensione del coniuge <span id="spanAnnullaModifichePensione"></span><label>&nbsp;?</label>
+                    </label>
+                <p>
+                    <label>
+                        (Verranno ripristinati gli importi attualmente validi.)
+                    </label>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btAnnullaModifichePensione" type="button" class="btn btn-info" onclick="ConfermaAnnullaModifichePensioneConiuge();">Conferma</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="CessazionePensioneModal" tabindex="-1" role="dialog" aria-labelledby="ModalCessazionePensioneLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="notificaModelLabel">Cessazione Pensione</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <div class="row">
+                    <div class="col-xs-3 text-right" style="padding-right:15px;font-weight:bold;padding-top:5px">
+                        Data cessazione :
+                    </div>
+
+                    <div class="col-xs-2">
+                        <input type="text" id="dataCessazionePensione" class="form-control" placeholder="@dataText" />
+                        @*@Html.TextBox("dataCessazionePensione", dataCessazione, htmlAttributes: new { @class = "form-control" })*@
+                    </div>
+                    <div class="col-xs-5" id="divValidazioneCessazione">
+                        <p class="text-danger">(*) Data Cessazione obbligatoria.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btCessazionePensione" type="button" class="btn btn-info" onclick="ConfermaCessazionePensione();">Conferma</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
             </div>
         </div>
@@ -110,6 +185,8 @@
     $('#tabsAttivitaMaggiorazioniFamiliari_Var').tab();
 
     ElencoFamiliari();
+
+    PulsantiNotificaAttivaMagFam();
 
     function ElencoFormulariInseriti() {
         var rotta = "/VariazioneMaggiorazioniFamiliari/ElencoFormulariInseriti";
@@ -140,8 +217,7 @@
 
         });
     }
-    
-    PulsantiNotificaAttivaMagFam();
+
 
     function ElencoFamiliari() {
         //debugger;
@@ -163,6 +239,7 @@
                 $("#tabFamiliari").html(result);
             },
             complete: function () {
+                //debugger;
                 PulsantiNotificaAttivaMagFam();
             },
             error: function (jqXHR, textStatus, errorThrow) {
@@ -196,6 +273,7 @@
                 if (result.err == "") {
                     PulsantiNotificaAttivaMagFam();
                     ElencoFamiliari();
+                    InfoTrasferimento(idMagFam);
                 } else {
                     ErroreElaborazioneAjax(result.err);
                 }
@@ -217,13 +295,13 @@
 
     function ModalAnnullaRichiesta() {
         //debugger;
+        MessaggioAnnullaVariazioneMagFam();
         $('#ModalAnnullaRichiesta_Var').modal().show();
     }
 
     function ConfermaNotificaRichiesta() {
         var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaNotificaRichiestaVariazione";
         var idMagFam = parseInt('@idMagFam');
-
         $.ajax({
             type: "POST",
             url: rotta,
@@ -233,7 +311,6 @@
                 //debugger;
                 //VerificaAutenticazione();
             },
-
             success: function (result) {
                 //debugger;
                 if (result.err == "") {
@@ -244,18 +321,14 @@
                     ErroreElaborazioneAjax(result.err);
                 }
             },
-
             complete: function () {
             },
-
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;
                 var msg = errorThrow.err;
                 ErroreElaborazioneAjax(msg);
             }
-
         });
-
     }
 
     function PulsantiNotificaAttivaMagFam() {
@@ -281,13 +354,72 @@
                     var attivazione = result.attivazione;
                     var datiConiuge = result.datiConiuge;
                     var datiParzialiConiuge = result.datiParzialiConiuge;
+                    var datiParziali = result.datiParziali;
                     var datiFigli = result.datiFigli;
                     var datiParzialiFigli = result.datiParzialiFigli;
                     var siDocConiuge = result.siDocConiuge;
                     var siDocFigli = result.siDocFigli;
+                    var siDoc = result.siDoc;
                     var docFormulario = result.docFormulario;
+                    var siDocFormulari = result.siDocFormulari;
                     var inLavorazione = result.inLavorazione;
                     var checkNotifica = result.CheckNotifica;
+                    var trasfSolaLettura = result.trasfSolaLettura;
+
+                    if (
+                            (
+                                datiFigli &&
+                                datiParzialiFigli == false &&
+                                siDocFigli &&
+                                datiConiuge == false &&
+                                siDocFormulari == false
+                            )
+                        ) {
+                        //LINK ROSSO
+                        $('#lkFormulariVar').css('color', '#ff0000');
+                    }
+
+                    if (
+                            (
+                                datiConiuge &&
+                                datiParzialiConiuge == false &&
+                                siDocConiuge &&
+                                datiFigli == false &&
+                                siDocFormulari == false
+                            )
+                        ) {
+                        //LINK ROSSO
+                        $('#lkFormulariVar').css('color', '#ff0000');
+                    }
+
+                    if (
+                            (
+                                datiFigli &&
+                                datiParzialiFigli == false &&
+                                siDocFigli &&
+                                datiConiuge == false &&
+                                siDocFormulari
+                            )
+                            ||
+                            (
+                                datiConiuge &&
+                                datiParzialiConiuge == false &&
+                                siDocConiuge &&
+                                datiFigli == false &&
+                                siDocFormulari
+                            )
+                            ||
+                            (
+                                datiConiuge == false &&
+                                datiFigli == false &&
+                                siDocFormulari==false
+                            )
+
+                        ) {
+                        //RIPRISTINA COLORE LINK
+                        $('#lkFormulariVar').removeAttr('style');
+
+                    }
 
                     $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                     $("#btAttivaMagFam_Var").addClass("disabled");
@@ -295,71 +427,73 @@
                     $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
                     $("#btAnnullaMagFam_Var").addClass("disabled");
 
+                    if (admin) {
+                        $("#btAttivaMagFam_Var").removeAttr("hidden");
+                        $("#btAttivaMagFam_Var").removeClass("hidden");
+
+                        $("#btAnnullaMagFam_Var").removeAttr("hidden");
+                        $("#btAnnullaMagFam_Var").removeClass("hidden");
+
+                        $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                        $("#btAttivaMagFam_Var").addClass("disabled");
+
+                        $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
+                        $("#btAnnullaMagFam_Var").addClass("disabled");
+                    }
+
 
                     //Se risulta in lavorazione abilito la il pulsante notifica
-                    if (inLavorazione&&checkNotifica)
-                    {
+                    if (inLavorazione && checkNotifica) {
                         $("#btNotificaRichiestaMagFam_Var").removeAttr("disabled");
                         $("#btNotificaRichiestaMagFam_Var").removeClass("disabled");
                     }
-                    else
-                    {
-                        ///Impostare a vero rinuncia significa impostare in automatico a vero anche richiesta di attivazione
-                        if (rinuncia && richiesta)
-                        {
+                    else {
+                        if (richiesta) {
                             $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
                             $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
 
-                            if (attivazione)
-                            {
+                            if (attivazione) {
                                 $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                                 $("#btAttivaMagFam_Var").addClass("disabled");
                             }
-                        }
-                        else
-                        {
-                            if (richiesta)
-                            {
-                                $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
-                                $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
+                            else {
+                                if (admin) {
+                                    $("#btAttivaMagFam_Var").removeAttr("disabled");
+                                    $("#btAttivaMagFam_Var").removeClass("disabled");
 
-                                if (attivazione)
-                                {
+                                    $("#btAnnullaMagFam_Var").removeAttr("disabled");
+                                    $("#btAnnullaMagFam_Var").removeClass("disabled");
+                                }
+                                else {
                                     $("#btAttivaMagFam_Var").attr("disabled", "disabled");
                                     $("#btAttivaMagFam_Var").addClass("disabled");
+
+                                    $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
+                                    $("#btAnnullaMagFam_Var").addClass("disabled");
                                 }
-                                else
-                                {
-                                    if (admin)
-                                    {
-                                        $("#btAttivaMagFam_Var").removeAttr("disabled");
-                                        $("#btAttivaMagFam_Var").removeClass("disabled");
-
-                                        $("#btAnnullaMagFam_Var").removeAttr("disabled");
-                                        $("#btAnnullaMagFam_Var").removeClass("disabled");
-                                    }
-                                    else
-                                    {
-                                        $("#btAttivaMagFam_Var").attr("disabled", "disabled");
-                                        $("#btAttivaMagFam_Var").addClass("disabled");
-
-                                        $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
-                                        $("#btAnnullaMagFam_Var").addClass("disabled");
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
-                                $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
-
-                                $("#btAttivaMagFam_Var").attr("disabled", "disabled");
-                                $("#btAttivaMagFam_Var").addClass("disabled");
-
-                                $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
-                                $("#btAnnullaMagFam_Var").addClass("disabled");
                             }
                         }
+                        else {
+                            $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
+                            $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
+
+                            $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                            $("#btAttivaMagFam_Var").addClass("disabled");
+
+                            $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
+                            $("#btAnnullaMagFam_Var").addClass("disabled");
+                        }
+                    }
+                    //se il trasferimento è terminato o annullato disabilito i pulsanti
+                    if (trasfSolaLettura) {
+                        $("#btAttivaMagFam_Var").attr("disabled", "disabled");
+                        $("#btAttivaMagFam_Var").addClass("disabled");
+
+                        $("#btAnnullaMagFam_Var").attr("disabled", "disabled");
+                        $("#btAnnullaMagFam_Var").addClass("disabled");
+
+                        $("#btNotificaRichiestaMagFam_Var").attr("disabled", "disabled");
+                        $("#btNotificaRichiestaMagFam_Var").addClass("disabled");
                     }
 
                 } else {
@@ -378,13 +512,14 @@
     }
 
     function ConfermaAnnullaRichiesta() {
+        //debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaAnnullaRichiestaVariazione";
         var idMagFam = parseInt('@idMagFam');
-
+        var testoAnnullaMAB = $('#FullDescription').val();
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idMaggiorazioniFamiliari: idMagFam },
+            data: { idMaggiorazioniFamiliari: idMagFam, msg: testoAnnullaMAB },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -408,6 +543,122 @@
                 ErroreElaborazioneAjax(msg);
             }
         });
+    }
+
+    function MessaggioAnnullaVariazioneMagFam() {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/MessaggioAnnullaVariazioneMagFam";
+        var idTrasferimento = parseInt($('#hi_idTrasferimento').val());
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiesta").empty();
+                $("#viewAnnullaRichiesta").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function AggiornaElencoPensioni(idConiuge) {
+        Pensione(idConiuge);
+    }
+
+    function ConfermaAnnullaModifichePensioneConiuge() {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaAnnullaModifichePensioneConiuge";
+        var idConiuge = parseInt($('#hi_idConiuge').val());
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+
+            data: {
+                idConiuge: idConiuge
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    $('#AnnullaModifichePensioneModal').modal('hide');
+                    AggiornaElencoPensioni(idConiuge);
+
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+                //debugger;
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ConfermaCessazionePensione() {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioniFamiliari/ConfermaCessazionePensione";
+        var idConiuge = parseInt($('#hi_idConiuge').val());
+        var strDataCessazionePensione = $('#dataCessazionePensione').val();
+        if (strDataCessazionePensione != "") {
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+
+                data: {
+                    idConiuge: idConiuge,
+                    strDataCessazionePensione: strDataCessazionePensione
+                },
+                dataType: 'json',
+                beforeSend: function () {
+                    //debugger;
+                    VerificaAutenticazione();
+                },
+                success: function (result) {
+                    //debugger;
+                    if (result.err == "") {
+                        $('#CessazionePensioneModal').modal('hide');
+                        AggiornaElencoPensioni(idConiuge);
+
+                    } else {
+                        ErroreElaborazioneAjax(result.err);
+                    }
+
+                    //AggiornaElencoPensioni(idConiuge);
+
+                },
+                complete: function () {
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+        } else {
+            $("#divValidazioneCessazione").show();
+        }
     }
 
 </script>

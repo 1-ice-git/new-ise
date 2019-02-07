@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.dtObj;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -43,7 +44,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 percentuale = e.PERCENTUALE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
-                                idFunzioneRiduzione=e.IDFUNZIONERIDUZIONE
+                                idFunzioneRiduzione = e.IDFUNZIONERIDUZIONE
                             }).ToList();
                 }
 
@@ -68,7 +69,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             select new FunzioneRiduzioneModel()
                             {
                                 idFunzioneRiduzione = e.IDFUNZIONERIDUZIONE,
-                                DescFunzione=e.DESCFUNZIONE
+                                DescFunzione = e.DESCFUNZIONE
                             }).ToList();
                 }
                 return libm;
@@ -78,7 +79,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-        public IList<RiduzioniModel> getListRiduzioni(decimal idFunzioneRiduzione,bool escludiAnnullati = false)
+        public IList<RiduzioniModel> getListRiduzioni(decimal idFunzioneRiduzione, bool escludiAnnullati = false)
         {
             List<RiduzioniModel> libm = new List<RiduzioniModel>();
             try
@@ -86,18 +87,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     List<RIDUZIONI> lib = new List<RIDUZIONI>();
-                    if(escludiAnnullati==true)
-                       lib= db.RIDUZIONI.Where(a => a.ANNULLATO == false &&
-                       a.IDFUNZIONERIDUZIONE==idFunzioneRiduzione).ToList();
+                    if (escludiAnnullati == true)
+                        lib = db.RIDUZIONI.Where(a => a.ANNULLATO == false &&
+                         a.IDFUNZIONERIDUZIONE == idFunzioneRiduzione).ToList();
                     else
-                       lib= db.RIDUZIONI.Where(a =>a.IDFUNZIONERIDUZIONE ==idFunzioneRiduzione).ToList();
+                        lib = db.RIDUZIONI.Where(a => a.IDFUNZIONERIDUZIONE == idFunzioneRiduzione).ToList();
 
                     libm = (from e in lib
                             select new RiduzioniModel()
                             {
                                 idRiduzioni = e.IDRIDUZIONI,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA ,
+                                dataFineValidita = e.DATAFINEVALIDITA,
                                 percentuale = e.PERCENTUALE,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO,
@@ -112,7 +113,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
         }
 
-        
+
 
         /// <summary>
         /// 
@@ -358,8 +359,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 return db.RIDUZIONI.Where(a => a.DATAINIZIOVALIDITA <= ibm.dataInizioValidita).Count() > 0 ? true : false;
             }
         }
-                
-       public decimal Get_Id_RiduzionePrimoNonAnnullato(decimal idFunzioneRiduzione)
+
+        public decimal Get_Id_RiduzionePrimoNonAnnullato(decimal idFunzioneRiduzione)
         {
             decimal tmp = 0;
             using (ModelDBISE db = new ModelDBISE())
@@ -429,7 +430,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             }
             return vr;
         }
-               
+
         public decimal Get_Id_PercentualMagFiglioPrimoNonAnnullato(decimal idFunzioneRiduzione)
         {
             decimal tmp = 0;
@@ -558,6 +559,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             RIDUZIONI precedenteIB = new RIDUZIONI();
             RIDUZIONI delIB = new RIDUZIONI();
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
@@ -583,12 +585,20 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             ANNULLATO = false
                         };
                         db.RIDUZIONI.Add(NuovoPrecedente);
+                        db.SaveChanges();
+
+                        using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                        {
+                            dtrp.AssociaCoefficienteRichiamo_Riduzioni(NuovoPrecedente.IDRIDUZIONI, db,delIB.DATAINIZIOVALIDITA);
+                            dtrp.AssociaIndennitaBase_Riduzioni(NuovoPrecedente.IDRIDUZIONI, db, delIB.DATAINIZIOVALIDITA);
+                            dtrp.AssociaIndennitaSistemazione_Riduzioni(NuovoPrecedente.IDRIDUZIONI, db, delIB.DATAINIZIOVALIDITA);
+                        }
+                        using (objLogAttivita log = new objLogAttivita())
+                        {
+                            log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Percentuale Maggiorazione figli.", "PERCENTUALE", idMagCon);
+                        }
                     }
-                    db.SaveChanges();
-                    using (objLogAttivita log = new objLogAttivita())
-                    {
-                        log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Percentuale Maggiorazione figli.", "PERCENTUALE", idMagCon);
-                    }
+
                     db.Database.CurrentTransaction.Commit();
                 }
                 catch (Exception ex)
@@ -601,10 +611,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         public void SetRiduzioni(RiduzioniModel ibm, bool aggiornaTutto)
         {
             List<RIDUZIONI> libNew = new List<RIDUZIONI>();
-            RIDUZIONI ibPrecedente = new RIDUZIONI();
+            //RIDUZIONI ibPrecedente = new RIDUZIONI();
             RIDUZIONI ibNew1 = new RIDUZIONI();
             RIDUZIONI ibNew2 = new RIDUZIONI();
-            List<RIDUZIONI> lArchivioIB = new List<RIDUZIONI>();
+            //List<RIDUZIONI> lArchivioIB = new List<RIDUZIONI>();
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -621,7 +631,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal percConiugeFirst = Convert.ToDecimal(lista[3]);
+                            //decimal percConiugeFirst = Convert.ToDecimal(lista[3]);
 
                             ibNew1 = new RIDUZIONI()
                             {
@@ -656,7 +666,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.Database.BeginTransaction();
                             db.RIDUZIONI.Add(ibNew1);
                             db.SaveChanges();
+
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaCoefficienteRichiamo_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                dtrp.AssociaIndennitaBase_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                dtrp.AssociaIndennitaSistemazione_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                            }
 
                             db.Database.CurrentTransaction.Commit();
                         }
@@ -712,8 +730,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.RIDUZIONI.AddRange(libNew);
                                 db.SaveChanges();
+
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var r in libNew)
+                                    {
+
+                                        dtrp.AssociaCoefficienteRichiamo_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennitaBase_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennitaSistemazione_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                    }
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -775,8 +806,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.RIDUZIONI.AddRange(libNew);
                                 db.SaveChanges();
+
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var r in libNew)
+                                    {
+
+                                        dtrp.AssociaCoefficienteRichiamo_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennitaBase_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennitaSistemazione_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                    }
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -800,6 +844,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.RIDUZIONI.Add(ibNew1);
                                 db.SaveChanges();
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    dtrp.AssociaCoefficienteRichiamo_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                    dtrp.AssociaIndennitaBase_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                    dtrp.AssociaIndennitaSistemazione_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
 
@@ -830,6 +882,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.RIDUZIONI.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        dtrp.AssociaCoefficienteRichiamo_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennitaBase_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaIndennitaSistemazione_Riduzioni(ibNew1.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -857,6 +917,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.RIDUZIONI.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var r in libNew)
+                                        {
+
+                                            dtrp.AssociaCoefficienteRichiamo_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                            dtrp.AssociaIndennitaBase_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                            dtrp.AssociaIndennitaSistemazione_Riduzioni(r.IDRIDUZIONI, db, ibm.dataInizioValidita);
+                                        }
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }
@@ -870,6 +942,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-      
+
     }
 }

@@ -37,40 +37,6 @@
 
 <script type="text/javascript">
 
-    //function SalvaDocumenti() {
-
-    //    var rotta = "/Documenti/SalvaDocumento";
-
-
-    //    $.ajax({
-    //        url: rotta,
-    //        type: "POST", //Le info testuali saranno passate in POST
-    //        data: { idTrasferimento: idTrasferimento },
-    //        dataType: 'html',
-    //        async: false,
-    //        beforeSend: function () {
-    //            //debugger;
-    //            VerificaAutenticazione();
-    //            //Blocca();
-
-    //        },
-    //        success: function (result) {
-    //            //debugger;
-    //            //$("#viewPensione").empty();
-    //            //$("#viewPensione").html(result);
-    //            $("#tabConiuge").empty();
-    //            $("#tabConiuge").html(result);
-
-    //        },
-    //        error: function (error) {
-    //            //debugger;
-    //            //Sblocca();
-    //            var msg = error.responseText;
-    //            ErroreElaborazioneAjax(msg);
-    //        }
-    //    });
-    //}
-
 
 
     $("#files").change(function () {
@@ -90,7 +56,7 @@
                 return true;
             } else {
 
-                MsgErroreJson("L'estensione del documento che si vuole importare (" + estensione + ") non è supportata.\nL'estensione supportata è il pdf");
+                //MsgErroreJson("L'estensione del documento che si vuole importare (" + estensione + ") non è supportata.\nL'estensione supportata è il pdf");
 
                 return false;
             }
@@ -116,7 +82,7 @@
                 tipoDoc: parseInt('@tipoDoc'),
                 id: parseInt('@id'),
                 parentela: parseInt(@parentela),
-                idAttivazioneMagFam: parseInt(@idAttivazioneMagFam),
+                idAttivazioneMagFam: parseInt('@idAttivazioneMagFam'),
             };
         },
         msgInvalidFileExtension: "L'estensione del documento che si vuole importare ('{name}') non è supportata. L'estensione supportata è il '{extensions}'.",

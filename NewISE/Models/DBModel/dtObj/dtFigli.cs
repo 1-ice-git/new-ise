@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using NewISE.Models.ViewModel;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -37,22 +38,78 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (fm.dataInizio < t.DATAPARTENZA)
                     {
-                        vr = new ValidationResult(string.Format("Impossibile inserire la data di inizio validità minore alla data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                        vr = new ValidationResult(string.Format("Impossibile inserire la Data Inizio Validità minore della data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
                     }
                     else
                     {
-                        vr = ValidationResult.Success;
+                        if (fm.dataInizio < t.DATAPARTENZA)
+                        {
+                            vr = new ValidationResult(string.Format("Impossibile inserire la Data Inizio Validità minore della data di partenza del trasferimento ({0}).", t.DATAPARTENZA.ToShortDateString()));
+                        }
+                        else
+                        {
+                            if (fm.dataInizio > t.DATARIENTRO)
+                            {
+                                vr = new ValidationResult(string.Format("Impossibile inserire la Data Inizio Validità superiore alla data di rientro del trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
+                            }
+                            else
+                            {
+                                vr = ValidationResult.Success;
+                            }
+                        }
                     }
                 }
 
             }
             else
             {
-                vr = new ValidationResult("La data di inizio validità è richiesta.");
+                vr = new ValidationResult("La Data Inizio Validità è richiesta.");
             }
 
             return vr;
         }
+
+        public static ValidationResult VerificaDataFine(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+
+            var fm = context.ObjectInstance as FigliModel;
+
+            if (fm != null)
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    var t = db.ATTIVAZIONIMAGFAM.Find(fm.idAttivazioneMagFam).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+
+                    if (fm.dataFine > t.DATARIENTRO)
+                    {
+                        vr = new ValidationResult(string.Format("Impossibile inserire la Data Fine Validità superiore alla data di rientro del trasferimento ({0}).", t.DATARIENTRO.ToShortDateString()));
+                    }
+                    else
+                    {
+                        if (fm.dataInizio != null && fm.dataFine < t.DATARIENTRO)
+                        {
+                            if (fm.dataInizio >= fm.dataFine)
+                            {
+                                vr = new ValidationResult(string.Format("La Data Fine Validità deve essere superiore alla Data Inizio Validità ({0}).", fm.dataInizio.Value.ToShortDateString()));
+                            }
+                            else
+                            {
+                                vr = ValidationResult.Success;
+                            }
+                        }
+                        else
+                        {
+                            vr = ValidationResult.Success;
+                        }
+                    }
+                }
+
+            }
+
+            return vr;
+        }
+
 
         public static ValidationResult VerificaCodiceFiscale(string v, ValidationContext context)
         {
@@ -191,7 +248,8 @@ namespace NewISE.Models.DBModel.dtObj
                 DATAINIZIOVALIDITA = fm.dataInizio.Value,
                 DATAFINEVALIDITA = fm.dataFine.HasValue ? fm.dataFine.Value : Utility.DataFineStop(),
                 DATAAGGIORNAMENTO = fm.dataAggiornamento,
-
+                IDSTATORECORD = fm.idStatoRecord,
+                FK_IDFIGLI = fm.FK_IdFigli
             };
 
             db.FIGLI.Add(f);
@@ -231,6 +289,37 @@ namespace NewISE.Models.DBModel.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 var f = db.FIGLI.Find(idFiglio);
+                var t = f.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
+
+                if (f != null && f.IDFIGLI > 0)
+                {
+                    fm = new FigliModel()
+                    {
+                        idFigli = f.IDFIGLI,
+                        idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
+                        idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO,
+                        nome = f.NOME,
+                        cognome = f.COGNOME,
+                        codiceFiscale = f.CODICEFISCALE,
+                        dataInizio = f.DATAINIZIOVALIDITA,
+                        dataFine = f.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:f.DATAFINEVALIDITA,
+                        dataAggiornamento = f.DATAAGGIORNAMENTO,
+                        idStatoRecord = f.IDSTATORECORD,
+                        FK_IdFigli = f.FK_IDFIGLI
+                    };
+                }
+            }
+
+            return fm;
+        }
+
+        public FigliModel GetFiglioOldbyID(decimal? idFiglioOld)
+        {
+            FigliModel fm = new FigliModel();
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var f = db.FIGLI.Find(idFiglioOld);
 
                 if (f != null && f.IDFIGLI > 0)
                 {
@@ -245,12 +334,15 @@ namespace NewISE.Models.DBModel.dtObj
                         dataInizio = f.DATAINIZIOVALIDITA,
                         dataFine = f.DATAFINEVALIDITA,
                         dataAggiornamento = f.DATAAGGIORNAMENTO,
+                        idStatoRecord = f.IDSTATORECORD,
+                        FK_IdFigli = f.FK_IDFIGLI
                     };
                 }
             }
 
             return fm;
         }
+
         /// <summary>
         /// Preleva i figli attivi alla data passata come paramentro.
         /// </summary>
@@ -288,6 +380,8 @@ namespace NewISE.Models.DBModel.dtObj
                                      dataInizio = f.DATAINIZIOVALIDITA,
                                      dataFine = f.DATAFINEVALIDITA,
                                      dataAggiornamento = f.DATAAGGIORNAMENTO,
+                                     FK_IdFigli = f.FK_IDFIGLI
+
 
 
                                  });
@@ -307,10 +401,13 @@ namespace NewISE.Models.DBModel.dtObj
             {
 
                 var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
+                var t = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
                 if (amf?.IDATTIVAZIONEMAGFAM > 0)
                 {
-                    var lf = amf.FIGLI.OrderByDescending(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA);
+                    var lf = amf.FIGLI.Where(a=>
+                                (a.DATAINIZIOVALIDITA <= t.DATARIENTRO && a.DATAFINEVALIDITA >= t.DATARIENTRO) || a.DATAFINEVALIDITA < t.DATARIENTRO)
+                            .OrderByDescending(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA);
 
                     //var lf = db.FIGLI.Where(a => a.ANNULLATO == false && a.IDMAGGIORAZIONIFAMILIARI == idMaggiorazioniFamiliari).OrderBy(a => a.COGNOME).ThenBy(a => a.NOME).ToList();
 
@@ -328,9 +425,9 @@ namespace NewISE.Models.DBModel.dtObj
                                 cognome = item.COGNOME,
                                 codiceFiscale = item.CODICEFISCALE,
                                 dataInizio = item.DATAINIZIOVALIDITA,
-                                dataFine = item.DATAFINEVALIDITA,
+                                dataFine = item.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:item.DATAFINEVALIDITA,
                                 dataAggiornamento = item.DATAAGGIORNAMENTO,
-                                Modificato = item.MODIFICATO,
+                                idStatoRecord = item.IDSTATORECORD,
                                 FK_IdFigli = item.FK_IDFIGLI,
                                 idAttivazioneMagFam = idAttivazioneMagFam
 
@@ -380,41 +477,65 @@ namespace NewISE.Models.DBModel.dtObj
                 {
 
                     var mf = db.MAGGIORAZIONIFAMILIARI.Find(idMaggiorazioniFamiliari);
+                    var t = mf.TRASFERIMENTO;
 
-                    var amfl = mf.ATTIVAZIONIMAGFAM
-                            .Where(e => ((e.RICHIESTAATTIVAZIONE == true && e.ATTIVAZIONEMAGFAM == true) || e.ANNULLATO == false))
-                            .OrderByDescending(a => a.IDATTIVAZIONEMAGFAM).ToList();
-
-                    bool modificabile = false;
-
-                    if (amfl?.Any() ?? false)
+                    lf = mf.FIGLI.Where(y =>
+                                y.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                ((y.DATAINIZIOVALIDITA<=t.DATARIENTRO &&
+                                y.DATAFINEVALIDITA>=t.DATARIENTRO) || y.DATAFINEVALIDITA<t.DATARIENTRO)
+                            ).ToList();
+                    if (lf?.Any() ?? false)
                     {
-                        foreach (var e in amfl)
+                        foreach (var f in lf)
                         {
-                            lf = e.FIGLI.Where(y => y.MODIFICATO == false).ToList();
-                            if (lf?.Any() ?? false)
+                            VariazioneFigliModel fm = new VariazioneFigliModel()
                             {
-                                foreach (var f in lf)
-                                {
-                                    VariazioneFigliModel fm = new VariazioneFigliModel()
-                                    {
-                                        eliminabile = ((f.FK_IDFIGLI > 0 || f.MODIFICATO == true) || e.ATTIVAZIONEMAGFAM) ? false : true,
-                                        modificabile = modificabile,
-                                        idFigli = f.IDFIGLI,
-                                        idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
-                                        idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO,
-                                        nome = f.NOME,
-                                        cognome = f.COGNOME,
-                                        codiceFiscale = f.CODICEFISCALE,
-                                        dataInizio = f.DATAINIZIOVALIDITA,
-                                        dataFine = f.DATAFINEVALIDITA,
-                                        dataAggiornamento = f.DATAAGGIORNAMENTO,
-                                        Modificato = f.MODIFICATO,
-                                        FK_IdFigli = f.FK_IDFIGLI
-                                    };
-                                    lfm.Add(fm);
-                                }
+                                eliminabile = (f.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione && f.FK_IDFIGLI == null) ? true : false,
+                                modificabile = (f.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato) ? true : false,
+                                idFigli = f.IDFIGLI,
+                                idMaggiorazioniFamiliari = f.IDMAGGIORAZIONIFAMILIARI,
+                                idTipologiaFiglio = (EnumTipologiaFiglio)f.IDTIPOLOGIAFIGLIO,
+                                nome = f.NOME,
+                                cognome = f.COGNOME,
+                                codiceFiscale = f.CODICEFISCALE,
+                                dataInizio = f.DATAINIZIOVALIDITA,
+                                dataFine = f.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:f.DATAFINEVALIDITA,
+                                dataAggiornamento = f.DATAAGGIORNAMENTO,
+                                idStatoRecord = f.IDSTATORECORD,
+                                FK_IdFigli = f.FK_IDFIGLI,
+                                visualizzabile = (db.FIGLI.Where(a => a.FK_IDFIGLI == f.IDFIGLI && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato).Count() > 0) ? false : true,
+                                //visualizzabile = (db.FIGLI.Where(a => a.IDFIGLI == f.FK_IDFIGLI).Count() > 0) ? false : true,
+                                modificato = (f.FK_IDFIGLI > 0 && f.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && f.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato) ? true : false,
+                                nuovo = (f.FK_IDFIGLI == null && f.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && f.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato) ? true : false
+                            };
+
+
+                            //VERIFICA SE CI SONO VARIAZIONI SUGLI ALTRI DATI
+                            var adf = dtvmf.GetAltriDatiFamiliariFiglio(f.IDFIGLI, mf.IDMAGGIORAZIONIFAMILIARI);
+                            if (adf.FK_idAltriDatiFam > 0 && adf.idStatoRecord != (decimal)EnumStatoRecord.Annullato && adf.idStatoRecord != (decimal)EnumStatoRecord.Attivato)
+                            {
+                                fm.modificato = true;
                             }
+
+                            //elenca eventuali documenti inseriti
+                            var ldf = db.FIGLI.Find(fm.idFigli).DOCUMENTI.Where(a =>
+                                        a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Documento_Identita &&
+                                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                        a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato)
+                                    .OrderByDescending(a => a.IDDOCUMENTO).ToList();
+                            //var ldf = f.DOCUMENTI.Where(a => a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && a.IDSTATORECORD != (decimal)EnumStatoRecord.Attivato).ToList();
+                            if (ldf.Count() > 0 && fm.nuovo == false)
+                            {
+                                fm.modificato = true;
+                            }
+                            //se è nuovo non è modificato
+                            if (fm.nuovo)
+                            {
+                                fm.modificato = false;
+                            }
+
+
+                            lfm.Add(fm);
                         }
                     }
                 }

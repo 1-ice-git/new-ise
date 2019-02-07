@@ -13,7 +13,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             GC.SuppressFinalize(this);
         }
-        
+
         public IList<CoefficienteRichiamoModel> GetCoefficienteRichiamo()
         {
             List<CoefficienteRichiamoModel> llm = new List<CoefficienteRichiamoModel>();
@@ -28,7 +28,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                            select new CoefficienteRichiamoModel()
                            {
                                idCoefIndRichiamo = e.IDCOEFINDRICHIAMO,
-                               coefficienteIndBase = e.COEFFICIENTEINDBASE,
+                               //coefficienteIndBase = e.COEFFICIENTEINDBASE,
                                coefficienteRichiamo = e.COEFFICIENTERICHIAMO
                            }).ToList();
                 }
@@ -54,7 +54,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     lm = new CoefficienteRichiamoModel()
                     {
                         idCoefIndRichiamo = liv.IDCOEFINDRICHIAMO,
-                        coefficienteIndBase = liv.COEFFICIENTEINDBASE,
                         coefficienteRichiamo = liv.COEFFICIENTERICHIAMO
                     };
                 }
@@ -66,6 +65,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 throw ex;
             }
         }
-        
+
     }
 }

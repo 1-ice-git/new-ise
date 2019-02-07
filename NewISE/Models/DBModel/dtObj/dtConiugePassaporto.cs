@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using NewISE.EF;
 using NewISE.Models.Tools;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {

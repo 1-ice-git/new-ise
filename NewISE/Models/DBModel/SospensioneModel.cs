@@ -7,12 +7,7 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public enum EnumTipoSospensione
-    {
-        Idennita = 1,
-        TipoSospensione2 = 2,
-        TipoSospensione3 = 3        
-    }
+
     public class SospensioneModel
     {
         [Key]
@@ -30,9 +25,9 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La data fine sospensione è richiesta.")]
         [Display(Name = "Data Fine")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]        
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
         public DateTime? DataFineSospensione { get; set; }
-        
+
         [Required(ErrorMessage = "La data inserimento è richiesta.")]
         [Display(Name = "Data Aggiornamento")]
         [DataType(DataType.DateTime)]
@@ -41,7 +36,7 @@ namespace NewISE.Models.DBModel
 
         [Display(Name = "GG Sospensione")]
         public int NumeroGiorni { get; set; }
-        
+
         public string TipoSospensione { get; set; }
         public bool ANNULLATO { get; set; }
         [Display(Name = "Tipo Sospensione")]

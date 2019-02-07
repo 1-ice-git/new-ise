@@ -1,6 +1,8 @@
 ﻿using NewISE.App_Start;
+using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure.Interception;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,6 +18,8 @@ namespace NewISE
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            DbInterception.Add(new ReplaceConnectionInterceptor());
+            DbInterception.Add(new ReplaceSchemaInterceptor());
         }
     }
 }

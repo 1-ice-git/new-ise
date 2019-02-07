@@ -10,12 +10,7 @@ namespace NewISE.Models.DBModel
 {
     public class PercMagFigliModel
     {
-        //public enum EnumTipologiaFiglio
-        //{
-        //    Residente = 1,
-        //    Studende_Residente = 2,
-        //    Studente_Non_Residente=3
-        //}
+
         [Key]
         [Display(Name = "ID")]
         public decimal idPercMagFigli { get; set; }

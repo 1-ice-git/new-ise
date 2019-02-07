@@ -4,17 +4,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel
 {
-    public enum EnumStatoTraferimento
-    {
-        Attivo = 1,
-        Da_Attivare = 2,
-        Non_Trasferito = 3,
-        Terminato = 4,
-        Annullato = 21
-    }
+
 
     public class StatoTrasferimentoModel
     {
@@ -45,7 +39,7 @@ namespace NewISE.Models.DBModel
             {
                 return EnumStatoTraferimento.Terminato;
             }
-            else if (v.idStatoTrasferimento == 21)
+            else if (v.idStatoTrasferimento == 5)
             {
                 return EnumStatoTraferimento.Annullato;
             }

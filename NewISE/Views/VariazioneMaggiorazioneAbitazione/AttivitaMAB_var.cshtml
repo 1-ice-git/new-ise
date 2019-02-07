@@ -1,0 +1,200 @@
+﻿@using NewISE.Models.DBModel
+@using NewISE.Models.ViewModel
+@using NewISE.Models.Tools
+@using NewISE.Models.Enumeratori
+
+@model IEnumerable<NewISE.Models.ViewModel.MABViewModel>
+
+@{
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    //decimal idMAB = Convert.ToDecimal(ViewData["idMAB"]);
+    bool soloLettura = Convert.ToBoolean(ViewData["soloLettura"]);
+    bool siDati = Convert.ToBoolean(ViewData["siDati"]);
+}
+
+@Html.Hidden("hiAnnullaModMAB")
+
+<div>
+    <div style="padding-top: 10px;padding-bottom:10px">
+        @if (soloLettura == true)
+        {
+            <button href="#" class="btn btn-default disabled" disabled="disabled">Nuova</button>
+        }
+        else
+        {
+            @Ajax.ActionLink("Nuova", "NuovaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabAttivitaMAB_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace }, new { @class = "btn btn-success", @title = "Nuova Maggiorazione Abitazione", @id = "linkNuovaMAB_var" })
+        }
+    </div>
+    <table id="tabMAB" class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.anticipoAnnuale)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.dataInizioMAB)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.dataFineMAB)
+                </th>
+                <th class="text-center">
+                    Canone
+                </th>
+                <th class="text-center">
+                    Pagato Condiviso
+                </th>
+                <th class="text-center">
+                    Formulari
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.idMAB
+                    </td>
+                    <td>
+                        @if (siDati)
+                        {
+                            if (item.anticipoAnnuale)
+                            {
+                                <span class="text-uppercase">ANNUALE</span>
+                            }
+                            else
+                            {
+                                <span class="text-uppercase">SEMESTRALE</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-uppercase"></span>
+                        }
+                    </td>
+                    <td style="text-align: center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataInizioMAB)</span>
+                    </td>
+                    <td style="text-align: center">
+                        @if (item.dataFineMAB != Utility.DataFineStop())
+                        {
+                            <span class="text-uppercase">@Html.DisplayFor(modelItem => item.dataFineMAB)</span>
+                        }
+                    </td>
+                    <td style="text-align: center">
+                        <a href="#" onclick="CanoneMAB(@idTrasferimento,@item.idMAB);" id="linkCanoneMAB">
+                            <img src='~/Immagini/Simbolo semplice Euro Green.png' width='17' title="Periodi Canone" />
+                        </a>
+                    </td>
+                    <td style="text-align: center">
+                        <a href="#" onclick="PagatoCondivisoMAB(@idTrasferimento,@item.idMAB);" id="linkPagatoCondivisoMAB">
+                            <img src='~/Immagini/group-icon.png' width='20' title="Periodi Pagato Condiviso" />
+                        </a>
+                    </td>
+                    <td style="text-align: center">
+                        <a href="#" onclick="ElencoFormulariMABInseriti(@idTrasferimento,@item.idMAB);" id="linkFormulariMAB">
+                            @if (item.esistonoFormulari)
+                            {
+                                <img src='~/Immagini/IconeDocumenti/PDF-icon.png' width='20' title="Elenco Formulari" />
+                            }
+                            else
+                            {
+                                <img src='~/Immagini/IconeDocumenti/PDF-icon-Disable.png' width='20' title="Elenco Formulari" />
+                            }
+                        </a>
+                    </td>
+
+                    @if (item.modificabile)
+                    {
+                        <td style="text-align: center">
+                            <a href="#" onclick="ModificaMAB_var(@item.idMAB); ">
+                                <img width="17" src="~/Immagini/edit.png" title="Modifica" />
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center"></td>
+                    }
+                    @if (item.annullabile)
+                    {
+                        <td style="text-align: center">
+                            <a href="#" onclick="AnnullaModificheMAB_var(@item.idMAB); ">
+                                <img width="17" src="~/Immagini/undo.png" title="Annulla Modifiche" />
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center"></td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $("#tabMAB").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "columnDefs": [
+                    { "targets": [2, 3], "type": 'date-euro' },
+                    { "targets": [4, 5, 6, 7, 8], "orderable": false },
+                    { "targets": [0], "visible": false },
+        ],
+        "order": [[0, "asc"]]
+    });
+
+    GestionePulsantiNotificaAttivaAnnullaMAB_var(@idTrasferimento);
+
+    //$('#ImportoCanone').autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    nSep: true
+    //});
+
+    //ImportoCanone = new AutoNumeric('#ImportoCanone', autoNumericOptionsEuroOttoDec);
+
+    function AnnullaModificheMAB_var(idMab) {
+        $('#AnnullaModificheMABModal').modal('show');
+        $('#hiAnnullaModMAB').val(idMab);
+    }
+
+</script>

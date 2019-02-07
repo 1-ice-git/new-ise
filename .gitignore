@@ -301,3 +301,9 @@ __pycache__/
 
 ###### -- Custom Ignore Section, Make sure all files you add to the git repo are below this line  --  ######
 
+
+NewISE/Properties/PublishProfiles/Mauro_1.pubxml
+NewISE/Temp/FL052A-EEE.txt
+NewISE/FL052A-EEE.txt
+NewISE/FL052A-EEE.txt
+NewISE/FL052A-EEE.txt

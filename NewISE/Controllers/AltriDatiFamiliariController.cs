@@ -1,7 +1,9 @@
 ﻿using NewISE.DBComuniItalia;
 using NewISE.Models;
 using NewISE.Models.DBModel;
+
 using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.Enumeratori;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,11 +20,11 @@ namespace NewISE.Controllers
         {
             AltriDatiFamFiglioModel adf = new AltriDatiFamFiglioModel();
 
-            try
+            try 
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAlttriDatiFamiliariFiglio(idFiglio, idAttivazioneMagFam);
+                    adf = dtadf.GetAltriDatiFamiliariFiglio(idFiglio, idAttivazioneMagFam);
                 }
 
 
@@ -57,30 +59,6 @@ namespace NewISE.Controllers
 
                     ViewData.Add("solaLettura", solaLettura);
                 }
-                //using (dtPercentualeMagFigli dtpmf = new dtPercentualeMagFigli())
-                //{
-                //    PercentualeMagFigliModel pf = dtpmf.GetPercentualeMaggiorazioneFigli(idFiglio, DateTime.Now);
-                //    if (pf != null && pf.HasValue())
-                //    {
-                //        switch (pf.idTipologiaFiglio)
-                //        {
-                //            case EnumTipologiaFiglio.Residente:
-                //                adf.residente = true;
-                //                adf.studente = false;
-                //                break;
-                //            case EnumTipologiaFiglio.StudenteResidente:
-                //                adf.studente = true;
-                //                adf.residente = true;
-                //                break;
-                //            case EnumTipologiaFiglio.StudenteNonResidente:
-                //                adf.studente = true;
-                //                adf.residente = false;
-                //                break;
-                //            default:
-                //                throw new ArgumentOutOfRangeException();
-                //        }
-                //    }
-                //}
                 using (dtFigli dtf = new dtFigli())
                 {
                     FigliModel f = dtf.GetFigliobyID(idFiglio);
@@ -90,6 +68,10 @@ namespace NewISE.Controllers
                         {
                             case EnumTipologiaFiglio.Residente:
                                 adf.residente = true;
+                                adf.studente = false;
+                                break;
+                            case EnumTipologiaFiglio.NonResidente:
+                                adf.residente = false;
                                 adf.studente = false;
                                 break;
                             case EnumTipologiaFiglio.StudenteResidente:
@@ -115,13 +97,13 @@ namespace NewISE.Controllers
 
             if (adf != null && adf.HasValue())
             {
-                using (dtFigli dtf = new dtFigli())
-                {
+                //using (dtFigli dtf = new dtFigli())
+                //{
 
-                    var fm = dtf.GetFigliobyID(adf.idFigli);
-                    adf.Figli = fm;
+                //    var fm = dtf.GetFigliobyID(adf.idFigli);
+                //    adf.Figli = fm;
 
-                }
+                //}
 
                 return PartialView(adf);
             }
@@ -169,6 +151,12 @@ namespace NewISE.Controllers
                 {
                     tm = dtt.GetTrasferimentoByIdFiglio(adf.idFigli);
                 }
+                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                {
+                    var idFasePassaportiCorrente = dtpp.GetFasePassaporti_Corrente(tm.idTrasferimento);
+                    ViewData.Add("idFasePassaportiCorrente", idFasePassaportiCorrente);
+                }
+
 
             }
             catch (Exception ex)
@@ -209,6 +197,10 @@ namespace NewISE.Controllers
                         {
                             case EnumTipologiaFiglio.Residente:
                                 adf.residente = true;
+                                adf.studente = false;
+                                break;
+                            case EnumTipologiaFiglio.NonResidente:
+                                adf.residente = false;
                                 adf.studente = false;
                                 break;
                             case EnumTipologiaFiglio.StudenteResidente:
@@ -261,7 +253,7 @@ namespace NewISE.Controllers
             {
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
-                    adf = dtadf.GetAlttriDatiFamiliariConiuge(idConiuge, idAttivazioneMagFam);
+                    adf = dtadf.GetAltriDatiFamiliariConiuge(idConiuge, idAttivazioneMagFam);
                 }
 
 
@@ -339,6 +331,11 @@ namespace NewISE.Controllers
                                 adf.ulterioreMagConiuge = true;
                                 break;
 
+                            case EnumTipologiaConiuge.NonResidente:
+                                adf.residente = false;
+                                adf.ulterioreMagConiuge = false;
+                                break;
+
                             default:
                                 break;
                         }
@@ -355,14 +352,6 @@ namespace NewISE.Controllers
 
             if (adf != null && adf.HasValue())
             {
-                using (dtConiuge dtc = new dtConiuge())
-                {
-
-                    var cm = dtc.GetConiugebyID(adf.idConiuge);
-                    adf.Coniuge = cm;
-
-                }
-
                 return PartialView(adf);
             }
             else
@@ -403,6 +392,12 @@ namespace NewISE.Controllers
                 {
                     tm = dtt.GetTrasferimentoByIdConiuge(adf.idConiuge);
                 }
+                using (dtPratichePassaporto dtpp = new dtPratichePassaporto())
+                {
+                    var idFasePassaportiCorrente = dtpp.GetFasePassaporti_Corrente(tm.idTrasferimento);
+                    ViewData.Add("idFasePassaportiCorrente", idFasePassaportiCorrente);
+                }
+
 
             }
             catch (Exception ex)
@@ -456,6 +451,11 @@ namespace NewISE.Controllers
                                 adf.ulterioreMagConiuge = true;
                                 break;
 
+                            case EnumTipologiaConiuge.NonResidente:
+                                adf.residente = false;
+                                adf.ulterioreMagConiuge = false;
+                                break;
+
                             default:
                                 break;
                         }
@@ -494,7 +494,8 @@ namespace NewISE.Controllers
             try
             {
                 adf.dataAggiornamento = DateTime.Now;
-                adf.annullato = false;
+                adf.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+                adf.FK_idAltriDatiFam = null;
 
                 if (ModelState.IsValid)
                 {
@@ -542,7 +543,8 @@ namespace NewISE.Controllers
             try
             {
                 adf.dataAggiornamento = DateTime.Now;
-                adf.annullato = false;
+                adf.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+                adf.FK_idAltriDatiFam = null;
 
                 if (ModelState.IsValid)
                 {
@@ -586,33 +588,6 @@ namespace NewISE.Controllers
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
                     adfm = dtadf.GetAltriDatiFamiliariFiglio(idAltriDatiFam);
-                    //if (adfm != null && adfm.HasValue())
-                    //{
-                    //    using (dtFigli dtf = new dtFigli())
-                    //    {
-                    //        FigliModel f = dtf.GetFigliobyID(adfm.idFigli);
-                    //        if (f != null && f.HasValue())
-                    //        {
-                    //            switch (f.idTipologiaFiglio)
-                    //            {
-                    //                case EnumTipologiaFiglio.Residente:
-                    //                    adfm.residente = true;
-                    //                    adfm.studente = false;
-                    //                    break;
-                    //                case EnumTipologiaFiglio.StudenteResidente:
-                    //                    adfm.studente = true;
-                    //                    adfm.residente = true;
-                    //                    break;
-                    //                case EnumTipologiaFiglio.StudenteNonResidente:
-                    //                    adfm.studente = true;
-                    //                    adfm.residente = false;
-                    //                    break;
-                    //                default:
-                    //                    throw new ArgumentOutOfRangeException();
-                    //            }
-                    //        }
-                    //    }
-                    //}
                 }
             }
             catch (Exception ex)
@@ -652,31 +627,6 @@ namespace NewISE.Controllers
                 using (dtAltriDatiFamiliari dtadf = new dtAltriDatiFamiliari())
                 {
                     adfm = dtadf.GetAltriDatiFamiliariConiuge(idAltriDatiFam);
-                    //if (adfm != null && adfm.HasValue())
-                    //{
-                    //    using (dtConiuge dtc = new dtConiuge())
-                    //    {
-                    //        ConiugeModel c = dtc.GetConiugebyID(adfm.idConiuge);
-                    //        if (c != null && c.HasValue())
-                    //        {
-                    //            switch (c.idTipologiaConiuge)
-                    //            {
-                    //                case EnumTipologiaConiuge.Residente:
-                    //                    adfm.residente = true;
-                    //                    adfm.ulterioreMagConiuge = false;
-                    //                    break;
-
-                    //                case EnumTipologiaConiuge.NonResidente_A_Carico:
-                    //                    adfm.residente = false;
-                    //                    adfm.ulterioreMagConiuge = true;
-                    //                    break;
-
-                    //                default:
-                    //                    break;
-                    //            }
-                    //        }
-                    //    }
-                    //}
                 }
             }
             catch (Exception ex)
@@ -716,7 +666,8 @@ namespace NewISE.Controllers
             try
             {
                 adfm.dataAggiornamento = DateTime.Now;
-                adfm.annullato = false;
+                adfm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+                adfm.FK_idAltriDatiFam = adfm.FK_idAltriDatiFam;
 
 
                 if (ModelState.IsValid)
@@ -772,7 +723,7 @@ namespace NewISE.Controllers
             try
             {
                 adfm.dataAggiornamento = DateTime.Now;
-                adfm.annullato = false;
+                adfm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
 
                 if (ModelState.IsValid)
                 {

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsCostiUfficio" targetNamespace="http://tempuri.org/dsCostiUfficio.xsd" xmlns:mstns="http://tempuri.org/dsCostiUfficio.xsd" xmlns="http://tempuri.org/dsCostiUfficio.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsCostiUfficio" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsCostiUfficio" msprop:Generator_UserDSName="dsCostiUfficio">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="dtCostiUfficio" msprop:Generator_TableClassName="dtCostiUfficioDataTable" msprop:Generator_TableVarName="tabledtCostiUfficio" msprop:Generator_TablePropName="dtCostiUfficio" msprop:Generator_RowDeletingName="dtCostiUfficioRowDeleting" msprop:Generator_RowChangingName="dtCostiUfficioRowChanging" msprop:Generator_RowEvHandlerName="dtCostiUfficioRowChangeEventHandler" msprop:Generator_RowDeletedName="dtCostiUfficioRowDeleted" msprop:Generator_UserTableName="dtCostiUfficio" msprop:Generator_RowChangedName="dtCostiUfficioRowChanged" msprop:Generator_RowEvArgName="dtCostiUfficioRowChangeEvent" msprop:Generator_RowClassName="dtCostiUfficioRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Ufficio" msprop:Generator_ColumnVarNameInTable="columnUfficio" msprop:Generator_ColumnPropNameInRow="Ufficio" msprop:Generator_ColumnPropNameInTable="UfficioColumn" msprop:Generator_UserColumnName="Ufficio" type="xs:string" minOccurs="0" />
+              <xs:element name="Matricola" msprop:Generator_ColumnVarNameInTable="columnMatricola" msprop:Generator_ColumnPropNameInRow="Matricola" msprop:Generator_ColumnPropNameInTable="MatricolaColumn" msprop:Generator_UserColumnName="Matricola" type="xs:string" minOccurs="0" />
+              <xs:element name="Nominativo" msprop:Generator_ColumnVarNameInTable="columnNominativo" msprop:Generator_ColumnPropNameInRow="Nominativo" msprop:Generator_ColumnPropNameInTable="NominativoColumn" msprop:Generator_UserColumnName="Nominativo" type="xs:string" minOccurs="0" />
+              <xs:element name="Livello" msprop:Generator_ColumnVarNameInTable="columnLivello" msprop:Generator_ColumnPropNameInRow="Livello" msprop:Generator_ColumnPropNameInTable="LivelloColumn" msprop:Generator_UserColumnName="Livello" type="xs:string" minOccurs="0" />
+              <xs:element name="Descrizione" msprop:Generator_ColumnVarNameInTable="columnDescrizione" msprop:Generator_ColumnPropNameInRow="Descrizione" msprop:Generator_ColumnPropNameInTable="DescrizioneColumn" msprop:Generator_UserColumnName="Descrizione" type="xs:string" minOccurs="0" />
+              <xs:element name="Importo" msprop:Generator_ColumnVarNameInTable="columnImporto" msprop:Generator_ColumnPropNameInRow="Importo" msprop:Generator_ColumnPropNameInTable="ImportoColumn" msprop:Generator_UserColumnName="Importo" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

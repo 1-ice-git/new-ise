@@ -1,0 +1,97 @@
+﻿@using NewISE.Models.Tools
+
+@model IEnumerable<NewISE.Models.ViewModel.VariazioneRuoloDipendenteModel>
+
+@{
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+}
+
+<table class="table" id="tabElencoRuoliDipendente">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.RuoloUfficio.DescrizioneRuolo)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataInizioValidita)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataFineValidita)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ordinamento)
+                </td>
+
+                <td >
+                    @Html.DisplayFor(modelItem => item.RuoloUfficio.DescrizioneRuolo  )
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.dataInizioValidita)
+                </td>
+                @if (item.dataFineValidita < Utility.DataFineStop())
+                {
+                    <td class="text-center" >
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }else
+                {
+                    <td>
+                    </td>
+                }               
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<script type="text/javascript">
+    $("#tabElencoRuoliDipendente").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "columnDefs": [
+                          { "targets": [2, 3], "type": 'date-euro' },
+                          { "targets": [0], "visible": false },
+        ],
+        "order": [[0, "asc"]]
+    });
+
+</script>
+
+

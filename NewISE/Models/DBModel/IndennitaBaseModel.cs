@@ -15,9 +15,10 @@ namespace NewISE.Models.DBModel
         public decimal idIndennitaBase { get; set; }
         [Required(ErrorMessage = "Il livello è richiesto.")]
         public decimal idLivello { get; set; }
-
+        public decimal idRuoloUfficio { get; set; }
         public decimal? idRiduzioni { get; set; }
 
+        public string DescrizioneRuolo { get; set; }
 
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data inizio validità")]
@@ -32,12 +33,12 @@ namespace NewISE.Models.DBModel
         public DateTime? dataFineValidita { get; set; }
 
         [Required(ErrorMessage = "Il valore è richiesto.")]
-        [Display(Name = "Valore")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N8}")]
+        [Display(Name = "Importo")]
+        [DisplayFormat(ApplyFormatInEditMode = false, NullDisplayText = "0", DataFormatString = "{0:N2}")]
         public decimal valore { get; set; }
         [Required(ErrorMessage = "Il valore per il responsabile è richiesto.")]
-        [Display(Name = "Valore resp.")]
-        [DisplayFormat(ApplyFormatInEditMode = true, NullDisplayText = "0", DataFormatString = "{0:N8}")]
+        [Display(Name = "Importo resp.")]
+        [DisplayFormat(ApplyFormatInEditMode = false, NullDisplayText = "0", DataFormatString = "{0:N2}")]
         public decimal valoreResponsabile { get; set; }
 
         [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
@@ -53,12 +54,33 @@ namespace NewISE.Models.DBModel
 
         public LivelloModel Livello { get; set; }
 
+        public RuoloUfficioModel RuoloUfficio { get; set; }
+
+        public RuoloDipendenteModel RuoloDipendente { get; set; }
+
+        public CoefficientiSedeModel CoefficenteSede { get; set; }
+
+        public PercentualeDisagioModel PercentualeDisagio { get; set; }
+
         public RiduzioniModel Riduzioni { get; set; }
+
+        public dipInfoTrasferimentoModel dipInfoTrasferimento { get; set; }
+
+        public EvoluzioneIndennitaModel EvoluzioneIndennita { get; set; }
+
+
+        public decimal IndennitaBase { get; set; }
+
 
         public bool HasValue()
         {
             return idIndennitaBase > 0 ? true : false;
         }
+
+        [Display(Name = "Livello")]
+        public string DescLivello { get; set; }
+
+
 
     }
 }

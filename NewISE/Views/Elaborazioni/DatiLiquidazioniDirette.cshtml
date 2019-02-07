@@ -1,0 +1,52 @@
+﻿
+
+@{
+    decimal idAnnoMeseElaborato = Convert.ToDecimal(ViewData["idAnnoMeseElaborato"]);
+}
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a data-toggle="tab" href="#DaInviare">Da inviare</a></li>
+            <li><a data-toggle="tab" href="#Inviate">Inviate</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="DaInviare" class="tab-pane fade in active">
+                @Html.Action("DatiLiquidazioniDiretteDaInviare", "Elaborazioni", new { idAnnoMeseElaborato = idAnnoMeseElaborato })
+            </div>
+            <div id="Inviate" class="tab-pane fade">
+                @Html.Action("DatiLiquidazioniDiretteInviate", "Elaborazioni", new { idAnnoMeseElaborato = idAnnoMeseElaborato })
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function SelezionaAllVociDirette(checked) {
+        //debugger;
+
+        var lCheck = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > :checkbox');
+        var lElaborato = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > #item_Elaborato');
+
+        for (var i = 0; i < lCheck.length; i++) {
+            var elaborato = lElaborato[parseInt(i)].value;
+            if (elaborato == "False") {
+                lCheck[parseInt(i)].checked = checked;
+            }
+        }
+    }
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        //debugger;
+        $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+    });
+
+</script>

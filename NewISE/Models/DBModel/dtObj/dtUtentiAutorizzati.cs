@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
@@ -33,9 +34,10 @@ namespace NewISE.Models.DBModel.dtObj
                         where e.IDRUOLOUTENTE == idRuolo
                         select new UtenteAutorizzatoModel()
                         {
-                            idUtenteAutorizzato = e.IDUTENTEAUTORIZZATO,
+                            idDipendente = e.IDDIPENDENTE,
                             idRuoloUtente = (EnumRuoloAccesso)e.IDRUOLOUTENTE,
                             matricola = e.UTENTE,
+                            psw = e.PSW,
                             ruoloAccesso = new RuoloAccesoModel()
                             {
                                 idRuoloAccesso = e.RUOLOACCESSO.IDRUOLOACCESSO,
@@ -73,9 +75,10 @@ namespace NewISE.Models.DBModel.dtObj
                             where e.IDRUOLOUTENTE == idRuolo
                             select new UtenteAutorizzatoModel()
                             {
-                                idUtenteAutorizzato = e.IDUTENTEAUTORIZZATO,
+                                idDipendente = e.IDDIPENDENTE,
                                 idRuoloUtente = (EnumRuoloAccesso)e.IDRUOLOUTENTE,
                                 matricola = e.UTENTE,
+                                psw = e.PSW,
                                 ruoloAccesso = new RuoloAccesoModel()
                                 {
                                     idRuoloAccesso = e.RUOLOACCESSO.IDRUOLOACCESSO,

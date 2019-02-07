@@ -1,4 +1,4 @@
-﻿@model NewISE.Models.ViewModel.MaggiorazioneAbitazioneViewModel
+﻿@model NewISE.Models.ViewModel.MABViewModel
 @using NewISE.Models.Tools
 
 <link href="~/Content/css/NuovaMAB.css" rel="stylesheet" />
@@ -26,33 +26,37 @@
             <h4>Modifica Dati Maggiorazione Abitazione</h4>
             <hr />
             @Html.Hidden("idTrasferimento", idTrasferimento)
-            @Html.Hidden("dataPartenza", Model.dataPartenza)
-            @Html.Hidden("idMagAnnuali", Model.idMagAnnuali )
+            @Html.Hidden("dataPartenza", Model.dataInizioMAB)
+            @Html.Hidden("dataInizioMAB", Model.dataInizioMAB)
+            @Html.Hidden("dataFineMAB", Model.dataFineMAB)
+            @Html.Hidden("ut_dataFineMAB", Model.ut_dataFineMAB)
+            @Html.Hidden("ut_dataInizioMAB", Model.ut_dataInizioMAB)
+            @Html.Hidden("idMagAnnuali", Model.idMagAnnuali)
             @Html.Hidden("idMAB", idMAB)
             <div class="row">
                 <div class="col-xs-12" style="padding-top:5px; padding-bottom:5px">
                     <div class="row">
                         <div class="col-xs-12" style="padding-top:5px; padding-bottom:5px">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.AnticipoAnnuale, new { @class = "control-label col-xs-3" })
-                                @if (Model.idMagAnnuali>0)
+                                @Html.LabelFor(model => model.anticipoAnnuale, new { @class = "control-label col-xs-3" })
+                                @if (Model.idMagAnnuali > 0)
                                 {
-                                    if (Model.AnticipoAnnuale)
+                                    if (Model.anticipoAnnuale)
                                     {
                                         <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model=>Model.AnticipoAnnuale, "false") Semestrale</label>
+                                            <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "false") Semestrale</label>
                                         </div>
                                         <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "true", new { @checked = true }) Annuale</label>
+                                            <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "true", new { @checked = true }) Annuale</label>
                                         </div>
                                     }
                                     else
                                     {
                                         <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "false", new { @checked = true }) Semestrale</label>
+                                            <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "false", new { @checked = true }) Semestrale</label>
                                         </div>
                                         <div class="col-xs-2">
-                                            <label>@Html.RadioButtonFor(Model => Model.AnticipoAnnuale, "true") Annuale</label>
+                                            <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "true") Annuale</label>
                                         </div>
                                     }
                                 }
@@ -63,8 +67,7 @@
                                     </div>
                                     <div class="col-xs-2">
                                         <label>@Html.RadioButton("chk", false, new { disabled = "disabled" }) Annuale</label>
-                                        @Html.Hidden("AnticipoAnnuale", Model.AnticipoAnnuale)
-                                        @*<label>@Html.RadioButtonFor(model => model.AnticipoAnnuale, "false", new { disabled = "disabled" }) Annuale</label>*@
+                                        @Html.Hidden("AnticipoAnnuale", Model.anticipoAnnuale)
                                     </div>
                                 }
                             </div>
@@ -74,26 +77,22 @@
                         @Html.LabelFor(Model => Model.importo_canone, htmlAttributes: new { @class = "control-label col-xs-3" })
                         <div class="col-xs-3">
                             @{ decimal canone = Convert.ToDecimal(Model.importo_canone);}
-                            @Html.TextBox("imp_canone", canone, new { @class = "form-control col-xs-2" })
-                            @Html.TextBoxFor(Model => Model.importo_canone, new { type = "number", @class = "form-control col-xs-2 hidden" })
+                            @*@Html.TextBox("imp_canone", canone, new { disabled = "disabled", @class = "form-control col-xs-2" })*@
+                            @*@Html.TextBoxFor(Model => Model.importo_canone, "{0:N2}", new { @readonly = "readonly", type = "number", @class = "form-control col-xs-2 text-right" })*@                            
+                            <input type="text" id="importo_canone" value="@Model.importo_canone.ToString("N2")" readonly class="form-control col-xs-2 text-right"/>
+                            <input type="hidden" value="@Model.importo_canone" name="importo_canone" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group ">
                         @Html.Label("Valuta", htmlAttributes: new { @class = "control-label col-xs-3" })
                         <div class="select2-container select2-container--classic col-xs-3">
-                            @Html.DropDownListFor(Model => Model.id_Valuta, ViewBag.lValute as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "" })
+                            @Html.DropDownListFor(Model => Model.id_Valuta, ViewBag.lValute as IEnumerable<SelectListItem>, new { disabled = "disabled", @class = "form-control select2 select2-select", @onchange = "" })
                         </div>
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.dataInizioMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
                         <div class="col-xs-2">
-                            @Html.TextBoxFor(model => model.dataInizioMAB, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-3" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(Model => Model.dataFineMAB, htmlAttributes: new { @class = "control-label col-xs-3" })
-                        <div class="col-xs-2">
-                            @Html.TextBoxFor(Model => Model.ut_dataFineMAB, "{0:dd/MM/yyyy}", new { @class = "form-control col-xs-2" })
+                            @Html.TextBoxFor(model => model.dataInizioMAB, "{0:dd/MM/yyyy}", new { @readonly = "readonly", @class = "form-control col-xs-3" })
                         </div>
                     </div>
                     <div class="form-group">
@@ -149,6 +148,7 @@
 <script src="~/Scripts/MyValidateDate.js"></script>
 
 <script type="text/javascript">
+    //debugger;
     @foreach (var e in errori)
     {
         if (e.Value.Errors.Count > 0)
@@ -157,6 +157,15 @@
             break;
         }
     }
+
+    //$('#imp_canone').autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    nSep: true
+    //});
+
+    //imp_canone = new AutoNumeric('#imp_canone', autoNumericOptionsEuroOttoDec);
 
     $("#canone_condiviso").click(function () {
         if ($(this).is(':checked')) {
@@ -199,12 +208,12 @@
 
     $("#imp_canone").on('change', function () {
         //debugger;
-        var appo = $("#imp_canone").autoNumeric('get');
+        var appo = imp_canone.getNumber();
         var appo3 = parseFloat(appo).toString().replace('.', ',');
         $('#importo_canone').val(appo3);
     });
 
-    $('#formAddMAB').submit(function () {
+    $('#formModMAB').submit(function () {
         //debugger;
         var form = $(this);
         if (!form.valid()) {
@@ -220,14 +229,6 @@
         }
     }
 
-    $('#imp_canone').autoNumeric('init',
-    {
-       aSep: '.',
-       aDec: ',',
-       nSep: true
-    });
+
 
 </script>
-
-
-

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using NewISE.EF;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {
@@ -105,8 +106,6 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-
-
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -145,11 +144,11 @@ namespace NewISE.Controllers
                             return PartialView("NuovoImportoPensione", pcm);
                         }
                         pcm.dataAggiornamento = DateTime.Now;
-                        pcm.annullato = false;
-                        if (!pcm.dataFineValidita.HasValue)
-                        {
-                            pcm.dataFineValidita = Utility.DataFineStop();
-                        }
+                        pcm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+                        //if (!pcm.dataFineValidita.HasValue)
+                        //{
+                        pcm.dataFineValidita = Utility.DataFineStop();
+                        //}
 
                         dtp.SetNuovoImportoPensione(ref pcm, idConiuge, idAttivazioneMagFam);
                     }

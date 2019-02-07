@@ -1,5 +1,6 @@
 ﻿@using NewISE.Models.DBModel
-@model IEnumerable<NewISE.Models.DBModel.DocumentiModel>
+@using NewISE.Models.Enumeratori
+@model IEnumerable<DocumentiModel>
 
 
 @{
@@ -9,7 +10,10 @@
     decimal idAttivazionePassaporto = Convert.ToDecimal(ViewData["idAttivazionePassaporto"]);
     decimal parentela = Convert.ToDecimal(ViewData["parentela"]);
     decimal chiamante = Convert.ToDecimal(ViewData["chiamante"]);
-
+    decimal idFasePassaporti = Convert.ToDecimal(ViewData["idFasePassaporti"]);
+    decimal idFaseRichiesta = Convert.ToDecimal(EnumFasePassaporti.Richiesta_Passaporti);
+    decimal idFasePassaportiCorrente = Convert.ToDecimal(ViewData["idFasePassaportiCorrente"]);
+    
     EnumParentela enParentela = (EnumParentela)parentela;
 
     int nDocOld = 0;
@@ -17,7 +21,6 @@
     {
         nDocOld = Model.Count();
     }
-
 
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
 
@@ -39,7 +42,7 @@
     }
     else
     {
-        <button class="btn btn-success" onclick=" NuovoDocumento(@idAttivazionePassaporto, @idFamiliarePassaporto , @tipoDoc , @parentela , @chiamante ) ">Nuovo documento</button>
+        <button class="btn btn-success" onclick="NuovoDocumento(@idAttivazionePassaporto, @idFamiliarePassaporto , @tipoDoc , @parentela , @chiamante ) ">Nuovo documento</button>
     }
 }
 
@@ -95,7 +98,7 @@
                             else
                             {
                                 //<a href="#" onclick="EliminaDoc(@item.idDocumenti)" id="linkEliminaDoc">Elimina</a>
-                                <a href="#" onclick=" EliminaDoc(@item.idDocumenti) " id="linkEliminaDoc">
+                                <a href="#" onclick="EliminaDoc(@item.idDocumenti) " id="linkEliminaDoc">
                                     <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;documento" />
                                 </a>
                             }
@@ -111,9 +114,18 @@
     </table>
 </div>
 
-<p style="padding-left: 15px;">
-    @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti", "PratichePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
-</p>
+@if (idFasePassaportiCorrente == (decimal)EnumFasePassaporti.Richiesta_Passaporti)
+{
+    <p style="padding-left: 15px;">
+        @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti_Richiesta", "PratichePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>
+}
+else
+{
+    <p style="padding-left: 15px;">
+        @Ajax.ActionLink("Torna indietro", "ElencoFamiliariPassaporti_Invio", "PratichePassaporto", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPassaporto", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>
+}
 
 <div class="modal fade " id="NewDocModal" tabindex="-2" role="dialog" aria-labelledby="NewDocModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -190,31 +202,13 @@
         "bJQueryUI": true,
         "sDom": 'lfrtip',
         "destroy": true,
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "width": "150px"
-        //    }
+        "columnDefs": [
+              { "targets": [2], "type": 'date-euro' },
+              { "targets": [3, 4], "orderable": false },
+        ],
+        "order": [[0, "asc"]]
 
-        //]
-        //dom: 'Bfrtip',
-        //buttons: [
-        //    {
-        //        text: 'Nuovo Coniuge',
-        //        className: 'green',
-        //        action: function (e, dt, node, config) {
-        //            NuovoConiuge();
-        //        }
-        //    }
-        //],
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "visible": false,
-        //        "searchable": false
-        //    },
-
-        //]
+       
     });
 
     function NuovoDocumento(idAttivazionePassaporto, idFamiliarePassaporto, TipoDocumento, Parentela, Chiamante) {

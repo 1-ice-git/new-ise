@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
+using NewISE.Models.dtObj;
+using NewISE.Models.DBModel.dtObj;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -184,6 +186,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 try
                 {
+
+                   
+
                     if (ibm.dataFineValidita.HasValue)
                     {
                         if (EsistonoMovimentiSuccessiviUguale(ibm))
@@ -376,20 +381,24 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             List<INDENNITABASE> libNew = new List<INDENNITABASE>();
 
-            INDENNITABASE ibPrecedente = new INDENNITABASE();
+            //INDENNITABASE ibPrecedente = new INDENNITABASE();
             INDENNITABASE ibNew1 = new INDENNITABASE();
             INDENNITABASE ibNew2 = new INDENNITABASE();
-            List<INDENNITABASE> lArchivioIB = new List<INDENNITABASE>();
+            //List<INDENNITABASE> lArchivioIB = new List<INDENNITABASE>();
             List<string> lista = new List<string>();
+
+            DateTime dataVariazione = ibm.dataInizioValidita;
+
+
             using (ModelDBISE db = new ModelDBISE())
             {
                 bool giafatta = false;
                 try
-                {
+                {                   
                     using (dtParIndennitaBase dtal = new dtParIndennitaBase())
                     {
                         //Se la data variazione coincide con una data inizio esistente
-                        lista = dtal.DataVariazioneCoincideConDataInizio(ibm.dataInizioValidita,ibm.idLivello);
+                        lista = dtal.DataVariazioneCoincideConDataInizio(ibm.dataInizioValidita, ibm.idLivello);
                         if (lista.Count != 0)
                         {
                             giafatta = true;
@@ -397,15 +406,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
                             //   decimal aliquotaFirst = Convert.ToDecimal(lista[3]);
-                            decimal valoreFirst = Convert.ToDecimal(lista[3]);
-                            decimal valoreRespFirst = Convert.ToDecimal(lista[4]);
+                            //decimal valoreFirst = Convert.ToDecimal(lista[3]);
+                            //decimal valoreRespFirst = Convert.ToDecimal(lista[4]);
 
                             ibNew1 = new INDENNITABASE()
                             {
                                 DATAINIZIOVALIDITA = dataInizioFirst,
                                 DATAFINEVALIDITA = dataFineFirst,
                                 VALORE = ibm.valore,
-                                VALORERESP=ibm.valoreResponsabile,
+                                VALORERESP = ibm.valoreResponsabile,
                                 DATAAGGIORNAMENTO = DateTime.Now,
                                 IDLIVELLO = ibm.idLivello,
                             };
@@ -416,14 +425,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     DATAINIZIOVALIDITA = dataInizioFirst,
                                     DATAFINEVALIDITA = Utility.DataFineStop(),
-                                    VALORE=ibm.valore,
-                                    VALORERESP=ibm.valoreResponsabile,
-                                   // ALIQUOTA = ibm.aliquota,
+                                    VALORE = ibm.valore,
+                                    VALORERESP = ibm.valoreResponsabile,
+                                    // ALIQUOTA = ibm.aliquota,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                     IDLIVELLO = ibm.idLivello,
                                 };
                                 //qui annullo tutti i record rimanenti dalla data inizio inserita
-                                libNew = db.INDENNITABASE.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > dataInizioFirst).ToList();
+                                libNew = db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.IDLIVELLO == ibm.idLivello).ToList().Where(a => a.DATAINIZIOVALIDITA > dataInizioFirst).ToList();
                                 foreach (var elem in libNew)
                                 {
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDINDENNITABASE), db);
@@ -434,12 +443,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
 
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaIndennitaBase_IB(ibNew1.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                dtrp.AssociaRiduzioniIB(ibNew1.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                            }
+
                             db.Database.CurrentTransaction.Commit();
                         }
                         ///se la data variazione coincide con una data fine esistente(diversa da 31/12/9999)
                         if (giafatta == false)
                         {
-                            lista = dtal.DataVariazioneCoincideConDataFine(ibm.dataInizioValidita,ibm.idLivello);
+                            lista = dtal.DataVariazioneCoincideConDataFine(ibm.dataInizioValidita, ibm.idLivello);
                             if (lista.Count != 0)
                             {
                                 giafatta = true;
@@ -454,7 +469,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAINIZIOVALIDITA = dataInizioLast,
                                     DATAFINEVALIDITA = dataFineLast.AddDays(-1),
                                     VALORE = valoreLast,
-                                    VALORERESP= valoreRespLast,
+                                    VALORERESP = valoreRespLast,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                     IDLIVELLO = ibm.idLivello,
                                 };
@@ -463,7 +478,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = ibm.dataInizioValidita,//è uguale alla data Inizio
                                     VALORE = ibm.valore,
-                                    VALORERESP=ibm.valoreResponsabile,
+                                    VALORERESP = ibm.valoreResponsabile,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                     IDLIVELLO = ibm.idLivello,
                                 };
@@ -474,11 +489,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
                                         VALORE = ibm.valore,
-                                        VALORERESP=ibm.valoreResponsabile,
+                                        VALORERESP = ibm.valoreResponsabile,
                                         DATAAGGIORNAMENTO = DateTime.Now,
                                         IDLIVELLO = ibm.idLivello,
                                     };
-                                    libNew = db.INDENNITABASE.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
+                                    libNew = db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.IDLIVELLO == ibm.idLivello).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
                                     foreach (var elem in libNew)
                                     {
                                         RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDINDENNITABASE), db);
@@ -493,13 +508,24 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var ib in libNew)
+                                    {
+                                        dtrp.AssociaIndennitaBase_IB(ib.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioniIB(ib.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
                         //Se il nuovo record si trova in un intervallo non annullato con data fine non uguale al 31/12/9999
                         if (giafatta == false)
                         {
-                            lista = dtal.RestituisciIntervalloDiUnaData(ibm.dataInizioValidita,ibm.idLivello);
+                            lista = dtal.RestituisciIntervalloDiUnaData(ibm.dataInizioValidita, ibm.idLivello);
                             if (lista.Count != 0)
                             {
                                 giafatta = true;
@@ -517,18 +543,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAINIZIOVALIDITA = dataInizio,
                                     DATAFINEVALIDITA = NewdataFine1,
                                     // ALIQUOTA = aliquota,
-                                    VALORE=valore,
-                                    VALORERESP=valoreResp,
+                                    VALORE = valore,
+                                    VALORERESP = valoreResp,
                                     DATAAGGIORNAMENTO = DateTime.Now,
-                                    IDLIVELLO= ibm.idLivello,
+                                    IDLIVELLO = ibm.idLivello,
                                 };
                                 ibNew2 = new INDENNITABASE()
                                 {
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = dataFine,
-                                   // ALIQUOTA = ibm.aliquota,
-                                   VALORE=ibm.valore,
-                                   VALORERESP=ibm.valoreResponsabile,
+                                    // ALIQUOTA = ibm.aliquota,
+                                    VALORE = ibm.valore,
+                                    VALORERESP = ibm.valoreResponsabile,
                                     DATAAGGIORNAMENTO = DateTime.Now,
                                     IDLIVELLO = ibm.idLivello,
                                 };
@@ -539,13 +565,13 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
-                                       // ALIQUOTA = ibm.aliquota,
-                                       VALORE=ibm.valore,
-                                       VALORERESP=ibm.valoreResponsabile,
+                                        // ALIQUOTA = ibm.aliquota,
+                                        VALORE = ibm.valore,
+                                        VALORERESP = ibm.valoreResponsabile,
                                         DATAAGGIORNAMENTO = DateTime.Now,
                                         IDLIVELLO = ibm.idLivello,
                                     };
-                                    libNew = db.INDENNITABASE.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
+                                    libNew = db.INDENNITABASE.Where(a => a.ANNULLATO == false && a.LIVELLI.IDLIVELLO == ibm.idLivello).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
                                     foreach (var elem in libNew)
                                     {
                                         RendiAnnullatoUnRecord(Convert.ToDecimal(elem.IDINDENNITABASE), db);
@@ -559,6 +585,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var ib in libNew)
+                                    {
+                                        dtrp.AssociaIndennitaBase_IB(ib.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioniIB(ib.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -568,12 +605,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             lista = dtal.RestituisciLaRigaMassima(ibm.idLivello);
                             //Attenzione qui se la lista non contiene nessun elemento
                             //significa che non esiste nessun elemento corrispondentemente al livello selezionato
-                            if(lista.Count==0)
+                            if (lista.Count == 0)
                             {
                                 ibNew1 = new INDENNITABASE()
                                 {
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
-                                    DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),                                   
+                                    DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
                                     VALORE = ibm.valore,
                                     VALORERESP = ibm.valoreResponsabile,
                                     DATAAGGIORNAMENTO = DateTime.Now,
@@ -583,9 +620,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.Database.BeginTransaction();
                                 db.INDENNITABASE.Add(ibNew1);
                                 db.SaveChanges();
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    dtrp.AssociaIndennitaBase_IB(ibNew1.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                    dtrp.AssociaRiduzioniIB(ibNew1.IDINDENNITABASE, db, ibm.dataInizioValidita);
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
-                           
+
                             if (lista.Count != 0)
                             {
                                 giafatta = true;
@@ -605,8 +649,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = dataInizioUltimo,
                                         DATAFINEVALIDITA = dataFineUltimo,
                                         //ALIQUOTA = ibm.aliquota,//nuova aliquota rispetto alla vecchia registrata
-                                        VALORE=ibm.valore,
-                                        VALORERESP=ibm.valoreResponsabile,
+                                        VALORE = ibm.valore,
+                                        VALORERESP = ibm.valoreResponsabile,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew.Add(ibNew1);
@@ -614,6 +658,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.INDENNITABASE.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        dtrp.AssociaIndennitaBase_IB(ibNew1.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                        dtrp.AssociaRiduzioniIB(ibNew1.IDINDENNITABASE, db, ibm.dataInizioValidita);
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -623,9 +675,9 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     {
                                         DATAINIZIOVALIDITA = dataInizioUltimo,
                                         DATAFINEVALIDITA = ibm.dataInizioValidita.AddDays(-1),
-                                       // ALIQUOTA = aliquotaUltimo,
-                                       VALORE=valoreUltimo,
-                                       VALORERESP=valoreRespUltimo,
+                                        // ALIQUOTA = aliquotaUltimo,
+                                        VALORE = valoreUltimo,
+                                        VALORERESP = valoreRespUltimo,
                                         DATAAGGIORNAMENTO = DateTime.Now,
                                         IDLIVELLO = ibm.idLivello,
                                     };
@@ -645,6 +697,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.INDENNITABASE.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var ib in libNew)
+                                        {
+                                            dtrp.AssociaIndennitaBase_IB(ib.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                            dtrp.AssociaRiduzioniIB(ib.IDINDENNITABASE, db, ibm.dataInizioValidita);
+                                        }
+
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }
@@ -755,9 +819,17 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             };
 
                             db.INDENNITABASE.Add(ibOld1);
+
+                            db.SaveChanges();
+
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaIndennitaBase_IB(ibOld1.IDINDENNITABASE, db, delIB.DATAINIZIOVALIDITA);
+                                dtrp.AssociaRiduzioniIB(ibOld1.IDINDENNITABASE, db, delIB.DATAINIZIOVALIDITA);
+                            }
                         }
 
-                        db.SaveChanges();
+
 
                         using (objLogAttivita log = new objLogAttivita())
                         {
@@ -784,7 +856,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 List<INDENNITABASE> libm = new List<INDENNITABASE>();
                 libm = db.INDENNITABASE.Where(a => a.ANNULLATO == false
-                && a.IDLIVELLO==idLivello).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
+                && a.IDLIVELLO == idLivello).OrderBy(b => b.DATAINIZIOVALIDITA).ThenBy(c => c.DATAFINEVALIDITA).ToList();
                 if (libm.Count != 0)
                     tmp = libm.First().IDINDENNITABASE;
             }
@@ -798,8 +870,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 INDENNITABASE interessato = new INDENNITABASE();
                 interessato = db.INDENNITABASE.Find(idIndennitaBase);
-                tmp = db.INDENNITABASE.Where(a =>a.ANNULLATO == false
-                && a.IDLIVELLO== idLivello).ToList().Where(b => b.DATAFINEVALIDITA == interessato.DATAINIZIOVALIDITA.AddDays(-1)).ToList().First();
+                tmp = db.INDENNITABASE.Where(a => a.ANNULLATO == false
+                && a.IDLIVELLO == idLivello).ToList().Where(b => b.DATAFINEVALIDITA == interessato.DATAINIZIOVALIDITA.AddDays(-1)).ToList().First();
             }
             return tmp;
         }
@@ -810,10 +882,10 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 List<INDENNITABASE> libm = new List<INDENNITABASE>();
                 libm = db.INDENNITABASE.Where(a => a.ANNULLATO == false
-                && a.IDLIVELLO== idLivello).ToList().Where(b =>
-                b.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop())
-                && DataCampione > b.DATAINIZIOVALIDITA
-                && DataCampione < b.DATAFINEVALIDITA).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
+                && a.IDLIVELLO == idLivello).ToList().Where(b =>
+                 b.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop())
+                 && DataCampione > b.DATAINIZIOVALIDITA
+                 && DataCampione < b.DATAFINEVALIDITA).OrderBy(b => b.DATAINIZIOVALIDITA).ToList();
                 if (libm.Count != 0)
                 {
                     tmp.Add(libm[0].IDINDENNITABASE.ToString());
@@ -832,8 +904,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 List<INDENNITABASE> libm = new List<INDENNITABASE>();
                 libm = db.INDENNITABASE.Where(a => a.ANNULLATO == false
-                && a.IDLIVELLO== idLivello).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().Where(b => DataCampione == b.DATAINIZIOVALIDITA &&
-                 b.DATAFINEVALIDITA != Utility.DataFineStop()).ToList();
+                && a.IDLIVELLO == idLivello).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().Where(b => DataCampione == b.DATAINIZIOVALIDITA).ToList();// &&
+                  //b.DATAFINEVALIDITA != Utility.DataFineStop()).ToList();
                 if (libm.Count != 0)
                 {
                     tmp.Add(libm[0].IDINDENNITABASE.ToString());
@@ -852,7 +924,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 List<INDENNITABASE> libm = new List<INDENNITABASE>();
                 libm = db.INDENNITABASE.Where(a => a.ANNULLATO == false
-                && a.IDLIVELLO==idLivello).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().
+                && a.IDLIVELLO == idLivello).OrderBy(b => b.DATAINIZIOVALIDITA).ToList().
                 Where(b => DataCampione == b.DATAFINEVALIDITA
                 && b.DATAFINEVALIDITA != Convert.ToDateTime(Utility.DataFineStop())).ToList();
 
@@ -874,8 +946,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             {
                 List<INDENNITABASE> libm = new List<INDENNITABASE>();
                 libm = db.INDENNITABASE.Where(a => a.ANNULLATO == false
-                && a.IDLIVELLO== idLivello).ToList().Where(b =>
-                b.DATAFINEVALIDITA == Convert.ToDateTime(Utility.DataFineStop())).ToList();
+                && a.IDLIVELLO == idLivello).ToList().Where(b =>
+                 b.DATAFINEVALIDITA == Convert.ToDateTime(Utility.DataFineStop())).ToList();
                 if (libm.Count != 0)
                 {
                     tmp.Add(libm[0].IDINDENNITABASE.ToString());

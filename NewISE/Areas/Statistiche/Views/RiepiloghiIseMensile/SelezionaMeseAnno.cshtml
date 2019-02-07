@@ -1,0 +1,241 @@
+﻿<div id="dialog"></div>
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="form-group">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center" style="background-color:lightgrey"><h4><b>Riepilogo delle Operazioni Effettuate - Indennità di Sede Estera</b></h4></div>
+                <div class="panel-body" style="font-size:1.2em">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <strong>Mese Inizio Elaborazione</strong>
+                        </div>
+                        <div class="col-xs-3">
+                            <strong>Mese Fine Elaborazione</strong>
+                        </div>
+                        <div class="col-xs-3">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-3 date">
+                            <div class="input-group input-append date">
+                                @Html.DropDownList("mesiAnniElaboratiDa", ViewData["ElencoMesiAnniElaboratiDa"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaboratiDa", @class = "form-control select2 select2-select js-data-example-ajax" })
+                            
+                            </div>
+                        </div>
+
+                        <div class="col-xs-3 date">
+                            <div class="input-group input-append date">
+                                @Html.DropDownList("mesiAnniElaboratiA", ViewData["ElencoMesiAnniElaboratiA"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaboratiA", @class = "form-control select2 select2-select js-data-example-ajax" })
+
+                            </div>
+                        </div>
+
+                        <div class="col-xs-3 date">
+                            <div class="input-group input-append date">
+                                <button class="btn btn-small btn-success" id="opener">
+                                    <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+                                    Stampa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    $("#mesiAnniElaboratiDa").select2({
+        placeholder: "Seleziona il mese-anno",
+        allowClear: false,
+        language: "it",
+        width: '150',
+        ajax: {
+            delay: 250,
+            url: "/RiepiloghiIseMensile/PrelevaMesiAnniElab",
+            data: function (dati) {
+                //debugger;
+                var query = {
+                    search: dati.term,
+                    type: 'public'
+                }
+
+                // Query parameters will be ?search=[term]&type=public
+                return query;
+            },
+            dataType: 'json',
+            type: "post",
+            processResults: function (data) {
+                //debugger;
+                return {
+                    results: data.results
+                }
+            }
+        }
+    });
+
+    $("#mesiAnniElaboratiDa").change(function () {
+        //debugger;
+
+        if (this.value != "") {
+            var valore = this.value;
+
+        }
+
+    });
+
+ 
+
+    $("#mesiAnniElaboratiA").select2({
+        placeholder: "Seleziona il mese-anno",
+        allowClear: false,
+        language: "it",
+        width: '150',
+        ajax: {
+            delay: 250,
+            url: "/RiepiloghiIseMensile/PrelevaMesiAnniElab",
+            data: function (dati) {
+                //debugger;
+                var query = {
+                    search: dati.term,
+                    type: 'public'
+                }
+
+                // Query parameters will be ?search=[term]&type=public
+                return query;
+            },
+            dataType: 'json',
+            type: "post",
+            processResults: function (data) {
+                //debugger;
+                return {
+                    results: data.results
+                }
+            }
+        }
+    });
+
+    $("#mesiAnniElaboratiA").change(function () {
+        //debugger;
+
+        if (this.value != "") {
+            var valore = this.value;
+
+        }
+
+    });
+
+    function ValorizzazioneIniziale() {
+        //debugger;
+        var valore = $("#mesiAnniElaboratiDa").val();
+
+    }
+
+    
+
+    $(".form-control:input").datepicker();
+
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+    $("#dialog").dialog({
+        autoOpen: false,
+        show: {
+            //effect: "blind",
+            //duration: 1000
+        },
+        hide: {
+            //effect: "explode",
+            //duration: 1000
+        },
+        close: function (event, ui) {
+            $('.container').removeClass("NoOverflow");
+        },
+        height: windowHeight, width: windowWidth
+
+
+    });
+
+    $("#opener").on("click", function () {
+        //debugger;
+        if (ValidazioneIse()) { 
+            $('.container').addClass("NoOverflow");
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
+
+            var rotta = "/Statistiche/RiepiloghiIseMensile/RptRiepiloghiIseMensile";
+
+            var idElabIni = $("#mesiAnniElaboratiDa").val();
+            var idElabFin = $("#mesiAnniElaboratiA").val();
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    idElabIni: idElabIni,
+                    idElabFin: idElabFin
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+            });
+        } else {
+            $("#msgModalStatistiche").html("Mese Inizio Elaborazione non può essere superiore a Mese Fine Elaborazione");
+            $('#myModalErrorStatistiche').modal('toggle');
+        }
+    });
+
+    function ValidazioneIse() {
+        //debugger;
+        var meseAnnoDa = $("#mesiAnniElaboratiDa").val();
+        var meseAnnoA = $("#mesiAnniElaboratiA").val();
+
+        if (parseInt(meseAnnoA) < parseInt(meseAnnoDa)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    $("#mesiAnniElaboratiDa").select2({
+        placeholder: "Seleziona la Data Dal",
+        allowClear: true,
+        language: "it",
+        width: '170',
+        allowClear: false
+
+    });
+
+
+    $("#mesiAnniElaboratiA").select2({
+        placeholder: "Seleziona la Data Al",
+        allowClear: true,
+        language: "it",
+        width: '170',
+        allowClear: false
+
+    });
+
+
+</script>
+

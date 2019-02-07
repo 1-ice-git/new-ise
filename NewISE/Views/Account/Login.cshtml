@@ -15,6 +15,11 @@
         CountError = (int)ViewBag.ModelStateCount;
 
     }
+
+
+
+    string msgGoogle = ViewData["msgGoogle"].ToString();
+
 }
 <div class="row">
     <div class="col-xs-12">
@@ -26,21 +31,38 @@
 
                     <div id="Alert" class="alert alert-danger hide">
                         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                        @if (msgGoogle != string.Empty)
+                        {
+                            <span class="text-danger">@msgGoogle</span>
+                        }
                     </div>
 
                     @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", placeholder = "Matricola" } })
                     @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
                     @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", placeholder = "Password" } })
                     @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
-                    <button>login</button>
+                    <button id="btLogin" class="button">login</button>
 
                     @*<div style="margin-top: 5px;">
                             <label>Ricordati di me</label>@Html.EditorFor(model => model.ricordati)
                         </div>*@
 
-                    <p class="message">Dimenticata la password? <a onclick="Blocca();" href="/account/InviamiPassword">Inviami la password</a></p>
+                    <p class="message">
+                        Dimenticata la password? <a onclick=" Blocca(); " href="/account/InviamiPassword">Inviami la password</a>
+                    </p>
                 </form>
+                <div>
+                    <form id="LoginGoogle" action="/Account/LoginGoogle" method="post" novalidate="novalidate">
+                        @Html.AntiForgeryToken()
+                        <div>
+                            <input type="hidden" value="@returnUrl" name="ReturnUrl" />
+                            <button class="link" id="btLoginGogole" value="Accedi con Google" title="Login con utenza Google">Accedi con <img src="~/Immagini/Google_logo.jpg" width="65" /></button>
+                        </div>
+
+                    </form>
+                </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -57,10 +79,15 @@
                 $("#Alert").css("show");
             }
 
-            $("form").submit(function () {
-                if ($("form").valid()) {
+            $("#frmLogin").submit(function () {
+                if ($("#frmLogin").valid()) {
                     Blocca();
                 }
+
+            });
+
+            $("#LoginGoogle").submit(function () {
+                Blocca();
 
             });
 

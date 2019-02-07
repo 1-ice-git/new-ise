@@ -1,0 +1,150 @@
+﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
+@model NewISE.Models.ViewModel.TrasportoEffettiRientroModel
+
+@{
+    bool richiestaTER = Convert.ToBoolean(ViewData["richiestaTER"]);
+    bool attivazioneTER = Convert.ToBoolean(ViewData["attivazioneTER"]);
+    bool DocContributo = Convert.ToBoolean(ViewData["DocContributo"]);
+    bool rinunciaTERientro = Convert.ToBoolean(ViewData["rinunciaTERientro"]);
+    decimal idTERientro = Convert.ToDecimal(ViewData["idTERientro"]);
+    decimal indennita = Convert.ToDecimal(ViewData["indennita"]);
+    decimal perc_km = Convert.ToDecimal(ViewData["perc_km"]);
+    decimal contributoLordo = Convert.ToDecimal(ViewData["contributoLordo"]);
+}
+
+<script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
+
+<div class="row">
+    <div class="col-xs-12" style="text-align:center">
+        <h4><strong>ANTICIPO TRASPORTO EFFETTI RIENTRO</strong></h4>
+    </div>
+</div>
+<div class="table col-xs-12">
+    <div class="row">
+        <div class="row" style="margin-right:15px;margin-left:15px">
+            <hr />
+        </div>
+        <div class="col-xs-12">
+            <div class="col-xs-12 fa-border" style="background-color:white; border:solid;border-width:thin;margin-bottom:15px;border-radius:15px">
+                <div class="row">
+                    <div class="col-xs-4 text-right" style="padding-top:10px">
+                        <label for="indennitaRichiamo" class="control-label">@Html.DisplayNameFor(model => model.indennitaRichiamo )</label>
+                    </div>
+                    <div class="col-xs-3" style="padding-top:5px">
+                        @Html.TextBoxFor(model => model.indennitaRichiamo, string.Format("{0:N2}", Model.indennitaRichiamo), new { @readonly = "readonly", @class = "form-control text-right" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 text-right" style="padding-top:10px">
+                        <label for="percKM" class="control-label">@Html.DisplayNameFor(model => model.percKM)</label>
+                    </div>
+                    <div class="col-xs-3" style="padding-top:5px">
+                        @Html.TextBoxFor(model => model.percKM, string.Format("{0:N3}", Model.percKM), new { @readonly = "readonly", @class = "form-control text-right" })
+                    </div>
+
+                    <div class="col-xs-2 text-center" style="padding-top:10px">
+                        <label for="percAnticipo" class="control-label">@Html.DisplayNameFor(model => model.percAnticipo)</label>
+                    </div>
+                    <div class="col-xs-3 text-center" style="padding-top:10px">
+                        <label for="anticipo" class="control-label">@Html.DisplayNameFor(model => model.anticipo)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 text-right" style="padding-top:10px">
+                        <label for="contributoLordo" class="control-label">@Html.DisplayNameFor(model => model.contributoLordo)</label>
+                    </div>
+                    <div class="col-xs-3" style="padding-top:5px">
+                        @Html.TextBoxFor(model => model.contributoLordo, string.Format("{0:N2}", Model.contributoLordo), new { @readonly = "readonly", @class = "form-control text-right" })
+                    </div>
+                    <div class="col-xs-2" style="padding-top:5px">
+                        @Html.TextBoxFor(model => model.percAnticipo, string.Format("{0:N3}", Model.percAnticipo), new { @readonly = "readonly", @class = "form-control text-right" })
+                    </div>
+                    <div class="col-xs-3" style="padding-top:5px">
+                        @Html.TextBoxFor(model => model.anticipo, string.Format("{0:N2}", Model.anticipo), new { @readonly = "readonly", @class = "form-control text-right" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-8" style="text-align:right">
+                    <b>Modulo 2 - (Richiesta Contributo Fisso Omnicomprensivo - Rientro in Italia)</b>
+                </div>
+                <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
+                    @if (rinunciaTERientro)
+                    {
+                        <a id="linkElencoDocTE" disabled class="disabled">
+                            <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" />
+                        </a>
+                    }
+                    else
+                    {
+                        if (DocContributo)
+                        {
+                            <a href="#" onclick="ElencoDocumentiTER(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo_Rientro ));" id="linkElencoDocTER">
+                                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="#" onclick="ElencoDocumentiTER(@Convert.ToDecimal(@EnumTipoDoc.Contributo_Fisso_Omnicomprensivo_Rientro));" id="linkElencoDocTER">
+                                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione contributo fisso omnicomprensivo" />
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function ElencoDocumentiTER(idTipoDocumento) {
+        //debugger;
+        var idTERientro = parseInt('@idTERientro');
+
+        var rotta = "/TrasportoEffetti/ElencoDocumentiTERientro";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTipoDocumento: idTipoDocumento,
+                idTERientro: idTERientro
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divTrasportoEffettiRientro").empty();
+                $("#divTrasportoEffettiRientro").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+</script>
+
+

@@ -21,7 +21,7 @@ namespace NewISE.Areas.Parametri.Controllers
             ViewBag.escludiAnnullati = escludiAnnullati;
             try
             {
-                idLivello=CaricaComboTipConiuge(idLivello);
+                idLivello = CaricaComboTipConiuge(idLivello);
                 using (dtParMaggConiuge dtib = new dtParMaggConiuge())
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualMagConiugePrimoNonAnnullato(idLivello);
@@ -110,7 +110,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     var lm = dtl.GetTipologiaConiuge(idTipologiaConiuge);
                     ViewBag.Coniuge = lm;
                 }
-               
+
                 return PartialView();
             }
             catch (Exception ex)
@@ -121,7 +121,8 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciMaggiorazioneConiuge(PercentualeMagConiugeModel ibm, bool escludiAnnullati = true,bool aggiornaTutto=false)
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciMaggiorazioneConiuge(PercentualeMagConiugeModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             var r = new List<SelectListItem>();
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -133,13 +134,13 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtParMaggConiuge dtib = new dtParMaggConiuge())
                     {
-                        dtib.SetPercMagConiuge(ibm,aggiornaTutto);                    
+                        dtib.SetPercMagConiuge(ibm, aggiornaTutto);
                         decimal idTipologiaConiuge_ = CaricaComboTipConiuge(Convert.ToDecimal(ibm.idTipologiaConiuge));
                         ViewBag.idMinimoNonAnnullato = dtib.Get_Id_PercentualMagConiugePrimoNonAnnullato(idTipologiaConiuge_);
                         libm = dtib.getListPercMagConiuge(idTipologiaConiuge_, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
                     }
-                    return PartialView("PercMaggiorazioneConiuge",libm);
-                   // return RedirectToAction("PercMaggiorazioneConiuge", new { escludiAnnullati = escludiAnnullati, idTipologiaConiuge = ibm.idTipologiaConiuge });
+                    return PartialView("PercMaggiorazioneConiuge", libm);
+                    // return RedirectToAction("PercMaggiorazioneConiuge", new { escludiAnnullati = escludiAnnullati, idTipologiaConiuge = ibm.idTipologiaConiuge });
                 }
                 else
                 {

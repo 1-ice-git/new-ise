@@ -1,0 +1,363 @@
+﻿
+@{
+    decimal idAnnoMeseElaborato = Convert.ToDecimal(ViewData["idAnnoMeseElaborato"]);
+}
+
+<div class="row">
+    <div class="col-xs-offset-4 col-xs-4 text-right">
+        <button id="btInvioFD" class="btn btn-default" onclick="InvioFlussiDiretti();">Invia flussi diretti</button>
+    </div>
+
+    <div class="col-xs-4 text-right">
+        <button id="btInvioFm" class="btn btn-default" onclick="InvioFlussiMensili();">Invia flussi cedolino/contabilità</button>
+    </div>
+
+</div>
+
+<div class="modal fade" id="myModalInviiDiretti" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-info text-info" id="myModalLabel">?</h4>
+            </div>
+            <div class="modal-body alert alert-info text-info">
+                <p id="msgModalInfo" class="text-info">Confermare l'invio dei flussi diretti?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btInvioFlussiDiretti" type="button" class="btn btn-info" data-dismiss="modal" onclick=" InviaFlussiDiretti(@idAnnoMeseElaborato); ">OK</button>
+                <button id="btAnnulla" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalInviiMensili" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-info text-info" id="myModalLabelMensili">?</h4>
+            </div>
+            <div class="modal-body alert alert-info text-info">
+                <p id="msgModalInfoMensili" class="text-info">La conferma effettuerà il calcolo dei dipendenti prima di effettuare l'invio, Confermare?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcediMensili" type="button" class="btn btn-info" data-dismiss="modal" onclick=" CalcolaElabPreInvioFlussiMensili(@idAnnoMeseElaborato); ">OK</button>
+                <button id="btAnnullaMensili" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModalConfInviiMensili" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-info text-info" id="myModalLabelConfMensili">?</h4>
+            </div>
+            <div class="modal-body alert alert-info text-info">
+                <p id="msgModalInfoConfMensili" class="text-info">Confermare l'invio dei flussi mensili?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btProcediConfMensili" type="button" class="btn btn-info" data-dismiss="modal" onclick=" InviaFlussiMensili(@idAnnoMeseElaborato); ">OK</button>
+                <button id="btAnnullaConfMensili" type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+
+
+    function InvioFlussiDiretti() {
+        //$("#msgModalInfo").text(response);
+        $('#myModalInviiDiretti').modal('toggle');
+    }
+
+    function InvioFlussiMensili() {
+        //$("#msgModalInfo").text(response);
+        $('#myModalInviiMensili').modal('toggle');
+    }
+
+    function GestionePulsanteInviaFlussiMensili() {
+        //debugger;
+        var rotta = "/Elaborazioni/GestionePulsanteInvioFlussiMensili";
+        var valore = parseInt('@idAnnoMeseElaborato');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAnnoMeseElab: valore },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    if (result.pc == true) {
+                        $("#btInvioFm").attr("disabled", "disabled");
+                    } else {
+                        $("#btInvioFm").removeAttr('disabled');
+                    }
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
+
+    function VerificaFlussiDirettiDaInviare(idAnnoMeseElaborato) {
+        //debugger;
+        var rotta = "/Elaborazioni/VerificaFlussiDirettiDaInviare";
+        var vfd = false;
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    vfd = result.vfd;
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+        return vfd;
+    }
+
+    function CalcolaElabPreInvioFlussiMensili(idAnnoMeseElaborato) {
+        //debugger;
+
+        var rotta = "/Elaborazioni/CalcolaElaborazioneMensile";
+
+        //var lCheck = $('#TabElencoDipDaElaborare > tbody > tr > td > :checkbox');
+        var llDip = $('#TabElencoDipDaElaborare > tbody > tr > td > #item_idDipendente');
+        var lDip = new Array();
+
+        //var valore = $("#mesiAnniElaborati").val();
+
+        for (var i = 0; i < llDip.length; i++) {
+            var dip = llDip[parseInt(i)].value;
+            lDip.push(dip);
+        }
+
+        //debugger;
+
+        if (lDip.length > 0) {
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { dipendenti: lDip, idAnnoMeseElaborato: idAnnoMeseElaborato },
+                dataType: 'html',
+                traditional: true,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$("#DialogNewDoc").dialog("destroy");
+                    //$("#divEffettoLoadAutNoDoc").show("slow");
+
+                },
+                success: function (result) {
+                    //debugger;
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    $("#ContElencoElaborazioniMensili").empty();
+                    $("#ContElencoElaborazioniMensili").html(result);
+
+                    //RicercaDocumenti();
+
+                    $('#myModalConfInviiMensili').modal('toggle');
+
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    ErroreElaborazioneAjax(msg);
+                }
+
+            });
+        }
+
+
+    }
+
+    function InviaFlussiMensili(idAnnoMeseElaborato) {
+        //debugger;
+
+        var rotta = "/Elaborazioni/InviaFlussiMensili";
+        //TabLiquidazioniMensili
+
+        var lIdTeorici = $('#TabLiquidazioniMensili > tbody > tr > td > #item_idTeorici');
+        var lTeorici = new Array();
+        var vfd = VerificaFlussiDirettiDaInviare(idAnnoMeseElaborato);
+
+        if (vfd == true) {
+            InfoElaborazioneAjax("Prima di effettuare l'invio dei flussi mensili è necessario inviare tutti i movimenti relativi agli invii diretti.");
+        } else {
+            for (var i = 0; i < lIdTeorici.length; i++) {
+                var idTeorico = lIdTeorici[parseInt(i)].value;
+                if ($.isNumeric(idTeorico)) {
+                    lTeorici.push(idTeorico);
+                }
+            }
+
+            if (lTeorici.length > 0) {
+                $.ajax({
+                    url: rotta,
+                    type: "POST", //Le info testuali saranno passate in POST
+                    data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
+                    dataType: 'json',
+                    async: false,
+                    beforeSend: function () {
+                        //debugger;
+                        //VerificaAutenticazione();
+                        //$('#inviaDocModal').modal('show');
+                        //Blocca();
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        if (result.err == "") {
+                            InfoElaborazioneAjax(result.msg);
+                            DatiLiquidazioniMensili(idAnnoMeseElaborato);
+                            DipendentiDaElaborare(idAnnoMeseElaborato);
+                            GesionePulsanteCalcola();
+
+                        } else {
+                            ErroreElaborazioneAjax(result.err);
+                        }
+
+                    },
+                    error: function (error) {
+                        //debugger;
+                        //Sblocca();
+                        var msg = error.responseText;
+                        ErroreElaborazioneAjax(msg);
+                    }
+                });
+            }
+            else {
+                InfoElaborazioneAjax("Non sono presenti movimenti per l'invio dei flussi, effettuare un elaborazione.");
+            }
+        }
+
+
+
+    }
+
+    function InviaFlussiDiretti(idAnnoMeseElaborato) {
+        //debugger;
+        var rotta = "/Elaborazioni/InviaFlussiDirettiOA";
+
+        var lCheck = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > :checkbox');
+        //var lElaborato = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > #item_Elaborato');
+        var lIdTeorici = $('#TabLiquidazioniDiretteDaInviare > tbody > tr > td > #item_idTeorici');
+
+        var lTeorici = new Array();
+
+        //var valore = $("#mesiAnniElaborati").val();
+
+
+        for (var i = 0; i < lCheck.length; i++) {
+            if (lCheck[parseInt(i)].checked) {
+                var idTeorico = lIdTeorici[parseInt(i)].value;
+                if ($.isNumeric(idTeorico)) {
+                    lTeorici.push(idTeorico);
+                }
+
+                //var elaborato = lElaborato[parseInt(i)].value;
+                //if (elaborato == "False") {
+                //    lTeorici.push(idTeorico);
+                //}
+
+            }
+        }
+
+
+        if (lTeorici.length > 0) {
+            $.ajax({
+                url: rotta,
+                type: "POST", //Le info testuali saranno passate in POST
+                data: { idAnnoMeseElaborato: idAnnoMeseElaborato, Teorici: lTeorici },
+                dataType: 'json',
+                async: false,
+                beforeSend: function () {
+                    //debugger;
+                    //VerificaAutenticazione();
+                    //$('#inviaDocModal').modal('show');
+                    //Blocca();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    if (result.err == "") {
+                        InfoElaborazioneAjax(result.msg);
+                        DatiLiquidazioniDirette(idAnnoMeseElaborato);
+                    } else {
+                        ErroreElaborazioneAjax(result.err);
+                    }
+
+                },
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+        } else {
+            InfoElaborazioneAjax("Selezionare almeno una voce per l'invio diretto a contabilità");
+        }
+
+
+
+
+    }
+</script>

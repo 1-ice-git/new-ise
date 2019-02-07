@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NewISE.Models
 {
-    
+
 
     public class LogAttivitaModel
     {
@@ -13,7 +13,7 @@ namespace NewISE.Models
         public decimal idLog { get; set; }
 
         [Required(ErrorMessage = "Id Utente Loggato richiesto")]
-        public decimal idUtenteLoggato { get; set; }
+        public decimal idDipendente { get; set; }
 
         public decimal? idTrasferimento { get; set; } = null;
 

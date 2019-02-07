@@ -1,0 +1,175 @@
+﻿@using NewISE.Models.ViewModel
+@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
+@model IEnumerable<NewISE.Models.DBModel.DocumentiModel>
+
+@{
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    //EnumChiamante enChiamante = EnumChiamante.ProvvidenzeScolastiche;
+    string DescrizionePS = Convert.ToString(ViewData["DescrizionePS"]);
+    decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
+    decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasfProvScolastiche"]);
+}
+
+<table class="table" id="tabElencoDocumentiPSInseriti">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.nomeDocumento)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.estensione)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataInserimento)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nomeDocumento)
+                </td>
+
+
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.estensione)
+                </td>
+
+
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.dataInserimento)
+                </td>
+
+
+                <td class="text-center">
+                    <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare @DescrizionePS." /></a>
+                </td>
+
+                <td class="text-center">
+
+                    <a href="#" onclick="EliminaDocumentoPS(@item.idDocumenti)" id="linkEliminaDocumentoPS">
+                        <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina @DescrizionePS" />
+                    </a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<div class="modal fade" id="ModalEliminaDocumentoPS" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaDocumentoPSLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="EliminaDocumentoPSLabel">Elimina @DescrizionePS</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <input type="hidden" id="hIdDocPS" />
+                <p><label>Eliminare il documento selezionato?</label></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ConfermaEliminaDocumentoPS();">Ok</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Hidden("hIdDocumentoPS")
+
+<script type="text/javascript">
+    $("#tabElencoDocumentiPSInseriti").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 4,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "order": [[0,"desc"],[2, "desc"]]
+    });
+
+    function EliminaDocumentoPS(idDoc) {
+        $("#hIdDocumentoPS").val(idDoc);
+        $("#ModalEliminaDocumentoPS").modal("show");
+    }
+
+    function ConfermaEliminaDocumentoPS() {
+        //debugger;
+        var rotta = "/ProvvidenzeScolastiche/EliminaDocumentoPS";
+        var idDocumento = parseInt($("#hIdDocumentoPS").val());
+        $("#ModalEliminaDocumentoPS").modal("hide");
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idDocumento: idDocumento }, //I dati, forniti sotto forma di oggetto FormData
+            dataType: 'json',
+            cache: false,
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err != "" && result.err != undefined) {
+                    ErroreElaborazioneAjax(result.err);
+                }
+                else {
+                    //InfoElaborazioneAjax(result.msg);
+                    //GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
+                    ElencoDocumentiPS(@idTipoDocumento, @idTrasfProvScolastiche);
+                }
+            },
+            complete: function () {
+            },
+            error: function (error) {
+                //debugger;
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+
+    $("#ModalEliminaDocumentoPS").on("hidden.bs.modal", function () {
+        //debugger;
+        AttivitaProvvidenze();
+    });
+</script>

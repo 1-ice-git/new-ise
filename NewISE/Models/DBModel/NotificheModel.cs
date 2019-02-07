@@ -21,11 +21,21 @@ namespace NewISE.Models.DBModel
         //public decimal idDestinatario { get; set; }
         public string Oggetto { get; set; }
         [Display(Name = "Contenuto Messaggio")]
+        [Required]
         public string corpoMessaggio { get; set; }
         public byte[] Allegato { get; set; }
         public string Nominativo { get; set; }
-        public IList<DestinatarioModel> lDestinatari { get; set; }
+        public string[] lDestinatari { get; set; }
+        public string[] toCc { get; set; }
         [Display(Name = "Destinatari")]
         public decimal NumeroDestinatari { get; set; }
+        public HttpPostedFileBase PDFUpload { get; set; }
+        public string NomeFile { get; set; }
+        public string Estensione { get; set; }
+        public IList<DestinatarioModel> lDestinatariObj { get; set; }
+        public IList<DestinatarioModel> lToCc { get; set; }
+        public DipendentiModel Dipendenti { get; set; }
+        [Display(Name = "Ricevuta ic copia")]
+        public bool tocc { get; set; }
     }
 }

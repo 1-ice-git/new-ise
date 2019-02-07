@@ -20,7 +20,7 @@ namespace NewISE
             );
             routes.MapRoute(
                 name: "Home",
-                url: "Home/Index"                
+                url: "Home/Index"
             );
 
             routes.MapRoute(
@@ -47,6 +47,23 @@ namespace NewISE
             routes.MapRoute(
                name: "Notifiche",
                url: "Notifiche/index"
+           );
+            routes.MapRoute(
+                name: "LeggiNotifichePDF",
+                url: "Notifiche/LeggiNotifichePDF/{id}"
+            );
+            routes.MapRoute(
+               name: "LeggiViaggiCongedoPDF",
+               url: "ViaggiCongedo/LeggiViaggiCongedoPDF/{id}"
+           );
+            routes.MapRoute(
+                name: "Elaborazioni",
+                url: "Elaborazioni/Index"
+            );
+
+            routes.MapRoute(
+               name: "Allineamento",
+               url: "Allineamento/Index"
            );
         }
     }

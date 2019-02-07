@@ -1,0 +1,270 @@
+﻿<div class="form-group-sm row">
+    <div class="margineTop5px">
+        <div class="col-xs-3">
+            @Html.Label("lblMatricole", "Nominativo", new { @class = "control-label " }) <span class="text-danger">*</span>
+        </div>
+        <div class="select2-container select2-container--classic col-xs-9">
+            <select id="ddlMatricole" name="idDipendente" class="form-control select2 select2-select js-data-example-ajax"></select>
+        </div>
+
+    </div>
+</div>
+
+<div class="form-group-sm row">
+    <div class="margineTop5px">
+        <div class="col-xs-3">
+            @Html.Label("lblVoci", "Voce", new { @class = "control-label" }) <span class="text-danger">*</span>
+        </div>
+        <div class="select2-container select2-container--classic col-xs-9">
+            <select id="ddlVoci" name="IdVoce" class="form-control select2 select2-select js-data-example-ajax"></select>
+        </div>
+    </div>
+</div>
+
+<div class="form-group-sm row">
+    <div class="margineTop5px">
+        <div class="col-xs-3">
+            @Html.Label("lblImporto", "Importo", new { @class = "control-label" }) <span class="text-danger">*</span>
+        </div>
+        <div class="col-xs-9">
+            <input type="text" id="txtImporto" onfocus=" SelectNumer(); " value="0" style="width: 266px;" class="form-control text-right" />
+            <input type="hidden" id="hImporto" name="Importo" value="0" />
+        </div>
+
+    </div>
+</div>
+
+<div class="form-group-sm row">
+    <div class="margineTop5px">
+        <div class="col-xs-2">
+            @Html.Label("lblDa", "Da", new { @class = "control-label" }) <span class="text-danger">*</span>
+        </div>
+        <div class="select2-container select2-container--classic col-xs-5">
+            @*<select id="ddlMeseDa" name="MeseDa" class="form-control select2 select2-select js-data-example-ajax"></select>*@
+            @Html.DropDownList("MeseDa", ViewBag.ListaMesi as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
+        </div>
+    </div>
+    <div class="margineTop5px">
+        <div class="select2-container select2-container--classic col-xs-5">
+            @*<select id="ddlAnnoDa" name="AnnoDa" class="form-control select2 select2-select js-data-example-ajax"></select>*@
+            @Html.DropDownList("AnnoDa", ViewBag.ListaAnni as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
+        </div>
+    </div>
+</div>
+
+<div class="form-group-sm row">
+    <div class="margineTop5px">
+        <div class="col-xs-2">
+            @Html.Label("lblA", "A", new { @class = "control-label" }) <span class="text-danger">*</span>
+        </div>
+        <div class="select2-container select2-container--classic col-xs-5">
+            @*<select id="ddlMeseA" name="MeseA" class="form-control select2 select2-select js-data-example-ajax"></select>*@
+            @Html.DropDownList("MeseA", ViewBag.ListaMesi as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
+        </div>
+    </div>
+    <div class="margineTop5px">
+        <div class="select2-container select2-container--classic col-xs-5">
+            @*<select id="ddlAnnoA" name="AnnoA" class="form-control select2 select2-select js-data-example-ajax"></select>*@
+            @Html.DropDownList("AnnoA", ViewBag.ListaAnni as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select" })
+        </div>
+    </div>
+</div>
+<hr />
+<div class="form-group row">
+    <div class="col-xs-offset-8">
+        <input type="submit" class="btn btn-default" value="Inserisci" title="Inserisce una nuova voce manuale." />
+    </div>
+</div>
+
+<script type="text/javascript">
+    txtImporto = new AutoNumeric('#txtImporto', autoNumericOptionsEuro);
+
+
+    function SelectNumer() {
+        txtImporto.selectNumber();
+
+    }
+
+    $('form').submit(function () {
+        //debugger;
+        //var form = $(this);
+        var str = txtImporto.getNumber().toString().replace(".", ",");
+        $("#hImporto").val(str);
+        return true;
+    });
+
+
+    $("#AnnoDa").select2({
+        placeholder: "Anno",
+        allowClear: false,
+        language: "it",
+        width: '133',
+        //ajax: {
+        //    delay: 250,
+        //    url: "/Elaborazioni/PrelevaAnni",
+        //    data: function (dati) {
+        //        //debugger;
+        //        var query = {
+        //            search: dati.term,
+        //            type: 'public'
+        //        }
+
+        //        // Query parameters will be ?search=[term]&type=public
+        //        return query;
+        //    },
+        //    dataType: 'json',
+        //    type: "post",
+        //    processResults: function (data) {
+        //        //debugger;
+        //        return {
+        //            results: data.results
+        //        }
+        //    }
+        //}
+    });
+
+    $("#MeseDa").select2({
+        placeholder: "Mese",
+        allowClear: false,
+        language: "it",
+        width: '150',
+        //ajax: {
+        //    delay: 250,
+        //    url: "/Elaborazioni/PrelevaMesi",
+        //    data: function (dati) {
+        //        //debugger;
+        //        var query = {
+        //            search: dati.term,
+        //            type: 'public'
+        //        }
+
+        //        // Query parameters will be ?search=[term]&type=public
+        //        return query;
+        //    },
+        //    dataType: 'json',
+        //    type: "post",
+        //    processResults: function (data) {
+        //        //debugger;
+        //        return {
+        //            results: data.results
+        //        }
+        //    }
+        //}
+    });
+
+    $("#AnnoA").select2({
+        placeholder: "Anno",
+        allowClear: false,
+        language: "it",
+        width: '133',
+        //ajax: {
+        //    delay: 250,
+        //    url: "/Elaborazioni/PrelevaAnni",
+        //    data: function (dati) {
+        //        //debugger;
+        //        var query = {
+        //            search: dati.term,
+        //            type: 'public'
+        //        }
+
+        //        // Query parameters will be ?search=[term]&type=public
+        //        return query;
+        //    },
+        //    dataType: 'json',
+        //    type: "post",
+        //    processResults: function (data) {
+        //        //debugger;
+        //        return {
+        //            results: data.results
+        //        }
+        //    }
+        //}
+    });
+
+    $("#MeseA").select2({
+        placeholder: "Mese",
+        allowClear: false,
+        language: "it",
+        width: '150',
+        //ajax: {
+        //    delay: 250,
+        //    url: "/Elaborazioni/PrelevaMesi",
+        //    data: function (dati) {
+        //        //debugger;
+        //        var query = {
+        //            search: dati.term,
+        //            type: 'public'
+        //        }
+
+        //        // Query parameters will be ?search=[term]&type=public
+        //        return query;
+        //    },
+        //    dataType: 'json',
+        //    type: "post",
+        //    processResults: function (data) {
+        //        //debugger;
+        //        return {
+        //            results: data.results
+        //        }
+        //    }
+        //}
+    });
+
+    $("#ddlMatricole").select2({
+        placeholder: "Seleziona il nominativo",
+        allowClear: false,
+        language: "it",
+        width: '266',
+        ajax: {
+            delay: 250,
+            url: "/Elaborazioni/PrelevaMatricole",
+            data: function (dati) {
+                //debugger;
+                var query = {
+                    search: dati.term,
+                    type: 'public'
+                }
+
+                // Query parameters will be ?search=[term]&type=public
+                return query;
+            },
+            dataType: 'json',
+            type: "post",
+            processResults: function (data) {
+                //debugger;
+                return {
+                    results: data.results
+                }
+            }
+        }
+    });
+
+    $("#ddlVoci").select2({
+        placeholder: "Seleziona la voce",
+        allowClear: false,
+        language: "it",
+        width: '266',
+        ajax: {
+            delay: 250,
+            url: "/Elaborazioni/PrelevaVoci",
+            data: function (dati) {
+                //debugger;
+                var query = {
+                    search: dati.term,
+                    type: 'public'
+                }
+
+                // Query parameters will be ?search=[term]&type=public
+                return query;
+            },
+            dataType: 'json',
+            type: "post",
+            processResults: function (data) {
+                //debugger;
+                return {
+                    results: data.results
+                }
+            }
+        }
+    });
+</script>

@@ -7,11 +7,13 @@ using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using NewISE.Models.ViewModel;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel.dtObj
 {
     public class dtCalendarioEventi : IDisposable
     {
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
@@ -75,10 +77,10 @@ namespace NewISE.Models.DBModel.dtObj
 
         public void ModificaInCompletatoCalendarioEvento(decimal idTrasferimento, EnumFunzioniEventi fe)
         {
-
+            decimal funzEv = (decimal)fe;
             using (ModelDBISE db = new ModelDBISE())
             {
-                decimal funzEv = (decimal)fe;
+
                 var lce =
                     db.CALENDARIOEVENTI.Where(
                         c =>
@@ -102,7 +104,6 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                 }
             }
-
         }
         public void ModificaInCompletatoCalendarioEvento(decimal idTrasferimento, EnumFunzioniEventi fe, ModelDBISE db)
         {
@@ -129,9 +130,7 @@ namespace NewISE.Models.DBModel.dtObj
                       "CALENDARIOEVENTI", db, idTrasferimento, y.IDCALENDARIOEVENTI);
                 }
             }
-
         }
-
         public void AnnullaMessaggioEvento(decimal idTrasferimento, EnumFunzioniEventi fe, ModelDBISE db)
         {
             decimal funzEv = (decimal)fe;
@@ -159,15 +158,44 @@ namespace NewISE.Models.DBModel.dtObj
             }
 
         }
+        public void AnnullaMessaggioEvento(decimal idTrasferimento, EnumFunzioniEventi fe)
+        {
+            decimal funzEv = (decimal)fe;
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                var lce =
+                db.CALENDARIOEVENTI.Where(
+                    a =>
+                        a.IDTRASFERIMENTO == idTrasferimento && a.IDFUNZIONIEVENTI == funzEv && a.COMPLETATO == false &&
+                        a.ANNULLATO == false).OrderByDescending(a => a.IDCALENDARIOEVENTI).ToList();
 
-        public List<ElencoElementiHome> GetListaElementiHome()
+                if (lce?.Any() ?? false)
+                {
+                    CALENDARIOEVENTI y = lce.First();
+                    y.ANNULLATO = true;
+                    int i = db.SaveChanges();
+                    if (i <= 0)
+                    {
+                        throw new Exception("Errore nella fase di modifica in 'Completato' dell'evento per il calendario eventi.");
+                    }
+                    else
+                    {
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Annullato, "Annullamento del evento.",
+                          "CALENDARIOEVENTI", db, idTrasferimento, y.IDCALENDARIOEVENTI);
+                    }
+                }
+            }
+        }
+
+        public List<ElencoElementiHome> GetListaElementiHome(decimal idStatoHome)
         {
             List<ElencoElementiHome> tmp = new List<ElencoElementiHome>();
             List<ElencoElementiHome> tmp1 = new List<ElencoElementiHome>();
             List<ElencoElementiHome> tmp2 = new List<ElencoElementiHome>();
             List<ElencoElementiHome> tmpAll = new List<ElencoElementiHome>();
             AccountModel am = new AccountModel();
-
+            if (idStatoHome == 0)
+                idStatoHome = (decimal)EnumStatoHome.Attivi;
             try
             {
                 bool admin = Utility.Amministratore(out am);
@@ -176,6 +204,7 @@ namespace NewISE.Models.DBModel.dtObj
                     if (admin)
                     {
                         //Completati
+
                         tmp = (from e in db.CALENDARIOEVENTI
                                where e.COMPLETATO == true &&
                                      e.DATACOMPLETATO.Value.Month == DateTime.Now.Month &&
@@ -193,7 +222,9 @@ namespace NewISE.Models.DBModel.dtObj
                                    IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
                                    dataCompletato = e.DATACOMPLETATO
                                }).ToList();
+
                         //Attivi
+
                         tmp1 = (from e in db.CALENDARIOEVENTI
                                 where e.COMPLETATO == false &&
                                       e.ANNULLATO == false &&
@@ -210,7 +241,9 @@ namespace NewISE.Models.DBModel.dtObj
                                     IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
                                     dataCompletato = e.DATACOMPLETATO
                                 }).ToList();
+
                         //Scaduti
+
                         tmp2 = (from e in db.CALENDARIOEVENTI
                                 where e.COMPLETATO == false &&
                                       e.ANNULLATO == false &&
@@ -227,9 +260,11 @@ namespace NewISE.Models.DBModel.dtObj
                                     IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
                                     dataCompletato = e.DATACOMPLETATO
                                 }).ToList();
+
                     }
                     else
                     {
+
                         tmp = (from e in db.CALENDARIOEVENTI
                                where e.COMPLETATO == true &&
                                      e.DATACOMPLETATO.Value.Month == DateTime.Now.Month &&
@@ -249,6 +284,7 @@ namespace NewISE.Models.DBModel.dtObj
                                    dataCompletato = e.DATACOMPLETATO
                                }).ToList();
 
+
                         tmp1 = (from e in db.CALENDARIOEVENTI
                                 where e.COMPLETATO == false &&
                                       e.ANNULLATO == false &&
@@ -267,6 +303,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
                                     dataCompletato = e.DATACOMPLETATO
                                 }).ToList();
+
+
                         tmp2 = (from e in db.CALENDARIOEVENTI
                                 where e.COMPLETATO == false &&
                                       e.ANNULLATO == false &&
@@ -284,14 +322,28 @@ namespace NewISE.Models.DBModel.dtObj
                                     IdDipendente = e.TRASFERIMENTO.DIPENDENTI.IDDIPENDENTE,
                                     dataCompletato = e.DATACOMPLETATO
                                 }).ToList();
+
                     }
+                    switch ((EnumStatoHome)idStatoHome)
+                    {
+                        case EnumStatoHome.Completati:
+                            tmpAll.AddRange(tmp);
+                            break;
 
-                    tmpAll.AddRange(tmp2);
-                    tmpAll.AddRange(tmp1);
-                    tmpAll.AddRange(tmp);
+                        case EnumStatoHome.Attivi:
+                            tmpAll.AddRange(tmp1);
+                            break;
+
+                        case EnumStatoHome.Scaduti:
+                            tmpAll.AddRange(tmp2);
+                            break;
+                        default:
+                            tmpAll.AddRange(tmp2);
+                            tmpAll.AddRange(tmp1);
+                            tmpAll.AddRange(tmp);
+                            break;
+                    }
                 }
-
-
                 return (tmpAll);
             }
             catch (Exception ex)
@@ -634,10 +686,29 @@ namespace NewISE.Models.DBModel.dtObj
 
                 return tmp;
             }
-            catch (Exception eex)
+            catch (Exception)
             {
                 return null;
             }
+        }
+
+        public bool EsisteEventoTrasferimentoDaAttivare(decimal idTrasferimento, EnumFunzioniEventi fe, ModelDBISE db)
+        {
+            decimal funzEv = (decimal)fe;
+            bool ret = false;
+
+            var lce =
+                db.CALENDARIOEVENTI
+                    .Where(
+                        c =>
+                            c.IDTRASFERIMENTO == idTrasferimento && c.IDFUNZIONIEVENTI == funzEv && c.ANNULLATO == false).OrderByDescending(a => a.IDCALENDARIOEVENTI)
+                    .ToList();
+
+            if (lce?.Any() ?? false)
+            {
+                ret = true;
+            }
+            return ret;
         }
     }
 }

@@ -8,8 +8,10 @@ using NewISE.Interfacce.Modelli;
 using System.IO;
 using System.Net;
 using System.Net.Mime;
+using NewISE.EF;
 using NewISE.Models.Config;
 using NewISE.Models.Config.s_admin;
+using NewISE.Models.Enumeratori;
 
 
 namespace NewISE.Models.Tools
@@ -26,123 +28,173 @@ namespace NewISE.Models.Tools
 
             try
             {
-                bool test = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Ambiente"]);
+                EnumTipoAmbiente RealeSimulazione = (EnumTipoAmbiente)Convert.ToDecimal(System.Configuration.ConfigurationManager.AppSettings["RealeSimulazione"]);
 
-                AccountModel am = new AccountModel();
-                am = Utility.UtenteAutorizzato();
-
-                if (test)
+                if (RealeSimulazione == EnumTipoAmbiente.Reale)
                 {
-                    msgMail.destinatario.Clear();
-                    msgMail.destinatario.Add(new Destinatario()
+                    bool test = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Ambiente"]);
+
+                    AccountModel am = new AccountModel();
+                    am = Utility.UtenteAutorizzato();
+
+                    List<AccountModel> lacm = new List<AccountModel>();
+
+                    using (ModelDBISE db = new ModelDBISE())
                     {
-                        Nominativo = am.nominativo,
-                        EmailDestinatario = am.eMail
-                    });
-
-                    msgMail.cc.Clear();
-                }
-                else if (am.idRuoloUtente == 1)
-                {
-                    msgMail.destinatario.Clear();
-                    msgMail.destinatario.Add(new Destinatario()
-                    {
-                        Nominativo = am.nominativo,
-                        EmailDestinatario = am.eMail
-                    });
-
-                    msgMail.cc.Clear();
-                }
-
-
-                MailMessage messaggio = new MailMessage();
-                //string NomeMittente = string.Empty;
-
-                if (msgMail.mittente == null || string.IsNullOrWhiteSpace(msgMail.mittente.EmailMittente))
-                {
-                    string mittenteIse = System.Configuration.ConfigurationManager.AppSettings["EmailISE"];
-                    messaggio.From = new MailAddress(mittenteIse, "ISE");
-                }
-                else
-                {
-
-                    messaggio.From = new MailAddress(msgMail.mittente.EmailMittente, msgMail.mittente.Nominativo);
-                }
-
-                List<Destinatario> Destinatari = msgMail.destinatario.ToList();
-                foreach (var d in Destinatari)
-                {
-                    messaggio.To.Add(new MailAddress(d.EmailDestinatario, d.Nominativo));
-                }
-
-                if (msgMail.cc?.Any() ?? false)
-                {
-                    List<Destinatario> lcc = msgMail.cc.ToList();
-
-                    foreach (var cc in lcc)
-                    {
-                        messaggio.CC.Add(new MailAddress(cc.EmailDestinatario, cc.Nominativo));
-                    }
-                }
-
-                using (Config.Config cfg = new Config.Config())
-                {
-                    sAdmin sad = new sAdmin();
-                    sad = cfg.SuperAmministratore();
-                    if (sad.s_admin.Count > 0)
-                    {
-                        foreach (var sa in sad.s_admin)
+                        var ldip =
+                            db.DIPENDENTI.Where(
+                                a =>
+                                    a.ABILITATO == true &&
+                                    (
+                                        a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.SuperAmministratore ||
+                                        a.UTENTIAUTORIZZATI.IDRUOLOUTENTE == (decimal)EnumRuoloAccesso.Amministratore)
+                                    )
+                                .OrderBy(a => a.COGNOME)
+                                .ThenBy(a => a.NOME)
+                                .ToList();
+                        if (ldip?.Any() ?? false)
                         {
-                            messaggio.Bcc.Add(new MailAddress(sa.email, sa.nominatico));
+                            foreach (var dip in ldip)
+                            {
+                                AccountModel acm = new AccountModel()
+                                {
+                                    idDipendente = dip.IDDIPENDENTE,
+                                    idRuoloUtente = dip.UTENTIAUTORIZZATI.IDRUOLOUTENTE,
+                                    cognome = dip.COGNOME,
+                                    nome = dip.NOME,
+                                    eMail = dip.EMAIL,
+                                    password = dip.UTENTIAUTORIZZATI.PSW,
+                                    utente = dip.UTENTIAUTORIZZATI.UTENTE
+                                };
+
+                                lacm.Add(acm);
+                            }
+                        }
+                        else
+                        {
+                            return false;
+                        }
+
+                    }
+
+
+
+                    if (test)
+                    {
+                        msgMail.destinatario.Clear();
+
+                        foreach (var acm in lacm)
+                        {
+                            msgMail.destinatario.Add(new Destinatario()
+                            {
+                                Nominativo = acm.cognome + " " + acm.nome,
+                                EmailDestinatario = acm.eMail
+                            });
+                        }
+
+                        msgMail.cc.Clear();
+                    }
+                    else if (am.idRuoloUtente ==(decimal)EnumRuoloAccesso.SuperAmministratore)
+                    {
+                        msgMail.destinatario.Clear();
+                        msgMail.destinatario.Add(new Destinatario()
+                        {
+                            Nominativo = am.nominativo,
+                            EmailDestinatario = am.eMail
+                        });
+
+                        msgMail.cc.Clear();
+                    }
+
+
+                    MailMessage messaggio = new MailMessage();
+                    //string NomeMittente = string.Empty;
+
+                    if (msgMail.mittente == null || string.IsNullOrWhiteSpace(msgMail.mittente.EmailMittente) || test)
+                    {
+                        string mittenteIse = System.Configuration.ConfigurationManager.AppSettings["EmailISE"];
+                        messaggio.From = new MailAddress(mittenteIse, "ISE");
+                    }
+                    else
+                    {
+
+                        messaggio.From = new MailAddress(msgMail.mittente.EmailMittente, msgMail.mittente.Nominativo);
+                    }
+
+                    List<Destinatario> Destinatari = msgMail.destinatario.ToList();
+                    foreach (var d in Destinatari)
+                    {
+                        messaggio.To.Add(new MailAddress(d.EmailDestinatario, d.Nominativo));
+                    }
+
+                    if (msgMail.cc?.Any() ?? false)
+                    {
+                        List<Destinatario> lcc = msgMail.cc.ToList();
+
+                        foreach (var cc in lcc)
+                        {
+                            messaggio.CC.Add(new MailAddress(cc.EmailDestinatario, cc.Nominativo));
                         }
                     }
-                }
 
-                //messaggio.Bcc.Add("mauro.arduini@ritspa.it");
+                    //using (Config.Config cfg = new Config.Config())
+                    //{
+                    //    sAdmin sad = new sAdmin();
+                    //    sad = cfg.SuperAmministratore();
+                    //    if (sad.s_admin.Count > 0)
+                    //    {
+                    //        foreach (var sa in sad.s_admin)
+                    //        {
+                    //            messaggio.Bcc.Add(new MailAddress(sa.email, sa.nominativo));
+                    //        }
+                    //    }
+                    //}
 
-                messaggio.Subject = msgMail.oggetto;
-                messaggio.SubjectEncoding = System.Text.Encoding.UTF8;
+                    //messaggio.Bcc.Add("mauro.arduini@ritspa.it");
 
-                if (msgMail.allegato != null && msgMail.allegato.Count > 0)
-                {
-                    foreach (var item in msgMail.allegato)
+                    messaggio.Subject = msgMail.oggetto;
+                    messaggio.SubjectEncoding = System.Text.Encoding.UTF8;
+
+                    if (msgMail.allegato != null && msgMail.allegato.Count > 0)
                     {
-                        Stream fs = item.allegato;
-                        Attachment allegato = new Attachment(fs, item.nomeFile);
-                        messaggio.Attachments.Add(allegato);
+                        foreach (var item in msgMail.allegato)
+                        {
+                            Stream fs = item.allegato;
+                            Attachment allegato = new Attachment(fs, item.nomeFile);
+                            messaggio.Attachments.Add(allegato);
+                        }
                     }
+                    //FileStream fs = new FileStream(@"C:\Users\UTENTE\Downloads\CPME79-00-AF-01-01(Analisi Funzionale).pdf", FileMode.Open, FileAccess.Read);
+                    //Attachment a = new Attachment(fs, "CPME79-00-AF-01-01(Analisi Funzionale).pdf", MediaTypeNames.Application.Octet);
+
+
+                    //// Code to send Multiple attachments
+                    //messaggio.Attachments.Add(new Attachment(@"C:\..\..\Fante.txt"));
+                    //messaggio.Attachments.Add(new Attachment(@"D:\abc-xyz\UseFull-Links\How to send an Email using C# – complete features.txt"));
+
+                    messaggio.Priority = msgMail.priorita;
+
+                    // Gestire campo vuoto del Body
+                    //messaggio.Body = @"Il mio messaggio di testo <b>in formato html</b>";
+                    messaggio.Body = msgMail.corpoMsg;
+                    messaggio.BodyEncoding = System.Text.Encoding.UTF8;
+                    messaggio.IsBodyHtml = true;
+
+                    SmtpClient server = new SmtpClient();
+
+                    string host = System.Configuration.ConfigurationManager.AppSettings["HostMail"];
+
+                    server.Host = host;
+                    //server.Port = 587; //465
+                    server.EnableSsl = false;
+                    server.Credentials = CredentialCache.DefaultNetworkCredentials;
+                    server.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+                    //smtpClient.EnableSsl = true;
+                    server.Send(messaggio);
                 }
-                //FileStream fs = new FileStream(@"C:\Users\UTENTE\Downloads\CPME79-00-AF-01-01(Analisi Funzionale).pdf", FileMode.Open, FileAccess.Read);
-                //Attachment a = new Attachment(fs, "CPME79-00-AF-01-01(Analisi Funzionale).pdf", MediaTypeNames.Application.Octet);
-
-
-                //// Code to send Multiple attachments
-                //messaggio.Attachments.Add(new Attachment(@"C:\..\..\Fante.txt"));
-                //messaggio.Attachments.Add(new Attachment(@"D:\abc-xyz\UseFull-Links\How to send an Email using C# – complete features.txt"));
-
-                messaggio.Priority = msgMail.priorita;
-
-                // Gestire campo vuoto del Body
-                //messaggio.Body = @"Il mio messaggio di testo <b>in formato html</b>";
-                messaggio.Body = msgMail.corpoMsg;
-                messaggio.BodyEncoding = System.Text.Encoding.UTF8;
-                messaggio.IsBodyHtml = true;
-
-                SmtpClient server = new SmtpClient();
-
-                string host = System.Configuration.ConfigurationManager.AppSettings["HostMail"];
-
-                server.Host = host;
-                //server.Port = 587; //465
-                server.EnableSsl = false;
-                server.Credentials = CredentialCache.DefaultNetworkCredentials;
-                server.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
-                //smtpClient.EnableSsl = true;
-                server.Send(messaggio);
-
                 return true;
             }
-            catch (SmtpException e)
+            catch (SmtpException)
             {
                 //Console.WriteLine("Errore: wwwww", e.StatusCode);
                 // pLog.descAttivitaSvolta;

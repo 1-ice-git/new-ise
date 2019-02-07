@@ -17,19 +17,28 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ALIQUOTECONTRIBUTIVE()
         {
-            this.RICHIAMO = new HashSet<RICHIAMO>();
+            this.ELABMAB = new HashSet<ELABMAB>();
+            this.ELABINDENNITA = new HashSet<ELABINDENNITA>();
+            this.ELABINDRICHIAMO = new HashSet<ELABINDRICHIAMO>();
+            this.ELABINDSISTEMAZIONE = new HashSet<ELABINDSISTEMAZIONE>();
         }
     
         public decimal IDALIQCONTR { get; set; }
         public decimal IDTIPOCONTRIBUTO { get; set; }
         public System.DateTime DATAINIZIOVALIDITA { get; set; }
         public System.DateTime DATAFINEVALIDITA { get; set; }
-        public decimal ALIQUOTA { get; set; }
+        public decimal VALORE { get; set; }
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
         public bool ANNULLATO { get; set; }
     
         public virtual TIPOALIQUOTECONTRIBUTIVE TIPOALIQUOTECONTRIBUTIVE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
+        public virtual ICollection<ELABMAB> ELABMAB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABINDENNITA> ELABINDENNITA { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABINDRICHIAMO> ELABINDRICHIAMO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ELABINDSISTEMAZIONE> ELABINDSISTEMAZIONE { get; set; }
     }
 }

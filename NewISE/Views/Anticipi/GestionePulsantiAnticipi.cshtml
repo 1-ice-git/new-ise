@@ -13,8 +13,7 @@
 
 @Html.Hidden("hiIdAttivitaAnticipi", idAttivitaAnticipi)
 
-<div style="padding-right: 10px;">
-    <hr />
+<div>
     <div class="pull-right" style="margin-top: 0px; margin-bottom: 10px;margin-right:0px ">
         <button class="btn btn-default btn-sm" @hiddenNotificaRichiesta @disabledNotificaRichiesta id="btNotificaRichiestaAnticipi" onclick="ModalNotificaRichiestaAnticipi();">
             <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
@@ -46,6 +45,7 @@
 
     function ModalAnnullaRichiestaAnticipi() {
         //debugger;
+        MessaggioAnnullaRichiestaAnticipi();
         $('#ModalAnnullaRichiestaAnticipi').modal().show();
     }
 

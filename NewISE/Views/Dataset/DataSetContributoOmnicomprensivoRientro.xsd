@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetContributoOmnicomprensivoRientro" targetNamespace="http://tempuri.org/DataSetContributoOmnicomprensivoRientro.xsd" xmlns:mstns="http://tempuri.org/DataSetContributoOmnicomprensivoRientro.xsd" xmlns="http://tempuri.org/DataSetContributoOmnicomprensivoRientro.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetContributoOmnicomprensivoRientro" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetContributoOmnicomprensivoRientro" msprop:Generator_UserDSName="DataSetContributoOmnicomprensivoRientro">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DataInizioValidita" msprop:Generator_ColumnVarNameInTable="columnDataInizioValidita" msprop:Generator_ColumnPropNameInRow="DataInizioValidita" msprop:Generator_ColumnPropNameInTable="DataInizioValiditaColumn" msprop:Generator_UserColumnName="DataInizioValidita" type="xs:string" minOccurs="0" />
+              <xs:element name="DataFineValidita" msprop:Generator_ColumnVarNameInTable="columnDataFineValidita" msprop:Generator_ColumnPropNameInRow="DataFineValidita" msprop:Generator_ColumnPropNameInTable="DataFineValiditaColumn" msprop:Generator_UserColumnName="DataFineValidita" type="xs:string" minOccurs="0" />
+              <xs:element name="IndennitaRichiamo" msprop:Generator_ColumnVarNameInTable="columnIndennitaRichiamo" msprop:Generator_ColumnPropNameInRow="IndennitaRichiamo" msprop:Generator_ColumnPropNameInTable="IndennitaRichiamoColumn" msprop:Generator_UserColumnName="IndennitaRichiamo" type="xs:string" minOccurs="0" />
+              <xs:element name="AnticipoContrOmniComprensivoRientro" msprop:Generator_ColumnVarNameInTable="columnAnticipoContrOmniComprensivoRientro" msprop:Generator_ColumnPropNameInRow="AnticipoContrOmniComprensivoRientro" msprop:Generator_ColumnPropNameInTable="AnticipoContrOmniComprensivoRientroColumn" msprop:Generator_UserColumnName="AnticipoContrOmniComprensivoRientro" type="xs:string" minOccurs="0" />
+              <xs:element name="SaldoContrOmniComprensivoRientro" msprop:Generator_ColumnVarNameInTable="columnSaldoContrOmniComprensivoRientro" msprop:Generator_ColumnPropNameInRow="SaldoContrOmniComprensivoRientro" msprop:Generator_ColumnPropNameInTable="SaldoContrOmniComprensivoRientroColumn" msprop:Generator_UserColumnName="SaldoContrOmniComprensivoRientro" type="xs:string" minOccurs="0" />
+              <xs:element name="PercentualeFasciaKmR" msprop:Generator_ColumnVarNameInTable="columnPercentualeFasciaKmR" msprop:Generator_ColumnPropNameInRow="PercentualeFasciaKmR" msprop:Generator_ColumnPropNameInTable="PercentualeFasciaKmRColumn" msprop:Generator_UserColumnName="PercentualeFasciaKmR" type="xs:string" minOccurs="0" />
+              <xs:element name="DATARIENTRO" msprop:Generator_ColumnVarNameInTable="columnDATARIENTRO" msprop:Generator_ColumnPropNameInRow="DATARIENTRO" msprop:Generator_ColumnPropNameInTable="DATARIENTROColumn" msprop:Generator_UserColumnName="DATARIENTRO" type="xs:string" minOccurs="0" />
+              <xs:element name="TotaleContributoOmnicomprensivoRientro" msprop:Generator_ColumnVarNameInTable="columnTotaleContributoOmnicomprensivoRientro" msprop:Generator_ColumnPropNameInRow="TotaleContributoOmnicomprensivoRientro" msprop:Generator_ColumnPropNameInTable="TotaleContributoOmnicomprensivoRientroColumn" msprop:Generator_UserColumnName="TotaleContributoOmnicomprensivoRientro" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

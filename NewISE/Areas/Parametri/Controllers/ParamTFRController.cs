@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using NewISE.Models;
+using NewISE.Models.dtObj;
 
 namespace NewISE.Areas.Parametri.Controllers
 {
@@ -28,7 +30,11 @@ namespace NewISE.Areas.Parametri.Controllers
             }
             catch (Exception ex)
             {
-                return PartialView("ErrorPartial");
+                MsgErr msg = new MsgErr()
+                {
+                    msg = ex.Message
+                };
+                return PartialView("ErrorPartial", msg);
             }
             return PartialView(libm);
         }
@@ -84,7 +90,7 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     ViewBag.idMinimoNonAnnullato = dtib.Get_Id_TFRPrimoNonAnnullato(idValuta);
                     libm = dtib.getListTfr(idValuta, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -119,10 +125,11 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciTFR(TFRModel ibm, bool escludiAnnullati = true,bool aggiornaTutto=false)
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciTFR(TFRModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
-            var r = new List<SelectListItem>();
+            //var r = new List<SelectListItem>();
             List<TFRModel> libm = new List<TFRModel>();
             try
             {
@@ -130,15 +137,16 @@ namespace NewISE.Areas.Parametri.Controllers
                 {
                     using (dtTfr dtib = new dtTfr())
                     {
-                        dtib.SetTfr(ibm,aggiornaTutto);
+                        dtib.SetTfr(ibm, aggiornaTutto);
+
                     }
-                       decimal idLivello = CaricaComboFunzioniTFR(ibm.idValuta);
-                        using (dtTfr dtib = new dtTfr())
-                        {
-                            ViewBag.idMinimoNonAnnullato = dtib.Get_Id_TFRPrimoNonAnnullato(idLivello);
-                            libm = dtib.getListTfr(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
-                        }
-                     return PartialView("TFR",libm);
+                    decimal idLivello = CaricaComboFunzioniTFR(ibm.idValuta);
+                    using (dtTfr dtib = new dtTfr())
+                    {
+                        ViewBag.idMinimoNonAnnullato = dtib.Get_Id_TFRPrimoNonAnnullato(idLivello);
+                        libm = dtib.getListTfr(idLivello, escludiAnnullati).OrderBy(a => a.dataInizioValidita).ThenBy(a => a.dataFineValidita).ToList();
+                    }
+                    return PartialView("TFR", libm);
                 }
                 else
                 {

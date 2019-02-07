@@ -1,0 +1,192 @@
+﻿@model IEnumerable<NewISE.Models.DBModel.EvoluzioneIndennitaModel>
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
+
+@{
+
+    decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
+
+}
+
+@Html.Hidden("hidTrasferimento")
+<div id="dialog" title=""></div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div style="padding-bottom:10px;border-bottom:solid;border-width:1px;border-color:limegreen">
+            <h4>Unica Soluzione Indennità di Prima Sistemazione</h4>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive-sm">
+    <table cellspacing="0" class="table table-striped">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.IndennitaSistemazioneAnticipabileLorda)</th>
+                <th>@Html.DisplayNameFor(model => model.IndennitaSistemazione)</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazioneAnticipabileLorda)</td>
+                    <td>@Html.DisplayFor(modelItem => item.IndennitaSistemazione)</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr class="comment"><td colspan="2">&nbsp;</td></tr>
+
+            }
+        </tbody>
+        <thead>
+            <tr>
+                
+                <th>Detrazione</th>
+                <th>Imp. Previdenziale </th>
+                <th>Aliq Previd </th>
+                <th>Contr. Previd </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    
+                    <td>@Html.DisplayFor(modelItem => item.Detrazione)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ImpPrevid)</td>
+                    <td>@Html.DisplayFor(modelItem => item.AliquotaPrevid)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ContrPrevid)</td>
+
+                </tr>
+                <tr class="comment"><td colspan="4">&nbsp;</td></tr>
+
+            }
+        </tbody>
+        <thead>
+            <tr>
+                
+                <th>Imp. Fiscale</th>
+                <th>Aliq. Fisc. (Provvisoria) </th>
+                <th>Ritenuta Fiscale (salvo Conguaglio) </th>
+                <th>Indennità Sistemazione netta </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    
+                    <td>@Html.DisplayFor(modelItem => item.ImpFiscale)</td>
+                    <td>@Html.DisplayFor(modelItem => item.AliquotaFiscale)</td>
+                    <td>@Html.DisplayFor(modelItem => item.RitenutaFiscale)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Importo)</td>
+                </tr>
+                <tr class="comment"><td colspan="4">&nbsp;</td></tr>
+
+            }
+        </tbody>
+
+    </table>
+</div>
+
+<div class="row">
+    <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
+
+        <button class="btn btn-default btn-sm" id="opener">
+            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+            Stampa
+        </button>
+
+    </div>
+</div>
+
+<br />
+
+<script type="text/javascript">
+   
+
+        // Report Unica Soluzione Indennita di Prima Sistemazione
+        var windowWidth = $(window).width();
+        var windowHeight = $(window).height();
+
+        $(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                show: {
+                    //effect: "blind",
+                    //duration: 1000
+                },
+                hide: {
+                    //effect: "explode",
+                    //duration: 1000
+                },
+                close: function (event, ui) {
+                    $('.container').removeClass("NoOverflow");
+                },
+                height: windowHeight, width: windowWidth
+
+
+            });
+
+            $("#opener").on("click", function () {
+                $('.container').addClass("NoOverflow");
+
+                $("#dialog").dialog("open");
+                $("#dialog").css("background-color", "#ffffff");
+
+                var rotta = "/Indennita/RptUnicaSoluzioneIndennitadiPrimaSistemazione";
+
+                var idTrasferimento = $("#hidTrasferimento").val();
+
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: { idTrasferimento: idTrasferimento },
+                    dataType: 'html',
+                    beforeSend: function () {
+                        //debugger;
+                        $("#dialog").empty();
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $("#dialog").html(result);
+
+
+                    },
+                    complete: function () {
+                        //$("#divEffettoLoadAutNoDoc").hide("slow");
+                        //                $("#Centro").getNiceScroll().resize();
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+
+                });
+
+            });
+        });
+
+
+
+
+
+
+
+
+</script>
+
+
+

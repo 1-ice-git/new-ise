@@ -53,5 +53,7 @@ namespace NewISE.Models.DBModel
         {
             return this.idAttivazioniPassaporti > 0 ? true : false;
         }
+
+        public decimal idFasePassaporti { get; set; }
     }
 }

@@ -19,12 +19,12 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Data di nascita")]
         [DataType(DataType.DateTime, ErrorMessage = "la data non è valida.")]
         [DisplayFormat(DataFormatString = "{0:dd/mm/yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true)]
-        [CustomValidation(typeof(dtAltriDatiFamiliari), "VerificaEtaFiglio")]
+        //[CustomValidation(typeof(dtAltriDatiFamiliari), "VerificaEtaFiglio")]
         public DateTime? dataNascita { get; set; }
-        [Required(ErrorMessage = "Il cap della città di nascita è richiesto.")]
-        [StringLength(10, ErrorMessage = "Per il cap sono richiesti un massimo di 10 caratteri.")]
-        [Display(Name = "CAP Nascita")]
-        public string capNascita { get; set; }
+        //[Required(ErrorMessage = "Il cap della città di nascita è richiesto.")]
+        //[StringLength(10, ErrorMessage = "Per il cap sono richiesti un massimo di 10 caratteri.")]
+        //[Display(Name = "CAP Nascita")]
+        //public string capNascita { get; set; }
         [Required(ErrorMessage = "Il comune di nascita è richiesto.")]
         [StringLength(60, ErrorMessage = "Per il comune di nascita sono richiesti un massimo di 60 caratteri.")]
         [Display(Name = "Comune di nascita")]
@@ -72,10 +72,10 @@ namespace NewISE.Models.DBModel
         [ScaffoldColumn(false)]
         public DateTime dataAggiornamento { get; set; }
 
-        [DefaultValue(false)]
-        [Display(Name = "Annullato")]
-        [ScaffoldColumn(false)]
-        public bool annullato { get; set; }
+        //[DefaultValue(false)]
+        //[Display(Name = "Annullato")]
+        //[ScaffoldColumn(false)]
+        //public bool annullato { get; set; }
 
         [ScaffoldColumn(false)]
         public FigliModel Figli { get; set; }
@@ -87,5 +87,11 @@ namespace NewISE.Models.DBModel
         {
             return idAltriDatiFam > 0 ? true : false;
         }
+
+        public bool modificato { get; set; }
+
+
+        public decimal idStatoRecord { get; set; }
+        public decimal? FK_idAltriDatiFam { get; set; }
     }
 }

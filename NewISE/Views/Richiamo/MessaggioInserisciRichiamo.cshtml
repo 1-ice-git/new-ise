@@ -1,0 +1,70 @@
+﻿@model NewISE.Models.DBModel.RichiamoModel
+@using System.Web.Optimization
+@using NewISE.Models.DBModel
+@{ 
+    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+    DateTime dataPartenza = Convert.ToDateTime(ViewData["dataPartenza"]);
+    decimal idFKm=(decimal)ViewData["idFKm"];
+    string dataInserita = ViewData["dataInserita"].ToString();
+}
+
+<div class="form-horizontal">
+    <br />
+   
+    <div class="form-group">
+        @Html.Label("lblDataPartenzaRichiamo_Nuovo", "Data Partenza", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-2">
+            <input id="idDataPartenzaRichiamo_Nuovo" name="idDataPartenzaRichiamo_Nuovo" disabled type="text" value="@dataPartenza.ToString("dd/MM/yyyy")" class="form-control" />
+        </div>
+       
+    </div>
+    <div class="form-group disabled">
+        @Html.Label("lblCoeffFasciakM_Nuovo", "Coefficente Fascia KM", new { @class = "control-label col-xs-4" })
+        <div class="select2-container select2-container--classic col-xs-5">
+            @Html.DropDownList("idGruppoFKmRichiamo_Nuovo", ViewBag.FasciaKM as IEnumerable<SelectListItem>, new { @class = "form-control col-xs-5 disabled", @onchange = "PrelevaPVCoeffFasciaKm_Nuovo();", @onClick = "PrelevaPVCoeffFasciaKm_Nuovo();" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("lblDataRichiamo_Nuovo", "Data Richiamo", new { @class = "control-label col-xs-4" })
+        <div class="col-xs-2">
+            <input id="idDataRichiamo_Nuovo" name="idDataRichiamo_Nuovo" type="text" value="@dataInserita.ToString()" class="form-control" />
+        </div>
+    </div>
+   
+
+</div>
+<script type="text/javascript">
+    $("#idGruppoFKmRichiamo_Nuovo").select2({
+        placeholder: "Seleziona Percentua Km",
+        allowClear: true,
+        language: "it",
+        width: '150'
+    });
+    
+    $('#idDataRichiamo_Nuovo').datepicker({
+        showAnim: "slide",
+        changeMonth: true,
+        changeYear: true
+        //showButtonPanel: true,
+        //showAnim: "slide",
+    });
+
+    $('#idDataPartenzaRichiamo_Nuovo').datepicker({
+        showAnim: "slide",
+        changeMonth: true,
+        changeYear: true
+        //showButtonPanel: true,
+        //showAnim: "slide",
+    });
+
+
+    function PrelevaPVCoeffFasciaKm_Nuovo() {
+        //debugger;
+        var idFKm = parseInt($("#idGruppoFKmRichiamo_Nuovo").select2('val'));
+       // $("#idGruppoFKmRichiamo").val(idFKm);
+        if (!isNaN(idFKm)) {
+            $("#idGruppoFKmRichiamo").val(idFKm);
+        }
+    }
+    
+</script>

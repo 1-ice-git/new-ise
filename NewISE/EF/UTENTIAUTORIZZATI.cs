@@ -21,10 +21,10 @@ namespace NewISE.EF
             this.LOGATTIVITA = new HashSet<LOGATTIVITA>();
         }
     
-        public decimal IDUTENTEAUTORIZZATO { get; set; }
+        public decimal IDDIPENDENTE { get; set; }
         public decimal IDRUOLOUTENTE { get; set; }
-        public Nullable<decimal> IDDIPENDENTE { get; set; }
         public string UTENTE { get; set; }
+        public string PSW { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACCESSI> ACCESSI { get; set; }

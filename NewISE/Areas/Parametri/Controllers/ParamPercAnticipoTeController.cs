@@ -94,7 +94,7 @@ namespace NewISE.Areas.Parametri.Controllers
             {
                 return PartialView("ErrorPartial");
             }
-           
+
             return PartialView("PercAnticipoTE", libm);
         }
 
@@ -112,7 +112,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     var lm = dtl.GetTipoAnticipoTraspEffetti(idTipologiaAnticipo);
                     ViewBag.Anticipo = lm;
                 }
-              
+
                 return PartialView();
             }
             catch (Exception ex)
@@ -123,7 +123,8 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
-        public ActionResult InserisciPercAnticipoTE(PercAnticipoTEModel ibm, bool escludiAnnullati = true,bool aggiornaTutto=false)
+        [ValidateAntiForgeryToken]
+        public ActionResult InserisciPercAnticipoTE(PercAnticipoTEModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             var r = new List<SelectListItem>();
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -136,7 +137,7 @@ namespace NewISE.Areas.Parametri.Controllers
                     {
                         dtib.SetPercAnticipoTE(ibm, aggiornaTutto);
                     }
-                    
+
                     decimal idLivello = CaricaComboTipoAnticipoTraspEff(ibm.idTipoAnticipo);
                     using (dtParPercAnticipoTE dtib = new dtParPercAnticipoTE())
                     {

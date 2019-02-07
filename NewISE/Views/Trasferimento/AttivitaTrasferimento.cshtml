@@ -93,7 +93,7 @@
         </tr>
         <tr>
             <th>
-                @Ajax.ActionLink("Richiesta Trasporto Effetti", "TrasportoEffetti", "TrasportoEffetti", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaTrasf", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" }, new { @id = "linkTrasportoEffetti" })
+                @Ajax.ActionLink("Richiesta Trasporto Effetti", "TrasportoEffetti", "TrasportoEffetti", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaTrasf", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErrorCallAjax" }, new { @id = "linkTrasportoEffetti" })
             </th>
             <td>
                 <div class="material-switch pull-right">
@@ -143,9 +143,18 @@
 
 <script type="text/javascript">
 
+
+    function ErrorCallAjax(data) {
+        debugger;
+        ErroreElaborazioneAjax();
+    }
+
+
     function ModalNotificaAnnullaTrasf() {
         //debugger;
+        MessaggioAnnullaTrasf();
         $('#ModalNotificaAnnullaTrasf').modal().show();
+
     }
 
     function ModalNotificaAttivaTrasf() {
@@ -156,7 +165,6 @@
     function AggiornaInfoTrasferimento() {
         var rotta = "/Trasferimento/InfoTrasferimento";
         var idTrasf = parseInt('@idTrasferimento');
-
         $.ajax({
             type: "POST",
             url: rotta,
@@ -190,8 +198,8 @@
         });
     }
 
-
     GestioneAttivitaTrasferimento();
+
     ///Tale funzione gestisce l'abilitazione delle checkbox per la gestione delle attività di trasferimento e la sequenza di abilitazione dei link.
     function GestioneAttivitaTrasferimento() {
         //debugger;
@@ -218,6 +226,8 @@
                     var attivazioneMF = result.attivazioneMF;
                     var richiestaPP = result.richiestaPP;
                     var conclusePP = result.conclusePP;
+                    var faseRichiestaPPattivata = result.faseRichiestaPPattivata;
+                    var faseInvioPPattivata = result.faseInvioPPattivata;
                     var richiesteTV = result.richiesteTV;
                     var concluseTV = result.concluseTV;
                     var richiestaTE = result.richiestaTE;
@@ -226,6 +236,8 @@
                     var attivazioneAnticipi = result.attivazioneAnticipi;
                     var richiestaMAB = result.richiestaMAB;
                     var attivazioneMAB = result.attivazioneMAB;
+                    var richiestaPS = result.richiestaPS;
+                    var attivazionePS = result.attivazionePS;
                     var solaLettura = result.solaLettura;
 
                     if (richiestaMF == true) {
@@ -242,6 +254,7 @@
                     } else {
                         $("#chkMagFamiliariR").each(function () { this.checked = false; });
                         $("#chkMagFamiliariSR").each(function () { this.checked = false; });
+
                         EnableDisableLinkPassaporto(false);
                     }
 
@@ -259,10 +272,22 @@
                         $("#chkPratichePassaportoSR").each(function () { this.checked = false; });
                         EnableDisableLinkTitoliViaggio(false);
                     }
+                    if (faseRichiestaPPattivata && faseInvioPPattivata == false) {
+                        //blink('#linkPratichePassaporto');
+                        $("#linkPratichePassaporto").animate({ color: "#ff0000" });
+
+                    }
+                    if (faseRichiestaPPattivata && faseInvioPPattivata) {
+                        //blink('#linkPratichePassaporto');
+                        $("#linkPratichePassaporto").animate({ color: $("#linkTrasportoEffetti").css('color') });
+                    }
+                    //else {
+                    //    //$('#linkPratichePassaporto').stop().fadeIn();
+                    //    $("#linkPratichePassaporto").animate({ color: "#000000" });
+                    //}
 
                     //chkTitoliViaggioR
                     if (richiesteTV == true) {
-                        EnableDisableLinkTitoliViaggio(true);
                         $("#chkTitoliViaggioR").each(function () { this.checked = true; });
                         if (concluseTV == true) {
                             $("#chkTitoliViaggioSR").each(function () { this.checked = true; });
@@ -276,7 +301,6 @@
 
                     //chkTrasportoEffettiR
                     if (richiestaTE == true) {
-                        EnableDisableLinkTE(true);
                         $("#chkTrasportoEffettiR").each(function () { this.checked = true; });
                         if (attivazioneTE == true) {
                             $("#chkTrasportoEffettiSR").each(function () { this.checked = true; });
@@ -290,7 +314,6 @@
 
                     //chkAnticipiR
                     if (richiestaAnticipi == true) {
-                        EnableDisableLinkAnticipi(true);
                         $("#chkAnticipiR").each(function () { this.checked = true; });
                         if (attivazioneAnticipi == true) {
                             $("#chkAnticipiSR").each(function () { this.checked = true; });
@@ -305,7 +328,6 @@
                     //chkMABR
                     if (richiestaMAB == true) {
                         $("#chkMABR").each(function () { this.checked = true; });
-                        EnableDisableLinkMAB(true);
                         if (attivazioneMAB == true) {
                             $("#chkMABSR").each(function () { this.checked = true; });
                         } else {
@@ -318,11 +340,13 @@
 
                     //pulsanti trasferimento
                     // attivazione
-                    if (attivazioneMF && conclusePP && concluseTV
+                    if (attivazioneMF && faseInvioPPattivata && concluseTV
                             && attivazioneTE && attivazioneAnticipi
                             && attivazioneMAB && solaLettura == false) {
                         $("#btAttivaTrsf").removeAttr("disabled");
                         $("#btAttivaTrsf").removeClass("disableLink");
+
+                        InserisceEventoTrasferimentoDattivare();
 
                     } else {
 
@@ -342,8 +366,6 @@
                         $("#btAttivaTrsf").show();
                         $("#btAnnullaTrasf").show();
                     }
-
-
 
                     AggiornaInfoTrasferimento();
 
@@ -412,19 +434,100 @@
         }
     }
 
-    function EnableDisableLinkTE(abilitato) {
+    function MessaggioAnnullaTrasf() {
         //debugger;
-        if (abilitato == true) {
-            $("#linkTrasportoEffetti").removeAttr("disabled");
-            $("#linkTrasportoEffetti").removeClass("disableLink");
-        } else {
-            //disableLink
-            $("#linkTrasportoEffetti").attr("disabled", "disabled");
-            $("#linkTrasportoEffetti").addClass("disableLink");
-        }
+        var rotta = "/Trasferimento/MessaggioAnnullaTrasf";
+        var idTrasferimento = parseInt('@idTrasferimento');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewNotificaAnnullaTrasf").empty();
+                $("#viewNotificaAnnullaTrasf").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function Passaporti() {
+        var rotta = "/PratichePassaporto/Passaporti";
+        var idTrasferimento = parseInt('@idTrasferimento');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTrasferimento: idTrasferimento
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                $("#divOperazioniAttivitaTrasf").empty();
+                $("#divOperazioniAttivitaTrasf").html(result);
+                GestioneAttivitaTrasferimento();
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
     }
 
 
-
+    function InserisceEventoTrasferimentoDattivare() {
+        //debugger;
+        var rotta = "/Trasferimento/InserisceEventoTrasferimentoDattivare";
+        var idTrasferimento = parseInt('@idTrasferimento');
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: rotta,
+            
+            data: {
+                idTrasferimento: idTrasferimento,
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err != "") {
+                    ErroreElaborazioneAjax(result.err);
+                }
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
 
 </script>

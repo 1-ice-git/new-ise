@@ -1,0 +1,22 @@
+﻿@using NewISE.Models.Enumeratori
+
+@{
+    decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+}
+
+@Html.Hidden("hiIdTipoDocumento", 0)
+@Html.Hidden("hiIdParentela", 0)
+@Html.Hidden("hiIdFamiliarePassaporto", 0)
+
+<div class="row">
+    <div class="col-xs-12">
+        <div id="divTitoliViaggio_var" style="padding-top: 5px;padding-bottom:10px;border-bottom:solid;border-width:1px;border-color:limegreen">
+            @Html.Action("ElencoVariazioneTV", "VariazioneTitoliViaggio", new { idTitoliViaggio = idTitoliViaggio })
+        </div>
+    </div>
+</div>
+
+<div id="divPusantiNotificaAndConcludiTV_var">
+    @Html.Action("GestionePulsantiNotificaAttiva_VariazioneTV", "VariazioneTitoliViaggio", new { idTitoliViaggio = idTitoliViaggio })
+</div>
+

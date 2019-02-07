@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using NewISE.Models.Enumeratori;
 
 
 namespace NewISE.Areas.Statistiche.Models.dtObj
@@ -30,9 +31,9 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
                     llm = (from e in ll
                            select new UtenteAutorizzatoModel()
                            {
-                               //idRuoloUtente = e.IDRUOLOUTENTE,
-                               idUtenteAutorizzato = e.IDUTENTEAUTORIZZATO
-                               
+                               idRuoloUtente = (EnumRuoloAccesso)e.IDRUOLOUTENTE,
+                               idDipendente = e.IDDIPENDENTE
+
                            }).ToList();
                 }
 
@@ -55,9 +56,9 @@ namespace NewISE.Areas.Statistiche.Models.dtObj
 
                     lm = new UtenteAutorizzatoModel()
                     {
-                        //idRuoloUtente = liv.IDRUOLOUTENTE,
-                        idUtenteAutorizzato = liv.IDUTENTEAUTORIZZATO
-                  
+                        idRuoloUtente = (EnumRuoloAccesso)liv.IDRUOLOUTENTE,
+                        idDipendente = liv.IDDIPENDENTE
+
                     };
                 }
 

@@ -1,0 +1,37 @@
+﻿#ContSelezioneMeseAnno {
+    border-right-width: 2px;
+    border-right-style: solid;
+    border-right-color: green;
+    max-height: 685px;
+    width: 100%;
+    margin-top: 5px;
+    /*min-height: 685px;*/
+    /*border-bottom: black solid medium;*/
+}
+
+#divMesiAnniElaborati {
+    border: green solid thin;
+    margin-right: 5px;
+}
+
+#divMesiAnniElaborati > div {
+    margin-top: 15px;
+}
+
+
+tr input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.DimensioneFontTable > thead > tr > th {
+    font-size: 10px;
+}
+
+.DimensioneFontTable > tbody > tr > td {
+    font-size: 9px;
+}
+
+.BordoRossoS2 {
+    border: red solid 2px;
+    padding: 1px;
+}

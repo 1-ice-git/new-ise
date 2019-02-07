@@ -7,13 +7,7 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public enum EnumRuoloUfficio
-    {
-        Dirigente = 1,
-        Responsabile = 2,
-        Collaboratore = 3,
-        Assistente = 4
-    }
+
 
     public class RuoloUfficioModel
     {

@@ -17,14 +17,14 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TRASFERIMENTO()
         {
-            this.ATTIVAZIONEMAB = new HashSet<ATTIVAZIONEMAB>();
+            this.AUTOMATISMOVOCIMANUALI = new HashSet<AUTOMATISMOVOCIMANUALI>();
             this.CALENDARIOEVENTI = new HashSet<CALENDARIOEVENTI>();
             this.LOGATTIVITA = new HashSet<LOGATTIVITA>();
-            this.MAGGIORAZIONEABITAZIONE = new HashSet<MAGGIORAZIONEABITAZIONE>();
             this.RICHIAMO = new HashSet<RICHIAMO>();
             this.RUOLODIPENDENTE = new HashSet<RUOLODIPENDENTE>();
             this.SOSPENSIONE = new HashSet<SOSPENSIONE>();
             this.TEORICI = new HashSet<TEORICI>();
+            this.VIAGGICONGEDO = new HashSet<VIAGGICONGEDO>();
             this.REGOLECALCOLO = new HashSet<REGOLECALCOLO>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
@@ -36,7 +36,7 @@ namespace NewISE.EF
         public decimal IDDIPENDENTE { get; set; }
         public decimal IDTIPOCOAN { get; set; }
         public System.DateTime DATAPARTENZA { get; set; }
-        public Nullable<System.DateTime> DATARIENTRO { get; set; }
+        public System.DateTime DATARIENTRO { get; set; }
         public string COAN { get; set; }
         public string PROTOCOLLOLETTERA { get; set; }
         public Nullable<System.DateTime> DATALETTERA { get; set; }
@@ -44,18 +44,17 @@ namespace NewISE.EF
         public System.DateTime DATAAGGIORNAMENTO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ATTIVAZIONEMAB> ATTIVAZIONEMAB { get; set; }
+        public virtual ICollection<AUTOMATISMOVOCIMANUALI> AUTOMATISMOVOCIMANUALI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CALENDARIOEVENTI> CALENDARIOEVENTI { get; set; }
         public virtual DIPENDENTI DIPENDENTI { get; set; }
         public virtual INDENNITA INDENNITA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LOGATTIVITA> LOGATTIVITA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MAGGIORAZIONEABITAZIONE> MAGGIORAZIONEABITAZIONE { get; set; }
         public virtual MAGGIORAZIONIFAMILIARI MAGGIORAZIONIFAMILIARI { get; set; }
         public virtual PASSAPORTI PASSAPORTI { get; set; }
         public virtual PRIMASITEMAZIONE PRIMASITEMAZIONE { get; set; }
+        public virtual PROVVIDENZESCOLASTICHE PROVVIDENZESCOLASTICHE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RICHIAMO> RICHIAMO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -70,7 +69,8 @@ namespace NewISE.EF
         public virtual TIPOLOGIACOAN TIPOLOGIACOAN { get; set; }
         public virtual TIPOTRASFERIMENTO TIPOTRASFERIMENTO { get; set; }
         public virtual TITOLIVIAGGIO TITOLIVIAGGIO { get; set; }
-        public virtual VIAGGICONGEDO VIAGGICONGEDO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VIAGGICONGEDO> VIAGGICONGEDO { get; set; }
         public virtual UFFICI UFFICI { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<REGOLECALCOLO> REGOLECALCOLO { get; set; }

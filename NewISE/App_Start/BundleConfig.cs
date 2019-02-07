@@ -19,8 +19,8 @@ namespace NewISE.App_Start
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/moment").Include(
-                        "~/Scripts/moment*"));
+            //bundles.Add(new ScriptBundle("~/bundles/moment").Include(
+            //            "~/Scripts/moment*"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryBlock").Include(
                         "~/Scripts/jquery.blockUI.js"));
@@ -52,6 +52,9 @@ namespace NewISE.App_Start
 
             bundles.Add(new ScriptBundle("~/bundles/unobtrusive").Include(
                "~/Scripts/jquery.unobtrusive*"));
+
+            bundles.Add(new ScriptBundle("~/bundles/ckeditor").Include(
+               "~/Scripts/ckeditor/ckeditor.js"));
 
         }
     }

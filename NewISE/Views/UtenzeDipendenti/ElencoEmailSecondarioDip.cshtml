@@ -1,4 +1,5 @@
 ﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
 @model IEnumerable<NewISE.Models.DBModel.EmailSecondarieDipModel>
 @{
     ViewBag.Title = "Lista email secondarie Dipendenti";
@@ -238,7 +239,7 @@
                                    
                                 },
                                 error: function (jqXHR, textStatus, errorThrow) {
-                                    debugger;
+                                    //debugger;
                                     var msg = errorThrow.err;
                                     AlertDialog(msg);
                                 }

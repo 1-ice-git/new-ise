@@ -1,9 +1,11 @@
-﻿@model NewISE.Models.ViewModel.AnticipiViewModel
+﻿@using NewISE.Models.DBModel
+@model NewISE.Models.ViewModel.AnticipiViewModel
 
 @{
     decimal idAttivitaAnticipi = Convert.ToDecimal(ViewData["idAttivitaAnticipi"]);
     decimal NumAttivazioni = Convert.ToDecimal(ViewData["NumAttivazioni"]);
     bool soloLettura = Convert.ToBoolean(ViewData["soloLettura"]);
+    bool rinunciaAnticipi = Convert.ToBoolean(ViewData["rinunciaAnticipi"]);
     decimal ValsoloLettura = Convert.ToDecimal(ViewData["soloLettura"]);
     string txtReadOnly = "";
     if (soloLettura)
@@ -20,34 +22,34 @@
     <hr />
     <div class="table col-xs-12">
         <div class="row">
-            <div class="col-xs-3">
+            <div class="col-xs-4">
             </div>
-
-            <div class="col-xs-3 text-center" style="font-weight:bold">
+            <div class="col-xs-2 text-center" style="font-weight:bold">
                 @Html.DisplayNameFor(model => model.ImportoPrevisto)
             </div>
             <div class="col-xs-2 text-center" style="font-weight:bold">
                 @Html.DisplayNameFor(model => model.PercentualeAnticipoRichiesto)
             </div>
-            <div class="col-xs-3 text-center" style="font-weight:bold">
+            <div class="col-xs-2 text-center" style="font-weight:bold">
                 @Html.DisplayNameFor(model => model.ImportoPercepito)
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-3 text-right" style="padding-right:15px;font-weight:bold;padding-top:5px">
-                Indennità di Prima Sistemazione
+            <div class="col-xs-4 text-right" style="padding-right:15px;font-weight:bold;padding-top:5px">
+                Ind. Prima Sist. Lorda meno Magg. Fam.
             </div>
-            <div class="col-xs-3">
-                <input type="text" id="ValImportoPrevisto" class="form-control " readonly style="text-align: right" />
+            <div class="col-xs-2">
+                @Html.TextBoxFor(model => model.ImportoPrevisto, string.Format("{0:N2}", Model.ImportoPrevisto), new { @readonly = "readonly", @class = "form-control text-right" })
+
             </div>
             <div class="col-xs-2">
                 <input type="text" maxlength="3" onkeyup="CalcolaAnticipo(@idAttivitaAnticipi,@ValsoloLettura);" id="PercentualeAnticipoRichiesto" value="@Model.PercentualeAnticipoRichiesto" class="form-control " @txtReadOnly style="text-align: right" />
             </div>
             <div>
-                <div id="divLoader" class="col-xs-3" hidden>
+                <div id="divLoader" class="col-xs-2" hidden>
                     <img src="~/Immagini/Loading/loader.gif" style="width:100%" height="30" />
                 </div>
-                <div id="divImportoPercepito" class="col-xs-3">
+                <div id="divImportoPercepito" class="col-xs-2">
                     <input type="text" id="ValImportoPercepito" value="@Model.ImportoPercepito" class="form-control " readonly style="text-align: right" />
                 </div>
             </div>
@@ -63,100 +65,43 @@
     });
 
 
-    $('#PercentualeAnticipoRichiesto').autoNumeric('init',
-	{
-	    aSep: '.',
-	    aDec: ',',
-	    aSign: ' %',
-	    pSign:'s',
-	    vMin: 0,
-	    vMax: 100,
-	    nSep: true
-	});
-
-    $('#ValImportoPercepito').autoNumeric('init',
-    {
-        aSep: '.',
-        aDec: ',',
-        aSign: '€ ',
-        nSep: true
-    });
+    //$('#PercentualeAnticipoRichiesto').autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: ' %',
+    //    pSign:'s',
+    //    vMin: 0,
+    //    vMax: 100,
+    //    nSep: true
+    //});
 
 
 
-    $('#ValImportoPrevisto').autoNumeric('init',
-	{
-	    aSep: '.',
-	    aDec: ',',
-	    aSign: '€ ',
-	    nSep: true
-	});
+    PercentualeAnticipoRichiesto = new AutoNumeric('#PercentualeAnticipoRichiesto', autoNumericOptionsEuroTreDec);
+
+    //$('#ValImportoPercepito').autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: '€ ',
+    //    nSep: true
+    //});
+
+    ValImportoPercepito = new AutoNumeric('#ValImportoPercepito', autoNumericOptionsEuro);
+
+    //$('#ValImportoPrevisto').autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: '€ ',
+    //    nSep: true
+    //});
 
     $('#hiPercentualeRichiesta').val(@Model.PercentualeAnticipoRichiesto);
 
-    $('#ValImportoPrevisto').autoNumeric('set', @Model.ImportoPrevisto);
+    //$('#ValImportoPrevisto').autoNumeric('set', @Model.ImportoPrevisto);
 
     CalcolaAnticipo(@idAttivitaAnticipi,@ValsoloLettura);
 
-    function CalcolaAnticipo_old() {
-
-        //debugger;
-        var rotta = "/Anticipi/CalcolaAnticipo";
-
-        var idAttivitaAnticipi = parseInt(@idAttivitaAnticipi);
-        var percRichiesta = parseInt($("#PercentualeAnticipoRichiesto").autoNumeric('get'));
-
-        if (!isNaN(percRichiesta))
-        {
-            $.ajax({
-                type: "POST",
-                url: rotta,
-                data: { idAttivitaAnticipi: idAttivitaAnticipi, percRichiesta: percRichiesta },
-                async: true,
-                dataType: 'json',
-                beforeSend: function () {
-                    //debugger;
-                    VerificaAutenticazione();
-                    $("#divLoader").show();
-                    $("#divImportoPercepito").hide();
-                },
-                success: function (result) {
-                    //debugger;
-                    if (result.err == "") {
-                       
-                        $("#ValImportoPercepito").autoNumeric('set', result.importoPercepito);
-
-                        var percRichiesta_old = parseFloat($("#hiPercentualeRichiesta").val());
-
-                        if (@ValsoloLettura==0 && percRichiesta_old != percRichiesta && percRichiesta>0) {
-                            $("#btNotificaRichiestaAnticipi").removeAttr("disabled");
-                            $("#btNotificaRichiestaAnticipi").removeClass("disabled");
-                        } else
-                        {
-                            $("#btNotificaRichiestaAnticipi").attr("disabled", "disabled");
-                            $("#btNotificaRichiestaAnticipi").addClass("disabled");
-                        }
-                    } else {
-                        ErroreElaborazioneAjax(result.err);
-                    }
-                    $("#divLoader").hide();
-                    $("#divImportoPercepito").show();
-
-                },
-                complete: function () {
-
-                },
-                error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    ErroreElaborazioneAjax(msg);
-                }
-
-            });
-        } else
-        {
-            $("#btNotificaRichiestaAnticipi").attr("disabled", "disabled");
-            $("#btNotificaRichiestaAnticipi").addClass("disabled");
-        }
-    }
 </script>

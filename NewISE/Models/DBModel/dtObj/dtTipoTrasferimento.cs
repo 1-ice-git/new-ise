@@ -3,6 +3,7 @@ using NewISE.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NewISE.Models.Enumeratori;
 using System.Web;
 
 namespace NewISE.Models.DBModel.dtObj

@@ -87,24 +87,18 @@ namespace NewISE.Areas.Parametri.Models.dtObj
             using (ModelDBISE db = new ModelDBISE())
             {
                 try
-                {
-                    
+                {                    
                     ibNew = new VALUTE()
-                    {
-                        
+                    {                        
                         IDVALUTA = ibm.idValuta,
                         DESCRIZIONEVALUTA = ibm.descrizioneValuta,
-                        VALUTAUFFICIALE = ibm.valutaUfficiale
-                        
+                        VALUTAUFFICIALE = ibm.valutaUfficiale                        
                     };
-
-
                     db.Database.BeginTransaction();
                    
                     db.SaveChanges();
-
                    
-                        db.VALUTE.Add(ibNew);
+                    db.VALUTE.Add(ibNew);
                     
                     db.SaveChanges();
 
@@ -122,8 +116,6 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 }
             }
         }
-
-        
 
         public void DelValute(decimal idValuta)
         {

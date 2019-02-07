@@ -1,0 +1,376 @@
+﻿
+@using System.Web.Mvc.Html
+@using NewISE.Models.Enumeratori
+@model IEnumerable<NewISE.Models.ViewModel.LiquidazioneMensileViewModel>
+
+@{
+    decimal idAnnoMeseElaborato = (decimal)ViewData["idAnnoMeseElaborato"];
+}
+
+
+<div id="dialogRpt"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="row">
+
+            <div class="col-xs-1">
+                <a id="btLiquidazioniMensili" class="btn btn-small btn-default" href="#" title="Stampa delle liquidazioni mensili">
+                    <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+                </a>
+            </div>
+            <div class="col-xs-11">
+                <div class="text-center">
+                    <label class="text-info" style="font-size: 14px;">Liquidazioni mensili</label>
+                </div>
+            </div>
+        </div>
+        <table id="TabLiquidazioniMensili" cellspacing="0" class="table DimensioneFontTable">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nominativo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Voci.descrizione)
+                    </th>
+                    <th>
+                        Voce
+                    </th>
+                    <th>
+                        Mov.
+                    </th>
+                    <th>
+                        Ins.
+                    </th>
+                    <th>
+                        Liq.
+                    </th>
+                    <th>
+                        Data rif.
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Importo)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (item.Elaborato == false)
+                    {
+                        <tr>
+                            <td>
+                                @Html.HiddenFor(modelItem => item.idTeorici)
+                                @Html.HiddenFor(modelItem => item.Elaborato)
+
+                                <a id="LinkDatiDip" href="#" onclick="ModaleDatiTrasf(@item.idTeorici);">@Html.DisplayFor(modelItem => item.Nominativo)</a>
+                            </td>
+                            <td style="text-align: center;">
+
+                                @if (item.Giorni < 30 && item.Giorni > 0)
+                                {
+                                    @*@Html.DisplayFor(modelItem => item.Voci.descrizione, new { @title = "Rateo di numero giorni: " + item.Giorni })*@
+                                    <span style="color: brown">@item.Voci.descrizione (@item.Giorni.ToString())</span>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.Voci.descrizione)
+                                }
+                            </td>
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
+                            </td>
+                            @if (item.TipoMovimento.idTipoMovimento == (decimal)EnumTipoMovimento.MeseCorrente_M)
+                            {
+                                <td style="text-align: center;">M.C.</td>
+                            }
+                            else
+                            {
+                                <td style="text-align: center;">C.</td>
+                            }
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.Voci.TipoVoce.descrizione)
+                            </td>
+                            @if (item.Voci.TipoLiquidazione.idTipoLiquidazione == (decimal)EnumTipoLiquidazione.Contabilità)
+                            {
+                                <td style="text-align: center;">
+                                    Cont.
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="text-align: center;">
+                                    Paghe
+                                </td>
+                            }
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.MeseAnnoRiferimento)
+                            </td>
+
+                            <td style="text-align: right;">
+                                @Html.DisplayFor(modelItem => item.Importo)
+                            </td>
+                            <td>
+                                <img width="20" src="~/Immagini/sync-icons4.png" />
+                            </td>
+
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>
+                                @Html.HiddenFor(modelItem => item.idTeorici)
+                                @Html.HiddenFor(modelItem => item.Elaborato)
+                                <a id="LinkDatiDip" href="#" onclick="ModaleDatiTrasf(@item.idTeorici);">@Html.DisplayFor(modelItem => item.Nominativo)</a>
+                            </td>
+                            <td style="text-align: center;">
+                                @if (item.Giorni < 30 && item.Giorni > 0)
+                                {
+                                    @*@Html.DisplayFor(modelItem => item.Voci.descrizione, new { @title = "Rateo di numero giorni: " + item.Giorni })*@
+                                    <span style="color: brown">@item.Voci.descrizione (@item.Giorni.ToString())</span>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.Voci.descrizione)
+                                }
+                            </td>
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.Voci.codiceVoce)
+                            </td>
+                            @if (item.TipoMovimento.idTipoMovimento == (decimal)EnumTipoMovimento.MeseCorrente_M)
+                            {
+                                <td style="text-align: center;">M.C.</td>
+                            }
+                            else
+                            {
+                                <td style="text-align: center;">C.</td>
+                            }
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.Voci.TipoVoce.descrizione)
+                            </td>
+                            @if (item.Voci.TipoLiquidazione.idTipoLiquidazione == (decimal)EnumTipoLiquidazione.Contabilità)
+                            {
+                                <td style="text-align: center;">
+                                    Cont.
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="text-align: center;">
+                                    Paghe
+                                </td>
+                            }
+                            <td style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.MeseAnnoRiferimento)
+                            </td>
+
+                            <td style="text-align: right;">
+                                @Html.DisplayFor(modelItem => item.Importo)
+                            </td>
+                            <td>
+                                <img width="20" src="~/Immagini/sync-icons10.png" />
+                            </td>
+
+                        </tr>
+                    }
+                }
+
+            </tbody>
+
+
+
+        </table>
+    </div>
+</div>
+<div class="modal fade " id="myModalDatiTrasf" tabindex="-5" role="dialog" aria-labelledby="myModalDatiTrasf" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title alert alert-info text-info" id="myModalInfoLabel">Dati trasferimento dipendente</h4>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="height: 250px;">
+                <div id="divContDatiTrasf">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btOkDatiTrasf" type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $("#TabLiquidazioniMensili").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": true,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 250,
+        "scrollCollapse": true,
+        "columnDefs": [
+            { "targets": [6, 7, 8], "orderable": false },
+        ],
+        //"order": [[0,"desc"],[2, "desc"]]
+    });
+
+
+    function ModaleDatiTrasf(idTeorico) {
+        var rotta = "/Elaborazioni/DatiTrasferimentoDipendente";
+
+        //$('#notificaModal').modal().show();
+
+        //var idAnnoMeseElab = $("#mesiAnniElaborati").val();
+
+        $.ajax({
+            url: rotta,
+            type: "post", //Le info testuali saranno passate in POST
+            data: { idTeorico: idTeorico },
+            dataType: 'html',
+            async: true,
+            beforeSend: function () {
+                //  debugger;
+                //Blocca();
+            },
+            success: function (result) {
+                // debugger;
+                $('#myModalDatiTrasf').modal().show();
+                $("#divContDatiTrasf").empty();
+                $("#divContDatiTrasf").html(result);
+            },
+            error: function (error) {
+                //    debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+
+    //debugger;
+
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+
+    $("#dialogRpt").dialog({
+        autoOpen: false,
+        show: {
+            //effect: "blind",
+            //duration: 1000
+        },
+        hide: {
+            //effect: "explode",
+            //duration: 1000
+        },
+        close: function (event, ui) {
+            $('.container').removeClass("NoOverflow");
+        },
+        height: windowHeight, width: windowWidth
+
+
+    });
+
+    $("#btLiquidazioniMensili").on("click", function () {
+        //debugger;
+
+
+        var rotta = "/Elaborazioni/ReportLiquidazioniMensili";
+
+        var idAnnoMeseElaborato = @idAnnoMeseElaborato;
+        var lidTeorici = new Array();
+
+
+        var lTeorici = $('#TabLiquidazioniMensili > tbody > tr > td > #item_idTeorici');
+
+
+        for (var i = 0; i < lTeorici.length; i++) {
+            var idTeorico = lTeorici[parseInt(i)].value;
+            lidTeorici.push(idTeorico);
+        }
+
+
+        if (lidTeorici.length >0) {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialogRpt").dialog("open");
+            $("#dialogRpt").css("background-color", "#ffffff");
+
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idAnnoMeseElaborato: idAnnoMeseElaborato, Teorici: lidTeorici },
+                dataType: 'html',
+                beforeSend: function() {
+                    //debugger;
+                    $("#dialogRpt").empty();
+
+                },
+                success: function(result) {
+                    //debugger;
+                    $("#dialogRpt").html(result);
+
+
+                },
+                complete: function() {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function(jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    ErroreElaborazioneAjax(msg);
+                }
+
+            });
+        }
+        else {
+            InfoElaborazioneAjax("Non sono presenti movimenti per la stampa.");
+        }
+
+
+    });
+
+
+    //$('span').tooltip();
+
+
+
+</script>

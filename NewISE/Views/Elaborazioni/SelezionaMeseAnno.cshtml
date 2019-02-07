@@ -1,0 +1,216 @@
+﻿
+
+<div class="row">
+    <div class="col-xs-12">
+        <div id="divMesiAnniElaborati">
+            <div class="form-group">
+                @Html.Label("lblAnniMesiElaborati", "Seleziona Mese-Anno", new { @class = "control-label col-xs-5" })
+                <div class="select2-container select2-container--classic">
+                    <div id="divSelect2ME">
+                        @Html.DropDownList("mesiAnniElaborati", ViewData["ElencoMesiAnniElaborati"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaborati", @class = "form-control select2 select2-select js-data-example-ajax" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a data-toggle="tab" href="#avvioCalcolo">Avvia calcolo</a></li>
+            <li><a data-toggle="tab" href="#inputManualeVoci">Input manuale voci</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="avvioCalcolo" class="tab-pane fade in active">
+                <div id="divViewDipDaElab">
+                    @*@Html.Action("DipendentiDaElaborare", "Elaborazioni")*@
+                </div>
+            </div>
+            <div id="inputManualeVoci" class="tab-pane fade">
+                <div id="divViewInputManualeVoci">
+                    @Html.Action("VociManuali", "Elaborazioni")
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function ValorizzazioneIniziale() {
+        //debugger;
+        var valore = $("#mesiAnniElaborati").val();
+        DipendentiDaElaborare(valore);
+        DatiLiquidazioniDirette(valore);
+        DatiLiquidazioniMensili(valore);
+        PulsantiInvioElaborazione(valore);
+        GesionePulsanteCalcola();
+        //GestionePulsanteInviaFlussiMensili();
+        VerificaChiusuraMese(valore);
+        //debugger;
+        //VerificaDipendentiInvioFlussiMensili(valore);
+    }
+
+    $("#mesiAnniElaborati").select2({
+        placeholder: "Seleziona il mese-anno",
+        allowClear: false,
+        language: "it",
+        width: '150',
+        ajax: {
+            delay: 250,
+            url: "/Elaborazioni/PrelevaMesiAnniElab",
+            data: function (dati) {
+                //debugger;
+                var query = {
+                    search: dati.term,
+                    type: 'public'
+                }
+
+                // Query parameters will be ?search=[term]&type=public
+                return query;
+            },
+            dataType: 'json',
+            type: "post",
+            processResults: function (data) {
+                //debugger;
+                return {
+                    results: data.results
+                }
+            }
+        }
+    });
+
+    $("#mesiAnniElaborati").change(function () {
+        //debugger;
+
+        if (this.value != "") {
+            var valore = this.value;
+            DipendentiDaElaborare(valore);
+            DatiLiquidazioniDirette(valore);
+            DatiLiquidazioniMensili(valore);
+            PulsantiInvioElaborazione(valore);
+            GesionePulsanteCalcola();
+            //GestionePulsanteInviaFlussiMensili();
+            VerificaChiusuraMese(valore);
+            //VerificaDipendentiInvioFlussiMensili(valore);
+        }
+
+    });
+
+    function VerificaDipendentiInvioFlussiMensili(idMeseAnnoElab) {
+        var rotta = "/Elaborazioni/VerificaDipendentiCalcolati";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idMeseAnnoElab: idMeseAnnoElab },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+
+            },
+            success: function (result) {
+                //debugger;
+                if (result.err == "") {
+                    if (result.Calcolati == false) {
+                        $("#btInvioFm").attr("disabled", "disabled");
+                    } else {
+                        $("#btInvioFm").removeAttr('disabled');
+                    }
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function DipendentiDaElaborare(idMeseAnnoElaborato) {
+        var rotta = "/Elaborazioni/DipendentiDaElaborare";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idMeseAnnoElaborato: idMeseAnnoElaborato },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                //VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                //Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divViewDipDaElab").empty();
+                $("#divViewDipDaElab").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
+    }
+
+    function VerificaChiusuraMese(valore) {
+        var rotta = "/Elaborazioni/VerificaChiusuraMeseElab";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idAnnoMeseElab: valore },
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+
+            },
+            success: function (result) {
+                //debugger;
+                //style = "border: red solid 2px;"
+                if (result.err == "") {
+                    if (result.pc == true) {
+                        $('#divSelect2ME').addClass("BordoRossoS2");
+                    } else {
+                        $('#divSelect2ME').removeClass("BordoRossoS2");
+                    }
+                } else {
+                    ErroreElaborazioneAjax(result.err);
+                }
+
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+
+
+
+
+</script>

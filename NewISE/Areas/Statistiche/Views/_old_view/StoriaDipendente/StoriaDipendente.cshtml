@@ -1,0 +1,338 @@
+﻿@model IEnumerable<NewISE.Areas.Statistiche.Models.Stp_Storia_Dipendente>
+@using NewISE.Areas.Statistiche.Models;
+<link href="~/Areas/Statistiche/Content/Statistiche.css" rel="stylesheet" />
+<link href="~/Areas/Statistiche/Content/NoScroller.css" rel="stylesheet" />
+
+<div id="dialog" title="Storia del Dipendente"></div>
+@*<button id="opener">xx</button>*@
+<br /><br />
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>Storia del Dipendente</b></div>
+            <div class="panel-body">
+
+                <div class="form-horizontal">
+                    <div class="form-group">
+
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>@Html.TextBox("datepicker", ViewData["datepicker"], new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "" })</td>
+                                    <td>@Html.DropDownList("MATRICOLA", ViewBag.ListaCategorie as List<SelectListItem>, new { @class = "form-control select2 select2-select" })</td>
+                                    <td>
+                                        @*<a href="#" target="_blank" onclick="invia()">Stampa la Storia del Dipendente </a>*@
+                                        @*<a href="#" id="opener">Stampa Storia del Dipendente </a>*@
+
+                                        <a href="#" target="_blank" class="btn btn-success btn-sm" onclick="invia()">
+                                            <span class="glyphicon glyphicon-print"></span> Stampa
+                                        </a>
+                                    </td>
+                                    <td>@*<a href="#" onclick="StoriaDipendente()">Visualizza Storia del Dipendente </a>*@</td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+
+                        @*<div class="col-md-2">*@
+                        @*@Html.Editor("Dal", new { htmlAttributes = new { @class = "form-control", @value = DateTime.Now.ToString("dd/MM/yyyy"), @placeholder = DateTime.Now.ToString("dd/MM/yyyy") } })
+                            @Html.ValidationMessage("Formato Data non corretto", "", new { @class = "text-danger" })*@
+                        @*@Html.TextBox("Data da inserire", null, new { @class = "form-control datepicker", @id = "datepicker", @placeholder = "Seleziona una data", @value = DateTime.Now.ToString("dd/MM/yyyy") })*@
+
+
+
+                        @*</div>*@
+
+                        @*<div class="col-md-2">*@
+                        @*@Html.DropDownList("Stampe", ViewData["Stampe"] as List<SelectListItem>, new { @class = "form-control select2 select2-select" })*@
+                        @*@Html.DropDownList("MATRICOLA", ViewBag.ListaCategorie as List<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaGigius(this.value);" })*@
+
+
+                        @*</div>*@
+
+                        @*<div class="select2-container select2-container--classic">*@
+
+
+                        @*</div>*@
+
+                        @*<div class="col-md-2">*@
+                        @*<a href="#" onclick="StoriaDipendente()">Visualizza Storia del Dipendente </a>*@
+                        @*</div>*@
+                    </div>
+                    <br />
+                </div>
+
+                @*<table id="tbStoriaDipendente" class="display" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NOMINATIVO)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.MATRICOLA)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.LIVELLO)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TIPO_MOVIMENTO)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DATA_DECORRENZA)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DATA_LETTERA)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.COEF_SEDE)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PERC_DISAGIO)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PERC_SPETTANTE)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PERC_CONIUGE)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PENSIONE)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.N_FIGLI)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TFR)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DESCR)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.INDENNITA)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                    {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NOMINATIVO)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MATRICOLA)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LIVELLO)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TIPO_MOVIMENTO)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DATA_DECORRENZA)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DATA_LETTERA)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.COEF_SEDE)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PERC_DISAGIO)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PERC_SPETTANTE)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PERC_CONIUGE)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PENSIONE)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.N_FIGLI)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TFR)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.DESCR)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.INDENNITA)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#tbStoriaDipendente').DataTable({
+        "order": [],
+        "scrollY": 220,
+        "scrollX": true,
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+
+        }
+    });
+
+    // Calendario con possibilità di cambiare mese e anno
+    $(document).ready(function () {
+        $(".datepicker").datepicker({
+
+            changeMonth: true,
+            changeYear: true,
+            //yearRange: '2001:2010',
+            //dateFormat: 'dd-mm-yy',
+            //defaultDate: '01-01-2001'
+            //yearRange: "-15:+0",
+            //defaultDate: '01/01/01'
+        });
+    });
+
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
+
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight, width: windowWidth
+
+
+        });
+
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
+
+            rotta = "/Statistiche/ArchivioVecchioISE/RptStoriaDipendente";
+
+            //var codicesede = $("#codicesede").select2('val');
+            //var data = $("#datepicker").datepicker().val()
+
+            var data = $("#datepicker").datepicker().val()
+            var matricola = parseInt($("#MATRICOLA").select2('val'));
+
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: {
+                    matricola: matricola,
+                    V_DATA: data,
+                },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
+
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
+
+                },
+                complete: function () {
+
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
+
+            });
+
+        });
+    });
+
+    function invia() {
+        //debugger
+        var matricola = parseInt($("#MATRICOLA").select2('val'));
+        var data = $("#datepicker").datepicker().val()
+
+        window.location.href = "/Statistiche/StoriaDipendente/RptStoriaDipendente?matricola=" + matricola + "&V_DATA=" + data + "";
+    };
+
+
+    function StoriaDipendente(matricola) {
+        //debugger;
+        rotta = "/Statistiche/ArchivioVecchioISE/BindWithDbValues";
+        var matricola = parseInt($("#MATRICOLA").select2('val'));
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { matricola: matricola },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                $("#divPViewParametri").empty();
+
+            },
+            success: function (result) {
+                //debugger;
+
+                $("#divPViewParametri").html(result);
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
+            }
+
+        });
+
+    }
+
+    $("#MATRICOLA").select2({
+        placeholder: "Seleziona il Dipendente ",
+        allowClear: true,
+        language: "it",
+        width: '350'
+
+    });
+</script>
+

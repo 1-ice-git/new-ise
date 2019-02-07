@@ -1,5 +1,6 @@
 ﻿@model NewISE.Models.dipInfoTrasferimentoModel
 @using NewISE.Models.DBModel;
+@using NewISE.Models.Enumeratori
 
 
 @{
@@ -30,64 +31,115 @@
 }
 
 
-
 <div class="form-horizontal">
     @Html.HiddenFor(model => model.statoTrasferimento)
     <div class="form-group">
-        @Html.Label("lblStatoTrasferimento", "Stato Trasferimento", new { @class = "control-label col-xs-4" })
-        <div class="col-xs-8">
+        @Html.Label("lblStatoTrasferimento", "Stato Trasferimento", new { @class = "control-label col-xs-3" })
+        <div class="col-xs-2">
             <input id="statoTrasferimentoDesc" name="statoTrasferimentoDesc" type="text" value="@varDescStatoTrasf" class="form-control" readonly />
         </div>
-    </div>
-    <div class="form-group">
-        @Html.Label("lblCdcDestinazione", "CDC destinazione", new { @class = "control-label col-xs-4" })
-        <div class="col-xs-3">
+        @Html.Label("lblCdcDestinazione", "CDC dest.", new { @class = "control-label col-xs-2" })
+        <div class="col-xs-5">
             <input id="CDCDestinazione" name="CDCDestinazione" type="text" value="@Model.CDCDestinazione" class="form-control" readonly />
         </div>
-        @Html.Label("lblDecorrenza", "Decorrenza", new { @class = "control-label col-xs-2" })
-        <div class="col-xs-3">
-            @if (Model.Decorrenza.HasValue)
-            {
-                <input id="Decorrenza" name="Decorrenza" type="text" value="@Model.Decorrenza.Value.ToShortDateString()" class="form-control" readonly />
-            }
-            else
-            {
-                <input id="Decorrenza" name="Decorrenza" type="text" value="" class="form-control" readonly />
-            }
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.Label("lblRuolo", "Ruolo", new { @class = "control-label col-xs-4" })
-        <div class="col-xs-8">
-            <input id="DescrizioneRuolo" name="DescrizioneRuolo" type="text" value="@Model.RuoloUfficio.DescrizioneRuolo" class="form-control" readonly />
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.Label("lblIndbase", "Indennità Base", new { @class = "control-label col-xs-4" })
-        <div class="col-xs-3">
-            <input id="indennitaBase" name="indennitaBase" type="text" value="@Model.indennitaBase.ToString("N2")" class="form-control text-right" readonly />
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.Label("lblIndennitaservizio", "Indennità Servizio", new { @class = "control-label col-xs-4" })
-        <div class="col-xs-3">
-            <input id="indennitaServizio" name="indennitaServizio" type="text" value="@Model.indennitaServizio.ToString("N2")" class="form-control text-right" readonly />
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.Label("lblMaggiorazioniFamiliari", "Maggiorazioni Familiari", new { @class = "control-label col-xs-4" })
-        <div class="col-xs-3">
-            <input id="maggiorazioniFamiliari" name="maggiorazioniFamiliari" type="text" value="@Model.maggiorazioniFamiliari.ToString("N2")" class="form-control text-right" readonly />
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.Label("lblIndennitaPersonale", "Indennità Personale", new { @class = "control-label col-xs-4" })
-        <div class="col-xs-3">
-            <input id="indennitaPersonale" name="indennitaPersonale" type="text" value="@Model.indennitaPersonale.ToString("N2")" class="form-control text-right" readonly />
-        </div>
-
     </div>
 
 
+    <div class="col-xs-12">
+        <div class="col-xs-6" style="background-color:#f3f1f1; border:solid;border-color:darkgray; border-width:thin;margin-top:5px; margin-bottom:15px;border-radius:15px">
+            <div class="form-group">
+                @Html.Label("lblTitoloPartenza", "PARTENZA", new { @class = "control-label col-xs-12", @style = "text-align:center; color:#0033cc" })
+            </div>
+            <div class="form-group">
+                @Html.Label("lblDecorrenza", "Data Trasf.", new { @class = "control-label col-xs-6" })
+                <div class="col-xs-6">
+                    @if (Model.Decorrenza.HasValue)
+                    {
+                        <input id="Decorrenza" name="Decorrenza" type="text" value="@Model.Decorrenza.Value.ToShortDateString()" class="form-control text-center" readonly />
+                    }
+                    else
+                    {
+                        <input id="Decorrenza" name="Decorrenza" type="text" value="" class="form-control text-center" readonly />
+                    }
+                </div>
+            </div>
 
+            <div class="form-group">
+                @Html.Label("lblIndbasePartenza", "Indennità Base Lorda", new { @class = "control-label col-xs-6" })
+                <div class="col-xs-6">
+                    <input id="indennitaBasePartenza" name="indennitaBasePartenza" type="text" value="@Model.indennitaBasePartenza.ToString("N2")" class="form-control text-right" readonly />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("lblPS", "Pri. sist. anticipabile lorda", new { @class = "control-label col-xs-6" })
+                <div class="col-xs-6">
+                    <input id="primaSist" name="primaSist" type="text" value="@Model.primaSitemazione.ToString("N2")" class="form-control text-right" readonly />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.Label("lblPSMF", "Pri. sist. + Mag. Fam.", new { @class = "control-label col-xs-6" })
+                <div class="col-xs-6">
+                    <input id="primaSistMF" name="primaSistMF" type="text" value="@Model.primaSitemazioneMF.ToString("N2")" class="form-control text-right" readonly />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("lblTE", "Contr. omnicomprensivo lordo", new { @class = "control-label col-xs-6" })
+                <div class="col-xs-6">
+                    <input id="contrOmni" name="contrOmni" type="text" value="@Model.contributoOmnicomprensivo.ToString("N2")" class="form-control text-right" readonly />
+                </div>
+            </div>
+
+            <div class="form-group">
+            </div>
+        </div>
+
+        <div class="col-xs-6" style="margin-top:10px;margin-bottom:15px;border-radius:15px">
+            <div class="form-group">
+                @Html.Label("lblRuolo", "Ruolo", new { @class = "control-label col-xs-6" })
+                <div class="col-xs-6">
+                    <input id="DescrizioneRuolo" name="DescrizioneRuolo" type="text" value="@Model.RuoloUfficio.DescrizioneRuolo" class="form-control" readonly />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("lblIndbase", "Indennità Base Lorda", new { @class = "control-label col-xs-6" })
+                <div class="col-xs-6">
+                    <input id="indennitaBase" name="indennitaBase" type="text" value="@Model.indennitaBase.ToString("N2")" class="form-control text-right" readonly />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("lblIndennitaservizio", "Indennità Servizio", new { @class = "control-label col-xs-6" })
+                <div class="col-xs-6">
+                    <input id="indennitaServizio" name="indennitaServizio" type="text" value="@Model.indennitaServizio.ToString("N2")" class="form-control text-right" readonly />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("lblMaggiorazioniFamiliari", "Magg. Familiari", new { @class = "control-label col-xs-6" })
+                <div class="col-xs-6">
+                    <input id="maggiorazioniFamiliari" name="maggiorazioniFamiliari" type="text" value="@Model.maggiorazioniFamiliari.ToString("N2")" class="form-control text-right" readonly />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("lblIndennitaPersonale", "Indennità Personale", new { @class = "control-label col-xs-6" })
+                <div class="col-xs-6">
+                    <input id="indennitaPersonale" name="indennitaPersonale" type="text" value="@Model.indennitaPersonale.ToString("N2")" class="form-control text-right" readonly />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("lblMab", "M.AB. max mensile", new { @class = "control-label col-xs-6" })
+                <div class="col-xs-6">
+                    <input id="mabMensile" name="mabMensile" type="text" value="@Model.mabMensile.ToString("N2")" class="form-control text-right" readonly />
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>

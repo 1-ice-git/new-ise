@@ -1,5 +1,7 @@
-﻿<head>
-    <script src="~/Scripts/autoNumeric/autoNumeric-min.js"></script>
+﻿
+
+<head>
+    <script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
     <script src="~/Scripts/ViewScripts/MaggiorazioneAbitazione.js"></script>
 </head>
 
@@ -34,7 +36,6 @@
         </div>
     </div>
 
-
     <div class="modal fade" id="inviaDocMABModal" tabindex="-1" role="dialog" aria-labelledby="inviaDocModalMABLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -58,7 +59,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="modal fade" id="ModalNotificaRichiestaMAB" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaMABLabel" aria-hidden="true">
         <div class="modal-dialog  modal-lg" role="document">
@@ -105,7 +105,7 @@
     </div>
 
     <div class="modal fade" id="ModalAnnullaRichiestaMAB" tabindex="-1" role="dialog" aria-labelledby="ModalAnnullaRichiestaMABLabel" aria-hidden="true">
-        <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-dialog  modal-lg" role="document" style="width:auto">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -115,7 +115,7 @@
                 </div>
                 <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                     <p id="viewAnnullaRichiestaMAB">
-                        <label>Procedere con l'annullamento della richiesta?</label>
+                        @*<label>Procedere con l'annullamento della richiesta?</label>*@
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -126,19 +126,19 @@
         </div>
     </div>
 
-</body>    
+</body>
 
 
 <script type="text/javascript">
     //debugger;
     GestioneMAB(@idTrasferimento);
 
-    function SalvaDocMAB(idTrasferimento)
-    {
+    function SalvaDocMAB(idTrasferimento) {
         //debugger;
-        var idTipoDocumento=parseInt($("#hiIdTipoDocumento").val());
+        var idTipoDocumento = parseInt($("#hiIdTipoDocumento").val());
         SalvaDocumentoMAB(idTrasferimento, idTipoDocumento);
     }
+
 </script>
 
 

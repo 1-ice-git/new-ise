@@ -1,4 +1,5 @@
 ﻿using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.Enumeratori;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,7 +20,7 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Magg. figli")]
         public decimal idMaggiorazioniFamiliari { get; set; }
         [Required(ErrorMessage = "La tipologia del figlio è richiesta.")]
-        [Display(Name = "Tipologia figlio")]
+        [Display(Name = "Tipologia")]
         public EnumTipologiaFiglio idTipologiaFiglio { get; set; }
 
         [Required(ErrorMessage = "Il nome è richiesto.")]
@@ -35,16 +36,19 @@ namespace NewISE.Models.DBModel
         [StringLength(16, ErrorMessage = "Per il codice fiscale sono richiesti 16 caratteri.", MinimumLength = 16)]
         [CustomValidation(typeof(dtFigli), "VerificaCodiceFiscale", ErrorMessage = "")]
         public string codiceFiscale { get; set; }
+
         [Required(ErrorMessage = "La data di inizio validità è richiesta.")]
         [Display(Name = "Data iniz. valid.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
         [CustomValidation(typeof(dtFigli), "VerificaDataInizio")]
         public DateTime? dataInizio { get; set; }
+
+        [CustomValidation(typeof(dtFigli), "VerificaDataFine")]
         [Display(Name = "Data fine valid.")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, NullDisplayText = "")]
         public DateTime? dataFine { get; set; }
 
-        [Required(ErrorMessage = "LA data di aggiornamento è richiesta.")]
+        [Required(ErrorMessage = "La data di aggiornamento è richiesta.")]
         [Display(Name = "Data Agg.")]
         [DataType(DataType.DateTime)]
         public DateTime dataAggiornamento { get; set; }
@@ -67,8 +71,6 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Nominativo")]
         public string nominativo => cognome + " " + nome;
 
-        [DefaultValue(false)]
-        public bool Modificato { get; set; }
 
         public decimal? FK_IdFigli { get; set; }
 
@@ -80,6 +82,8 @@ namespace NewISE.Models.DBModel
         public PassaportoModel passaporto { get; set; }
 
         public MaggiorazioniFamiliariModel MaggiorazioniFamiliari { get; set; }
+
+        public decimal idStatoRecord { get; set; }
 
         public bool HasValue()
         {

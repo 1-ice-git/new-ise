@@ -89,6 +89,7 @@ namespace NewISE.Areas.Parametri.Controllers
 
         [HttpPost]
         [Authorize(Roles = "1, 2")]
+        [ValidateAntiForgeryToken]
         public ActionResult InserisciIndennitaBase(IndennitaBaseModel ibm, bool escludiAnnullati = true, bool aggiornaTutto = false)
         {
             ViewBag.escludiAnnullati = escludiAnnullati;
@@ -96,11 +97,12 @@ namespace NewISE.Areas.Parametri.Controllers
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             try
             {
+
                 if (ModelState.IsValid)
                 {
                     using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                     {
-                        dtib.SetIndennitaDiBase(ibm,aggiornaTutto);
+                        dtib.SetIndennitaDiBase(ibm, aggiornaTutto);
                     }
                     CaricaComboLivelli(ibm.idLivello);
                     using (dtParIndennitaBase dtib = new dtParIndennitaBase())
@@ -156,36 +158,36 @@ namespace NewISE.Areas.Parametri.Controllers
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             var r = new List<SelectListItem>();
-            List<LivelloModel> llm = new List<LivelloModel>();          
+            List<LivelloModel> llm = new List<LivelloModel>();
             using (dtParLivelli dtl = new dtParLivelli())
             {
-                    llm = dtl.GetLivelli().OrderBy(a=>a.idLivello).ToList();
-                    if (llm != null && llm.Count > 0)
+                llm = dtl.GetLivelli().OrderBy(a => a.idLivello).ToList();
+                if (llm != null && llm.Count > 0)
+                {
+                    r = (from t in llm
+                         select new SelectListItem()
+                         {
+                             Text = t.DescLivello,
+                             Value = t.idLivello.ToString()
+                         }).ToList();
+                    if (idLivello == 0)
                     {
-                        r = (from t in llm
-                             select new SelectListItem()
-                             {
-                                 Text = t.DescLivello,
-                                 Value = t.idLivello.ToString()
-                             }).ToList();
-                        if (idLivello == 0)
+                        r.First().Selected = true;
+                        idLivello = Convert.ToDecimal(r.First().Value);
+                    }
+                    else
+                    {
+                        var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
+                        if (temp.Count == 0)
                         {
                             r.First().Selected = true;
                             idLivello = Convert.ToDecimal(r.First().Value);
                         }
                         else
-                        {
-                            var temp = r.Where(a => a.Value == idLivello.ToString()).ToList();
-                            if (temp.Count == 0)
-                            {
-                                r.First().Selected = true;
-                                idLivello = Convert.ToDecimal(r.First().Value);
-                            }
-                            else
-                                r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
-                        }
+                            r.Where(a => a.Value == idLivello.ToString()).First().Selected = true;
                     }
-                    ViewBag.LivelliList = r;                
+                }
+                ViewBag.LivelliList = r;
             }
             return idLivello;
         }

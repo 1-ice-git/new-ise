@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetRiepiloghiIseMensile" targetNamespace="http://tempuri.org/DataSetRiepiloghiIseMensile.xsd" xmlns:mstns="http://tempuri.org/DataSetRiepiloghiIseMensile.xsd" xmlns="http://tempuri.org/DataSetRiepiloghiIseMensile.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetRiepiloghiIseMensile" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetRiepiloghiIseMensile" msprop:Generator_UserDSName="DataSetRiepiloghiIseMensile">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataSetRiepiloghiIseMensile" msprop:Generator_TableClassName="DataSetRiepiloghiIseMensileDataTable" msprop:Generator_TableVarName="tableDataSetRiepiloghiIseMensile" msprop:Generator_RowChangedName="DataSetRiepiloghiIseMensileRowChanged" msprop:Generator_TablePropName="_DataSetRiepiloghiIseMensile" msprop:Generator_RowDeletingName="DataSetRiepiloghiIseMensileRowDeleting" msprop:Generator_RowChangingName="DataSetRiepiloghiIseMensileRowChanging" msprop:Generator_RowEvHandlerName="DataSetRiepiloghiIseMensileRowChangeEventHandler" msprop:Generator_RowDeletedName="DataSetRiepiloghiIseMensileRowDeleted" msprop:Generator_RowClassName="DataSetRiepiloghiIseMensileRow" msprop:Generator_UserTableName="DataSetRiepiloghiIseMensile" msprop:Generator_RowEvArgName="DataSetRiepiloghiIseMensileRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="nominativo" msprop:Generator_ColumnVarNameInTable="columnnominativo" msprop:Generator_ColumnPropNameInRow="nominativo" msprop:Generator_ColumnPropNameInTable="nominativoColumn" msprop:Generator_UserColumnName="nominativo" type="xs:string" minOccurs="0" />
+              <xs:element name="ufficio" msprop:Generator_ColumnVarNameInTable="columnufficio" msprop:Generator_ColumnPropNameInRow="ufficio" msprop:Generator_ColumnPropNameInTable="ufficioColumn" msprop:Generator_UserColumnName="ufficio" type="xs:string" minOccurs="0" />
+              <xs:element name="matricola" msprop:Generator_ColumnVarNameInTable="columnmatricola" msprop:Generator_ColumnPropNameInRow="matricola" msprop:Generator_ColumnPropNameInTable="matricolaColumn" msprop:Generator_UserColumnName="matricola" type="xs:string" minOccurs="0" />
+              <xs:element name="qualifica" msprop:Generator_ColumnVarNameInTable="columnqualifica" msprop:Generator_ColumnPropNameInRow="qualifica" msprop:Generator_ColumnPropNameInTable="qualificaColumn" msprop:Generator_UserColumnName="qualifica" type="xs:string" minOccurs="0" />
+              <xs:element name="indennita_personale" msprop:Generator_ColumnVarNameInTable="columnindennita_personale" msprop:Generator_ColumnPropNameInRow="indennita_personale" msprop:Generator_ColumnPropNameInTable="indennita_personaleColumn" msprop:Generator_UserColumnName="indennita_personale" type="xs:string" minOccurs="0" />
+              <xs:element name="prima_sistemazione_anticipo" msprop:Generator_ColumnVarNameInTable="columnprima_sistemazione_anticipo" msprop:Generator_ColumnPropNameInRow="prima_sistemazione_anticipo" msprop:Generator_ColumnPropNameInTable="prima_sistemazione_anticipoColumn" msprop:Generator_UserColumnName="prima_sistemazione_anticipo" type="xs:string" minOccurs="0" />
+              <xs:element name="richiamo" msprop:Generator_ColumnVarNameInTable="columnrichiamo" msprop:Generator_ColumnPropNameInRow="richiamo" msprop:Generator_ColumnPropNameInTable="richiamoColumn" msprop:Generator_UserColumnName="richiamo" type="xs:string" minOccurs="0" />
+              <xs:element name="riferimento" msprop:Generator_ColumnVarNameInTable="columnriferimento" msprop:Generator_ColumnPropNameInRow="riferimento" msprop:Generator_ColumnPropNameInTable="riferimentoColumn" msprop:Generator_UserColumnName="riferimento" type="xs:string" minOccurs="0" />
+              <xs:element name="elaborazione" msprop:Generator_ColumnVarNameInTable="columnelaborazione" msprop:Generator_ColumnPropNameInRow="elaborazione" msprop:Generator_ColumnPropNameInTable="elaborazioneColumn" msprop:Generator_UserColumnName="elaborazione" type="xs:string" minOccurs="0" />
+              <xs:element name="numannomeseelab" msprop:Generator_ColumnVarNameInTable="columnnumannomeseelab" msprop:Generator_ColumnPropNameInRow="numannomeseelab" msprop:Generator_ColumnPropNameInTable="numannomeseelabColumn" msprop:Generator_UserColumnName="numannomeseelab" type="xs:string" minOccurs="0" />
+              <xs:element name="numannomeserif" msprop:Generator_ColumnVarNameInTable="columnnumannomeserif" msprop:Generator_ColumnPropNameInRow="numannomeserif" msprop:Generator_ColumnPropNameInTable="numannomeserifColumn" msprop:Generator_UserColumnName="numannomeserif" type="xs:string" minOccurs="0" />
+              <xs:element name="prima_sistemazione_saldo" msprop:Generator_ColumnVarNameInTable="columnprima_sistemazione_saldo" msprop:Generator_ColumnPropNameInRow="prima_sistemazione_saldo" msprop:Generator_ColumnPropNameInTable="prima_sistemazione_saldoColumn" msprop:Generator_UserColumnName="prima_sistemazione_saldo" type="xs:string" minOccurs="0" />
+              <xs:element name="prima_sistemazione_unica_soluz" msprop:Generator_ColumnVarNameInTable="columnprima_sistemazione_unica_soluz" msprop:Generator_ColumnPropNameInRow="prima_sistemazione_unica_soluz" msprop:Generator_ColumnPropNameInTable="prima_sistemazione_unica_soluzColumn" msprop:Generator_UserColumnName="prima_sistemazione_unica_soluz" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

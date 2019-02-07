@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using NewISE.EF;
-using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.Ricalcoli
 {

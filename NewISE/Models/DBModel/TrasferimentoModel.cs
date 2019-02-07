@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Models.DBModel
 {
@@ -92,11 +93,9 @@ namespace NewISE.Models.DBModel
         [Display(Name = "Allega Lettera Trasferimento")]
         [DataType(DataType.Upload)]
         public HttpPostedFileBase file { get; set; }
-
-
         public RuoloUfficioModel RuoloUfficio { get; set; }
-
         public PrimaSistemazioneModel PrimaSistemazione { get; set; }
+        public LivelloDipendenteModel Livello { get; set; }
 
 
         public bool HasValue()

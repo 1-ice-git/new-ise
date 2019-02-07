@@ -1,0 +1,86 @@
+{
+  "_args": [
+    [
+      "ckeditor@^4.9.2",
+      "C:\\Users\\utente1\\Documents\\Visual Studio 2015\\Projects\\NewISE\\NewISE"
+    ]
+  ],
+  "_from": "ckeditor@>=4.9.2-0 <5.0.0-0",
+  "_id": "ckeditor@4.9.2",
+  "_inCache": true,
+  "_location": "/ckeditor",
+  "_nodeVersion": "6.8.1",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/ckeditor_4.9.2_1524042431061_0.5954451838639139"
+  },
+  "_npmUser": {
+    "email": "npm@cksource.com",
+    "name": "cksource"
+  },
+  "_npmVersion": "3.10.8",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "ckeditor",
+    "raw": "ckeditor@^4.9.2",
+    "rawSpec": "^4.9.2",
+    "scope": null,
+    "spec": ">=4.9.2-0 <5.0.0-0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "https://registry.npmjs.org/ckeditor/-/ckeditor-4.9.2.tgz",
+  "_shasum": "385600cb4028e0055c92720e22435bb97f413cdc",
+  "_shrinkwrap": null,
+  "_spec": "ckeditor@^4.9.2",
+  "_where": "C:\\Users\\utente1\\Documents\\Visual Studio 2015\\Projects\\NewISE\\NewISE",
+  "author": {
+    "name": "CKSource",
+    "url": "http://cksource.com/"
+  },
+  "bugs": {
+    "url": "http://dev.ckeditor.com"
+  },
+  "dependencies": {},
+  "description": "JavaScript WYSIWYG web text editor.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "fileCount": 2693,
+    "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJa1wrACRA9TVsSAnZWagAA81AP/j8U8UfI/66+cvXtnUSb\nd8ihrVmJqnIxYiOdG+hLzL3DVFDTnrUdpgGmsXLRhRDDixAFXfgzGT1DGhUJ\nKPWnUTE0NebiIciW+GB70g1OTw5kMt9HpAH8CnGO5pXBnl20PoQlatADyavf\nbdWqKL0uNBfUsml896XPcws5QIZWwtjpq0GVU7uryt9Lb+P7muvxuGBHggBB\niLKb+6qBF2CWQeLxfeayc4JQbivQaDDN3wuM42zGQ2Kk2H8koBdeMxeW5j6f\nv1DlGMIHlyflFtJDQkWDcPPphzTFHuU0saaTwIbm2vDPu0TYmC73J6+zt8wl\nTkvfLfPwSYgJgrhwWx4MqnyOjM8oHDaL+Yk+aUKjmFebYcz5/bVHIePr/VIM\nyoiCrwJ8fRmytFUv7elpo7bh04Xvv6+4w4+uoT183uSWOMQ7gZWf23MSDevl\nvhRezh41CYCsVutyd0C4zPddsq22qpc+pZP3NGv3wjLmTH2Bc8YqsbcnRg6m\nnLpxXYaGqm0B3uKZ69A17mvy1YjOx5P6k7o5U8nI7TY1C9Jvd6hDWni8YfUq\nO5Jwq1NapWwKRwsz/PqCUdsan49w4o/HM9KC7MpDyhNVPADm6iAzDFRjvRtY\nhMLIlwHf6nmMrcZfh3kG/MPThdaHWBYKxIiXPiool8W2rEnI8365sonJJSBh\nitnl\r\n=WEOH\r\n-----END PGP SIGNATURE-----\r\n",
+    "shasum": "385600cb4028e0055c92720e22435bb97f413cdc",
+    "tarball": "https://registry.npmjs.org/ckeditor/-/ckeditor-4.9.2.tgz",
+    "unpackedSize": 6188423
+  },
+  "gitHead": "993eb4fba6a70545f6c50da1988d39ecd9cf47a3",
+  "homepage": "http://ckeditor.com",
+  "installable": true,
+  "keywords": [
+    "ckeditor",
+    "editor",
+    "fckeditor",
+    "html",
+    "javascript",
+    "richtext",
+    "text",
+    "wysiwyg"
+  ],
+  "license": "(GPL-2.0 OR LGPL-2.1 OR MPL-1.1)",
+  "main": "ckeditor.js",
+  "maintainers": [
+    {
+      "name": "cksource",
+      "email": "npm@cksource.com"
+    }
+  ],
+  "name": "ckeditor",
+  "optionalDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ckeditor/ckeditor-releases.git"
+  },
+  "scripts": {},
+  "version": "4.9.2"
+}

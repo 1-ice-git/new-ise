@@ -6,16 +6,7 @@ using System.Web;
 
 namespace NewISE.Models.DBModel
 {
-    public enum EnumTipoRegolaCalcolo
-    {
-        IndennitaBase = 1,
-        IndennitaDIServizio = 2,
-        IndennitaPersonale = 3,
-        MaggiorazioneConiuge = 4,
-        MaggiorazioneFigli = 5,
-        AnticipoIndennitaPrimaSistemazione = 21,
-        IndennitaPrimaSistemazione = 22
-    }
+
 
     public class RegoleCalcoloModel
     {
@@ -45,7 +36,7 @@ namespace NewISE.Models.DBModel
 
         public TipoRegolaCalcoloModel TipoRegolaCalcolo { get; set; }
         public NormaCalcoloModel NormaCalcolo { get; set; }
-       
+
 
     }
 }

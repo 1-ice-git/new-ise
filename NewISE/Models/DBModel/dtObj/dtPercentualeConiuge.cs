@@ -1,4 +1,5 @@
 ﻿using NewISE.EF;
+using NewISE.Models.Enumeratori;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -149,6 +150,23 @@ namespace NewISE.Models.DBModel.dtObj
 
 
         }
+
+        public void RimuoviAssociazione_Coniuge_PercentualeMagConiuge(decimal idConuige, ModelDBISE db)
+        {
+            var c = db.CONIUGE.Find(idConuige);
+            var lpmc = c.PERCENTUALEMAGCONIUGE.Where(a => a.ANNULLATO == false).ToList();
+            if (lpmc?.Any() ?? false)
+            {
+                foreach (var pmc in lpmc)
+                {
+                    c.PERCENTUALEMAGCONIUGE.Remove(pmc);
+                }
+
+                db.SaveChanges();
+            }
+
+        }
+
 
     }
 }

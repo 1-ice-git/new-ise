@@ -19,7 +19,7 @@
             <hr />
             <div class="form-group">
                 @Html.LabelFor(model => model.dataInizioValidita, htmlAttributes: new { @class = "control-label col-xs-2" })
-                <div class="col-xs-10">
+                <div class="col-xs-2">
                     @if (Model != null && Model.dataInizioValidita > DateTime.MinValue)
                     {
                         @Html.TextBoxFor(model => model.dataInizioValidita, String.Format("{0:dd/MM/yyyy}", Model.dataInizioValidita), new { @class = "form-control" })
@@ -30,37 +30,40 @@
                     }
                 </div>
             </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.dataFineValidita, htmlAttributes: new { @class = "control-label col-xs-2" })
-                <div class="col-xs-10">
-                    @if (Model != null && Model.dataFineValidita.HasValue)
-                    {
-                        @Html.TextBoxFor(model => model.dataFineValidita, string.Format("{0:dd-MM-yyyy}", Model.dataFineValidita), new { @class = "form-control" })
-                    }
-                    else
-                    {
-                        @Html.TextBoxFor(model => model.dataFineValidita, new { @class = "form-control" })
-                    }
-                </div>
-            </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.importoPensione, htmlAttributes: new { @class = "control-label col-xs-2" })
-                <div class="col-xs-10">
+                <div class="col-xs-2">
                     @if (Model != null)
                     {
-                        <div style="width:120px;">
-                            @Html.TextBoxFor(model => model.importoPensione, string.Format("{0:N2}", Model.importoPensione), new { @class = "form-control text-right" })
-                        </div>
+                        @*@Html.TextBoxFor(model => model.importoPensione, string.Format("{0:N2}", Model.importoPensione), new { @class = "form-control text-right" })*@
+                        <input type="text" id="importoPensioneUI" class="form-control text-right ignore" value="@Model.importoPensione.ToString("0:00")" />
+                        <input type="hidden" id="importoPensione" name="importoPensione" />
                     }
                     else
                     {
-                        <div style="width:120px;">
-                            @Html.TextBoxFor(model => model.importoPensione, new { @class = "form-control text-right" })
-                        </div>
+                        @*@Html.TextBoxFor(model => model.importoPensione, new { @class = "form-control text-right" })*@
+                        <input type="text" id="importoPensioneUI" class="form-control text-right" value="" />
+                        <input type="hidden" id="importoPensione" name="importoPensione" />
                     }
                 </div>
             </div>
+
+            <div class="form-group">
+                @Html.LabelFor(Model => Model.checkAggiornaTutti, htmlAttributes: new { @class = "control-label col-xs-2" })
+                <div class="col-xs-2">
+                    <span class="text-uppercase">@Html.CheckBoxFor(model => model.checkAggiornaTutti)</span>
+                </div>
+            </div>
+
+            @*<div class="row">
+                    <div class="col-xs-2 text-right" style="margin-top:3px;font-weight:bold">
+                        Aggiorna Tutto
+                    </div>
+                    <div class="col-xs-1">
+                        <input type="checkbox" id="idAggiornaTutto">
+                    </div>
+                </div>*@
+            <div class="form-group">&nbsp;</div>
 
             <div class="form-group">
                 <div class="col-xs-offset-2 col-xs-10">
@@ -106,7 +109,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-            break;
+                            break;
         }
 
     }
@@ -125,8 +128,9 @@
             DialogModalError('True');
         }
         else {
-            var ip = $("#importoPensione").autoNumeric("get");
-            $("#importoPensione").val(ip.replace(".", ","));
+            //var ip = $("#importoPensione").autoNumeric("get");
+            //var ip = importoPensione.getNumber();
+            //$("#importoPensione").val(ip.toString().replace(".", ","));
         }
     });
 
@@ -142,17 +146,44 @@
         changeYear: true,
     });
 
-    $("#importoPensione").autoNumeric('init',
-    {
-        aSep: '.',
-        aDec: ',',
-        aSign: ''
-    });
+    //$("#importoPensione").autoNumeric('init',
+    //{
+    //    aSep: '.',
+    //    aDec: ',',
+    //    aSign: ''
+    //});
+
+
+    //var autoNumericOptionsEuroDueDec = {
+    //    digitGroupSeparator: '.',
+    //    decimalCharacter: ',',
+    //    decimalCharacterAlternative: '.',
+    //    eDec: 2,
+    //    decimalPlacesShownOnBlur: 2
+    //    //currencySymbol: '\u202f€',
+    //    //currencySymbolPlacement: AutoNumeric.options.currencySymbolPlacement.suffix,
+    //    //roundingMethod: AutoNumeric.options.roundingMethod.halfUpSymmetric,
+    //};
+
 
     $.culture = Globalize.culture("it-IT");
+
+    importoPensione = new AutoNumeric('#importoPensioneUI', autoNumericOptionsEuro);
+
+    $("#importoPensioneUI").blur(function () {
+        //debugger;
+        var val = importoPensione.getNumber();
+        $("#importoPensione").val(val.toString().replace(".", ","));
+    });
+
+    
 
     $.validator.methods.number = function (value, element) {
         return this.optional(element) || !isNaN(Globalize.parseFloat(value));
     };
+
+    $.validator.setDefaults({
+        ignore: ".ignore"
+    });
 
 </script>

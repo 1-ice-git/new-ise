@@ -3,17 +3,17 @@
         decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     }
 
-    <h4>Richiesta Maggiorazione Abitazione</h4>
+    <h4><strong>MAGGIORAZIONE ABITAZIONE</strong></h4>
     <div class="row">
         <div class="col-xs-12" style="padding-left: 10px; padding-right:25px; border:0">
             <hr />
             <div class="nav nav-justified nav-tabs">
                 <ul class="nav nav-tabs tabs-destro" id="tabsAttivitaMAB">
                     <li id="mnAttivitaMAB">
-                        <a data-toggle="tab" href="#tabAttivitaMAB" id="lkAttivitaMAB" onclick="AttivitaMAB(@idTrasferimento);">Importo</a>
+                        <a data-toggle="tab" href="#tabAttivitaMAB" id="lkAttivitaMAB" onclick="AttivitaMAB(@idTrasferimento);">M.AB.</a>
                     </li>
                     <li id="mnFormulariMAB">
-                        <a data-toggle="tab" href="#tabFormulariMAB" id="lkFormulariMAB" onclick="FormulariMAB(@idTrasferimento);">Formulari</a>
+                        <a data-toggle="tab" href="#tabFormulariMAB" id="lkFormulariMAB" onclick="FormulariMAB(@idTrasferimento);">Formulario</a>
                     </li>
                 </ul>
             </div>
@@ -24,19 +24,26 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12">
+        <hr />
+        <div class="col-xs-4">
+            <div id="divRinunciaMABPartenza">
+            </div>
+        </div>
+        <div class="col-xs-8">
             <div id="divAttivazioneMAB">
             </div>
         </div>
     </div>
-</body>    
+</body>
 
 
 <script type="text/javascript">
     //debugger;
     AttivitaMAB(@idTrasferimento);
 
-    GestionePulsantiNotificaAttivaAnnullaMAB(@idTrasferimento);
+    GestioneRinunciaMABPartenza(@idTrasferimento);
+
+    GestionePulsantiNotificaAttivaAnnullaMABPartenza(@idTrasferimento);
 
 </script>
 

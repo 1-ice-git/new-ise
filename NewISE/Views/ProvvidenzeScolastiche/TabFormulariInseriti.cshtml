@@ -1,0 +1,302 @@
+﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
+@*@model IEnumerable<NewISE.Models.DBModel.DocumentiModel>*@
+@model IEnumerable<NewISE.Models.DBModel.VariazioneDocumentiModel>
+
+
+@{
+    bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+    EnumChiamante enChiamante = EnumChiamante.ProvvidenzeScolastiche;
+    string DescrizionePS = Convert.ToString(ViewData["DescrizionePS"]);
+    decimal idTipoDocumento = Convert.ToDecimal(ViewData["idTipoDocumento"]);
+    decimal idTrasfProvScolastiche = Convert.ToDecimal(ViewData["idTrasfProvScolastiche"]);
+    decimal idProvScolastiche = Convert.ToDecimal(ViewData["idProvScolastiche"]);
+    bool richiestaPS = Convert.ToBoolean(ViewData["richiestaPS"]);
+    bool attivazionePS = Convert.ToBoolean(ViewData["attivazionePS"]);
+    bool DocProvvidenzeScolastiche = Convert.ToBoolean(ViewData["DocProvvidenzeScolastiche"]);
+}
+
+<table class="table table-striped" id="tabElencoFormulariInseriti">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.progressivo)
+            </th>
+            <th >
+                @Html.DisplayNameFor(model => model.nomeDocumento)
+            </th>
+            <th class="text-center no-sort">
+                @Html.DisplayNameFor(model => model.estensione)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.dataInserimento)
+            </th>
+            <th class="no-sort"></th>
+            <th class="no-sort"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                
+                @if (item.Modificabile)
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        (@Html.DisplayFor(modelItem => item.progressivo))
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        (@Html.DisplayFor(modelItem => item.progressivo))
+                    </td>
+                }
+
+                @if (item.Modificabile)
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.nomeDocumento)
+                    </td>
+                }
+                
+                @if (item.Modificabile)
+                {
+                   <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    @Html.DisplayFor(modelItem => item.estensione)
+                   </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.estensione)
+                    </td>
+                }
+                @if (item.Modificabile)
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                        @Html.DisplayFor(modelItem => item.dataInserimento)
+                    </td>
+                }
+                <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    <a href="@Url.RouteUrl("LeggiDocumento", new {id = item.idDocumenti})" target="_blank"><img class="SfondoBordoImg" width="17" height="17" src="../../Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il formulario." /></a>
+                </td>
+
+                @*<td class="text-center">
+                    
+
+                        @if (richiestaPS == false)
+                        {
+                            //<button class="btn btn-link disabled" disabled="disabled">Elimina</button>
+                            <img class="SfondoBordoImg" width="17" src="../../Immagini/delete_grey.png" />
+                        }
+                        else
+                        {
+                            <a href="#" onclick="EliminaFormulario(@item.idDocumenti)" id="linkEliminaFormulario">
+                                <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
+                            </a>
+                        }
+
+                </td>*@
+
+                <td class="text-center" style="background-color:@item.ColoreSfondo;color:@item.ColoreTesto">
+                    @if (item.Modificabile)
+                    {
+                        <a href="#" onclick="EliminaFormulario(@item.idDocumenti)" id="linkEliminaFormulario">
+                            <img class="SfondoBordoImg" width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Formulario" />
+                        </a>
+                    }
+                    else
+                    {
+                        <img class="SfondoBordoImg disabled" width="17" src="../../Immagini/delete_grey.png" />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<div class="modal fade" id="ModalEliminaFormularioPS" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaFormularioPSLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title alert alert-info text-info" id="EliminaFormularioPSLabel">Elimina Formulario Provvidenze Scolastiche</h3>
+            </div>
+            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
+                <input type="hidden" id="hIdDocFormularioPS" />
+                <p><label>Eliminare il formulario selezionato?</label></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ConfermaEliminaFormularioPS();">Ok</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#tabElencoFormulariInseriti").DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": true,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "columnDefs": [
+                { "targets": [3], "type": 'date-euro' },
+                { "targets": [4, 5], "orderable": false },
+        ],
+        "order": [[0, "desc"], [1, "asc"], [3, "desc"]]
+        //dom: 'Bfrtip',
+        //buttons: [
+        //    {
+        //        text: 'Nuovo Coniuge',
+        //        className: 'green',
+        //        action: function (e, dt, node, config) {
+        //            NuovoConiuge();
+        //        }
+        //    }
+        //],
+        //"columnDefs": [
+        //    {
+        //        "targets": [0],
+        //        "visible": false,
+        //        "searchable": false
+        //    },
+
+        //]
+    });
+
+    function EliminaFormulario(idDoc) {
+        $("#hIdDocFormularioPS").val(idDoc);
+        $("#ModalEliminaFormularioPS").modal("show");
+    }
+
+    function ConfermaEliminaFormularioPS() {
+        //debugger;
+        var rotta = "/Documenti/EliminaFormularioPS";
+        var idDoc = $("#hIdDocFormularioPS").val();
+        $("#ModalEliminaFormularioPS").modal("hide");
+        var chiamante = parseInt(@Convert.ToDecimal(enChiamante));
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idDocumento: idDoc, chiamante: chiamante }, //I dati, forniti sotto forma di oggetto FormData
+            dataType: 'json',
+            cache: false,
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+
+                if (result.err != "" && result.err != undefined) {
+                    ErroreElaborazioneAjax(result.err);
+                }
+                else {
+                
+                    //InfoElaborazioneAjax(result.msg);
+                    //CloseTimeModalFormulario();
+                    //AttivitaProvvidenze();
+                    //PulsantiNotificaAttivaMagFam();
+                }
+            },
+            complete: function () {
+                //$("#btUpload").removeAttr("disabled");
+            },
+            error: function (error) {
+                //debugger;
+
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+
+    function TabFormulariInseriti1() {
+        //debugger;
+
+        var rotta = "/ProvvidenzeScolastiche/TabFormulariInseriti1";
+        var idTrasfProvScolastiche = @idTrasfProvScolastiche;
+        //var idTipoDocumento = parseInt($("#hiNuovoDocumento").val());
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: {
+                idTrasfProvScolastiche: idTrasfProvScolastiche
+            },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$('#inviaDocModal').modal('show');
+                Blocca();
+            },
+            success: function (result) {
+                //debugger;
+                //$("#tabElencoFormulariInseriti").empty();
+                //$("#tabElencoFormulariInseriti").html(result);
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    $("#ModalEliminaFormularioPS").on("hidden.bs.modal", function () {
+        //debugger;
+        //AttivitaProvvidenze();
+        ElencoFormulariInseriti();
+    });
+</script>

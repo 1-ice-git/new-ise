@@ -17,11 +17,11 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CONIUGETITOLIVIAGGIO()
         {
+            this.CONIUGE = new HashSet<CONIUGE>();
             this.DOCUMENTI = new HashSet<DOCUMENTI>();
         }
     
         public decimal IDCONIUGETITOLIVIAGGIO { get; set; }
-        public decimal IDCONIUGE { get; set; }
         public decimal IDTITOLOVIAGGIO { get; set; }
         public decimal IDATTIVAZIONETITOLIVIAGGIO { get; set; }
         public bool RICHIEDITITOLOVIAGGIO { get; set; }
@@ -29,8 +29,9 @@ namespace NewISE.EF
         public bool ANNULLATO { get; set; }
     
         public virtual ATTIVAZIONETITOLIVIAGGIO ATTIVAZIONETITOLIVIAGGIO { get; set; }
-        public virtual CONIUGE CONIUGE { get; set; }
         public virtual TITOLIVIAGGIO TITOLIVIAGGIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CONIUGE> CONIUGE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DOCUMENTI> DOCUMENTI { get; set; }
     }

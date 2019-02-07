@@ -1,0 +1,106 @@
+﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
+
+@{
+    // decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    decimal nDocCartaImbarco = Convert.ToDecimal(ViewData["nDocCartaImbarco"]);
+    decimal nDocTitoliViaggio = Convert.ToDecimal(ViewData["nDocTitoliViaggio"]);
+    decimal tipoDoc = Convert.ToDecimal(ViewData["tipoDoc"]);
+    bool NotificaInviata = Convert.ToBoolean(ViewData["NotificaInviata"]);
+    bool AttivazioneInviata = Convert.ToBoolean(ViewData["AttivazioneInviata"]);
+    decimal idFaseInCorso = Convert.ToDecimal(ViewData["idFaseInCorso"]);
+
+    bool AttivazioneInviata2 = Convert.ToBoolean(ViewData["AttivazioneInviata2"]);
+    bool NotificaInviata2 = Convert.ToBoolean(ViewData["NotificaInviata2"]);
+    bool nuovVC = Convert.ToBoolean(ViewData["NuovoViaggiCongedo"]);
+    bool AttivaPulsanteNuovo = Convert.ToBoolean(ViewData["AttivaPulsanteNuovo"]);
+}
+@*@Html.Hidden("HI_IdTrasferimento", idTrasferimento)*@
+<div id="PulsantiUploadPreventivi" class="pull-right" style="margin-top: 5px; margin-bottom: 10px;margin-right:55px ">
+
+    @if (AttivaPulsanteNuovo == true)
+    {
+        <button class="btn btn-default btn-sm disabled" disabled id="linkElencoDocPreventivi" onclick="NuovoDocumentoPreventivi();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Allega Preventivi di Viaggio
+        </button>
+
+            <button class="btn btn-default btn-sm" id="NuovoDocPreventivi" onclick="ModalNuovoViaggiCongedo()">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Nuovo
+            </button>
+    }
+    else if (NotificaInviata == true || NotificaInviata2 == true)
+    {
+        <button class="btn btn-default btn-sm disabled" disabled id="linkElencoDocPreventivi" onclick="NuovoDocumentoPreventivi();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Allega Preventivi di Viaggio
+        </button>
+
+            <button class="btn btn-default btn-sm disabled" disabled id="NuovoDocPreventivi" onclick="">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Nuovo
+            </button>
+    }
+    else if (NotificaInviata == false)
+    {
+        <button class="btn btn-default btn-sm" id="linkElencoDocPreventivi" onclick="NuovoDocumentoPreventivi();">
+            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+            Allega Preventivi di Viaggio
+        </button>
+
+            <button class="btn btn-default btn-sm disabled" disabled id="NuovoDocPreventivi" onclick="">
+                <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                Nuovo
+            </button>
+    }
+
+
+</div>
+
+<script type="text/javascript">
+    $("#HI_id_Fase_In_Corso").val(@Convert.ToDecimal(EnumFaseViaggioCongedo.Preventivi));
+    function NuovoDocumentoPreventivi() {
+        //debugger;
+        var rotta = "/ViaggiCongedo/NuovoDocumentoPreventivi";
+        var TipoDocumento = parseInt(@tipoDoc);
+        var idTrasferimento = parseInt(@idTrasferimento);
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+                $("#NewDocPreventiviModal").modal('show');
+            },
+            success: function (result) {
+                //debugger;
+                $("#NewViewPreventiviDocumento").empty();
+                $("#NewViewPreventiviDocumento").html(result);
+
+                var titoloPagina = $("#titoloPagina").val();
+                $("#NewPreventiviModelLabel").empty();
+                $("#NewPreventiviModelLabel").html('Allega Preventivi');
+            },
+            complete: {
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function ModalNuovoViaggiCongedo() {
+        //  debugger;
+        $('#ModalNuovoViaggiCongedo').modal().show();
+    }
+</script>

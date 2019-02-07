@@ -147,7 +147,7 @@
                         $("#btAnnullaRichiestaTV").removeClass("hidden");
                     }
 
-                    //Se risulta in lavorazione abilito la il pulsante notifica
+                    //Se risulta in lavorazione abilito il pulsante notifica
                     if (inLavorazione && richiediNotifica && trasfAnnullato==false) {
                         $("#btNotificaRichiestaTV").removeAttr("disabled");
                         $("#btNotificaRichiestaTV").removeClass("disabled");
@@ -221,6 +221,7 @@
 
     function ModalAnnullaRichiesta() {
         //debugger;
+        MessaggioAnnullaRichiestaTV();
         $('#ModalAnnullaRichiestaTV').modal().show();
     }
 
@@ -286,11 +287,12 @@
         //debugger;
         var rotta = "/TitoliViaggio/ConfermaAnnullaRichiestaTV";
         var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        var testoAnnullaTV = $('#FullDescription').val();
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTitoliViaggio: idTitoliViaggio },
+            data: { idTitoliViaggio: idTitoliViaggio, msg:testoAnnullaTV },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -344,6 +346,34 @@
             },
             complete: function () {
 
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function MessaggioAnnullaRichiestaTV() {
+        //debugger;
+        var rotta = "/TitoliViaggio/MessaggioAnnullaTV";
+        var idTitoliViaggio = parseInt('@idTitoliViaggio');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTitoliViaggio: idTitoliViaggio },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiestaTV").empty();
+                $("#viewAnnullaRichiestaTV").html(result);
+            },
+            complete: function () {
             },
             error: function (jqXHR, textStatus, errorThrow) {
                 //debugger;

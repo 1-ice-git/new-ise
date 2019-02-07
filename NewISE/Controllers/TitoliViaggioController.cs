@@ -13,6 +13,9 @@ using NewISE.Models;
 using NewISE.Models.DBModel;
 using NewISE.Models.DBModel.dtObj;
 using NewISE.Models.ViewModel;
+using NewISE.Interfacce;
+using System.Web.Helpers;
+using NewISE.Models.Enumeratori;
 
 namespace NewISE.Controllers
 {
@@ -70,6 +73,11 @@ namespace NewISE.Controllers
                                 case EnumTipologiaConiuge.NonResidente_A_Carico:
                                     adfcm.residente = false;
                                     adfcm.ulterioreMagConiuge = true;
+                                    break;
+
+                                case EnumTipologiaConiuge.NonResidente:
+                                    adfcm.residente = false;
+                                    adfcm.ulterioreMagConiuge = false;
                                     break;
 
                                 default:
@@ -172,55 +180,70 @@ namespace NewISE.Controllers
         [HttpPost]
         public ActionResult TitoliViaggio(decimal idTrasferimento)
         {
-            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+            try
             {
-                var idTitoliViaggio = dttv.GetIdTitoliViaggio(idTrasferimento);
+                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                {
+                    var idTitoliViaggio = dttv.GetIdTitoliViaggio(idTrasferimento);
 
-                ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-                ViewData.Add("idTrasferimento", idTrasferimento);
+                    ViewData.Add("idTitoliViaggio", idTitoliViaggio);
+                    ViewData.Add("idTrasferimento", idTrasferimento);
 
-                return PartialView();
+                    return PartialView();
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
         [HttpPost]
         public ActionResult ElencoUploadTitoliViaggio(decimal idTitoliViaggio)
         {
-            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+            try
             {
-                bool notificaEseguita = false;
-                bool richiediNotifica = false;
-                bool richiediAttivazione = false;
-                bool richiediConiuge = false;
-                bool richiediRichiedente = false;
-                bool richiediFigli = false;
-                bool DocTitoliViaggio = false;
-                bool DocCartaImbarco = false;
-                bool inLavorazione = false;
-                bool trasfAnnullato = false;
 
-                var nDocCartaImbarco = dttv.GetNumDocumenti(idTitoliViaggio, EnumTipoDoc.Carta_Imbarco);
-                var nDocTitoliViaggio = dttv.GetNumDocumenti(idTitoliViaggio, EnumTipoDoc.Titolo_Viaggio);
-
-                //var atv_notificata = dttv.GetUltimaAttivazioneNotificata(idTitoliViaggio);
-
-                dttv.SituazioneTitoliViaggio(idTitoliViaggio,
-                               out richiediNotifica, out richiediAttivazione,
-                               out richiediConiuge, out richiediRichiedente,
-                               out richiediFigli, out DocTitoliViaggio,
-                               out DocCartaImbarco, out inLavorazione, out trasfAnnullato);
-
-                if (richiediAttivazione)
+                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
-                    notificaEseguita = true;
+                    bool notificaEseguita = false;
+                    bool richiediNotifica = false;
+                    bool richiediAttivazione = false;
+                    bool richiediConiuge = false;
+                    bool richiediRichiedente = false;
+                    bool richiediFigli = false;
+                    bool DocTitoliViaggio = false;
+                    bool DocCartaImbarco = false;
+                    bool inLavorazione = false;
+                    bool trasfAnnullato = false;
+
+                    var nDocCartaImbarco = dttv.GetNumDocumenti(idTitoliViaggio, EnumTipoDoc.Carta_Imbarco);
+                    var nDocTitoliViaggio = dttv.GetNumDocumenti(idTitoliViaggio, EnumTipoDoc.Titolo_Viaggio);
+
+                    //var atv_notificata = dttv.GetUltimaAttivazioneNotificata(idTitoliViaggio);
+
+                    dttv.SituazioneTitoliViaggio(idTitoliViaggio,
+                                   out richiediNotifica, out richiediAttivazione,
+                                   out richiediConiuge, out richiediRichiedente,
+                                   out richiediFigli, out DocTitoliViaggio,
+                                   out DocCartaImbarco, out inLavorazione, out trasfAnnullato);
+
+                    if (richiediAttivazione)
+                    {
+                        notificaEseguita = true;
+                    }
+
+                    ViewData.Add("notificaEseguita", notificaEseguita);
+                    ViewData.Add("idTitoliViaggio", idTitoliViaggio);
+                    ViewData.Add("nDocCartaImbarco", nDocCartaImbarco);
+                    ViewData.Add("nDocTitoliViaggio", nDocTitoliViaggio);
+
+                    return PartialView();
                 }
-
-                ViewData.Add("notificaEseguita", notificaEseguita);
-                ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-                ViewData.Add("nDocCartaImbarco", nDocCartaImbarco);
-                ViewData.Add("nDocTitoliViaggio", nDocTitoliViaggio);
-
-                return PartialView();
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
@@ -228,73 +251,83 @@ namespace NewISE.Controllers
         [HttpPost]
         public ActionResult ElencoTitoliViaggio(decimal idTitoliViaggio)
         {
-            using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+            try
             {
-                List<ElencoTitoliViaggioModel> ltvm = new List<ElencoTitoliViaggioModel>();
-
-                var atv = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio);
-
-                decimal idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO;
-
-                if (idAttivazioneTitoliViaggio > 0)
+                using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
-                    ltvm = dttv.ElencoTitoliViaggio(idTitoliViaggio);
+                    List<ElencoTitoliViaggioModel> ltvm = new List<ElencoTitoliViaggioModel>();
+
+                    var atv = dttv.GetUltimaAttivazioneTitoliViaggio(idTitoliViaggio);
+
+                    decimal idAttivazioneTitoliViaggio = atv.IDATTIVAZIONETITOLIVIAGGIO;
+
+                    if (idAttivazioneTitoliViaggio > 0)
+                    {
+                        ltvm = dttv.ElencoTitoliViaggio(idTitoliViaggio);
+                    }
+
+                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        var t = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoliViaggio);
+                        EnumStatoTraferimento statoTrasferimento = t.idStatoTrasferimento;
+                        ViewData.Add("statoTrasferimento", statoTrasferimento);
+                    }
+
+
+                    bool richiestaEseguita = dttv.richiestaEseguita(idTitoliViaggio);
+
+                    ViewData.Add("richiestaEseguita", richiestaEseguita);
+                    ViewData.Add("idTitoliViaggio", idTitoliViaggio);
+                    ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
+
+
+                    return PartialView(ltvm);
                 }
-
-                using (dtTrasferimento dtt = new dtTrasferimento())
-                {
-                    var t = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoliViaggio);
-                    EnumStatoTraferimento statoTrasferimento = t.idStatoTrasferimento;
-                    ViewData.Add("statoTrasferimento", statoTrasferimento);
-                }
- 
-
-                bool richiestaEseguita = dttv.richiestaEseguita(idTitoliViaggio);
-
-                ViewData.Add("richiestaEseguita", richiestaEseguita);
-                ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-                ViewData.Add("idAttivazioneTitoliViaggio", idAttivazioneTitoliViaggio);
-    
-
-                return PartialView(ltvm);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
 
         public ActionResult ElencoDocumentiTV(decimal idTipoDocumento, decimal idTitoliViaggio)
         {
-            string DescrizioneTV = "";
-
-            using (dtDocumenti dtd = new dtDocumenti())
-            {
-                DescrizioneTV = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
-            }
-
-            bool richiestaNotificata = false;
-
-            List<SelectListItem> lDataAttivazione = new List<SelectListItem>();
-            List<AttivazioneTitoliViaggioModel> latvm = new List<AttivazioneTitoliViaggioModel>();
             try
             {
+                string DescrizioneTV = "";
+
+                using (dtDocumenti dtd = new dtDocumenti())
+                {
+                    DescrizioneTV = dtd.GetDescrizioneTipoDocumentoByIdTipoDocumento(idTipoDocumento);
+                }
+
+                bool richiestaNotificata = false;
+
+                List<SelectListItem> lDataAttivazione = new List<SelectListItem>();
+                List<AttivazioneTitoliViaggioModel> latvm = new List<AttivazioneTitoliViaggioModel>();
                 using (dtTitoliViaggi dttv = new dtTitoliViaggi())
                 {
-                    latvm = dttv.GetListAttivazioniTitoliViaggioByTipoDoc(idTitoliViaggio,idTipoDocumento).OrderBy(a => a.idAttivazioneTitoliViaggio).ToList();
+                    latvm = dttv.GetListAttivazioniTitoliViaggioByTipoDoc(idTitoliViaggio, idTipoDocumento).OrderBy(a => a.idAttivazioneTitoliViaggio).ToList();
+
+                    var atvm = dttv.GetUltimaAttivazione(idTitoliViaggio);
+
+                    if (dttv.AttivazioneNotificata(atvm.idAttivazioneTitoliViaggio))
+                    {
+                        richiestaNotificata = true;
+                    }
 
                     //var i = latvm.Count();
                     var i = 1;
 
                     foreach (var atv in latvm)
-                    {
-                        if(dttv.AttivazioneNotificata(atv.idAttivazioneTitoliViaggio))
-                        {
-                            richiestaNotificata = true;
-                        }
-
+                    {                       
                         bool inLavorazione = dttv.AttivazioneTitoliViaggioInLavorazione(atv.idAttivazioneTitoliViaggio, idTitoliViaggio);
 
                         if (inLavorazione)
                         {
                             lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + atv.dataAggiornamento.ToString() + " (In Lavorazione)", Value = atv.idAttivazioneTitoliViaggio.ToString() });
-                        }else
+                        }
+                        else
                         {
                             lDataAttivazione.Insert(0, new SelectListItem() { Text = "(" + i.ToString() + ") " + atv.dataAggiornamento.ToString(), Value = atv.idAttivazioneTitoliViaggio.ToString() });
                         }
@@ -363,30 +396,37 @@ namespace NewISE.Controllers
 
         public ActionResult NuovoDocumentoTV(EnumTipoDoc idTipoDocumento, decimal idTitoliViaggio)
         {
-            string titoloPagina = string.Empty;
-
-            using (dtTitoliViaggi dtmf = new dtTitoliViaggi())
+            try
             {
-                switch (idTipoDocumento)
+                string titoloPagina = string.Empty;
+
+                using (dtTitoliViaggi dtmf = new dtTitoliViaggi())
                 {
-                    case EnumTipoDoc.Carta_Imbarco:
-                        titoloPagina = "Carta d'imbarco";
-                        break;
+                    switch (idTipoDocumento)
+                    {
+                        case EnumTipoDoc.Carta_Imbarco:
+                            titoloPagina = "Carta d'imbarco";
+                            break;
 
-                    case EnumTipoDoc.Titolo_Viaggio:
-                        titoloPagina = "Titolo di viaggio";
-                        break;
+                        case EnumTipoDoc.Titolo_Viaggio:
+                            titoloPagina = "Titolo di viaggio";
+                            break;
 
-                    default:
-                        throw new ArgumentOutOfRangeException("idTipoDocumento");
+                        default:
+                            throw new ArgumentOutOfRangeException("idTipoDocumento");
+                    }
                 }
+
+                ViewData.Add("titoloPagina", titoloPagina);
+                ViewData.Add("idTipoDocumento", (decimal)idTipoDocumento);
+                ViewData.Add("idTitoliViaggio", idTitoliViaggio);
+
+                return PartialView();
             }
-
-            ViewData.Add("titoloPagina", titoloPagina);
-            ViewData.Add("idTipoDocumento", (decimal)idTipoDocumento);
-            ViewData.Add("idTitoliViaggio", idTitoliViaggio);
-
-            return PartialView();
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
         }
 
         public static void PreSetDocumentoTV(HttpPostedFileBase file, out DocumentiModel dm, out bool esisteFile, out bool gestisceEstensioni, out bool dimensioneConsentita, out string dimensioneMaxDocumento, decimal idTipoDocumento)
@@ -446,7 +486,7 @@ namespace NewISE.Controllers
 
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult SalvaDocumentoTV(decimal idTipoDocumento, decimal idTitoliViaggio)
+        public JsonResult SalvaDocumentoTV(decimal idTipoDocumento, decimal idTitoliViaggio)
         {
             using (ModelDBISE db = new ModelDBISE())
             {
@@ -608,7 +648,7 @@ namespace NewISE.Controllers
                         admin = amministratore,
                         richiediAttivazione = richiediAttivazione,
                         richiediNotifica = richiediNotifica,
-                        richiediAnnulla=richiediAnnulla,
+                        richiediAnnulla = richiediAnnulla,
                         inLavorazione = inLavorazione,
                         trasfAnnullato = trasfAnnullato,
                         err = errore
@@ -644,9 +684,16 @@ namespace NewISE.Controllers
                     });
         }
 
-        public JsonResult ConfermaAnnullaRichiestaTV(decimal idTitoliViaggio)
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult ConfermaAnnullaRichiestaTV(FormCollection fc)
         {
             string errore = "";
+            FormCollection collection = new FormCollection(Request.Unvalidated().Form);
+
+            decimal idTitoliViaggio = Convert.ToDecimal(collection["idTitoliViaggio"]);
+            string testoAnnulla = collection["msg"];
+
 
             try
             {
@@ -654,7 +701,7 @@ namespace NewISE.Controllers
                 {
                     decimal idAttivazione_notificata = dttv.GetUltimaAttivazioneNotificata(idTitoliViaggio).IDATTIVAZIONETITOLIVIAGGIO;
 
-                    dttv.AnnullaRichiestaTitoliViaggio(idAttivazione_notificata);
+                    dttv.AnnullaRichiestaTitoliViaggio(idAttivazione_notificata, testoAnnulla);
                 }
             }
             catch (Exception ex)
@@ -696,6 +743,58 @@ namespace NewISE.Controllers
                     {
                         err = errore
                     });
+        }
+
+        public ActionResult MessaggioAnnullaTV(decimal idTitoliViaggio)
+        {
+            ModelloMsgMail msg = new ModelloMsgMail();
+
+            try
+            {
+
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    using (dtTitoliViaggi dttv = new dtTitoliViaggi())
+                    {
+                        using (dtDipendenti dtd = new dtDipendenti())
+                        {
+                            using (dtTrasferimento dtt = new dtTrasferimento())
+                            {
+                                using (dtUffici dtu = new dtUffici())
+                                {
+                                    var t = dtt.GetTrasferimentoByIdTitoloViaggio(idTitoliViaggio);
+
+                                    if (t?.idTrasferimento > 0)
+                                    {
+                                        var dip = dtd.GetDipendenteByID(t.idDipendente);
+                                        var uff = dtu.GetUffici(t.idUfficio);
+
+                                        var conta_attivazioni = dttv.GetNumAttivazioniTV(idTitoliViaggio, db);
+                                        string messaggioAnnulla = "";
+
+                                        if (conta_attivazioni == 1)
+                                        {
+                                            messaggioAnnulla = Resources.msgEmail.MessaggioAnnullaRichiestaInizialeTitoloViaggio;
+                                        }
+                                        else
+                                        {
+                                            messaggioAnnulla = Resources.msgEmail.MessaggioAnnullaRichiestaSuccessivaTitoloViaggio;
+                                        }
+                                        msg.corpoMsg = string.Format(messaggioAnnulla, uff.descUfficio + " (" + uff.codiceUfficio + ")", t.dataPartenza.ToShortDateString());
+                                        ViewBag.idTrasferimento = t.idTrasferimento;
+                                        ViewBag.idTitoliViaggio = idTitoliViaggio;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
+            }
+            return PartialView(msg);
         }
 
 

@@ -1,0 +1,147 @@
+﻿
+@using NewISE.Models.DBModel
+<link href="~/Content/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
+
+<script src="~/Scripts/plugins/piexif.js"></script>
+<script src="~/Scripts/plugins/sortable.js"></script>
+<script src="~/Scripts/plugins/purify.js"></script>
+<script src="~/Scripts/fileinput.min.js"></script>
+<script src="~/Content/bootstrap-fileinput/themes/fa/theme.min.js"></script>
+<script src="~/Scripts/locales/it.js"></script>
+
+
+@{
+    //decimal tipoDoc = (decimal)ViewData["tipoDoc"];
+    //  string titoloPagina = ViewData["titoloPagina"].ToString();
+    //   decimal id = (decimal)ViewData["ID"];
+    //   decimal idAttivazioneMagFam = (decimal)ViewData["idAttivazioneMagFam"];
+    //    decimal parentela = (decimal)ViewData["parentela"];
+    decimal idTrasferimento = (decimal)ViewData["idTrasferimento"];
+
+}
+
+@*@Html.Hidden("titoloPagina", titoloPagina)*@
+
+<div style="padding-left: 15px; padding-right: 10px;">
+    @*<label class="control-label">Seleziona i files</label>*@
+    <input id="files" name="files[]" type="file" multiple class="file-loading" data-allowed-file-extensions='["pdf"]'>
+    <div id="divError" class="text-center text-error text-danger">
+    </div>
+</div>
+
+@*<p style="padding-left: 15px; padding-top: 10px;">
+        @Ajax.ActionLink("Torna indietro", "ElencoConiuge", "MaggiorazioniFamiliari", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabConiuge", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+    </p>*@
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script type="text/javascript">
+
+
+    $("#files").change(function () {
+        //debugger;
+        var file = $("#files").val();
+        if (file != null && file != undefined && file != "") {
+            var splitFile = file.split("\\");
+            var nomeFile = splitFile[splitFile.length - 1];
+            var estensioniValide = new Array(".pdf");
+            var estensione = nomeFile.substring(nomeFile.lastIndexOf('.')).toLowerCase();
+            if (estensioniValide.contiene(estensione)) {
+
+                //$("#NomeFile").val(nomeFile);
+                //$("#EstensioneFile").val(estensione);
+
+                //$("#spanNomeFile").html(nomeFile);
+                return true;
+            } else {
+
+                //MsgErroreJson("L'estensione del documento che si vuole importare (" + estensione + ") non è supportata.\nL'estensione supportata è il pdf");
+
+                return false;
+            }
+        }
+
+    });
+
+    $("#files").fileinput({
+        language: "it",
+        uploadUrl: "/ViaggiCongedo/SalvaPreventivi",
+        uploadAsync: true,
+        previewFileIcon: '<i class="fa fa-file"></i>',
+        preferIconicPreview: true,
+        previewFileIconSettings: {
+            'pdf': '<i class="fa fa-file-pdf-o text-danger"></i>'
+        },
+        allowedFileExtensions: ["pdf"],
+        minFileCount: 1,
+        maxFileCount: 5,
+        validateInitialCount: true,
+        uploadExtraData: function () {
+            return {
+                @*tipoDoc: parseInt('@tipoDoc'),
+                id: parseInt('@id'),
+                parentela: parseInt(@parentela),
+                idAttivazioneMagFam: parseInt(@idAttivazioneMagFam),*@
+                idTrasferimento: parseInt('@idTrasferimento.ToString()')
+            };
+        },
+        msgInvalidFileExtension: "L'estensione del documento che si vuole importare ('{name}') non è supportata. L'estensione supportata è il '{extensions}'.",
+        showBrowse: false,
+        browseOnZoneClick: true,
+        showAjaxErrorDetails: true,
+        resizeImage: true,
+        elErrorContainer: '#divError',
+        required: true,
+        //showRemove: false,
+        //showUpload: false
+
+
+    });
+    $('#files').on('fileuploaded', function (event, data, previewId, index) {
+        //debugger;
+
+
+    });
+
+    $('#files').on('filebatchuploaderror', function (event, data, previewId, index) {
+        //debugger;
+        //$("#divError").html(previewId);
+    });
+
+    $('#file').on('filebatchuploadcomplete', function (event, data, previewId, index) {
+        //debugger;
+        @*var rotta = "/MaggiorazioniFamiliari/ElencoConiuge";
+        var idTrasferimento = parseInt('@idTrasferimento');
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                //$("#viewPensione").empty();
+                //$("#viewPensione").html(result);
+                $("#tabConiuge").empty();
+                $("#tabConiuge").html(result);
+
+            },
+            error: function (error) {
+                //debugger;
+                //Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });*@
+    });
+
+
+</script>

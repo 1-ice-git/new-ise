@@ -18,7 +18,7 @@ namespace NewISE.EF
         public TEPARTENZA()
         {
             this.ATTIVITATEPARTENZA = new HashSet<ATTIVITATEPARTENZA>();
-            this.RINUNCIA_TE_P = new HashSet<RINUNCIA_TE_P>();
+            this.ELABTRASPEFFETTI = new HashSet<ELABTRASPEFFETTI>();
             this.PERCENTUALEANTICIPOTE = new HashSet<PERCENTUALEANTICIPOTE>();
         }
     
@@ -27,7 +27,7 @@ namespace NewISE.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ATTIVITATEPARTENZA> ATTIVITATEPARTENZA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RINUNCIA_TE_P> RINUNCIA_TE_P { get; set; }
+        public virtual ICollection<ELABTRASPEFFETTI> ELABTRASPEFFETTI { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEANTICIPOTE> PERCENTUALEANTICIPOTE { get; set; }

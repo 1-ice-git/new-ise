@@ -1,4 +1,5 @@
 ﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
 
 @{
     decimal idTitoliViaggio = Convert.ToDecimal(ViewData["idTitoliViaggio"]);
@@ -15,13 +16,13 @@
         @if (nDocCartaImbarco > 0)
         {
             <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco),  @idTitoliViaggio);" id="linkElencoDocTV">
-                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco carte d'imbarco" />
+                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Carte d'Imbarco" />
             </a>
         }
         else
         {
             <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco), @idTitoliViaggio);" id="linkElencoDocTV">
-                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco carte d'imbarco" />
+                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Carte d'Imbarco" />
             </a>
         }
     </td>
@@ -34,13 +35,13 @@
         @if (nDocTitoliViaggio > 0)
         {
             <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio),  @idTitoliViaggio);" id="linkElencoDocTV">
-                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco titoli di viaggio" />
+                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Titoli di Viaggio" />
             </a>
         }
         else
         {
             <a href="#" onclick="ElencoDocumentiTV(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio), @idTitoliViaggio);" id="linkElencoDocTV">
-                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco titoli di viaggio" />
+                <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Documenti Titoli di Viaggio" />
             </a>
         }
     </td>

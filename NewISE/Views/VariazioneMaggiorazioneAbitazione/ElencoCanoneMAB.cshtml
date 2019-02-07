@@ -1,0 +1,192 @@
+﻿@using NewISE.Models.Tools
+@model IEnumerable<NewISE.Models.ViewModel.CanoneMABViewModel>
+
+@{
+    decimal idMab = Convert.ToDecimal(ViewData["idMab"]);
+    bool soloLettura = Convert.ToBoolean(ViewData["soloLettura"]);
+    decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
+    bool canoniModificati = Convert.ToBoolean(ViewData["canoniModificati"]);
+}
+
+@Html.Hidden("hdIdImportoCanone")
+@Html.Hidden("hdIdMAB")
+@Html.Hidden("hdIdTrasferimento")
+
+
+<p style="margin-top: 5px">
+    @if (soloLettura)
+    {
+        <button class="btn btn-default disabled">
+            <i class="fas fa-euro-sign"></i>
+            &nbsp;Nuovo Canone
+        </button>
+    }
+    else
+    {
+        <button class="btn btn-success" id="btNuovoCanoneMAB" onclick="NuovoCanoneMAB(@idMab);">
+            <i class="fas fa-euro-sign"></i>
+            &nbsp;Nuovo Canone
+        </button>
+    }
+</p>
+
+<div >
+    <table id="TabCanoni" cellspacing="0">
+        <thead>
+            <tr>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.descrizioneValuta)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.ImportoCanone)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.DataInizioValidita)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.DataFineValidita)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td style="text-align: center">
+                        <span class="text-uppercase">@Html.DisplayFor(modelItem => item.descrizioneValuta)</span>
+                    </td>
+
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.ImportoCanone)
+                    </td>
+
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.DataInizioValidita)
+                    </td>
+                    @if (item.DataFineValidita != Utility.DataFineStop())
+                    {
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.DataFineValidita)
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<p style="padding-left: 15px;">
+    @*@if (soloLettura || canoniModificati == false)
+    {
+        <button class="btn btn-default disabled">
+            <i class="fas fa-undo-alt"></i>
+            Annulla Modifiche
+        </button>
+    }
+    else
+    {
+        <button class="btn btn-success" id="btAnnullaModificheCanoneMAB" onclick="AnnullaModificheCanoneMABModal(@idMab);">
+            <i class="fas fa-undo-alt"></i>
+            Annulla Modifiche
+        </button>
+    }
+    
+|*@
+    @Ajax.ActionLink("Torna indietro", "AttivitaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabAttivitaMAB_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
+</p>
+
+
+<script type="text/javascript">
+    $('#TabCanoni').DataTable({
+        "language": {
+            "sEmptyTable": "Nessun dato presente nella tabella",
+            "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
+            "sInfoEmpty": "Vista da 0 a 0 di 0 elementi",
+            "sInfoFiltered": "(filtrati da _MAX_ elementi totali)",
+            "sInfoPostFix": "",
+            "sInfoThousands": ".",
+            "sLengthMenu": "Visualizza _MENU_ elementi",
+            "sLoadingRecords": "Caricamento...",
+            "sProcessing": "Elaborazione...",
+            "sSearch": "Cerca:",
+            "sZeroRecords": "La ricerca non ha portato alcun risultato.",
+            "oPaginate": {
+                "sFirst": "Inizio",
+                "sPrevious": "Precedente",
+                "sNext": "Successivo",
+                "sLast": "Fine"
+            },
+            "oAria": {
+                "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
+                "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
+            }
+        },
+        "info": false,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": true,
+        "ordering": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+
+    });
+
+    GestionePulsantiNotificaAttivaAnnullaMAB_var(@idTrasferimento) 
+
+
+    function NuovoCanoneMAB(idMab) {
+        //debugger;
+        var rotta = "/VariazioneMaggiorazioneAbitazione/NuovoImportoCanone";
+        var idMab = parseInt('@idMab');
+        var idTrasferimento = parseInt('@idTrasferimento');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+
+            data: {
+                idMab: idMab,
+                idTrasferimento: idTrasferimento
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                $("#tabAttivitaMAB_var").empty();
+                $("#tabAttivitaMAB_var").html(result);
+            },
+            complete: function () {
+                GestionePulsantiNotificaAttivaAnnullaMAB_var(idTrasferimento);
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function AnnullaModificheCanoneMABModal(idMab) {
+        //debugger;
+        var idTrasferimento = parseInt('@idTrasferimento');
+
+        $('#hdIdMAB').val(idMab);
+        $('#hdIdTrasferimento').val(idTrasferimento);
+        $('#AnnullaModificheCanoneMABModal').modal().show();
+    }
+
+</script>

@@ -18,7 +18,6 @@ namespace NewISE.EF
         public FASCIA_KM()
         {
             this.PERCENTUALEFKM = new HashSet<PERCENTUALEFKM>();
-            this.RICHIAMO_FKM = new HashSet<RICHIAMO_FKM>();
         }
     
         public decimal IDFKM { get; set; }
@@ -27,8 +26,6 @@ namespace NewISE.EF
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERCENTUALEFKM> PERCENTUALEFKM { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RICHIAMO_FKM> RICHIAMO_FKM { get; set; }
         public virtual GRUPPO_FKM GRUPPO_FKM { get; set; }
     }
 }

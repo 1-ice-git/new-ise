@@ -1,0 +1,135 @@
+﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
+@model NewISE.Models.ViewModel.VariazioneTERientroModel
+
+@{
+    bool richiestaTER = Convert.ToBoolean(ViewData["richiestaTER"]);
+    bool rinunciaTER = Convert.ToBoolean(ViewData["rinunciaTER"]);
+
+    bool attivazioneTER = Convert.ToBoolean(ViewData["attivazioneTER"]);
+    bool DocAttestazione = Convert.ToBoolean(ViewData["DocAttestazione"]);
+    decimal idTERientro = Convert.ToDecimal(ViewData["idTERientro"]);
+}
+
+<script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
+
+<div class="row" style="margin:15px">
+    <div class="col-xs-12 fa-border" style="background-color:white; border:solid;border-width:thin;margin-bottom:15px;border-radius:15px">
+        <div class="row">
+            <div class="col-xs-4 text-right" style="padding-top:10px">
+                <label for="indennitaRichiamo" class="control-label">@Html.DisplayNameFor(model => model.indennitaRichiamo)</label>
+            </div>
+            <div class="col-xs-3" style="padding-top:5px">
+                @Html.TextBoxFor(model => model.indennitaRichiamo, string.Format("{0:N2}", Model.indennitaRichiamo), new { @readonly = "readonly", @class = "form-control text-right" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4 text-right" style="padding-top:10px">
+                <label for="percKM" class="control-label">@Html.DisplayNameFor(model => model.percKM)</label>
+            </div>
+            <div class="col-xs-3" style="padding-top:5px">
+                @Html.TextBoxFor(model => model.percKM, string.Format("{0:N3}", Model.percKM), new { @readonly = "readonly", @class = "form-control text-right" })
+            </div>
+
+            <div class="col-xs-2 text-center" style="padding-top:10px">
+                <label for="anticipoPercepito" class="control-label">@Html.DisplayNameFor(model => model.anticipoPercepito)</label>
+            </div>
+            <div class="col-xs-3 text-center" style="padding-top:10px">
+                <label for="saldo" class="control-label">@Html.DisplayNameFor(model => model.saldo)</label>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:5px">
+            <div class="col-xs-4 text-right" style="padding-top:10px">
+                <label for="contributoLordo" class="control-label">@Html.DisplayNameFor(model => model.contributoLordo)</label>
+            </div>
+            <div class="col-xs-3" style="padding-top:5px">
+                @Html.TextBoxFor(model => model.contributoLordo, string.Format("{0:N2}", Model.contributoLordo), new { @readonly = "readonly", @class = "form-control text-right" })
+            </div>
+            <div class="col-xs-2" style="padding-top:5px">
+                @Html.TextBoxFor(model => model.anticipoPercepito, string.Format("{0:N2}", Model.anticipoPercepito), new { @readonly = "readonly", @class = "form-control text-right" })
+            </div>
+            <div class="col-xs-3" style="padding-top:5px">
+                @Html.TextBoxFor(model => model.saldo, string.Format("{0:N2}", Model.saldo), new { @readonly = "readonly", @class = "form-control text-right" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            &nbsp;
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-5" style="text-align:right">
+            <b>Modulo 4 - (Attestazione Avvenuto Trasloco - Rientro in Italia)</b>
+        </div>
+        <div class="col-xs-2" style="padding-left:10px;padding-bottom:10px">
+            @if (rinunciaTER == false)
+            {
+                if (DocAttestazione)
+                {
+                    <a href="#" onclick="ElencoDocumentiVariazioneTER(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco_Rientro));" id="linkElencoDocVariazioniTER">
+                        <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Elenco documentazione attestazione avvenuto trasloco" />
+                    </a>
+                }
+                else
+                {
+                    <a href="#" onclick="ElencoDocumentiVariazioneTER(@Convert.ToDecimal(@EnumTipoDoc.Attestazione_Trasloco_Rientro));" id="linkElencoDocVariazioniTER">
+                        <img src="~/Immagini/IconeDocumenti/PDF-icon-Disable.png" width="17" title="Elenco documentazione attestazione avvenuto trasloco" />
+                    </a>
+                }
+            }
+            else
+            {
+                <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" title="Elenco documentazione attestazione avvenuto trasloco" />
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function ElencoDocumentiVariazioneTER(idTipoDocumento) {
+        //debugger;
+        var idTERientro = parseInt('@idTERientro');
+
+        var rotta = "/VariazioneTrasportoEffetti/ElencoDocumentiVariazioneTER";
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: {
+                idTipoDocumento: idTipoDocumento,
+                idTERientro: idTERientro
+            },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
+            success: function (result) {
+                //debugger;
+                //$("#divEffettoLoadAutNoDoc").hide("slow");
+                $("#divVariazioneTER").empty();
+                $("#divVariazioneTER").html(result);
+
+                //RicercaDocumenti();
+
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+</script>
+
+

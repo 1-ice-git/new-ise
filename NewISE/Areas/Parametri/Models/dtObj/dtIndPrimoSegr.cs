@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using NewISE.Models.dtObj;
 
 namespace NewISE.Areas.Parametri.Models.dtObj
 {
@@ -31,7 +32,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idIndPrimoSegr = e.IDINDPRIMOSEGR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita = e.DATAFINEVALIDITA ,
+                                dataFineValidita = e.DATAFINEVALIDITA,
                                 indennita = e.INDENNITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO
@@ -81,7 +82,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 {
                     List<INDENNITAPRIMOSEGRETARIO> lib = new List<INDENNITAPRIMOSEGRETARIO>();
                     if (escludiAnnullati == true)
-                        lib = db.INDENNITAPRIMOSEGRETARIO.Where(a =>  a.ANNULLATO == false).ToList();
+                        lib = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == false).ToList();
                     else
                         lib = db.INDENNITAPRIMOSEGRETARIO.ToList();
 
@@ -90,11 +91,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idIndPrimoSegr = e.IDINDPRIMOSEGR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita =e.DATAFINEVALIDITA,
+                                dataFineValidita = e.DATAFINEVALIDITA,
                                 indennita = e.INDENNITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO
-                            }).OrderBy(a=>a.dataInizioValidita).ToList();
+                            }).OrderBy(a => a.dataInizioValidita).ToList();
                 }
                 return libm;
             }
@@ -121,7 +122,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             {
                                 idIndPrimoSegr = e.IDINDPRIMOSEGR,
                                 dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                dataFineValidita =Utility.DataFineStop(),
+                                dataFineValidita = Utility.DataFineStop(),
                                 indennita = e.INDENNITA,
                                 dataAggiornamento = e.DATAAGGIORNAMENTO,
                                 annullato = e.ANNULLATO
@@ -140,7 +141,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         /// 
         /// </summary>
         /// <param name="ibm"></param>
-      
+
         public bool EsistonoMovimentiPrima(IndennitaPrimoSegretModel ibm)
         {
             using (ModelDBISE db = new ModelDBISE())
@@ -163,7 +164,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     tmp.Add(libm[0].IDINDPRIMOSEGR.ToString());
                     tmp.Add(libm[0].DATAINIZIOVALIDITA.ToShortDateString());
                     tmp.Add(libm[0].DATAFINEVALIDITA.ToShortDateString());
-                    tmp.Add(libm[0].INDENNITA.ToString());                    
+                    tmp.Add(libm[0].INDENNITA.ToString());
                 }
             }
             return tmp;
@@ -190,14 +191,15 @@ namespace NewISE.Areas.Parametri.Models.dtObj
         {
             List<INDENNITAPRIMOSEGRETARIO> libNew = new List<INDENNITAPRIMOSEGRETARIO>();
 
-            INDENNITAPRIMOSEGRETARIO ibPrecedente = new INDENNITAPRIMOSEGRETARIO();
+            //INDENNITAPRIMOSEGRETARIO ibPrecedente = new INDENNITAPRIMOSEGRETARIO();
             INDENNITAPRIMOSEGRETARIO ibNew1 = new INDENNITAPRIMOSEGRETARIO();
             INDENNITAPRIMOSEGRETARIO ibNew2 = new INDENNITAPRIMOSEGRETARIO();
-            List<INDENNITAPRIMOSEGRETARIO> lArchivioIB = new List<INDENNITAPRIMOSEGRETARIO>();
+            //List<INDENNITAPRIMOSEGRETARIO> lArchivioIB = new List<INDENNITAPRIMOSEGRETARIO>();
             List<string> lista = new List<string>();
             using (ModelDBISE db = new ModelDBISE())
             {
                 bool giafatta = false;
+
                 try
                 {
                     using (dtIndPrimoSegr dtal = new dtIndPrimoSegr())
@@ -210,8 +212,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             decimal idIntervalloFirst = Convert.ToDecimal(lista[0]);
                             DateTime dataInizioFirst = Convert.ToDateTime(lista[1]);
                             DateTime dataFineFirst = Convert.ToDateTime(lista[2]);
-                            decimal COEFFICIENTERICHIAMO = Convert.ToDecimal(lista[3]);
-                         //   decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
+                            //decimal COEFFICIENTERICHIAMO = Convert.ToDecimal(lista[3]);
+                            //   decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
 
                             ibNew1 = new INDENNITAPRIMOSEGRETARIO()
                             {
@@ -242,6 +244,11 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             db.SaveChanges();
                             RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloFirst), db);
 
+                            using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                            {
+                                dtrp.AssociaFigli_IPS(ibNew1.IDINDPRIMOSEGR, db, ibm.dataInizioValidita);
+                            }
+
                             db.Database.CurrentTransaction.Commit();
                         }
                         ///se la data variazione coincide con una data fine esistente(diversa da 31/12/9999)
@@ -261,14 +268,14 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAINIZIOVALIDITA = dataInizioLast,
                                     DATAFINEVALIDITA = dataFineLast.AddDays(-1),
                                     //COEFFICIENTEKM = aliquotaLast,
-                                    INDENNITA = aliquotaLast,                                   
+                                    INDENNITA = aliquotaLast,
                                 };
                                 ibNew2 = new INDENNITAPRIMOSEGRETARIO()
                                 {
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = ibm.dataInizioValidita,//è uguale alla data Inizio
                                     //COEFFICIENTEKM = ibm.coefficienteKm,
-                                    INDENNITA=ibm.indennita,
+                                    INDENNITA = ibm.indennita,
                                     DATAAGGIORNAMENTO = DateTime.Now
                                 };
                                 if (aggiornaTutto)
@@ -278,7 +285,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
                                         // COEFFICIENTEKM = ibm.coefficienteKm, 
-                                        INDENNITA=ibm.indennita,                                      
+                                        INDENNITA = ibm.indennita,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
@@ -296,6 +303,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloLast), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var ips in libNew)
+                                    {
+                                        dtrp.AssociaFigli_IPS(ips.IDINDPRIMOSEGR, db, ibm.dataInizioValidita);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -312,7 +329,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DateTime dataFine = Convert.ToDateTime(lista[2]);
                                 //  decimal aliquota = Convert.ToDecimal(lista[3]);
                                 decimal indennita = Convert.ToDecimal(lista[3]);
-                              //  decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
+                                //  decimal COEFFICIENTEINDBASE = Convert.ToDecimal(lista[4]);
                                 DateTime NewdataFine1 = ibm.dataInizioValidita.AddDays(-1);
 
                                 ibNew1 = new INDENNITAPRIMOSEGRETARIO()
@@ -329,7 +346,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     DATAFINEVALIDITA = dataFine,
                                     //COEFFICIENTEKM = ibm.coefficienteKm,
                                     INDENNITA = ibm.indennita,
-                                  //  COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                    //  COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                     DATAAGGIORNAMENTO = DateTime.Now
                                 };
 
@@ -341,7 +358,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
                                         // COEFFICIENTEKM = ibm.coefficienteKm,
                                         INDENNITA = ibm.indennita,
-                                       // COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                        // COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew = db.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == false).ToList().Where(a => a.DATAINIZIOVALIDITA > ibm.dataInizioValidita).ToList();
@@ -357,6 +374,16 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 db.SaveChanges();
                                 //annullare l'intervallo trovato
                                 RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervallo), db);
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    foreach (var ips in libNew)
+                                    {
+                                        dtrp.AssociaFigli_IPS(ips.IDINDPRIMOSEGR, db, ibm.dataInizioValidita);
+                                    }
+
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
                         }
@@ -372,14 +399,20 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 {
                                     DATAINIZIOVALIDITA = ibm.dataInizioValidita,
                                     DATAFINEVALIDITA = Convert.ToDateTime(Utility.DataFineStop()),
-                                    INDENNITA=ibm.indennita,
+                                    INDENNITA = ibm.indennita,
                                     DATAAGGIORNAMENTO = DateTime.Now,
-                                   
+
                                 };
                                 libNew.Add(ibNew1);
                                 db.Database.BeginTransaction();
                                 db.INDENNITAPRIMOSEGRETARIO.Add(ibNew1);
                                 db.SaveChanges();
+
+                                using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                {
+                                    dtrp.AssociaFigli_IPS(ibNew1.IDINDPRIMOSEGR, db, ibm.dataInizioValidita);
+                                }
+
                                 db.Database.CurrentTransaction.Commit();
                             }
 
@@ -393,7 +426,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 DateTime dataFineUltimo = Convert.ToDateTime(lista[2]);
                                 //  decimal aliquotaUltimo = Convert.ToDecimal(lista[3]);
                                 decimal INDENNITA_Ultimo = Convert.ToDecimal(lista[3]);
-                               // decimal COEFFICIENTEINDBASE_Ultimo = Convert.ToDecimal(lista[4]);
+                                // decimal COEFFICIENTEINDBASE_Ultimo = Convert.ToDecimal(lista[4]);
 
                                 if (dataInizioUltimo == ibm.dataInizioValidita)
                                 {
@@ -403,7 +436,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAFINEVALIDITA = dataFineUltimo,
                                         // COEFFICIENTEKM = ibm.coefficienteKm,//nuova aliquota rispetto alla vecchia registrata
                                         INDENNITA = ibm.indennita,
-                                      //  COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                        //  COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew.Add(ibNew1);
@@ -411,6 +444,12 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.INDENNITAPRIMOSEGRETARIO.Add(ibNew1);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        dtrp.AssociaFigli_IPS(ibNew1.IDINDPRIMOSEGR, db, ibm.dataInizioValidita);
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                                 //se il nuovo record rappresenta la data variazione superiore alla data inizio dell'ultima riga ( record corrispondente alla data fine uguale 31/12/9999)
@@ -422,7 +461,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAFINEVALIDITA = ibm.dataInizioValidita.AddDays(-1),
                                         // COEFFICIENTEKM = aliquotaUltimo,
                                         INDENNITA = INDENNITA_Ultimo,
-                                      //  COEFFICIENTEINDBASE = COEFFICIENTEINDBASE_Ultimo,
+                                        //  COEFFICIENTEINDBASE = COEFFICIENTEINDBASE_Ultimo,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     ibNew2 = new INDENNITAPRIMOSEGRETARIO()
@@ -432,7 +471,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                         DATAFINEVALIDITA = Utility.DataFineStop(),
                                         // COEFFICIENTEKM = ibm.coefficienteKm,//nuova aliquota rispetto alla vecchia registrata
                                         INDENNITA = ibm.indennita,
-                                      //  COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
+                                        //  COEFFICIENTEINDBASE = ibm.coefficienteIndBase,
                                         DATAAGGIORNAMENTO = DateTime.Now
                                     };
                                     libNew.Add(ibNew1); libNew.Add(ibNew2);
@@ -441,15 +480,25 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                     db.INDENNITAPRIMOSEGRETARIO.AddRange(libNew);
                                     db.SaveChanges();
                                     RendiAnnullatoUnRecord(Convert.ToDecimal(idIntervalloUltimo), db);
+
+                                    using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                                    {
+                                        foreach (var ips in libNew)
+                                        {
+                                            dtrp.AssociaFigli_IPS(ips.IDINDPRIMOSEGR, db, ibm.dataInizioValidita);
+                                        }
+
+                                    }
+
                                     db.Database.CurrentTransaction.Commit();
                                 }
                             }
                         }
                         //INSERIMENTO DATI NELLA TABELLA CIR_R PER LE RELAZIONI MOLTI A MOLTI
-                        decimal idIndPrimoSegr = ibNew1.IDINDPRIMOSEGR;
-                     //   decimal idRiduzione1 = dataInizioValiditaAccettataPerRiduzione(ibNew1.DATAINIZIOVALIDITA).First().idRiduzioni;
+                        //decimal idIndPrimoSegr = ibNew1.IDINDPRIMOSEGR;
+                        //   decimal idRiduzione1 = dataInizioValiditaAccettataPerRiduzione(ibNew1.DATAINIZIOVALIDITA).First().idRiduzioni;
 
-                     //   this.Associa_Riduzione_CoeffIndRichiamo(idRiduzione1, idCoeffIndRichiamo1, db);
+                        //   this.Associa_Riduzione_CoeffIndRichiamo(idRiduzione1, idCoeffIndRichiamo1, db);
 
                         //if (ibNew2.IDCOEFINDRICHIAMO != 0)
                         //{
@@ -616,13 +665,21 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                             // ALIQUOTA = precedenteIB.ALIQUOTA,
                             //COEFFICIENTERICHIAMO = precedenteIB.COEFFICIENTERICHIAMO,
                             //COEFFICIENTEINDBASE = precedenteIB.COEFFICIENTEINDBASE,
-                            INDENNITA=precedenteIB.INDENNITA,
+                            INDENNITA = precedenteIB.INDENNITA,
                             DATAAGGIORNAMENTO = DateTime.Now,// precedenteIB.DATAAGGIORNAMENTO,
                             ANNULLATO = false
                         };
                         db.INDENNITAPRIMOSEGRETARIO.Add(NuovoPrecedente);
+
+                        db.SaveChanges();
+
+                        using (DtRicalcoloParametri dtrp = new DtRicalcoloParametri())
+                        {
+                            dtrp.AssociaFigli_IPS(NuovoPrecedente.IDINDPRIMOSEGR, db, delIB.DATAINIZIOVALIDITA);
+                        }
                     }
-                    db.SaveChanges();
+
+
                     using (objLogAttivita log = new objLogAttivita())
                     {
                         log.Log(enumAttivita.Eliminazione, "Eliminazione parametro di Idennità Primo Segretario.", "INDENNITAPRIMOSEGRETARIO", idIndPrimoSegr);
@@ -674,7 +731,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     lm = new IndennitaPrimoSegretModel()
                     {
                         idIndPrimoSegr = liv.IDINDPRIMOSEGR,
-                        indennita = liv.INDENNITA                        
+                        indennita = liv.INDENNITA
                     };
                 }
                 return lm;
@@ -730,7 +787,7 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                 return db.INDENNITAPRIMOSEGRETARIO.Where(a => a.IDINDPRIMOSEGR == ibm.idIndPrimoSegr).First().ANNULLATO == true ? true : false;
             }
         }
-        
+
         public decimal Get_Id_IndPrimoSegretarioNonAnnullato()
         {
             decimal tmp = 0;

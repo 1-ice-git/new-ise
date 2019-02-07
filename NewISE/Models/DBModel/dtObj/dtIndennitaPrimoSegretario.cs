@@ -98,6 +98,22 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
+        public void RimuoviAssociazione_Figlio_IndennitaPrimoSegretario(decimal idFiglio, ModelDBISE db)
+        {
+            var f = db.FIGLI.Find(idFiglio);
+            var lps = f.INDENNITAPRIMOSEGRETARIO.Where(a => a.ANNULLATO == false).ToList();
+            if (lps?.Any() ?? false)
+            {
+                foreach (var ps in lps)
+                {
+                    f.INDENNITAPRIMOSEGRETARIO.Remove(ps);
+                }
+
+                db.SaveChanges();
+            }
+
+        }
+
 
     }
 }

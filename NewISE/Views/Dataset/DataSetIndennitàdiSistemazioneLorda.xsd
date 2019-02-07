@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetIndennitàdiSistemazioneLorda" targetNamespace="http://tempuri.org/DataSetIndennitàdiSistemazioneLorda.xsd" xmlns:mstns="http://tempuri.org/DataSetIndennitàdiSistemazioneLorda.xsd" xmlns="http://tempuri.org/DataSetIndennitàdiSistemazioneLorda.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetIndennitàdiSistemazioneLorda" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetIndennitàdiSistemazioneLorda" msprop:Generator_UserDSName="DataSetIndennitàdiSistemazioneLorda">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DataInizioValidita" msprop:Generator_ColumnVarNameInTable="columnDataInizioValidita" msprop:Generator_ColumnPropNameInRow="DataInizioValidita" msprop:Generator_ColumnPropNameInTable="DataInizioValiditaColumn" msprop:Generator_UserColumnName="DataInizioValidita" type="xs:string" minOccurs="0" />
+              <xs:element name="IndennitaPersonale" msprop:Generator_ColumnVarNameInTable="columnIndennitaPersonale" msprop:Generator_ColumnPropNameInRow="IndennitaPersonale" msprop:Generator_ColumnPropNameInTable="IndennitaPersonaleColumn" msprop:Generator_UserColumnName="IndennitaPersonale" type="xs:string" minOccurs="0" />
+              <xs:element name="CoefficenteMaggiorazione" msprop:Generator_ColumnVarNameInTable="columnCoefficenteMaggiorazione" msprop:Generator_ColumnPropNameInRow="CoefficenteMaggiorazione" msprop:Generator_ColumnPropNameInTable="CoefficenteMaggiorazioneColumn" msprop:Generator_UserColumnName="CoefficenteMaggiorazione" type="xs:string" minOccurs="0" />
+              <xs:element name="IndSistemazioneLorda" msprop:Generator_ColumnVarNameInTable="columnIndSistemazioneLorda" msprop:Generator_ColumnPropNameInRow="IndSistemazioneLorda" msprop:Generator_ColumnPropNameInTable="IndSistemazioneLordaColumn" msprop:Generator_UserColumnName="IndSistemazioneLorda" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,81 +1,133 @@
 ﻿@model NewISE.Models.DBModel.NotificheModel
 @using NewISE.Models.DBModel;
+@using System.IO;
+@*<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="~/scripts/ckeditor/adapters/jquery.js"></script>*@
 
-<script src="~/Scripts/ckeditor/ckeditor.js"></script>
 
+
+
+<script src="~/Scripts/autoNumeric/autoNumeric.min.js"></script>
+<script src="~/Scripts/Notifiche/UploadNotifiche.js"></script>
+<script src="~/Scripts/MyJs.js"></script>
 @{
+    decimal idMittenteLogato = (decimal)ViewBag.idMittenteLogato;
     var errori = ViewData.ModelState;
+    //  var attached = ViewBag.Allegato!=null? ViewBag.Allegato:null;
+    // var percorso = ViewBag.percorso == null ? "" : (string)ViewBag.percorso;
+    int CountError = 0;
+    if (ViewBag.ModelStateCount != null)
+    {
+        CountError = (int)ViewBag.ModelStateCount;
+    }
 }
 
-@using (Ajax.BeginForm("InserisciNuovaNotifica", "Notifiche", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPanelNotifiche", OnFailure = "ErroreElaborazioneAjax" }, new { id = "formNuovaNotifica" }))
-{
-    @Html.AntiForgeryToken()
-    <div class="form-horizontal">
-        <hr />
-        <div class="row">
-            <div class="col-xs-offset-2 col-xs-10">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            </div>
-        </div>
-       
-        
-            <div class="form-group">
-                <div id="divCombo1" ass="col-md-10">
-                    @Html.Label("lblListDestinatari", "Destinatari : ", new { @class = "control-label" })
-                    <div>
-                        @Html.DropDownList("idDestinatari", ViewBag.ListaDestinatari as IEnumerable<SelectListItem>
-               , new { @class = "form-control js-example-tokenizer", multiple = "multiple", @onchange = "PrelevaPVListaDestinatari();", @onClick = "PrelevaPVListaDestinatari();" })
-                    </div>
-                    <div id="vai1" style="display:none; " class="text-danger">
-                        @Html.Label("lblvai1", "Email presente in Cc")                        
-                    </div> 
-                    <div id="vaiDest" style="display:none; " class="text-danger">
-                        @Html.Label("lblDest", "Un destinatario obbligatorio")
-                    </div> 
-                </div>
-                
-                <div id="divCombo2" ass="col-md-10">
-                    @Html.Label("lblListDestinatari", "Cc : ", new { @class = "control-label" })
-                    <div>
-                        @Html.DropDownList("idDestinatari2", ViewBag.ListaDestinatari as IEnumerable<SelectListItem>
-               , new { @class = "form-control js-example-tokenizer", multiple = "multiple", @onchange = "PrelevaPVListaCC();", @onClick = "PrelevaPVListaDestinatari();" })
-                    </div>
-                    <div id="vai2" style="display:none; " class="text-danger">
-                        @Html.Label("lblvai2", "Email presente in Destinatari")                                            
-                    </div> 
-                </div>
-                @Html.Label("lblLivelloDestinatari", "Oggetto : ", new { @class = "control-label" })
-                    <div>
-                        @Html.Editor("Oggetto", "Oggetto", new { htmlAttributes = new { @class = "form-control" } })                       
-                    </div>
-                    <div id="vaiOgg" style="display:none; " class="text-danger">
-                        @Html.Label("lblOgg", "Oggetto obbligatorio")
-                    </div> 
-            </div>
+@*@using (Ajax.BeginForm("InserisciNuovaNotifica", "Notifiche", FormMethod.Post, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPanelNotifiche", OnFailure = "ErroreElaborazioneAjax" }, new { enctype = "multipart/form-data" }))*@
+@*@using (Ajax.BeginForm("InserisciNuovaNotifica", "Notifiche", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPanelNotifiche", OnFailure = "ErroreElaborazioneAjax" }))*@
+@*@using (Ajax.BeginForm("InserisciNuovaNotifica", "Notifiche", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "divPanelNotifiche", OnFailure = "ErroreElaborazioneAjax" }, new { enctype = "multipart/form-data" , id = "formNuovaNotifica" }))
+    {*@
+@Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <hr />
+    @Html.HiddenFor(x => x.idNotifica)
+    <input type="hidden" id="idMittente" name="idMittente" value="@idMittenteLogato.ToString()" />
 
-        
+    <div id="Alert" class="alert alert-danger hide">
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    </div>
 
-        <div class="form-group">
-            @*@Html.LabelFor(model => model.corpoMessaggio, htmlAttributes: new { @class = "control-label col-md-2" })*@
-            <div ass="col-md-10">
-                @Html.TextAreaFor(model => model.corpoMessaggio, new { @id = "FullDescription", @class = "form-control", @rows = "200" }) @Html.ValidationMessageFor(model => model.corpoMessaggio, "", new { @class = "text-danger" })
-                <script>
-                    CKEDITOR.replace("FullDescription");
-                    CKEDITOR.config.readOnly = false;
-                </script> @*@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } }) @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })*@
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Invia" class="btn btn-default" />
-               <a href="#" onclick="TornaElencoIb();">Torna all'elenco delle Notifiche</a>
-            </div>
+    <div class="row">
+        <div class="col-xs-offset-2 col-xs-10">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         </div>
     </div>
-}
+    <div class="form-group" style="position:relative;z-index:9">
+        <div id="divCombo1" ass="col-md-10">
+            @Html.Label("lblListDestinatari", "Destinatari : ", new { @class = "control-label" })
+            <div>
+                @Html.DropDownList("lDestinatari", ViewBag.ListaDestinatari as IEnumerable<SelectListItem>
+                        , new { @class = "form-control js-example-tokenizer", multiple = "multiple", @onchange = "PrelevaPVListaDestinatari();", @onClick = "PrelevaPVListaDestinatari();" })
+            </div>
+            <div id="vai1" style="display:none; " class="text-danger">
+                @Html.Label("lblvai1", "Email presente in Cc")
+            </div>
+            <div id="vaiDest" style="display:none; " class="text-danger">
+                @Html.Label("lblDest", "Destinatario obbligatorio")
+            </div>
+        </div>
 
+        <div id="divCombo2" ass="col-md-10">
+            @Html.Label("lblListDestinatari", "Cc : ", new { @class = "control-label" })
+            <div>
+                @Html.DropDownList("toCc", ViewBag.ListaCc as IEnumerable<SelectListItem>
+               , new { @class = "form-control js-example-tokenizer", multiple = "multiple", @onchange = "PrelevaPVListaCC();", @onClick = "PrelevaPVListaDestinatari();" })
+            </div>
+            <div id="vai2" style="display:none; " class="text-danger">
+                @Html.Label("lblvai2", "Email presente in Destinatari")
+            </div>
+        </div>
+        @Html.Label("lblLivelloDestinatari", "Oggetto : ", new { @class = "control-label" })
+        <div>
+            @Html.Editor("Oggetto", "Oggetto", new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div id="vaiOgg" style="display:none; " class="text-danger">
+            @Html.Label("lblOgg", "Oggetto mancante")
+        </div>
+    </div>
 
+    <div class="form-group">
+        <div ass="col-md-10">
+            @*@Html.TextBoxFor(model=>model.corpoMessaggio, new { @id = "corpoMessaggio", @class = "ckeditor"})*@
+            <textarea id="corpoMessaggio" name="corpoMessaggio" style="height:50px"></textarea>
+            @Html.ValidationMessageFor(model => model.corpoMessaggio, "", new { @class = "text-danger" })
+
+        </div>
+        <div id="vaiCorpoMess" style="display:none; " class="text-danger">
+            @Html.Label("lblvai1", "Messaggio vuoto")
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            <div class="col-xs-12">
+                <span id="spMsgError" class="text-danger col-xs-12" style="font-size:1.1em;"></span>
+            </div>
+        </div>*@
+
+    <div class="form-group">
+        <div class="col-xs-12" id="divPercorsoPDF">
+            <span id="spMsgError" class="text-danger col-xs-12" style="font-size:1.1em;"></span>
+            <span id="spanNomeFile" class="text-danger col-xs-12 text-right" style="font-size:1.1em;"></span>
+            @*@Html.Label("spanNomeFile", @percorso.ToString())*@
+        </div>
+    </div>
+
+    <div class="form-group">
+
+        <div class="row" style="text-align:left">
+            <div class="col-xs-2">
+                @*<input type="submit" value="Invia" class="btn btn-default" />*@
+                @*<input type="button" value="Invia" class="btn btn-default" onclick="MandaDati(@attached)" />*@
+                <button id="btInviaMailconPDF" type="button" class="btn btn-success" onclick="InviaTutto();">Invia</button>
+            </div>
+            <div id="divPercorso" style="display:none; " class="text-danger">
+                @Html.Label("lblPercorso", "")
+            </div>
+            <div class="col-xs-9">
+                <input id="PDFUpload" name="PDFUpload" type="file" class="file file-loading hidden" data-allowed-file-extensions='["pdf"]' data-show-preview="false" value="">
+                @*@Html.ValidationMessageFor(model => model.PDFUpload, "", new { @class = "text-danger" })*@
+            </div>
+
+            <div class="col-md-10" style="text-align:right">
+                <input id="idBtnAllegato" style="height:33px;width:100px;vertical-align:central" type="button" class="btn btn-danger"
+                       value="Allega PDF" onclick="" />
+            </div>
+        </div>
+        <div>
+            <br /><a href="#" onclick="TornaElencoIb();">Torna all'elenco delle Notifiche</a>
+        </div>
+    </div>
+</div>
+@*}*@
 
 <div class="modal fade" id="myModalErrorModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -98,140 +150,155 @@
     </div>
 </div>
 
+<script type="text/javascript" src="~/Scripts/Notifiche/Operazione.js"></script>
+
 <script type="text/javascript">
-    function TornaElencoIb() {
-        var rotta = "/Notifiche/ListaNotifiche";
-        
-        $.ajax({
-            type: "POST",
-            url: rotta,
-          //  data: { idTipoContributo: idTipoContributo, escludiAnnullati: chk },
-            dataType: 'html',
-            beforeSend: function () {
-                //debugger;
-                //VerificaAutenticazione();
-                //$("#DialogNewDoc").dialog("destroy");
-                //$("#divEffettoLoadAutNoDoc").show("slow");
-            },
-            success: function (result) {
-                //debugger;
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                $("#divPanelNotifiche").empty();
-                $("#divPanelNotifiche").html(result);
-                //RicercaDocumenti();
-            },
-            complete: function () {
-                //$("#divEffettoLoadAutNoDoc").hide("slow");
-                //                $("#Centro").getNiceScroll().resize();
-            },
-            error: function (jqXHR, textStatus, errorThrow) {
-                //debugger;
-                var msg = errorThrow.err;
-                AlertDialog(msg);
-            }
-        });
-    }
-    //$("#idDestinatari").select2({
-    //    placeholder: "Seleziona tipo trasferimento",
-    //    allowClear: true,
-    //    language: "it",
-    //    width: '150',
-    //    tags: true
-    //});
-    $(".js-example-tokenizer").select2({
-        tags: true,
-        tokenSeparators: [',', ' ']
-    })
+    CKEDITOR.config.readOnly = false;
+    ////for (instance in CKEDITOR.instances) {
+    ////    CKEDITOR.instances[instance].updateElement();
+    ////}
+    //CKEDITOR.editorConfig = function (config) {
+    //    config.title = "";//levare il tooltip
+    //}
 
-    function PrelevaPVListaDestinatari()
-    {
-        // debugger;
-        var listaDest1 = $("#idDestinatari").select2('val');
-        var listaDest2 = $("#idDestinatari2").select2('val');
-        // alert("1:"+listaDest1 +'\n\n2:'+listaDest2 );
-
-        if (listaDest1 != null && listaDest1.indexOf(",") == -1)
-            listaDest1 = listaDest1.toString() + ",";
-        if (listaDest2 != null && listaDest2.indexOf(",") == -1)
-            listaDest2 = listaDest2.toString() + ",";
-
-        if (listaDest2 != null && listaDest1 != null) {
-                var l1 = listaDest1.split(',');
-                for (j = 0; j < l1.length; j++) {
-                    if (l1[j] != '') {
-                        if (listaDest2.indexOf(l1[j]) != -1) {
-                            //alert('Attenzione: ' + l1[j] + ' presente nel settore Cc');
-                            var $select = $('#idDestinatari');
-                            var idToRemove = l1[j];
-                            var values = $select.val();
-                            if (values) {
-                                var i = values.indexOf(idToRemove);
-                                if (i >= 0) {
-                                    values.splice(i, 1);
-                                    $select.val(values).change();
-                                }
-                            }
-                            $('#vai1').show();
-                            return;
-                        }
-                    }
-                }               
-        }
-        hideAll();
-    }
-    function PrelevaPVListaCC()
-    {
-        //    debugger;
-        var listaDest1 = $("#idDestinatari").select2('val');
-        var listaDest2 = $("#idDestinatari2").select2('val');
-
-        if (listaDest1 != null && listaDest1.indexOf(",") == -1)
-            listaDest1 = listaDest1.toString() + ",";
-        if (listaDest2 != null && listaDest2.indexOf(",") == -1)
-            listaDest2 = listaDest2.toString() + ",";
-
-        if (listaDest2 != null && listaDest1 != null) {
-            var l2 = listaDest2.split(',');
-            for (j = 0; j < l2.length; j++) {
-                if (l2[j] != '') {
-                    if (listaDest1.indexOf(l2[j]) != -1) {
-                        // alert('Attenzione: ' + l2[j] + ' presente nel settore Destinatari');
-                      
-                        var $select = $('#idDestinatari2');
-                        var idToRemove = l2[j];
-                        var values = $select.val();
-                        if (values) {
-                            var i = values.indexOf(idToRemove);
-                            if (i >= 0) {
-                                values.splice(i, 1);
-                                $select.val(values).change();
-                            }
-                        }
-                        $('#vai2').show();
-                        return;
-                    }
-                }
-            }           
-        }
-        hideAll();
-    }
-    function hideAll()
-    {
-        $('#vai2').hide(); $('#vai1').hide();
-        $('#vaiOgg').hide(); $('#vaiDest').hide();
-    }
-
-    $('#formNuovaNotifica').submit(function (e) {
-        hideAll();
-        var listaDest1 = $("#idDestinatari").select2('val');
-       // var listaDest2 = $("#idDestinatari2").select2('val');
-        if (listaDest1 ==null)        {
-            $('#vaiDest').show();
-            return false;
-        }
-        if ($("#Oggetto").val().toString().trim() == '') {
-            $('#vaiOgg').show();
-            return false;
-        }
+    CKEDITOR.replace("corpoMessaggio", {
+        //customConfig: "~/Scripts/ckeditor/config.js", height: 72
+        language: 'it',
+        uiColor: '#339966;',
     });
+
+</script>
+
+<script type="text/javascript">
+
+
+
+
+
+
+    $("#idBtnAllegato").click(function () {
+        ClearMessages();
+        $("#PDFUpload").empty();
+        $("#PDFUpload").click();
+    });
+
+    $("#PDFUpload").change(function () {
+        //   debugger;
+
+        var file = $("#PDFUpload").val();
+        if (file != null && file != undefined) {
+            var splitFile = file.split("\\");
+            var nomeFile = splitFile[splitFile.length - 1];
+
+            var estensioniValide = new Array(".pdf");
+            var estensione = nomeFile.substring(nomeFile.lastIndexOf('.')).toLowerCase();
+            if (estensioniValide.contiene(estensione)) {
+                // $("#spanNomeFile").val=file;
+                // $("#lblPercorso").val(nomeFile);
+                //$("#EstensioneFile").val(estensione);
+                //  $("#divPercorso").show();
+                // debugger;
+                $("#spanNomeFile").html(file);
+
+                // SalvaDocumento();
+                return true;
+            } else {
+                MsgErroreJson("L'estensione del documento che si vuole importare (" + estensione + ") non è supportata.\nL'estensione supportata è il .pdf");
+                return false;
+            }
+        }
+
+    });
+    function MsgErroreJson(msg) {
+        $("#spMsgError").html(msg);
+    }
+    function ClearMessages() {
+        $("#spMsgError").html("");
+        $("#spanNomeFile").html("");
+    }
+
+    function SalvaDocumento() {
+
+        //debugger;
+        var datiForm = new FormData();
+        var rotta = "/Notifiche/SalvaPDF";
+
+
+        var file = $("#PDFUpload")[0].files[0];
+
+        if (Validazione()) {
+
+            @*datiForm.append("idAttivazioneMagFam", @idAttivazioneMagFam);*@
+            datiForm.append("file", file);
+            var percorso = $("#spanNomeFile").html();// $("#spanNomeFile").val();
+            $.ajax({
+                url: rotta,
+                type: "POST", //Le info testuali saranno passate in POST
+                data: datiForm, //I dati, forniti sotto forma di oggetto FormData//{percorso:percorso},
+                dataType: 'html',
+                cache: false,
+                async: false,
+                beforeSend: function () {
+
+                },
+                processData: false, //Serve per NON far convertire l’oggetto
+                //FormData in una stringa, preservando il file
+                contentType: false, //Serve per NON far inserire automaticamente
+                //un content type errato
+                success: function (result) {
+
+                },
+                complete: function () {
+                    //$("#btUpload").removeAttr("disabled");
+                },
+                error: function (error) {
+                    //debugger;
+                    //Sblocca();
+                    //$("#btUploadFMF").removeAttr("disabled");
+                    //$("#btUploadFMF").removeClass("disabled");
+                    var msg = error.responseText;
+                    ErroreElaborazioneAjax(msg);
+                }
+            });
+        }
+    }
+    function Validazione() {
+        //debugger;
+        var ret = false;
+        var file = $("#PDFUpload").val();
+
+        if (file != null && file != undefined && file != "") {
+            // $("#divFile").removeClass('BordoRosso');
+            ret = true;
+        }
+        else {
+            // $("#divFile").addClass('BordoRosso');
+            ret = false;
+        }
+
+        return ret;
+    }
+
+
+    $(function () {
+        if (parseInt('@CountError') > 0) {
+            $("#Alert").removeClass("hide");
+            $("#Alert").css("show");
+        }
+
+        $("form").submit(function () {
+            //if ($("form").valid()) {
+            Blocca();
+            // }
+
+        });
+
+    });
+    function InviaTutto() {
+        $("#btInviaMailconPDF").attr('value', 'Attendere');
+        $("#btInviaMailconPDF").attr("disabled", true);;
+        Blocca();
+        SalvaNotificaConPDF();
+    };
+
 </script>

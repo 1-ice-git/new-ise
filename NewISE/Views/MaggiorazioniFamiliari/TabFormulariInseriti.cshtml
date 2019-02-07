@@ -1,9 +1,11 @@
 ﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
 @model IEnumerable<NewISE.Models.DBModel.DocumentiModel>
 
 @{
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
     EnumChiamante enChiamante = EnumChiamante.Maggiorazioni_Familiari;
+    decimal idAttivazioneMagFam= Convert.ToDecimal(ViewData["idAttivazioneMagFam"]);
 }
 
 <table class="table table-striped"" id="tabElencoFormulariInseriti" >
@@ -122,14 +124,11 @@
         //        }
         //    }
         //],
-        //"columnDefs": [
-        //    {
-        //        "targets": [0],
-        //        "visible": false,
-        //        "searchable": false
-        //    },
-
-        //]
+        "columnDefs": [
+               { "targets": [2], "type": 'date-euro' },
+               { "targets": [3, 4], "orderable": false }
+        ],
+        "order": [[0, "asc"]]
     });
 
     function EliminaFormulario(idDoc) {
@@ -168,7 +167,7 @@
                     //InfoElaborazioneAjax(result.msg);
                     //CloseTimeModalFormulario();
                     //TabElencoFormulari();
-                    PulsantiNotificaAttivaMagFam();
+                    PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
                 }
             },
             complete: function () {
@@ -186,6 +185,6 @@
     $("#ModalEliminaFormularioMF").on("hidden.bs.modal", function () {
         //debugger;
         TabElencoFormulari();
-        PulsantiNotificaAttivaMagFam();
+        PulsantiNotificaAttivaMagFam(parseInt('@idAttivazioneMagFam'));
     });
 </script>

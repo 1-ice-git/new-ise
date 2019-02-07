@@ -9,33 +9,44 @@
 
 
 
-<div class="row" style="padding-right: 15px">
+<div class="row">
     <div class="col-xs-12">
         <div id="divTrasportoEffettiPartenza">
             @Html.Action("TrasportoEffettiPartenza", "TrasportoEffetti", new { idTrasportoEffettiPartenza = idTrasportoEffettiPartenza })
         </div>
     </div>
 </div>
-<div class="row" style="margin-right: 15px">
-    <hr />
-</div>
-<div class="row">
-    <div class="pull-right" style="margin-bottom: 10px;margin-right:30px ">
-        <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btNotificaRichiestaTE" onclick="ModalNotificaRichiestaTE();">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Notifica richiesta
-        </button>
-        <button class="btn btn-default btn-sm hidden disabled " hidden disabled id="btAttivaRichiestaTE" onclick="ModalAttivaRichiestaTE();">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Attiva richiesta
-        </button>
-        <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btAnnullaRichiestaTE" onclick="ModalAnnullaRichiestaTE();">
-            <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
-            Annulla richiesta
-        </button>
+
+<div class="row" style="margin-right:1px">
+    <div class="col-xs-12" >
+        <hr />
     </div>
 </div>
 
+<div class="row">
+    <div class="col-xs-4">
+        <div id="divRinunciaTEPartenza">
+        </div>
+    </div>
+    <div class="col-xs-8">
+        <div class="row">
+            <div class="pull-right" style="margin-bottom: 10px;margin-right:30px">
+                <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btNotificaRichiestaTE" onclick="ModalNotificaRichiestaTE();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Notifica richiesta
+                </button>
+                <button class="btn btn-default btn-sm hidden disabled " hidden disabled id="btAttivaRichiestaTE" onclick="ModalAttivaRichiestaTE();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Attiva richiesta
+                </button>
+                <button class="btn btn-default btn-sm hidden disabled" hidden disabled id="btAnnullaRichiestaTE" onclick="ModalAnnullaRichiestaTE();">
+                    <i aria-hidden="true" class="fa fa-2x fa-envelope"></i>
+                    Annulla richiesta
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="ModalNotificaRichiestaTE" tabindex="-1" role="dialog" aria-labelledby="ModalNotificaRichiestaTELabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
@@ -103,6 +114,7 @@
 </div>
 
 <script type="text/javascript">
+    GestioneRinunciaTEPartenza();
     GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
 
     function GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza() {
@@ -126,9 +138,8 @@
                     var richiestaTE = result.richiestaTE;
                     var attivazioneTE = result.attivazioneTE;
                     var DocContributo = result.DocContributo;
-                    var DocAttestazione = result.DocAttestazione;
-                    var NumAttivazioni=result.NumAttivazioni;
                     var trasfAnnullato = result.trasfAnnullato;
+                    var rinunciaTE = result.rinunciaTE;
 
                     $("#btNotificaRichiestaTE").attr("disabled", "disabled");
                     $("#btNotificaRichiestaTE").addClass("disabled");
@@ -154,12 +165,18 @@
 
                     //Se risulta in lavorazione con almeno un documento abilito la il pulsante notifica
                     if (
-                        (
-                            (NumAttivazioni==0 && richiestaTE==false && attivazioneTE==false && DocContributo) ||
-                            (NumAttivazioni>0 && richiestaTE==false && attivazioneTE==false && DocAttestazione)
-                        ) &&
-                            trasfAnnullato==false
+                            (
+                                richiestaTE==false && 
+                                attivazioneTE==false && 
+                                DocContributo &&
+                                trasfAnnullato==false && 
+                                rinunciaTE == false
+                            ) || 
+                            (
+                                richiestaTE==false && attivazioneTE==false && trasfAnnullato==false && rinunciaTE == true
+                            )
                         )
+                        
                     {
                         $("#btNotificaRichiestaTE").removeAttr("disabled");
                         $("#btNotificaRichiestaTE").removeClass("disabled");
@@ -196,6 +213,7 @@
 
     function ModalAnnullaRichiestaTE() {
         //debugger;
+        MessaggioAnnullaRichiestaTE();
         $('#ModalAnnullaRichiestaTE').modal().show();
     }
 
@@ -225,6 +243,7 @@
                 //debugger;
                 if (result.err == "") {
                     TrasportoEffettiPartenza();
+                    GestioneRinunciaTEPartenza();
                     GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
                     //InfoElaborazioneAjax(result.msg);
                 } else {
@@ -247,11 +266,12 @@
         //debugger;
         var rotta = "/TrasportoEffetti/ConfermaAnnullaRichiestaTEPartenza";
         var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
+        var testoAnnullaTE = $('#FullDescription').val();
 
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { idTrasportoEffettiPartenza: idTrasportoEffettiPartenza },
+            data: { idTrasportoEffettiPartenza: idTrasportoEffettiPartenza, msg:testoAnnullaTE },
             dataType: 'json',
             beforeSend: function () {
                 //debugger;
@@ -261,6 +281,7 @@
                 //debugger;
                 if (result.err == "") {
                     TrasportoEffettiPartenza();
+                    GestioneRinunciaTEPartenza();
                     GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
                     //InfoElaborazioneAjax(result.msg);
                 } else {
@@ -297,6 +318,7 @@
                 //debugger;
                 if (result.err == "") {
                     TrasportoEffettiPartenza();
+                    GestioneRinunciaTEPartenza();
                     GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
                     //InfoElaborazioneAjax(result.msg);
                 } else {
@@ -344,6 +366,104 @@
                 ErroreElaborazioneAjax(msg);
             }
         });
+    }
+
+    function MessaggioAnnullaRichiestaTE() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/MessaggioAnnullaTEPartenza";
+        var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data:{idTrasportoEffettiPartenza:idTrasportoEffettiPartenza},
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#viewAnnullaRichiestaTE").empty();
+                $("#viewAnnullaRichiestaTE").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+    }
+
+    function GestioneRinunciaTEPartenza() {
+        //debugger;
+        var rotta = "/TrasportoEffetti/GestioneRinunciaTEPartenza";
+        var idTrasportoEffettiPartenza = parseInt('@idTrasportoEffettiPartenza');
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasportoEffettiPartenza: idTrasportoEffettiPartenza },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+                $("#divRinunciaTEPartenza").empty();
+                $("#divRinunciaTEPartenza").html(result);
+                Sblocca();
+            },
+            complete: function () {
+
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+    }
+
+    function AggiornaRinunciaTEPartenza(idATEPartenza) {
+        //debugger;
+        var rotta = "/TrasportoEffetti/AggiornaRinunciaTEPartenza";
+
+        $.ajax({
+            url: rotta,
+            type: "POST", //Le info testuali saranno passate in POST
+            data: { idATEPartenza: idATEPartenza},
+            dataType: 'json',
+            async: false,
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+                Blocca();
+
+            },
+            success: function (result) {
+                //debugger;
+                if (result.errore === "") {
+                    TrasportoEffettiPartenza();
+                    GestionePulsantiNotificaAttivaAnnullaTrasportoEffettiPartenza();
+                } else {
+                    ErroreElaborazioneAjax(result.msg);
+                }
+            },
+            complete: function () {
+                Sblocca();
+            },
+            error: function (error) {
+                //debugger;
+                Sblocca();
+                var msg = error.responseText;
+                ErroreElaborazioneAjax(msg);
+            }
+        });
+
     }
 
 </script>

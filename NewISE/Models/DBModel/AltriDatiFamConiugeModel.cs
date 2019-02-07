@@ -52,12 +52,6 @@ namespace NewISE.Models.DBModel
         [ScaffoldColumn(false)]
         public DateTime dataAggiornamento { get; set; }
 
-        [DefaultValue(false)]
-        [Display(Name = "Annullato")]
-        [ScaffoldColumn(false)]
-        public bool annullato { get; set; }
-
-
         [ScaffoldColumn(false)]
         public ConiugeModel Coniuge { get; set; }
 
@@ -66,7 +60,10 @@ namespace NewISE.Models.DBModel
             return idAltriDatiFam > 0 ? true : false;
         }
 
+        public bool modificato { get; set; }
 
+        public decimal idStatoRecord { get; set; }
+        public decimal? FK_idAltriDatiFam { get; set; }
 
     }
 }

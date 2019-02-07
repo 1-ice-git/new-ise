@@ -60,6 +60,8 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                     List<FASCIA_KM> lib = new List<FASCIA_KM>();
                     if(idGruppoFKM!=0)
                         lib = db.FASCIA_KM.Where(a=>a.IDGRUPPOFKM==idGruppoFKM).OrderBy(b=>b.IDFKM).ToList();
+                    else
+                        lib = db.FASCIA_KM.OrderBy(b => b.IDFKM).ToList();
 
                     libm = (from e in lib
                             select new DefFasciaKmModel()
@@ -67,6 +69,31 @@ namespace NewISE.Areas.Parametri.Models.dtObj
                                 idfKm = e.IDFKM,
                                 idGruppofKm=e.IDGRUPPOFKM,
                                 km=e.KM,
+                            }).ToList();
+                }
+                return libm;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public IList<DefFasciaKmModel> getListFasciaKM()
+        {
+            List<DefFasciaKmModel> libm = new List<DefFasciaKmModel>();
+            try
+            {
+                using (ModelDBISE db = new ModelDBISE())
+                {
+                    List<FASCIA_KM> lib = new List<FASCIA_KM>();                    
+                    lib = db.FASCIA_KM.OrderBy(b => b.IDFKM).ToList();
+
+                    libm = (from e in lib
+                            select new DefFasciaKmModel()
+                            {
+                                idfKm = e.IDFKM,
+                                idGruppofKm = e.IDGRUPPOFKM,
+                                km = e.KM,
                             }).ToList();
                 }
                 return libm;

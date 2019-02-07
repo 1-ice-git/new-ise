@@ -1,5 +1,6 @@
 ﻿
 using NewISE.EF;
+using NewISE.Models.Enumeratori;
 using NewISE.Models.Tools;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace NewISE.Models.dtObj
 
                     if (lua?.Any() ?? false)
                     {
-                        
+
                         var ua = lua.First();
                         var dip = ua.DIPENDENTI;
                         if (dip?.IDDIPENDENTE > 0)
@@ -49,8 +50,8 @@ namespace NewISE.Models.dtObj
                         {
                             ret = true;
                         }
-                        
-                        
+
+
                     }
                 }
             }
@@ -81,10 +82,10 @@ namespace NewISE.Models.dtObj
                         ret = true;
                         uam = new UtenteAutorizzatoModel()
                         {
-                            idUtenteAutorizzato = ua.IDUTENTEAUTORIZZATO,
-                            idRuoloUtente = (EnumRuoloAccesso)ua.IDRUOLOUTENTE,
                             idDipendente = ua.IDDIPENDENTE,
-                            matricola = ua.UTENTE
+                            idRuoloUtente = (EnumRuoloAccesso)ua.IDRUOLOUTENTE,
+                            matricola = ua.UTENTE,
+                            psw = ua.PSW
                         };
                     }
                     else
@@ -113,10 +114,11 @@ namespace NewISE.Models.dtObj
                 {
                     var ua = db.UTENTIAUTORIZZATI.Where(a => a.UTENTE == matricola).First();
 
-                    ac.idUtenteAutorizzato = ua.IDUTENTEAUTORIZZATO;
+                    ac.idDipendente = ua.IDDIPENDENTE;
                     ac.idRuoloUtente = (EnumRuoloAccesso)ua.IDRUOLOUTENTE;
                     ac.idDipendente = ua.IDDIPENDENTE;
                     ac.matricola = ua.UTENTE;
+                    ac.psw = ua.PSW;
                     ac.ruoloAccesso = new RuoloAccesoModel()
                     {
                         idRuoloAccesso = ua.RUOLOACCESSO.IDRUOLOACCESSO,

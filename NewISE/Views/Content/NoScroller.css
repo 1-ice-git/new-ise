@@ -1,0 +1,12 @@
+﻿.modal-lg {
+  max-width: 900px;}
+@media (min-width: 768px) {
+   .modal-lg {
+    width: 100%;
+  } 
+}
+@media (min-width: 992px) {
+  .modal-lg {
+    width: 900px;
+  }
+}

@@ -29,11 +29,11 @@ namespace NewISE.Models.DBModel
         [Required(ErrorMessage = "La data di assunzione è richiesta.")]
         [DataType(DataType.Date)]
         [Display(Name = "Data assunzione")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime dataAssunzione { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Data assunzione")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dataCessazione { get; set; }
         [DataType(DataType.Text)]
         [StringLength(100, ErrorMessage = "L'indirizzo accetta un massimo di 100 caratteri.")]
@@ -67,9 +67,13 @@ namespace NewISE.Models.DBModel
 
         [Required(ErrorMessage = "La data d'inizio ricalcoli è richiesta.")]
         [DataType(DataType.Date)]
-        [Display(Name = "Data assunzione")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
+        [Display(Name = "Data Ini. ricalcolo")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? dataInizioRicalcoli { get; set; }
+
+        [Required]
+        [Display(Name = "Ricalcolo")]
+        public bool ricalcolare { get; set; }
 
         [Display(Name = "Abilitato")]
         public bool abilitato { get; set; }
@@ -97,6 +101,8 @@ namespace NewISE.Models.DBModel
         public LivelloDipendenteModel livelloDipendenteValido { get; set; }
 
         public UtenteAutorizzatoModel UtenteAutorizzato { get; set; }
+
+        public IList<ElaborazioniModel> lElaborazioni { get; set; }
 
 
     }

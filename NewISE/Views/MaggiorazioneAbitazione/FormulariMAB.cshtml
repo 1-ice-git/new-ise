@@ -1,4 +1,5 @@
 ﻿@using NewISE.Models.DBModel
+@using NewISE.Models.Enumeratori
 
 @{
     bool siDocCopiaContratto = Convert.ToBoolean(ViewData["siDocCopiaContratto"]);
@@ -16,6 +17,7 @@
     decimal idDocModulo4 = Convert.ToDecimal(ViewData["idDocModulo4"]);
     decimal idDocModulo5 = Convert.ToDecimal(ViewData["idDocModulo5"]);
     bool soloLettura = Convert.ToBoolean(ViewData["soloLettura"]);
+    bool chkRinuncia = Convert.ToBoolean(ViewData["chkRinuncia"]);
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     decimal NumAttivazioni = Convert.ToDecimal(ViewData["NumAttivazioni"]);
 }
@@ -39,7 +41,7 @@
                     </b>
                 </div>
                 <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
-                    @if (siDocModulo1)
+                    @if (siDocModulo1 && chkRinuncia==false)
                     {
                         <a href="@Url.RouteUrl("LeggiDocumento", new {id = idDocModulo1})" target="_blank">
                             <img width="17" src="~/Immagini/IconeDocumenti/PDF-icon.png" title="Click per visualizzare il documento" />
@@ -51,9 +53,9 @@
                     }
                 </div>
                 <div class="col-xs-1" style="padding-left:10px;padding-bottom:10px">
-                    @if (soloLettura == false)
+                    @if (soloLettura == false && chkRinuncia==false)
                     {
-                        <a href="#" onclick="UploadDocumentoMABModal(@Convert.ToDecimal(@EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione),@idTrasferimento);" id="uploadDoc1MAB">
+                        <a href="#" onclick="UploadDocumentoMABModal(@Convert.ToDecimal(EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione),@idTrasferimento);" id="uploadDoc1MAB">
                             @if (siDocModulo1)
                             {
                                 <img src="~/Immagini/switch.png" width="17" title="Sostituisci" />
@@ -66,7 +68,7 @@
                     }
                 </div>
             </div>
-            <div class="row">
+            @*<div class="row">
                 <div class="col-xs-10" style="text-align:right">
                     <b>
                         Modulo 2 (Dichiarazione ai sensi del D.P.R. 445/2000 - Costo di Locazione)
@@ -271,7 +273,7 @@
                         </a>
                     }
                 </div>
-            </div>
+            </div>*@
         </div>
     </div>
 </div>

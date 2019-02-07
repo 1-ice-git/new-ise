@@ -1,8 +1,9 @@
 ﻿using NewISE.EF;
 using NewISE.Models.Config.s_admin;
 using NewISE.Models.DBModel;
-using NewISE.Models.dtObj;
 
+using NewISE.Models.dtObj;
+using NewISE.Models.Enumeratori;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +12,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Helpers;
+using NewISE.Models.dtObj.ModelliCalcolo;
 
 
 namespace NewISE.Models.Tools
@@ -20,7 +22,7 @@ namespace NewISE.Models.Tools
 
         private const string DataFineSistema = "31/12/9999";
         private const string Data_Inizio_Base = "01/07/2015";
-        
+
         public static bool Amministratore()
         {
             bool admin = false;
@@ -41,7 +43,7 @@ namespace NewISE.Models.Tools
 
             return admin;
         }
-        
+
         public static bool SuperAmministratore()
         {
             bool admin = false;
@@ -72,7 +74,7 @@ namespace NewISE.Models.Tools
             ac = Utility.UtenteAutorizzato();
             if (ac != null)
             {
-               
+
                 if (ac.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore || ac.idRuoloUtente == (decimal)EnumRuoloAccesso.Amministratore)
                 {
                     admin = true;
@@ -99,7 +101,7 @@ namespace NewISE.Models.Tools
                 {
                     if (claim.Type == ClaimTypes.NameIdentifier)
                     {
-                        ac.idUtenteAutorizzato = Convert.ToDecimal(claim.Value);
+                        ac.idDipendente = Convert.ToDecimal(claim.Value);
                     }
                     else if (claim.Type == ClaimTypes.Name)
                     {
@@ -123,6 +125,8 @@ namespace NewISE.Models.Tools
                     }
                 }
 
+
+
                 if (ac.idRuoloUtente > 0)
                 {
                     using (ModelDBISE db = new ModelDBISE())
@@ -137,13 +141,13 @@ namespace NewISE.Models.Tools
                             };
                         }
 
-                        UTENTIAUTORIZZATI ua = db.UTENTIAUTORIZZATI.Find(ac.idUtenteAutorizzato);
+                        UTENTIAUTORIZZATI ua = db.UTENTIAUTORIZZATI.Find(ac.idDipendente);
                         DIPENDENTI d = ua.DIPENDENTI;
 
                         if (d?.IDDIPENDENTE > 0)
                         {
                             ac.idDipendente = d.IDDIPENDENTE;
-                           
+
                             DipendentiModel dm = new DipendentiModel()
                             {
                                 idDipendente = d.IDDIPENDENTE,
@@ -180,7 +184,7 @@ namespace NewISE.Models.Tools
             {
                 LogAttivitaModel lam = new LogAttivitaModel();
 
-                lam.idUtenteLoggato = Utility.UtenteAutorizzato().idUtenteAutorizzato;
+                lam.idDipendente = Utility.UtenteAutorizzato().idDipendente;
                 if (idTrasferimento > 0)
                 {
                     lam.idTrasferimento = idTrasferimento;
@@ -205,7 +209,7 @@ namespace NewISE.Models.Tools
             {
                 LogAttivitaModel lam = new LogAttivitaModel();
 
-                lam.idUtenteLoggato = Utility.UtenteAutorizzato().idUtenteAutorizzato;
+                lam.idDipendente = Utility.UtenteAutorizzato().idDipendente;
                 if (idTrasferimento > 0)
                 {
                     lam.idTrasferimento = idTrasferimento;
@@ -263,6 +267,8 @@ namespace NewISE.Models.Tools
                         dm.tipoDocumento = tipoDoc;
                         dm.dataInserimento = DateTime.Now;
                         dm.file = file;
+                        dm.idStatoRecord = (decimal)EnumStatoRecord.In_Lavorazione;
+                        dm.fk_iddocumento = null;
 
                         dimensioneConsentita = true;
                     }
@@ -291,6 +297,80 @@ namespace NewISE.Models.Tools
         public static DateTime GetData_Inizio_Base()
         {
             return Convert.ToDateTime(Data_Inizio_Base);
+        }
+        /// <summary>
+        /// Passando una data riporta la data di inizio mese.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static DateTime GetDataInizioMese(DateTime data)
+        {
+            return
+                Convert.ToDateTime("01/" + data.Month.ToString().PadLeft(2, Convert.ToChar("0")) + "/" +
+                                   data.Year.ToString());
+
+        }
+        /// <summary>
+        /// Passando una data riporta la data di fine mese
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static DateTime GetDtFineMese(DateTime data)
+        {
+            string giorno = "01";
+
+            switch (data.Month)
+            {
+                case 1:
+                    giorno = "31";
+                    break;
+                case 2:
+                    if (DateTime.IsLeapYear(data.Year))
+                    {
+                        giorno = "29";
+                    }
+                    else
+                    {
+                        giorno = "28";
+                    }
+                    break;
+                case 3:
+                    giorno = "31";
+                    break;
+                case 4:
+                    giorno = "30";
+                    break;
+                case 5:
+                    giorno = "31";
+                    break;
+                case 6:
+                    giorno = "30";
+                    break;
+                case 7:
+                    giorno = "31";
+                    break;
+                case 8:
+                    giorno = "31";
+                    break;
+                case 9:
+                    giorno = "30";
+                    break;
+                case 10:
+                    giorno = "31";
+                    break;
+                case 11:
+                    giorno = "30";
+                    break;
+                case 12:
+                    giorno = "31";
+                    break;
+                default:
+                    giorno = "31";
+                    break;
+            }
+
+
+            return Convert.ToDateTime(giorno + "/" + data.Month.ToString().PadLeft(2, Convert.ToChar("0")) + "/" + data.Year.ToString());
         }
 
         public static DateTime GetDtFineMeseCorrente()
@@ -377,6 +457,31 @@ namespace NewISE.Models.Tools
             return result;
 
         }
+        /// <summary>
+        /// Converte la data nel formato decimale anno mese.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static decimal DataAnnoMese(DateTime data)
+        {
+            return Convert.ToDecimal(data.Year.ToString() + data.Month.ToString().PadLeft(2, Convert.ToChar("0")));
+        }
+        /// <summary>
+        /// Riporta in formato string il mese anno, es: Gennaio 2018
+        /// </summary>
+        /// <param name="mese"></param>
+        /// <param name="anno"></param>
+        /// <returns></returns>
+        public static string MeseAnnoTesto(int mese, int anno)
+        {
+            return (((EnumDescrizioneMesi)mese).ToString() + " " + anno.ToString()).ToString();
+        }
+
+        public static List<T> CreaLista<T>(params T[] elements)
+        {
+            return new List<T>(elements);
+        }
+
 
 
     }

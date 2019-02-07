@@ -43,6 +43,7 @@ namespace NewISE.Models.DBModel
 
         public UfficiModel Ufficio { get; set; }
 
+        public IndennitaBaseModel IndennitaBase { get; set; }
 
         public bool HasValue()
         {
