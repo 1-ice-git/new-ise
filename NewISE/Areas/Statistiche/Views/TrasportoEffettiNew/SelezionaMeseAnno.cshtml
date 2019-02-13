@@ -159,12 +159,7 @@
 
     $("#opener").on("click", function () {
         //debugger;
-        if (ValidazioneTE()) { 
-            $('.container').addClass("NoOverflow");
-
-            $("#dialog").dialog("open");
-            $("#dialog").css("background-color", "#ffffff");
-
+        if (ValidazioneTE()) {
 
             var rotta = "/Statistiche/TrasportoEffettiNew/RptTrasportoEffetti";
 
@@ -189,6 +184,9 @@
                 },
                 success: function (result) {
                     //debugger;
+                    $('.container').addClass("NoOverflow");
+                    $("#dialog").dialog("open");
+                    $("#dialog").css("background-color", "#ffffff");
                     $("#dialog").html(result);
 
 

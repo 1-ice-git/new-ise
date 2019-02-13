@@ -25,7 +25,7 @@
                             <div id="divDataDa" hidden>
                                 <i class="fa fa-asterisk text-danger"></i>
                                 <span class="text-danger">Campo obbligatorio</span>
-                            </div>                                        
+                            </div>
                         </div>
 
                         <div class="col-xs-3 date">
@@ -36,7 +36,7 @@
                             <div id="divDataA" hidden>
                                 <i class="fa fa-asterisk text-danger"></i>
                                 <span class="text-danger">Campo obbligatorio</span>
-                            </div>                
+                            </div>
                         </div>
                         <div class="col-xs-3 date">
                             <button class="btn btn-small btn-success" id="opener">
@@ -191,12 +191,7 @@
         //debugger;
 
         if (Validazione()) {
-            if (ValidazioneDateSospensioni()==1) {
-                $('.container').addClass("NoOverflow");
-
-                $("#dialog").dialog("open");
-                $("#dialog").css("background-color", "#ffffff");
-
+            if (ValidazioneDateSospensioni() == 1) {
 
                 var rotta = "/Statistiche/RiepiloghiSospensioni/RptRiepiloghiSospensioni";
 
@@ -218,6 +213,9 @@
                     },
                     success: function (result) {
                         //debugger;
+                        $('.container').addClass("NoOverflow");
+                        $("#dialog").dialog("open");
+                        $("#dialog").css("background-color", "#ffffff");
                         $("#dialog").html(result);
                     },
                     complete: function () {
@@ -290,7 +288,7 @@
         changeMonth: true,
         changeYear: true,
     });
-    
+
 
 
 </script>

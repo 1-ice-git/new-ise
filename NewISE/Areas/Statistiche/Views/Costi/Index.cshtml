@@ -5,7 +5,7 @@
         <div class="form-group">
             <div class="panel panel-default">
                 <div class="panel-heading text-center" style="background-color:lightgrey"><h4><b>Consuntivo dei Costi</b></h4></div>
-                <div class="panel-body" style="font-size:1.2em">                   
+                <div class="panel-body" style="font-size:1.2em">
                     <div class="row">
                         <div class="col-xs-3 date">
                             <strong>Mese Inizio Elaborazione</strong>
@@ -15,7 +15,7 @@
                             <strong>Mese Fine Elaborazione</strong>
                         </div>
                         <div class="col-xs-3 date">
-                        </div>                    
+                        </div>
                     </div>
 
                     <div class="row">
@@ -32,15 +32,19 @@
                         </div>
 
                         <div class="col-xs-3">
-                            <center>
-                                <button class="btn btn-small btn-success" id="btStampa">
-                                    <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-                                    Stampa
-                                </button>
-                            </center>
+
+                            <button class="btn btn-small btn-success" id="btStampa">
+                                <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+                                Stampa
+                            </button>
+                            @*<button class="btn btn-small btn-success disabled" id="btLoading" disabled="disabled">
+                                    <i class="fa fa-refresh fa-2x fa-spin"></i>Loading
+                                </button>*@
+
+
                         </div>
                     </div>
-                </div>  
+                </div>
             </div>
         </div>
     </div>
@@ -159,16 +163,17 @@
     $("#btStampa").on("click", function () {
         if (ValidazioneCosti()) {
             //debugger;
-            $('.container').addClass("NoOverflow");
-            $("#divReport").dialog("open");
-            $("#divReport").css("background-color", "#ffffff");
+
             var rotta = "/Statistiche/Costi/RptCosti";
             var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
             var meseAnnoA = $("#idMesiAnniElaboratiA").val();
-      
+
+            //var bt = $(this);
+
             $.ajax({
                 type: "POST",
                 url: rotta,
+                async: true,
                 data: {
                     meseAnnoDa: meseAnnoDa,
                     meseAnnoA: meseAnnoA
@@ -177,15 +182,21 @@
                 beforeSend: function () {
                     //debugger;
                     $("#divReport").empty();
+                    //Blocca();
+                    //bt.empty();
+                    //bt.html('<i class="fa fa-refresh fa-2x fa-spin"></i>Loading');
 
                 },
                 success: function (result) {
                     //debugger;
+                    $('.container').addClass("NoOverflow");
+                    $("#divReport").dialog("open");
+                    $("#divReport").css("background-color", "#ffffff");
                     $("#divReport").html(result);
                 },
                 complete: function () {
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    //                $("#Centro").getNiceScroll().resize();
+                    //Sblocca();
+
                 },
                 error: function (jqXHR, textStatus, errorThrow) {
                     //debugger;
@@ -204,11 +215,9 @@
         //debugger;
         var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
         var meseAnnoA = $("#idMesiAnniElaboratiA").val();
-        if (parseInt(meseAnnoA) < parseInt(meseAnnoDa))
-        {
+        if (parseInt(meseAnnoA) < parseInt(meseAnnoDa)) {
             return false;
-        }else
-        {
+        } else {
             return true;
         }
     }

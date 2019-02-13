@@ -21,7 +21,7 @@
                         <div class="col-xs-3 date">
                             <div class="input-group input-append date">
                                 @Html.DropDownList("mesiAnniElaboratiDa", ViewData["ElencoMesiAnniElaboratiDa"] as IEnumerable<SelectListItem>, new { @id = "mesiAnniElaboratiDa", @class = "form-control select2 select2-select js-data-example-ajax" })
-                            
+
                             </div>
                         </div>
 
@@ -89,7 +89,7 @@
 
     });
 
- 
+
 
     $("#mesiAnniElaboratiA").select2({
         placeholder: "Seleziona il mese-anno",
@@ -136,7 +136,7 @@
 
     }
 
-    
+
 
     $(".form-control:input").datepicker();
 
@@ -163,10 +163,7 @@
 
     $("#opener").on("click", function () {
         //debugger;
-        if (ValidazioneIse()) { 
-            $('.container').addClass("NoOverflow");
-            $("#dialog").dialog("open");
-            $("#dialog").css("background-color", "#ffffff");
+        if (ValidazioneIse()) {
 
             var rotta = "/Statistiche/RiepiloghiIseMensile/RptRiepiloghiIseMensile";
 
@@ -187,6 +184,9 @@
                 },
                 success: function (result) {
                     //debugger;
+                    $('.container').addClass("NoOverflow");
+                    $("#dialog").dialog("open");
+                    $("#dialog").css("background-color", "#ffffff");
                     $("#dialog").html(result);
                 },
                 complete: function () {
