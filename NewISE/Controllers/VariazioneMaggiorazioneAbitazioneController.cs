@@ -76,7 +76,7 @@ namespace NewISE.Controllers
 
                         if (lmabm?.Any() ?? false)
                         {
-                            foreach (var mabm in lmabm)
+                            foreach (MABModel mabm in lmabm)
                             {
                                 bool verificaVariazioni = dtvma.VerificaVariazioniMAB(mabm.idMAB, db, false);
 
@@ -1408,7 +1408,7 @@ namespace NewISE.Controllers
         public ActionResult NuovaMAB_var(decimal idTrasferimento)
         {
             MABViewModel mabvm = new MABViewModel();
-            MAB mab_partenza = new MAB();
+            //MAB mab_partenza = new MAB();
 
             try
             {
@@ -1459,82 +1459,82 @@ namespace NewISE.Controllers
                     {
                         //using (dtValute dtv = new dtValute())
                         //{
-                        using (dtTrasferimento dtt = new dtTrasferimento())
+                        //using (dtTrasferimento dtt = new dtTrasferimento())
+                        //{
+                        var mab = dtvma.GetMAB_ByID_var(idMAB, db);
+
+                        if (mab.IDMAB > 0)
                         {
-                            var mab = dtvma.GetMAB_ByID_var(idMAB, db);
+                            mabvm.idMAB = mab.IDMAB;
 
-                            if (mab.IDMAB > 0)
+                            var att = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList().First();
+                            //mam.dataPartenza = t.dataPartenza;
+                            mabvm.idTrasferimento = mab.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
+                            mabvm.idAttivazioneMAB = att.IDATTIVAZIONEMAB;
+
+                            var pmm = dtvma.GetPeriodoMABModel(mab.IDMAB, db);
+
+                            mabvm.modificabile = true;
+
+                            PeriodoMABModel pm_partenza = new PeriodoMABModel();
+                            MABModel mab_partenza = new MABModel();
+                            using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
                             {
-                                mabvm.idMAB = mab.IDMAB;
-
-                                var att = mab.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).ToList().First();
-                                //mam.dataPartenza = t.dataPartenza;
-                                mabvm.idTrasferimento = mab.INDENNITA.TRASFERIMENTO.IDTRASFERIMENTO;
-                                mabvm.idAttivazioneMAB = att.IDATTIVAZIONEMAB;
-
-                                var pmm = dtvma.GetPeriodoMABModel(mab.IDMAB, db);
-
-                                mabvm.modificabile = true;
-
-                                PeriodoMABModel pm_partenza = new PeriodoMABModel();
-                                MABModel mab_partenza = new MABModel();
-                                using (dtMaggiorazioneAbitazione dtma = new dtMaggiorazioneAbitazione())
-                                {
-                                    mab_partenza = dtma.GetMABModelPartenza(mabvm.idTrasferimento, db);
-                                }
-                                pm_partenza = dtvma.GetPeriodoMABModel(mab_partenza.idMAB, db);
+                                mab_partenza = dtma.GetMABModelPartenza(mabvm.idTrasferimento, db);
+                            }
+                            pm_partenza = dtvma.GetPeriodoMABModel(mab_partenza.idMAB, db);
 
 
-                                if (pmm.dataInizioMAB == pm_partenza.dataInizioMAB)
-                                {
-                                    mabvm.modificabile = false;
-                                }
+                            if (pmm.dataInizioMAB == pm_partenza.dataInizioMAB)
+                            {
+                                mabvm.modificabile = false;
+                            }
 
-                                var att_curr = dtvma.GetAttivazioneById(mabvm.idAttivazioneMAB, db);
-                                if (att_curr.NOTIFICARICHIESTA)
-                                {
-                                    mabvm.modificabile = false;
-                                }
+                            var att_curr = dtvma.GetAttivazioneById(mabvm.idAttivazioneMAB, db);
+                            if (att_curr.NOTIFICARICHIESTA)
+                            {
+                                mabvm.modificabile = false;
+                            }
 
-                                mabvm.dataInizioMAB = pmm.dataInizioMAB;
-                                mabvm.dataFineMAB = pmm.dataFineMAB;
-                                mabvm.ut_dataInizioMAB = pmm.dataInizioMAB;
+                            mabvm.dataInizioMAB = pmm.dataInizioMAB;
+                            mabvm.dataFineMAB = pmm.dataFineMAB;
+                            mabvm.ut_dataInizioMAB = pmm.dataInizioMAB;
 
-                                if (pmm.dataFineMAB == Utility.DataFineStop())
-                                {
-                                    mabvm.ut_dataFineMAB = null;
-                                }
-                                else
-                                {
-                                    mabvm.ut_dataFineMAB = pmm.dataFineMAB;
-                                }
-                                mabvm.rinunciaMAB = mab.RINUNCIAMAB;
-                                mabvm.anticipoAnnuale = dtvma.AnticipoAnnualeMAB(idMAB, db);
-
-                                mabvm.annualita = false;
-                                mabvm.annualita_modificabile = false;
-                                var aa = dtvma.GetMaggiorazioneAnnuale_var(mabvm, db);
-                                if (aa.IDMAGANNUALI > 0)
-                                {
-                                    mabvm.annualita = true;
-                                    var att_mab = dtvma.GetAttivazioneById(att.IDATTIVAZIONEMAB, db);
-                                    if (att_mab.ATTIVAZIONE == false)
-                                    {
-                                        mabvm.annualita_modificabile = true;
-                                    }
-                                }
-                                ViewData.Add("idMAB", idMAB);
-                                ViewData.Add("idTrasferimento", mabvm.idTrasferimento);
-                                //ViewBag.lValute = lValute;
-
-                                return PartialView(mabvm);
-
+                            if (pmm.dataFineMAB == Utility.DataFineStop())
+                            {
+                                mabvm.ut_dataFineMAB = null;
                             }
                             else
                             {
-                                throw new Exception("Errore nella lettura del dettaglio MAB");
+                                mabvm.ut_dataFineMAB = pmm.dataFineMAB;
                             }
+                            mabvm.rinunciaMAB = mab.RINUNCIAMAB;
+                            mabvm.anticipoAnnuale = dtvma.AnticipoAnnualeMAB(idMAB, db);
+
+                            mabvm.annualita = false;
+                            mabvm.annualita_modificabile = false;
+                            var aa = dtvma.GetMaggiorazioneAnnuale_var(mabvm, db);
+                            if (aa.IDMAGANNUALI > 0)
+                            {
+                                mabvm.annualita = true;
+                                var att_mab = dtvma.GetAttivazioneById(att.IDATTIVAZIONEMAB, db);
+                                if (att_mab.ATTIVAZIONE == false)
+                                {
+                                    mabvm.annualita_modificabile = true;
+                                }
+                            }
+                            ViewData.Add("idMAB", idMAB);
+                            ViewData.Add("idTrasferimento", mabvm.idTrasferimento);
+                            //ViewBag.lValute = lValute;
+
+                            return PartialView(mabvm);
+
                         }
+                        else
+                        {
+                            throw new Exception("Errore nella lettura del dettaglio MAB");
+                        }
+                        //}
                     }
                 }
             }
@@ -1633,7 +1633,7 @@ namespace NewISE.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ConfermaModificaMAB_var(MABViewModel mvm, decimal idTrasferimento, decimal idMAB)
         {
-            MABViewModel mam = new MABViewModel();
+            //MABViewModel mam = new MABViewModel();
 
             try
             {
