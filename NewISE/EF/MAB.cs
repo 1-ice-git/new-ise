@@ -22,6 +22,7 @@ namespace NewISE.EF
             this.CANONEMAB = new HashSet<CANONEMAB>();
             this.PAGATOCONDIVISOMAB = new HashSet<PAGATOCONDIVISOMAB>();
             this.PERIODOMAB = new HashSet<PERIODOMAB>();
+            this.TEORICI = new HashSet<TEORICI>();
             this.MAGGIORAZIONIANNUALI = new HashSet<MAGGIORAZIONIANNUALI>();
         }
     
@@ -42,6 +43,8 @@ namespace NewISE.EF
         public virtual ICollection<PAGATOCONDIVISOMAB> PAGATOCONDIVISOMAB { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PERIODOMAB> PERIODOMAB { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TEORICI> TEORICI { get; set; }
         public virtual STATORECORD STATORECORD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MAGGIORAZIONIANNUALI> MAGGIORAZIONIANNUALI { get; set; }
