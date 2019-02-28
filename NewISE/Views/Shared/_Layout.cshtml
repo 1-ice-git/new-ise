@@ -206,10 +206,10 @@
 
         <div id="intestazioneLayout" class="row">
             <div class="col-xs-6">
-                <a id="LinklogoIce" href="@Url.RouteUrl("Home")" title="Home page ISE"><img src="~/Immagini/Logo ISE.png" alt="Logo ISE" height="5%" /></a>
+                <a onclick="Blocca();" id="LinklogoIce" href="@Url.RouteUrl("Home")" title="Home page ISE"><img src="~/Immagini/Logo ISE.png" alt="Logo ISE" height="5%" /></a>
             </div>
             <div class="col-lg-6 text-right">
-                <a href="http://www.ice.gov.it" target="_blank" title="Agenzia ICE"><img src="~/Immagini/logo_ITA_rgb (1).jpg" height="50px" alt="Logo ICE" /></a>
+                <a onclick="Blocca();" href="http://www.ice.gov.it" target="_blank" title="Agenzia ICE"><img src="~/Immagini/logo_ITA_rgb (1).jpg" height="50px" alt="Logo ICE" /></a>
             </div>
         </div>
         <div id="RealeSimulazione" class="row">
@@ -271,19 +271,19 @@
                             <span class="caret"></span>
                         </span>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li class="dropdown-item"><a style="font-size:1.2rem" href="@Url.RouteUrl("Statistiche")">Statistiche</a></li>
+                            <li class="dropdown-item"><a onclick="Blocca();" style="font-size:1.2rem" href="@Url.RouteUrl("Statistiche")">Statistiche</a></li>
                             <li role="presentation" class="divider"></li>
-                            <li role="presentation"><a href="@Url.RouteUrl("Allineamento")" style="font-size:1.2rem">Import Dati da ISEPRO a ISESIM</a></li>
+                            <li role="presentation"><a onclick="Blocca();" href="@Url.RouteUrl("Allineamento")" style="font-size:1.2rem">Import Dati da ISEPRO a ISESIM</a></li>
                         </ul>
                     </span>
                     <span> | </span>
                 }
 
-                <a class="btn_link" href="@Url.RouteUrl("CalendariEventi")">Calendario</a> | <a class="btn_link" href="@Url.RouteUrl("Notifiche")">Notifiche</a>&nbsp;
+                <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("CalendariEventi")">Calendario</a> | <a onclick="Blocca();" class="btn_link" href="@Url.RouteUrl("Notifiche")">Notifiche</a>&nbsp;
                 @if (admin)
                 {
                     <span>| </span>
-                    <a class="btn_link" href="@Url.RouteUrl("UtenzeDipendenti")">Utenze</a>
+                    <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("UtenzeDipendenti")">Utenze</a>
                     <span>&nbsp;</span>
                 }
             </div>

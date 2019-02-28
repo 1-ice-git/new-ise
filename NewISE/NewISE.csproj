@@ -4952,7 +4952,7 @@
     <Content Include="DataSet.xss">
       <DependentUpon>DataSet.xsd</DependentUpon>
     </Content>
-    <None Include="FormulariMaster\FormularioTE\modulo 3.pdf" />
+    <Content Include="FormulariMaster\FormularioTE\modulo 3.pdf" />
     <Content Include="FormulariMaster\FormularioTE\modulo 4.pdf" />
     <Content Include="node_modules\autonumeric\AUTHORS" />
     <Content Include="node_modules\autonumeric\CHANGELOG.md" />
