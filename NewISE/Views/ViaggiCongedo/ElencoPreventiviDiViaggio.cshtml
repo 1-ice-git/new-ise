@@ -27,23 +27,27 @@
 <div id="divViaggioCongedioMain">
     <div class="row">
         <div class="col-xs-5" id="DivUploadPreventiviViaggio" style="margin-top:5px;left:10px">
-            <table id="tabUploadPreventiviViaggio">
+            <table>
                 @Html.Action("ElencoUploadPreventiviViaggiCongedo", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo, idTrasferimento = idTrasferimento, idFaseInCorso = idFaseInCorso, nuovVC = nuovVC })
             </table>
+
         </div>
     </div>
     <div class="row">
         <div id="tabListaPreventiviDiViaggi" class="pull-left" style="margin-top:5px;margin-left:40px;width:1110px">
             <table>
+
                 @Html.Action("ListaPreventiviDiViaggio", "ViaggiCongedo", new { idTrasferimento = idTrasferimento, nuovVC = nuovVC })
+
             </table>
         </div>
     </div>
     <div class="row">
         <div id="tabFase2PDFPreventiviDiViaggi" style="margin-top:5px;margin-left:300px;width:500px">
-            <table id="tabUploadDocumentiViaggiCongedo">
+            <table>
                 @Html.Action("ElencoUploadDocumentiViaggiCongedo", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo, idFaseInCorso = idFaseInCorso, idTrasferimento = idTrasferimento, nuovVC = nuovVC })
             </table>
+
         </div>
     </div>
 
@@ -54,6 +58,7 @@
         <table>
             @Html.Action("PulsantiPreventiviDiViaggio", "ViaggiCongedo", new { idViaggioCongedo = id_Viaggio_Congedo, idAttivViaggioCongedo = id_Attiv_Viaggio_Congedo, idTrasferimento = idTrasferimento, nuovVC = nuovVC })
         </table>
+
     </div>
 </div>
 
@@ -160,7 +165,7 @@
             </div>
             <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
                 <p id="viewAnnullaPreventiviRichiesta">
-                   
+
                 </p>
             </div>
             <div class="modal-footer">
@@ -614,7 +619,7 @@
         //var corpoMessaggioVC = $('#EditorMessaggioVC').val();
 
 
-      //  idAttivazioneVC = parseInt($("#id_Attiv_Viaggio_Congedo").val());
+        //  idAttivazioneVC = parseInt($("#id_Attiv_Viaggio_Congedo").val());
         var corpoMessaggioVC = $('#FullDescriptionAnnullaViaggiCongedo').val();
 
         $.ajax({

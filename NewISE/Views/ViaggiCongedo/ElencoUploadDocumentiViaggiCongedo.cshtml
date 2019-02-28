@@ -9,8 +9,8 @@
     bool NotificaInviata = Convert.ToBoolean(ViewData["NotificaInviata"]);
     bool AttivazioneInviata = Convert.ToBoolean(ViewData["AttivazioneInviata"]);
     decimal idFaseInCorso = Convert.ToDecimal(ViewData["idFaseInCorso"]);
-    decimal idAttivViaggioCongedo= Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);
-    bool nuovVC= Convert.ToBoolean(ViewData["NuovoViaggiCongedo"]);
+    decimal idAttivViaggioCongedo = Convert.ToDecimal(ViewData["id_Attiv_Viaggio_Congedo"]);
+    bool nuovVC = Convert.ToBoolean(ViewData["NuovoViaggiCongedo"]);
     bool NotificaInviata2 = Convert.ToBoolean(ViewData["NotificaInviata2"]);
     bool AttivazioneInviata2 = Convert.ToBoolean(ViewData["AttivazioneInviata2"]);
     bool CaricatiElementiFASE2 = Convert.ToBoolean(ViewData["CaricatiElementiFASE2"]);
@@ -24,7 +24,7 @@
     <td style="text-align: center; padding-bottom: 10px; padding-right: 10px;">
         @if (nuovVC == true)
         {
-           
+
             if (nDocCartaImbarco > 0)
             {
                 <a href="#" onclick="ElencoDocumentiVC(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco),  @idAttivViaggioCongedo);" id="linkElencoDocVC">
@@ -41,8 +41,8 @@
         else if (nDocCartaImbarco > 0)
         {
             <a href="#" onclick="ElencoDocumentiVC(@Convert.ToDecimal(@EnumTipoDoc.Carta_Imbarco),  @idAttivViaggioCongedo);" id="linkElencoDocVC">
-                    <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Carte d'Imbarco" />
-                </a>
+                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Carte d'Imbarco" />
+            </a>
         }
         else
         {
@@ -59,7 +59,7 @@
                 </a>
             }
         }
-</td>
+    </td>
 </tr>
 <tr>
     <td style="font-weight:bold; padding-bottom: 10px; padding-right: 10px;">
@@ -76,16 +76,16 @@
             }
             else
             {
-            <span disabled>
-                <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" title="Documenti Titoli di viaggio" />
-            </span>
+                <span disabled>
+                    <img src="~/Immagini/IconeDocumenti/PDF-icon-Grey.png" width="17" title="Documenti Titoli di viaggio" />
+                </span>
             }
         }
         else if (nDocTitoliViaggio > 0)
         {
             <a href="#" onclick="ElencoDocumentiVC(@Convert.ToDecimal(@EnumTipoDoc.Titolo_Viaggio),  @idAttivViaggioCongedo);" id="linkElencoDocTV">
-                    <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Titoli di Viaggio" />
-                </a>
+                <img src="~/Immagini/IconeDocumenti/PDF-icon.png" width="17" title="Documenti Titoli di Viaggio" />
+            </a>
         }
         else
         {
@@ -109,43 +109,43 @@
 <script type="text/javascript">
 
     function ElencoDocumentiVC(idTipoDocumento, idAttivViaggioCongedo) {
-            // debugger;
-            var rotta = "/ViaggiCongedo/ElencoDocumentiVC";
-            var idTipoDocumento = parseInt(idTipoDocumento);
-            var idAttivViaggioCongedo = parseInt('@idAttivViaggioCongedo');
-            var idTrasferimento = parseInt('@idTrasferimento');
+        // debugger;
+        var rotta = "/ViaggiCongedo/ElencoDocumentiVC";
+        var idTipoDocumento = parseInt(idTipoDocumento);
+        var idAttivViaggioCongedo = parseInt('@idAttivViaggioCongedo');
+        var idTrasferimento = parseInt('@idTrasferimento');
         $.ajax({
-                type: "POST",
+            type: "POST",
             url: rotta,
-            data: { idTrasferimento:idTrasferimento,idTipoDocumento: idTipoDocumento, idAttivViaggioCongedo: idAttivViaggioCongedo },
+            data: { idTrasferimento: idTrasferimento, idTipoDocumento: idTipoDocumento, idAttivViaggioCongedo: idAttivViaggioCongedo },
             dataType: 'html',
             beforeSend: function () {
-                    //debugger;
-                    VerificaAutenticazione();
-                    //$("#DialogNewDoc").dialog("destroy");
-                    //$("#divEffettoLoadAutNoDoc").show("slow");
-                },
+                //debugger;
+                VerificaAutenticazione();
+                //$("#DialogNewDoc").dialog("destroy");
+                //$("#divEffettoLoadAutNoDoc").show("slow");
+            },
             success: function (result) {
                 //debugger;
                 //$("#divEffettoLoadAutNoDoc").hide("slow");
                 $("#divViaggioCongedioMain").empty();
                 $("#divViaggioCongedioMain").html(result);
 
-                    //RicercaDocumenti();
+                //RicercaDocumenti();
 
-                },
+            },
             complete: function () {
 
-                },
+            },
             error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    ErroreElaborazioneAjax(msg);
-                }
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
 
-            });
+        });
 
-        }
+    }
 
 </script>
 

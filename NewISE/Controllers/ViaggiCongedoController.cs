@@ -31,11 +31,7 @@ namespace NewISE.Controllers
     public class ViaggiCongedoController : Controller
     {
 
-        //[NonAction]
-        public ActionResult Index()
-        {
-            return View();
-        }
+
         public JsonResult VerificaViaggiCongedo(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
