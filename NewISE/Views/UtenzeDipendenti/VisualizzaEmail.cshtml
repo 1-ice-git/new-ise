@@ -10,11 +10,11 @@
 <input type="hidden" id="Amministratore" value="@admin.ToString()" />
 <div>
     <h3 style="text-align:center; color:darkblue">
-        Nominativo: @Model.nome @Model.cognome<br />Email:  @Model.email
+        Nominativo: @Model.cognome @Model.nome <br />Email:  @Model.email
         <br /><br />Abilitato   @Html.RadioButton("abilitare", "1", @Model.abilitato)
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         Disabilitato @Html.RadioButton("abilitare", "0", !@Model.abilitato)
-        <br /><br /><input type="button" class="btn btn-default" id="btnInsModificaStatoDipendente" onclick="ModificaStatoDipendente(@idDipendente);" value="Modifica Stato Dipendente">
+        <br /><br /><input type="button" class="btn btn-outline-success" id="btnInsModificaStatoDipendente" onclick="ModificaStatoDipendente(@idDipendente);" value="Modifica Stato Dipendente">
     </h3>
 </div>
 <input type="hidden" id="idd" , name="idd" value="@idDipendente.ToString()" />
