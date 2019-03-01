@@ -4,66 +4,66 @@
     bool admin = Convert.ToBoolean(ViewBag.Amministratore);
     var errori = ViewData.ModelState;
     decimal idDipendente = (decimal)ViewBag.idDipendente;
-    string stato = ((bool)ViewBag.abilitato)==true? "checked" : "unchecked";
+    string stato = ((bool)ViewBag.abilitato) == true ? "checked" : "unchecked";
     string stato2 = stato == "checked" ? "unchecked" : "checked";
 }
 <input type="hidden" id="Amministratore" value="@admin.ToString()" />
 <div>
-    <h3 style="text-align:center; color:darkblue">Nominativi: @Model.nome @Model.cognome<br />Email:  @Model.email
+    <h3 style="text-align:center; color:darkblue">
+        Nominativo: @Model.nome @Model.cognome<br />Email:  @Model.email
         <br /><br />Abilitato   @Html.RadioButton("abilitare", "1", @Model.abilitato)
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         Disabilitato @Html.RadioButton("abilitare", "0", !@Model.abilitato)
-        <br /><br /><input type="button" class="class=" button-a button-a-background"" id="btnInsModificaStatoDipendente" onclick="ModificaStatoDipendente(@idDipendente);" value="Modifica Stato Dipendente">
+        <br /><br /><input type="button" class="btn btn-default" id="btnInsModificaStatoDipendente" onclick="ModificaStatoDipendente(@idDipendente);" value="Modifica Stato Dipendente">
     </h3>
 </div>
 <input type="hidden" id="idd" , name="idd" value="@idDipendente.ToString()" />
-                        
+
 @*<input type="radio"  name="abilitare" value='1' @stato> Abilitato
-<input type="radio"  name="abilitare" value='0' @stato2> Disabilitato<br><br>*@                   
+    <input type="radio"  name="abilitare" value='0' @stato2> Disabilitato<br><br>*@
 
 @*<div id="divElencoTrasferimento" style="margin-top: 70px;">
 
-</div>*@                    
-    <script type="text/javascript">
+    </div>*@
+<script type="text/javascript">
 
-        function ModificaStatoDipendente(id)
-        {
-           // debugger;            
-           // alert($('input:radio[name="abilitato"]:checked').val());
-            var abilitato_=$('input:radio[name="abilitare"]:checked').val();
-            var chk = false;
-            if (abilitato_=="1") {
-                chk = true;
+    function ModificaStatoDipendente(id) {
+        // debugger;
+        // alert($('input:radio[name="abilitato"]:checked').val());
+        var abilitato_ = $('input:radio[name="abilitare"]:checked').val();
+        var chk = false;
+        if (abilitato_ == "1") {
+            chk = true;
+        }
+
+        var idDipendente = id;
+        var rotta = "/UtenzeDipendenti/ModificaStatoDipendente";
+        //var matricola = $("#Nominativo").val();
+
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { abilitato: chk, idDipendente: idDipendente },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+
+            },
+            success: function (result) {
+                //debugger;
+                $('#inviaModificaModal').modal('hide');
+                $("#divPanelUtenzeDip").empty();//questo div si trova nell'index di UtenzeDipendenti
+                $("#divPanelUtenzeDip").html(result);
+            },
+            complete: function (result) {
+                // top.location.href = "/UtenzeDipendenti/index";
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                AlertDialog(msg);
             }
 
-            var idDipendente=id;
-            var rotta = "/UtenzeDipendenti/ModificaStatoDipendente";
-            //var matricola = $("#Nominativo").val();
-
-            $.ajax({
-                type: "POST",
-                url: rotta,
-                data: { abilitato: chk , idDipendente:idDipendente},
-                dataType: 'html',
-                beforeSend: function () {
-                    //debugger;
-                   
-                },
-                success: function (result) {
-                    //debugger;
-                    $('#inviaModificaModal').modal('hide'); 
-                    $("#divPanelUtenzeDip").empty();//questo div si trova nell'index di UtenzeDipendenti
-                    $("#divPanelUtenzeDip").html(result);                  
-                },
-                complete: function (result) {                    
-                   // top.location.href = "/UtenzeDipendenti/index";
-                },
-                error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    AlertDialog(msg);
-                }
-
-            });
-        }
-    </script>
+        });
+    }
+</script>
