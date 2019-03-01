@@ -680,13 +680,14 @@ namespace NewISE.Controllers
         [HttpGet]
         public ActionResult InviamiPassword()
         {
-            return View();
+            InviamiPswModel ipm = new InviamiPswModel();
+            return View(ipm);
         }
 
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult InviamiPassword(string matricola)
+        public ActionResult InviamiPassword(InviamiPswModel ipm)
         {
             ModelloMsgMail msg = new ModelloMsgMail();
             DipendenteRest dr = new DipendenteRest();
@@ -697,45 +698,54 @@ namespace NewISE.Controllers
 
             try
             {
-                using (Config cfg = new Config())
+                if (ModelState.IsValid)
                 {
-                    sad = cfg.SuperAmministratore();
-                    if (sad.s_admin.Count > 0)
+                    using (Config cfg = new Config())
                     {
-                        var lutsa = sad.s_admin.Where(a => a.username == matricola);
-                        if (lutsa.Count() > 0)
+                        sad = cfg.SuperAmministratore();
+                        if (sad.s_admin.Count > 0)
                         {
-                            var utsa = lutsa.First();
-                            if (utsa != null)
+                            var lutsa = sad.s_admin.Where(a => a.username == ipm.matricola);
+                            if (lutsa.Count() > 0)
                             {
-                                d.Nominativo = utsa.cognome + " " + utsa.nome;
-                                d.EmailDestinatario = utsa.email;
-                                password = utsa.password;
+                                var utsa = lutsa.First();
+                                if (utsa != null)
+                                {
+                                    d.Nominativo = utsa.cognome + " " + utsa.nome;
+                                    d.EmailDestinatario = utsa.email;
+                                    password = utsa.password;
+                                }
                             }
-                        }
-                        else
-                        {
-                            using (dtDipendentiRest dtdr = new dtDipendentiRest())
+                            else
                             {
-                                dr = dtdr.GetDipendenteRest(matricola);
-                            }
+                                using (dtDipendentiRest dtdr = new dtDipendentiRest())
+                                {
+                                    dr = dtdr.GetDipendenteRest(ipm.matricola);
+                                }
 
-                            if (string.IsNullOrWhiteSpace(dr.email))
-                            {
-                                ModelState.AddModelError("", "Non è presente nessuna E-mail per la matricola passata.");
-                                return View();
-                            }
+                                if (string.IsNullOrWhiteSpace(dr.nominativo))
+                                {
+                                    ModelState.AddModelError("", "Non risulta nessun nominativo per la matricola passata.");
+                                    ViewBag.ModelStateCount = 1;
+                                    return View(ipm);
+                                }
+                                else if (string.IsNullOrWhiteSpace(dr.email))
+                                {
+                                    ModelState.AddModelError("", "Non è presente nessuna E-mail per la matricola passata.");
+                                    ViewBag.ModelStateCount = 1;
+                                    return View(ipm);
+                                }
 
-                            d.Nominativo = dr.nominativo;
-                            d.EmailDestinatario = dr.email;
-                            password = dr.password;
+                                d.Nominativo = dr.nominativo;
+                                d.EmailDestinatario = dr.email;
+                                password = dr.password;
+                            }
                         }
                     }
-                }
 
-                ld.Add(d);
+                    ld.Add(d);
 
-                string corpoMsg = @"<h1><strong>ISE (Indennita Sede Estera)</strong></h1>
+                    string corpoMsg = @"<h1><strong>ISE (Indennita Sede Estera)</strong></h1>
                                     <h3>Sono state richieste le credenziali&nbsp;per l'utente <strong>{0} ({1}).</strong></h3>
                                     <ul style='list-style-type: square;'>
                                     <li>Username:<strong>{2};</strong></li>
@@ -747,30 +757,39 @@ namespace NewISE.Controllers
                                     </div>
                                     <p>&nbsp;</p>";
 
-                corpoMsg = string.Format(corpoMsg, d.Nominativo, matricola, matricola, password,
-                    DateTime.Now.ToLongDateString(), DateTime.Now.ToShortTimeString());
+                    corpoMsg = string.Format(corpoMsg, d.Nominativo, ipm.matricola, ipm.matricola, password,
+                        DateTime.Now.ToLongDateString(), DateTime.Now.ToShortTimeString());
 
-                using (EmailCredenziali ec = new EmailCredenziali())
-                {
-                    msg.oggetto = "ISE - Password personale";
-                    msg.corpoMsg = corpoMsg;
-                    msg.priorita = System.Net.Mail.MailPriority.High;
-                    msg.destinatario = ld;
+                    using (EmailCredenziali ec = new EmailCredenziali())
+                    {
+                        msg.oggetto = "ISE - Password personale";
+                        msg.corpoMsg = corpoMsg;
+                        msg.priorita = System.Net.Mail.MailPriority.High;
+                        msg.destinatario = ld;
 
-                    if (!ec.sendMail(msg))
-                    {
-                        ModelState.AddModelError("", "Errore nell'invio dell'E-mail.");
-                        return View();
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
+                        if (!ec.sendMail(msg))
+                        {
+                            ModelState.AddModelError("", "Errore nell'invio dell'E-mail.");
+                            ViewBag.ModelStateCount = 1;
+                            return View();
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                 }
+                else
+                {
+                    ViewBag.ModelStateCount = 0;
+                    return View(ipm);
+                }
+
             }
             catch (Exception ex)
             {
-                return View("Error");
+                HandleErrorInfo her = new HandleErrorInfo(ex, "Account", "InviamiPassword");
+                return View("Error", her);
             }
         }
 

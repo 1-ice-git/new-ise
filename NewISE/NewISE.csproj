@@ -6205,6 +6205,7 @@
     <Compile Include="Models\dtObj\objB\objLogAttivita.cs" />
     <Compile Include="Models\Enumeratori\AllEnumeratori.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\InviamiPswModel.cs" />
     <Compile Include="Models\IseArio\Connessione.cs" />
     <Compile Include="Models\IseArio\dtObj\dtAliquotaISE.cs" />
     <Compile Include="Models\IseArio\Model\AliquotaIseModel.cs" />
