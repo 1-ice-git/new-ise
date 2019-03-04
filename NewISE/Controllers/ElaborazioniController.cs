@@ -43,7 +43,6 @@ namespace NewISE.Controllers
                 return View("Error", her);
             }
 
-
             return View();
         }
 

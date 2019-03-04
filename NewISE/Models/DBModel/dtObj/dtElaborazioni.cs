@@ -10904,11 +10904,18 @@ namespace NewISE.Models.DBModel.dtObj
             if (trasferimento.DATARIENTRO < Utility.DataFineStop())
             {
                 var indennita = trasferimento.INDENNITA;
+                var dip = trasferimento.DIPENDENTI;
 
                 DateTime dataIniRecupero = trasferimento.DATARIENTRO.AddDays(1);
+                DateTime dataInizioRicalcoli = dip.DATAINIZIORICALCOLI;
 
                 //decimal annoMeseRientro =
                 //   Convert.ToDecimal(dataIniRecupero.Year.ToString() + dataIniRecupero.Month.ToString().PadLeft(2, '0'));
+
+                if (dataIniRecupero < dataInizioRicalcoli)
+                {
+                    dataIniRecupero = dataInizioRicalcoli;
+                }
 
 
                 var lmab =
@@ -11038,7 +11045,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                             EnumTipoMovimento tipoMov = EnumTipoMovimento.Conguaglio_C;
 
-                                            if (conguaglio != 0)
+                                            if (Math.Round(conguaglio, 2) != 0)
                                             {
 
                                                 ELABMAB emabNew = new ELABMAB()
