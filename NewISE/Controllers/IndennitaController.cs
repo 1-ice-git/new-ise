@@ -18,23 +18,23 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
- 
+
 namespace NewISE.Controllers
 {
     public class IndennitaController : Controller
     {
         // GET: Indennita
-        public ActionResult Index() 
+        public ActionResult Index()
         {
             return View();
-        }        
+        }
         public ActionResult GestioneIndennita(decimal idTrasferimento)
         {
             try
             {
                 TrasferimentoModel tm = new TrasferimentoModel();
-                
-                
+
+
                 using (dtTrasferimento dtt = new dtTrasferimento())
                 {
                     tm = dtt.GetTrasferimentoById(idTrasferimento);
@@ -68,11 +68,12 @@ namespace NewISE.Controllers
                             bool vedi_PS_TE = true;
                             string DataRifIndennita_TE_PS = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["DataLimiteIndennita_PS_TE"]);
 
-                            if (tr.dataPartenza<Convert.ToDateTime(DataRifIndennita_TE_PS))
+                            if (tr.dataPartenza < Convert.ToDateTime(DataRifIndennita_TE_PS))
                             {
                                 vedi_PS_TE = false;
                             }
                             ViewBag.vedi_PS_TE = vedi_PS_TE;
+                            ViewBag.DataRifIndennita = DataRifIndennita_TE_PS;
                         }
                         else
                         {
@@ -122,14 +123,14 @@ namespace NewISE.Controllers
         }
 
         #region Indennità di Base Estera + Report di Stampa
-        
+
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
             List<LivelloDipendenteModel> lldm = new List<LivelloDipendenteModel>();
-            
+
 
             try
             {
@@ -157,14 +158,14 @@ namespace NewISE.Controllers
                     using (dtLivelliDipendente dtld = new dtLivelliDipendente())
                     {
                         lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).ToList();
-                        
+
 
                     }
                 }
-                
+
 
                 ViewBag.idTrasferimento = idTrasferimento;
-                
+
                 return PartialView(libm);
 
             }
@@ -247,7 +248,7 @@ namespace NewISE.Controllers
                                             },
                                         }).ToList();
 
-                                
+
 
                                 var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
                                 var indennita = trasferimento.INDENNITA;
@@ -269,7 +270,7 @@ namespace NewISE.Controllers
                                     {
                                         RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
                                         dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
-                                        
+
                                     }
                                 }
 
@@ -360,10 +361,10 @@ namespace NewISE.Controllers
                                 reportViewer.LocalReport.Refresh();
 
                                 List<ReportParameter> parameterValues = new List<ReportParameter>();
-                                    parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
-                                    parameterValues.Add(new ReportParameter("Livello", Livello));
-                                    parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
-                                    parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+                                parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                                parameterValues.Add(new ReportParameter("Livello", Livello));
+                                parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                                parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
 
                                 reportViewer.LocalReport.SetParameters(parameterValues);
                                 ViewBag.ReportViewer = reportViewer;
@@ -373,7 +374,7 @@ namespace NewISE.Controllers
                         }
                     }
 
-                    
+
 
                 }
             }
@@ -390,11 +391,11 @@ namespace NewISE.Controllers
 
         #region Indennità di Servizio + Report di Stampa
         public ActionResult IndennitaServizio(decimal idTrasferimento)
-        {   
+        {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
-         
+
             try
-            {   
+            {
                 using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
                     eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
@@ -403,9 +404,9 @@ namespace NewISE.Controllers
 
                 ViewBag.idTrasferimento = idTrasferimento;
 
-                
+
                 return PartialView("IndennitaServizio", eim);
-                
+
             }
             catch (Exception ex)
             {
@@ -443,7 +444,7 @@ namespace NewISE.Controllers
                             string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
                             string Livello = liv1.Livello.DescLivello;
                             string Ufficio = tm.Ufficio.descUfficio;
-                            
+
                             var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
                             var indennita = trasferimento.INDENNITA;
 
@@ -566,25 +567,25 @@ namespace NewISE.Controllers
 
                                         using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                         {
-                                            
+
                                             RptIndennitaServizioModel rpts = new RptIndennitaServizioModel()
                                             {
-                                                
+
                                                 DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
                                                 //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
                                                 DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
                                                 IndennitaBase = ci.IndennitaDiBase,
                                                 CoefficenteSede = ci.CoefficienteDiSede,
-                                                PercentualeDisagio =ci.PercentualeDisagio,
-                                                IndennitaServizio =ci.IndennitaDiServizio
-                                                
+                                                PercentualeDisagio = ci.PercentualeDisagio,
+                                                IndennitaServizio = ci.IndennitaDiServizio
+
                                             };
 
                                             rpt.Add(rpts);
-                                            
+
                                         }
 
-                                        
+
 
                                         ReportViewer reportViewer = new ReportViewer();
 
@@ -605,10 +606,10 @@ namespace NewISE.Controllers
                                         reportViewer.LocalReport.Refresh();
 
                                         List<ReportParameter> parameterValues = new List<ReportParameter>();
-                                            parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
-                                            parameterValues.Add(new ReportParameter("Livello", Livello));
-                                            parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
-                                            parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+                                        parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                                        parameterValues.Add(new ReportParameter("Livello", Livello));
+                                        parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                                        parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
 
                                         reportViewer.LocalReport.SetParameters(parameterValues);
                                         ViewBag.ReportViewer = reportViewer;
@@ -647,13 +648,13 @@ namespace NewISE.Controllers
 
                 return PartialView(eim);
             }
-            
+
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            
+
         }
         public ActionResult RptMaggiorazioniConiuge(decimal idTrasferimento)
         {
@@ -992,7 +993,7 @@ namespace NewISE.Controllers
                                     if (dv < Utility.DataFineStop())
                                     {
                                         DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
-                                       
+
                                         if (lDateVariazioni[j + 1] == Utility.DataFineStop())
                                         {
                                             dvSucc = lDateVariazioni[j + 1];
@@ -1047,7 +1048,7 @@ namespace NewISE.Controllers
 
                             reportViewer.LocalReport.SetParameters(parameterValues);
                             ViewBag.ReportViewer = reportViewer;
-                            
+
 
                         }
                     }
@@ -1420,12 +1421,12 @@ namespace NewISE.Controllers
 
                             if (lDateVariazioni?.Any() ?? false)
                             {
-                                    for (int j = 0; j < lDateVariazioni.Count; j++)
-                                    {
-                                        DateTime dv = lDateVariazioni[j];
+                                for (int j = 0; j < lDateVariazioni.Count; j++)
+                                {
+                                    DateTime dv = lDateVariazioni[j];
 
-                                        if (dv < Utility.DataFineStop())
-                                        {
+                                    if (dv < Utility.DataFineStop())
+                                    {
                                         DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
 
                                         if (lDateVariazioni[j + 1] == Utility.DataFineStop())
@@ -1434,57 +1435,57 @@ namespace NewISE.Controllers
                                         }
 
                                         using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        {
+
+                                            RptMaggiorazioniFigli rpts = new RptMaggiorazioniFigli()
                                             {
 
-                                                RptMaggiorazioniFigli rpts = new RptMaggiorazioniFigli()
-                                                {
+                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                                //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
+                                                DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
+                                                IndennitaServizioPrimoSegretario = ci.IndennitaServizioPrimoSegretario,
+                                                PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli,
+                                                MaggiorazioniFigli = ci.MaggiorazioneFigli
 
-                                                    DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
-                                                    //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
-                                                    DataFineValidita = (dvSucc < Utility.DataFineStop())? Convert.ToDateTime(dvSucc).ToShortDateString(): null,
-                                                    IndennitaServizioPrimoSegretario = ci.IndennitaServizioPrimoSegretario,
-                                                    PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli,
-                                                    MaggiorazioniFigli = ci.MaggiorazioneFigli
-
-                                                };
-                                                rpt.Add(rpts);
-                                            }
-
+                                            };
+                                            rpt.Add(rpts);
                                         }
+
                                     }
                                 }
-
-                                ReportViewer reportViewer = new ReportViewer();
-
-                                reportViewer.ProcessingMode = ProcessingMode.Local;
-                                reportViewer.SizeToReportContent = true;
-                                reportViewer.Width = Unit.Percentage(100);
-                                reportViewer.Height = Unit.Percentage(100);
-
-                                var datasource = new ReportDataSource("DataSetMaggiorazioniFigli");
-
-                                reportViewer.Visible = true;
-                                reportViewer.ProcessingMode = ProcessingMode.Local;
-
-                                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioniFigli.rdlc";
-                                reportViewer.LocalReport.DataSources.Clear();
-                                reportViewer.LocalReport.DataSources.Add(datasource);
-                                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetMaggiorazioniFigli", rpt));
-                                reportViewer.LocalReport.Refresh();
-
-                                List<ReportParameter> parameterValues = new List<ReportParameter>();
-                                parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
-                                parameterValues.Add(new ReportParameter("Livello", Livello));
-                                parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
-                                parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
-
-                                reportViewer.LocalReport.SetParameters(parameterValues);
-                                ViewBag.ReportViewer = reportViewer;
                             }
-                            
+
+                            ReportViewer reportViewer = new ReportViewer();
+
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+                            reportViewer.SizeToReportContent = true;
+                            reportViewer.Width = Unit.Percentage(100);
+                            reportViewer.Height = Unit.Percentage(100);
+
+                            var datasource = new ReportDataSource("DataSetMaggiorazioniFigli");
+
+                            reportViewer.Visible = true;
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioniFigli.rdlc";
+                            reportViewer.LocalReport.DataSources.Clear();
+                            reportViewer.LocalReport.DataSources.Add(datasource);
+                            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetMaggiorazioniFigli", rpt));
+                            reportViewer.LocalReport.Refresh();
+
+                            List<ReportParameter> parameterValues = new List<ReportParameter>();
+                            parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                            parameterValues.Add(new ReportParameter("Livello", Livello));
+                            parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                            parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+
+                            reportViewer.LocalReport.SetParameters(parameterValues);
+                            ViewBag.ReportViewer = reportViewer;
                         }
+
                     }
-                
+                }
+
             }
             catch (Exception ex)
             {
@@ -1542,7 +1543,7 @@ namespace NewISE.Controllers
 
                         reportViewer.LocalReport.SetParameters(parameterValues);
                         ViewBag.ReportViewer = reportViewer;
-                }
+                    }
                 }
 
             }
@@ -1552,27 +1553,27 @@ namespace NewISE.Controllers
             }
             return PartialView("RptMaggiorazioniFamiliari");
         }
-        
+
         #endregion
 
         #region Indennità Personale + Report di Stampa
         public ActionResult IndennitaPersonale(decimal idTrasferimento)
-        {   
+        {
 
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
-            
+
             try
             {
-            
+
                 using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
                     eim = dtei.GetIndennitaPersonaleEvoluzione(idTrasferimento).ToList();
 
                 }
-                
+
                 ViewBag.idTrasferimento = idTrasferimento;
-                
-                
+
+
                 return PartialView("IndennitaPersonale", eim);
             }
             catch (Exception ex)
@@ -1590,21 +1591,21 @@ namespace NewISE.Controllers
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     using (dtTrasferimento dtt = new dtTrasferimento())
+                    {
+                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
+
+                        using (dtLivelliDipendente dld = new dtLivelliDipendente())
                         {
-                            var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                            using (dtLivelliDipendente dld = new dtLivelliDipendente())
-                            {
+                            ViewBag.idTrasferimento = idTrasferimento;
 
-                                ViewBag.idTrasferimento = idTrasferimento;
+                            var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                            var liv1 = liv.First();
 
-                                var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                                var liv1 = liv.First();
-
-                                string Nominativo = tm.Dipendente.Nominativo;
-                                string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                                string Livello = liv1.Livello.DescLivello;
-                                string Ufficio = tm.Ufficio.descUfficio;
+                            string Nominativo = tm.Dipendente.Nominativo;
+                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                            string Livello = liv1.Livello.DescLivello;
+                            string Ufficio = tm.Ufficio.descUfficio;
 
 
                             var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
@@ -1867,7 +1868,7 @@ namespace NewISE.Controllers
                                         {
                                             RptIndennitaPersonaleModel rpts = new RptIndennitaPersonaleModel()
                                             {
-                                                
+
                                                 DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
                                                 //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
                                                 DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
@@ -1951,7 +1952,7 @@ namespace NewISE.Controllers
                             //ViewBag.ReportViewer = reportViewer;
 
                         }
-                        }
+                    }
 
                 }
             }
@@ -1989,7 +1990,7 @@ namespace NewISE.Controllers
 
                     }
 
-                   
+
                 }
 
                 ViewBag.idTrasferimento = idTrasferimento;
@@ -2598,7 +2599,7 @@ namespace NewISE.Controllers
                             }
                         }
                     }
-                }   
+                }
             }
             catch (Exception ex)
             {
@@ -2611,13 +2612,13 @@ namespace NewISE.Controllers
         #region Indennita di Prima Sistemazione + Report di Stampa
 
         public ActionResult IndennitaPrimaSistemazione(decimal idTrasferimento)
-        {   
+        {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
-         
+
             try
             {
-                
+
                 using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
                     eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
@@ -2703,8 +2704,8 @@ namespace NewISE.Controllers
 
                        };
 
-                       reportViewer.LocalReport.SetParameters(parameterValues);
-                       ViewBag.ReportViewer = reportViewer;
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
                     }
 
                 }
@@ -2720,13 +2721,13 @@ namespace NewISE.Controllers
         #region Indennita di Richiamo + Report di Stampa
 
         public ActionResult IndennitadiRichiamo(decimal idTrasferimento)
-        {   
+        {
             List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
-         
+
             try
             {
-                
+
                 using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
                     eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
@@ -2815,10 +2816,10 @@ namespace NewISE.Controllers
 
                         };
 
-                    reportViewer.LocalReport.SetParameters(parameterValues);
-                    ViewBag.ReportViewer = reportViewer;
-                         
-                }
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
+
+                    }
                 }
 
 
@@ -2974,7 +2975,7 @@ namespace NewISE.Controllers
 
                                             RptIndennitàRichiamoLordaModel rpts = new RptIndennitàRichiamoLordaModel()
                                             {
-                                              
+
                                                 //DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
                                                 //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
                                                 //DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
@@ -3027,7 +3028,7 @@ namespace NewISE.Controllers
                             reportViewer.LocalReport.SetParameters(parameterValues);
                             ViewBag.ReportViewer = reportViewer;
 
-                            
+
 
                         }
                     }
@@ -3040,7 +3041,7 @@ namespace NewISE.Controllers
             }
             return PartialView("RptIndennitadiRichiamoLorda");
         }
-        
+
         #endregion
 
         #region Indennita di Richiamo Netta + Report di Stampa
@@ -3051,7 +3052,7 @@ namespace NewISE.Controllers
             try
             {
 
-             
+
 
                 ViewBag.idTrasferimento = idTrasferimento;
 
@@ -3143,7 +3144,7 @@ namespace NewISE.Controllers
                 {
                     eim = dtei.GetAnticipoIndennitaSistemazioneEvoluzione(idTrasferimento).ToList();
 
-                }             
+                }
                 ViewBag.idTrasferimento = idTrasferimento;
 
                 return PartialView(eim);
@@ -3178,10 +3179,10 @@ namespace NewISE.Controllers
                             string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
                             string Livello = liv1.Livello.DescLivello;
                             string Ufficio = tm.Ufficio.descUfficio;
-                            
+
                             var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
                             var indennita = trasferimento.TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE;
-                            
+
 
                             using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                             {
@@ -3223,8 +3224,8 @@ namespace NewISE.Controllers
                                         PercentualeDisagio = lm.PercentualeDisagio,
                                         IndennitaBase = lm.IndennitaBase,
                                         dataAnticipoSistemazione = lm.dataAnticipoSistemazione
-                                        
-                                        
+
+
 
                                     };
 
@@ -3252,10 +3253,10 @@ namespace NewISE.Controllers
                             reportViewer.LocalReport.Refresh();
 
                             List<ReportParameter> parameterValues = new List<ReportParameter>();
-                                parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
-                                parameterValues.Add(new ReportParameter("Livello", Livello));
-                                parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
-                                parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+                            parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                            parameterValues.Add(new ReportParameter("Livello", Livello));
+                            parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                            parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
 
 
                             reportViewer.LocalReport.SetParameters(parameterValues);
@@ -3296,12 +3297,12 @@ namespace NewISE.Controllers
 
             }
             catch (Exception ex)
-            {   
+            {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
-              
+
             }
 
-            
+
 
         }
         public ActionResult RptIndennitadiSistemazioneLorda(decimal idTrasferimento)
@@ -3316,23 +3317,23 @@ namespace NewISE.Controllers
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     using (dtTrasferimento dtt = new dtTrasferimento())
-                {
-                    var tm = dtt.GetTrasferimentoById(idTrasferimento);
-
-                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
                     {
-                        ViewBag.idTrasferimento = idTrasferimento;
+                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
 
-                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                        var liv1 = liv.First();
+                        using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                        {
+                            ViewBag.idTrasferimento = idTrasferimento;
 
-                        string Nominativo = tm.Dipendente.Nominativo;
-                        string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                        string Livello = liv1.Livello.DescLivello;
-                        string Ufficio = tm.Ufficio.descUfficio;
+                            var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                            var liv1 = liv.First();
 
-                        var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
-                        var indennita = trasferimento.TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE;
+                            string Nominativo = tm.Dipendente.Nominativo;
+                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                            string Livello = liv1.Livello.DescLivello;
+                            string Ufficio = tm.Ufficio.descUfficio;
+
+                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                            var indennita = trasferimento.TIPOTRASFERIMENTO.INDENNITASISTEMAZIONE;
 
 
                             using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
@@ -3378,9 +3379,9 @@ namespace NewISE.Controllers
                                         anticipo = lm.anticipo,
                                         saldo = lm.saldo,
                                         totaleSaldoPrimaSistemazione = lm.totaleSaldoPrimaSistemazione
-                                        
 
-                                        
+
+
                                     };
 
                                     rpt.Add(rptds);
@@ -3418,7 +3419,7 @@ namespace NewISE.Controllers
                             ViewBag.ReportViewer = reportViewer;
 
                         }
-                }
+                    }
                 }
 
             }
@@ -3492,7 +3493,7 @@ namespace NewISE.Controllers
 
                             using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                             {
-                                
+
                                 eim = dtei.GetUnicaSoluzioneIndennitaSistemazioneEvoluzione(idTrasferimento).ToList();
                             }
 
@@ -3668,7 +3669,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
 
-            
+
         }
         public ActionResult RptContributoOmnicomprensivoTrasferimento(decimal idTrasferimento)
         {
@@ -3696,7 +3697,7 @@ namespace NewISE.Controllers
                             string Ufficio = tm.Ufficio.descUfficio;
 
 
-                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);      
+                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
 
                             using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO))
                             {
@@ -3706,17 +3707,17 @@ namespace NewISE.Controllers
                                     IndennitaSistemazioneLorda = ci.IndennitaSistemazioneAnticipabileLorda,
                                     AnticipoContrOmniComprensivoPartenza = ci.AnticipoContributoOmnicomprensivoPartenza,
                                     SaldoContrOmniComprensivoPartenza = ci.SaldoContributoOmnicomprensivoPartenza,
-                                    PercentualeFasciaKmP =  ci.PercentualeFKMPartenza,
+                                    PercentualeFasciaKmP = ci.PercentualeFKMPartenza,
                                     dataPartenza = trasferimento.DATAPARTENZA,
                                     TotaleContributoOmnicomprensivoPartenza = ci.TotaleContributoOmnicomprensivoPartenza
-                                                
+
                                 };
 
                                 rpt.Add(rpts);
 
                             }
-                                        
-                        
+
+
                             ReportViewer reportViewer = new ReportViewer();
 
                             reportViewer.ProcessingMode = ProcessingMode.Local;
@@ -3746,7 +3747,7 @@ namespace NewISE.Controllers
                             ViewBag.ReportViewer = reportViewer;
 
                         }
-                }
+                    }
                 }
 
             }
@@ -3810,7 +3811,7 @@ namespace NewISE.Controllers
 
 
                             var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
-                            
+
                             using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO))
                             {
 
@@ -3827,39 +3828,39 @@ namespace NewISE.Controllers
                                 };
 
                                 rpt.Add(rpts);
-                                        
+
                             }
 
-                        ReportViewer reportViewer = new ReportViewer();
+                            ReportViewer reportViewer = new ReportViewer();
 
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                        reportViewer.SizeToReportContent = true;
-                        reportViewer.Width = Unit.Percentage(100);
-                        reportViewer.Height = Unit.Percentage(100);
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
+                            reportViewer.SizeToReportContent = true;
+                            reportViewer.Width = Unit.Percentage(100);
+                            reportViewer.Height = Unit.Percentage(100);
 
-                        var datasource = new ReportDataSource("DataSetContributoOmnicomprensivoRientro");
+                            var datasource = new ReportDataSource("DataSetContributoOmnicomprensivoRientro");
 
-                        reportViewer.Visible = true;
-                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                            reportViewer.Visible = true;
+                            reportViewer.ProcessingMode = ProcessingMode.Local;
 
-                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptContributoOmnicomprensivoRientro.rdlc";
-                        reportViewer.LocalReport.DataSources.Clear();
-                        reportViewer.LocalReport.DataSources.Add(datasource);
-                        reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetContributoOmnicomprensivoRientro", rpt));
-                        reportViewer.LocalReport.Refresh();
+                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptContributoOmnicomprensivoRientro.rdlc";
+                            reportViewer.LocalReport.DataSources.Clear();
+                            reportViewer.LocalReport.DataSources.Add(datasource);
+                            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetContributoOmnicomprensivoRientro", rpt));
+                            reportViewer.LocalReport.Refresh();
 
-                        List<ReportParameter> parameterValues = new List<ReportParameter>();
+                            List<ReportParameter> parameterValues = new List<ReportParameter>();
                             parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
                             parameterValues.Add(new ReportParameter("Livello", Livello));
                             parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
                             parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
 
 
-                        reportViewer.LocalReport.SetParameters(parameterValues);
-                        ViewBag.ReportViewer = reportViewer;
+                            reportViewer.LocalReport.SetParameters(parameterValues);
+                            ViewBag.ReportViewer = reportViewer;
 
+                        }
                     }
-                }
                 }
 
             }
@@ -3872,7 +3873,7 @@ namespace NewISE.Controllers
         }
 
         #endregion
-        
-         
+
+
     }
 }
