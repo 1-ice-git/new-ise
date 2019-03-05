@@ -127,10 +127,10 @@
             { "type": 'numeric-comma', "targets": 3 },
             { "targets": 4, "orderable": false },
         ],
-        "order": [[0, "asc"]]
+        "order": [[0, "desc"]]
     });
 
-    
+
 
 
     // Report MaggiorazioniConiuge
@@ -198,9 +198,9 @@
         });
     });
 
-    
 
-   
+
+
 
     function RptMaggiorazioniConiuge() {
         //debugger;
@@ -213,34 +213,34 @@
         } else {
             idTrasferimento = $("#hidTrasferimento").val();
         }
-         @*var idTrasferimento = parseInt('@idTrasferimento');*@
+        @*var idTrasferimento = parseInt('@idTrasferimento');*@
 
-                 $.ajax({
-                     type: "POST",
-                     url: rotta,
-                     data: { idTrasferimento: idTrasferimento },
-                     dataType: 'html',
-                     beforeSend: function () {
-                         //debugger;
-                         VerificaAutenticazione();
-                     },
-                     success: function (result) {
-                         //debugger;
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
 
-                         $("#divViewMaggiorazioneFamiliari").empty();
-                         $("#divViewMaggiorazioneFamiliari").html(result);
-                     },
-                     complete: function () {
-                     },
-                     error: function (jqXHR, textStatus, errorThrow) {
-                         //debugger;
-                         var msg = errorThrow.err;
-                         ErroreElaborazioneAjax(msg);
-                     }
+                $("#divViewMaggiorazioneFamiliari").empty();
+                $("#divViewMaggiorazioneFamiliari").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
 
-                 });
+        });
 
     }
 
-    
+
 </script>

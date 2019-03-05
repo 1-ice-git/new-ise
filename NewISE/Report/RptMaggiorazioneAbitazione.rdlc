@@ -762,7 +762,7 @@
                               <Value>=Fields!TassoFissoRagguaglio.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>n2</Format>
+                                <Format>n6</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -832,7 +832,7 @@
                               <Value>=Fields!PercentualeMaggAbitazione.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Format>n2</Format>
+                                <Format>n3</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
