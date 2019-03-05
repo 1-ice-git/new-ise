@@ -176,7 +176,8 @@ namespace NewISE.Models.Enumeratori
         Passaporto = 17,
         Formulario_Provvidenze_Scolastiche = 18,
         Contributo_Fisso_Omnicomprensivo_Rientro = 19,
-        Attestazione_Trasloco_Rientro = 20
+        Attestazione_Trasloco_Rientro = 20,
+        Attestazione_Dip_Resp = 21
     }
 
     public enum EnumFunzioniEventi

@@ -190,8 +190,8 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var fp = db.FIGLIPASSAPORTO.Find(idFiglioPassaporto);
                 var f = fp.FIGLI
-                        .First(a=>a.ATTIVAZIONIMAGFAM
-                                .Where(b => b.ANNULLATO == false && 
+                        .First(a => a.ATTIVAZIONIMAGFAM
+                                .Where(b => b.ANNULLATO == false &&
                                             b.RICHIESTAATTIVAZIONE == true)
                                 .Any());
                 var ld =
@@ -239,18 +239,18 @@ namespace NewISE.Models.DBModel.dtObj
                 if (ld?.Any() ?? false)
                 {
                     ldm.AddRange(from d in ld
-                                    let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
-                                    select new DocumentiModel()
-                                    {
-                                        idDocumenti = d.IDDOCUMENTO,
-                                        nomeDocumento = d.NOMEDOCUMENTO,
-                                        estensione = d.ESTENSIONE,
-                                        tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
-                                        dataInserimento = d.DATAINSERIMENTO,
-                                        file = f
-                                    });
+                                 let f = (HttpPostedFileBase)new MemoryPostedFile(d.FILEDOCUMENTO)
+                                 select new DocumentiModel()
+                                 {
+                                     idDocumenti = d.IDDOCUMENTO,
+                                     nomeDocumento = d.NOMEDOCUMENTO,
+                                     estensione = d.ESTENSIONE,
+                                     tipoDocumento = (EnumTipoDoc)d.IDTIPODOCUMENTO,
+                                     dataInserimento = d.DATAINSERIMENTO,
+                                     file = f
+                                 });
                 }
-                
+
             }
 
             return ldm;
@@ -560,16 +560,17 @@ namespace NewISE.Models.DBModel.dtObj
         public List<TIPODOCUMENTI> GetElencoTipoDocumentiMAB(ModelDBISE db)
         {
 
-                List<TIPODOCUMENTI> ltd = db.TIPODOCUMENTI.Where(a =>
-                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
-                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
-                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ||
-                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
-                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
-                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
-                                a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione)
-                                .OrderBy(a=>a.IDTIPODOCUMENTO)
-                                .ToList();
+            List<TIPODOCUMENTI> ltd = db.TIPODOCUMENTI.Where(a =>
+                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Prima_Rata_Maggiorazione_abitazione ||
+                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione ||
+                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Spese_Abitazione_Collaboratore ||
+                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
+                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
+                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
+                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione ||
+                            a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Dip_Resp)
+                            .OrderBy(a => a.IDTIPODOCUMENTO)
+                            .ToList();
             return ltd;
         }
 
@@ -1254,6 +1255,7 @@ namespace NewISE.Models.DBModel.dtObj
                     case EnumTipoDoc.MAB_Modulo2_Dichiarazione_Costo_Locazione:
                     case EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione:
                     case EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione:
+                    case EnumTipoDoc.Attestazione_Dip_Resp:
                         t = d.ATTIVAZIONEMAB.Where(a => a.ANNULLATO == false).OrderByDescending(a => a.IDATTIVAZIONEMAB).First().MAB.INDENNITA.TRASFERIMENTO;
                         break;
                     case EnumTipoDoc.Contributo_Fisso_Omnicomprensivo:
@@ -1310,7 +1312,7 @@ namespace NewISE.Models.DBModel.dtObj
                     }
                     else
                     {
-                        Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione di un documento (" + (GetDescrizioneTipoDocumento((EnumTipoDoc)d.IDTIPODOCUMENTO,db)).ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, d.IDDOCUMENTO);
+                        Utility.SetLogAttivita(EnumAttivitaCrud.Eliminazione, "Eliminazione di un documento (" + (GetDescrizioneTipoDocumento((EnumTipoDoc)d.IDTIPODOCUMENTO, db)).ToString() + ").", "Documenti", db, t.IDTRASFERIMENTO, d.IDDOCUMENTO);
                     }
                 }
 
@@ -1420,7 +1422,7 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var mab = db.MAB.Find(idMab);
 
-                var lamabm = dtvma.GetListaAttivazioniMABconDocumentiModel(idMab,db).OrderBy(a => a.idAttivazioneMAB).ToList(); 
+                var lamabm = dtvma.GetListaAttivazioniMABconDocumentiModel(idMab, db).OrderBy(a => a.idAttivazioneMAB).ToList();
 
                 var statoTrasf = mab.INDENNITA.TRASFERIMENTO.IDSTATOTRASFERIMENTO;
 
@@ -1443,7 +1445,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.MAB_Modulo4_Dichiarazione_Costo_Locazione ||
                                     a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Clausole_Contratto_Alloggio ||
                                     a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Contratto_Locazione ||
-                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Copia_Ricevuta_Pagamento_Locazione ||
+                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Attestazione_Dip_Resp
                                     ) && a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                                 .OrderByDescending(a => a.DATAINSERIMENTO);
 
@@ -1493,7 +1496,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 ColoreTesto = coloretesto,
                                 progressivo = i,
                                 tipoDocumento = (EnumTipoDoc)doc.IDTIPODOCUMENTO,
-                                DescrizioneTipoDocumento = GetDescrizioneTipoDocumento((EnumTipoDoc)doc.IDTIPODOCUMENTO, db)                                  
+                                DescrizioneTipoDocumento = GetDescrizioneTipoDocumento((EnumTipoDoc)doc.IDTIPODOCUMENTO, db)
                             };
                             ldm.Add(vdm);
                         }
@@ -1518,7 +1521,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     var mab = db.MAB.Find(idMab);
 
-                    var lamabm = dtvma.GetListaAttivazioniMABconDocumentiModel(idMab,db).OrderBy(a=>a.idAttivazioneMAB).ToList();
+                    var lamabm = dtvma.GetListaAttivazioniMABconDocumentiModel(idMab, db).OrderBy(a => a.idAttivazioneMAB).ToList();
 
                     var t = mab.INDENNITA.TRASFERIMENTO;
                     var statoTrasf = t.IDSTATOTRASFERIMENTO;
@@ -1646,8 +1649,8 @@ namespace NewISE.Models.DBModel.dtObj
                         var aps = db.ATTIVAZIONIPROVSCOLASTICHE.Find(e.IDPROVSCOLASTICHE);
 
                         var ld =
-                            aps.DOCUMENTI.Where(a => 
-                                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche && 
+                            aps.DOCUMENTI.Where(a =>
+                                                    a.IDTIPODOCUMENTO == (decimal)EnumTipoDoc.Formulario_Provvidenze_Scolastiche &&
                                                     a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato)
                                         .OrderByDescending(a => a.DATAINSERIMENTO).ToList();
 
@@ -1721,7 +1724,7 @@ namespace NewISE.Models.DBModel.dtObj
                     //    bool modificabile = false;
 
 
-                       
+
 
 
                     //    // Condition1 is true.
@@ -1828,9 +1831,10 @@ namespace NewISE.Models.DBModel.dtObj
             if (td != null && td.IDTIPODOCUMENTO > 0)
             {
                 descrizioneTipoDoc = td.DESCRIZIONE;
-            }else
+            }
+            else
             {
-                throw new Exception(string.Format("Nessuna corrispondenza trovata nella descrizione del tipo documento ({0}).",TipoDocumento.ToString()));
+                throw new Exception(string.Format("Nessuna corrispondenza trovata nella descrizione del tipo documento ({0}).", TipoDocumento.ToString()));
             }
 
             return descrizioneTipoDoc;
@@ -2122,7 +2126,7 @@ namespace NewISE.Models.DBModel.dtObj
                 //        coloresfondo = Resources.VariazioneMagFamColori.AttivazioniMagFamAbilitate_Sfondo;
                 //    }
 
-                    
+
                 //}
 
 
