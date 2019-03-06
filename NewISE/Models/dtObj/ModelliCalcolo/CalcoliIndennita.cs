@@ -747,11 +747,9 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                         _percentualeMaggiorazioneConiuge = percentualeMaggiorazioneConiuge.PERCENTUALECONIUGE;
 
-
                         _maggiorazioneConiuge = _indennitaDiServizio *
                                                 _percentualeMaggiorazioneConiuge /
                                                 100;
-
                     }
 
                     var lpensioni =
@@ -777,7 +775,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         {
                             _maggiorazioneConiugeMenoPensione = MaggiorazioneConiuge - _pensioneConiuge;
                         }
-
                     }
                     else
                     {
