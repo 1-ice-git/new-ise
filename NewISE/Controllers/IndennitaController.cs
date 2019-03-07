@@ -28,6 +28,7 @@ namespace NewISE.Controllers
         {
             return View();
         }
+
         public ActionResult GestioneIndennita(decimal idTrasferimento)
         {
             try
@@ -52,6 +53,7 @@ namespace NewISE.Controllers
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
         }
+
         public ActionResult AttivitaIndennita(decimal idTrasferimento)
         {
             try
@@ -66,7 +68,9 @@ namespace NewISE.Controllers
                         {
                             ViewBag.idTrasferimento = tr.idTrasferimento;
                             bool vedi_PS_TE = true;
-                            string DataRifIndennita_TE_PS = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["DataLimiteIndennita_PS_TE"]);
+                            string DataRifIndennita_TE_PS =
+                                Convert.ToString(
+                                    System.Configuration.ConfigurationManager.AppSettings["DataLimiteIndennita_PS_TE"]);
 
                             if (tr.dataPartenza < Convert.ToDateTime(DataRifIndennita_TE_PS))
                             {
@@ -90,6 +94,7 @@ namespace NewISE.Controllers
 
             return PartialView();
         }
+
         public JsonResult VerificaIndennita(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -104,7 +109,7 @@ namespace NewISE.Controllers
                 {
                     dipInfoTrasferimentoModel trm = dtt.GetInfoTrasferimento(idTrasferimento);
                     if (trm != null && (trm.statoTrasferimento == EnumStatoTraferimento.Attivo ||
-                        trm.statoTrasferimento == EnumStatoTraferimento.Terminato))
+                                        trm.statoTrasferimento == EnumStatoTraferimento.Terminato))
                     {
                         ViewData["idTrasferimento"] = idTrasferimento;
 
@@ -127,9 +132,7 @@ namespace NewISE.Controllers
         public ActionResult IndennitaBase(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
-            dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
-            List<LivelloDipendenteModel> lldm = new List<LivelloDipendenteModel>();
+            //List<LivelloDipendenteModel> lldm = new List<LivelloDipendenteModel>();
 
 
             try
@@ -149,18 +152,18 @@ namespace NewISE.Controllers
                     {
                         tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
                         tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
-                        tm.RuoloUfficio.DescrizioneRuolo = tm.RuoloUfficio.DescrizioneRuolo;
+                        //tm.RuoloUfficio.DescrizioneRuolo = tm.RuoloUfficio.DescrizioneRuolo;
                         ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
                         ViewBag.RuoloDipendente = tm.RuoloUfficio.DescrizioneRuolo;
 
                     }
 
-                    using (dtLivelliDipendente dtld = new dtLivelliDipendente())
-                    {
-                        lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).ToList();
+                    //using (dtLivelliDipendente dtld = new dtLivelliDipendente())
+                    //{
+                    //    lldm = dtld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento).ToList();
 
 
-                    }
+                    //}
                 }
 
 
@@ -176,215 +179,188 @@ namespace NewISE.Controllers
 
         }
 
-        DataSetIndennitaBase ds = new DataSetIndennitaBase();
         public ActionResult RptIndennitaBase(decimal idTrasferimento)
         {
             List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-            List<LivelloDipendenteModel> ldm = new List<LivelloDipendenteModel>();
             List<RptIndennitaBaseModel> rpt = new List<RptIndennitaBaseModel>();
+            List<DateTime> lDateVariazioni = new List<DateTime>();
 
             try
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
 
-                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var indennita = trasferimento.INDENNITA;
+                    var dipendente = trasferimento.DIPENDENTI;
+                    string nominativo = string.Empty;
+                    string livello = string.Empty;
+
+                    nominativo = dipendente.COGNOME + " " + dipendente.NOME;
+
+                    string decorrenza = trasferimento.DATAPARTENZA.ToShortDateString();
+                    string ufficio = trasferimento.UFFICI.DESCRIZIONEUFFICIO;
+
+                    var lliv =
+                        indennita.LIVELLIDIPENDENTI.Where(
+                            a =>
+                                a.ANNULLATO == false && a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
+                                a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
+                            .OrderBy(a => a.DATAINIZIOVALIDITA)
+                            .ToList();
+
+
+                    if (lliv?.Any() ?? false)
                     {
-                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                        livello = lliv.Last().LIVELLI.LIVELLO;
 
-                        using (dtRuoloUfficio dtru = new dtRuoloUfficio())
+                        foreach (var l in lliv)
                         {
+                            DateTime dtIni;
+                            DateTime dtFin;
 
-                            using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                            if (l.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
                             {
-                                // Ruolo
+                                dtIni = trasferimento.DATAPARTENZA;
+                            }
+                            else
+                            {
+                                dtIni = l.DATAINIZIOVALIDITA;
+                            }
 
-                                var ll = db.INDENNITA.Find(idTrasferimento).INDENNITABASE.Where(a => a.ANNULLATO == false).ToList();
+                            if (l.DATAFINEVALIDITA > trasferimento.DATARIENTRO)
+                            {
+                                dtFin = trasferimento.DATARIENTRO;
+                            }
+                            else
+                            {
+                                dtFin = l.DATAFINEVALIDITA;
+                            }
 
-                                tm.RuoloUfficio = dtru.GetRuoloUfficioValidoByIdTrasferimento(tm.idTrasferimento);
-                                tm.idRuoloUfficio = tm.RuoloUfficio.idRuoloUfficio;
+                            var lib =
+                                indennita.INDENNITABASE.Where(
+                                    a =>
+                                        a.ANNULLATO == false && a.DATAINIZIOVALIDITA <= dtFin &&
+                                        a.DATAFINEVALIDITA >= dtIni &&
+                                        a.IDLIVELLO == l.IDLIVELLO).OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
-                                ViewBag.idRuoloUfficio = tm.idRuoloUfficio;
-                                ViewBag.idTrasferimento = idTrasferimento;
+                            foreach (var ib in lib)
+                            {
+                                DateTime dtVar = new DateTime();
 
-                                decimal valore = 0;
-
-                                if (ViewBag.idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || ViewBag.idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
+                                if (ib.DATAINIZIOVALIDITA < dtIni)
                                 {
-                                    valore = ll.First().VALORE;
-
+                                    dtVar = dtIni;
                                 }
                                 else
                                 {
-                                    valore = ll.First().VALORERESP;
-
+                                    dtVar = ib.DATAINIZIOVALIDITA;
                                 }
 
-                                // Livello
-
-                                var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                                var liv1 = liv.First();
-
-                                string Nominativo = tm.Dipendente.Nominativo;
-                                string Ruolo = tm.RuoloUfficio.DescrizioneRuolo;
-                                string Livello = liv1.Livello.DescLivello;
-                                string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                                string Ufficio = tm.Ufficio.descUfficio;
-
-                                libm = (from e in ll
-                                        select new IndennitaBaseModel()
-                                        {
-                                            idIndennitaBase = e.IDINDENNITABASE,
-                                            idLivello = e.IDLIVELLO,
-                                            dataInizioValidita = e.DATAINIZIOVALIDITA,
-                                            dataFineValidita = e.DATAFINEVALIDITA == Utility.DataFineStop() ? new DateTime?() : e.DATAFINEVALIDITA,
-                                            valore = valore,
-                                            //valoreResponsabile = e.VALORERESP,
-                                            dataAggiornamento = e.DATAAGGIORNAMENTO,
-                                            Livello = new LivelloModel()
-                                            {
-                                                idLivello = e.LIVELLI.IDLIVELLO,
-                                                DescLivello = e.LIVELLI.LIVELLO
-                                            },
-                                        }).ToList();
-
-
-
-                                var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
-                                var indennita = trasferimento.INDENNITA;
-
-                                List<DateTime> lDateVariazioni = new List<DateTime>();
-
-                                var ll1 =
-                                    db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
-                                    .Where(a => a.ANNULLATO == false)
-                                    .OrderBy(a => a.IDLIVELLO)
-                                    .ThenBy(a => a.DATAINIZIOVALIDITA)
-                                    .ThenBy(a => a.DATAFINEVALIDITA)
-                                    .ToList();
-
-
-                                using (dtTrasferimento dttrasf = new dtTrasferimento())
+                                if (!lDateVariazioni.Contains(dtVar))
                                 {
-                                    using (dtRuoloDipendente dtrd = new dtRuoloDipendente())
-                                    {
-                                        RuoloDipendenteModel rdm = dtrd.GetRuoloDipendenteByIdIndennita(idTrasferimento);
-                                        dipInfoTrasferimentoModel dipInfoTrasf = dttrasf.GetInfoTrasferimento(idTrasferimento);
-
-                                    }
+                                    lDateVariazioni.Add(dtVar);
                                 }
-
-                                string[] indennitaBase = new string[100];
-                                string[] dataInizioValidita = new string[100];
-                                string[] dataFineValidita = new string[100];
-
-                                foreach (var ib in ll1)
-                                {
-                                    DateTime dtVar = new DateTime();
-
-                                    if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                    {
-                                        dtVar = trasferimento.DATAPARTENZA;
-                                    }
-                                    else
-                                    {
-                                        dtVar = ib.DATAINIZIOVALIDITA;
-                                    }
-
-
-                                    if (!lDateVariazioni.Contains(dtVar))
-                                    {
-                                        lDateVariazioni.Add(dtVar);
-                                        lDateVariazioni.Sort();
-                                    }
-                                }
-
-                                lDateVariazioni.Add(new DateTime(9999, 12, 31));
-
-                                if (lDateVariazioni?.Any() ?? false)
-                                {
-                                    for (int j = 0; j < lDateVariazioni.Count; j++)
-                                    {
-                                        DateTime dv = lDateVariazioni[j];
-
-                                        if (dv < Utility.DataFineStop())
-                                        {
-                                            DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
-                                            //DateTime dvSucc = lDateVariazioni[(j + 1)];
-
-                                            //if (lDateVariazioni[j + 1] == Utility.DataFineStop())
-                                            //{
-                                            //    dvSucc = lDateVariazioni[j + 1];
-                                            //}
-
-                                            if (lDateVariazioni[j + 1] == Utility.DataFineStop())
-                                            {
-                                                dvSucc = lDateVariazioni[j + 1];
-                                            }
-
-                                            using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
-                                            {
-                                                RptIndennitaBaseModel rpts = new RptIndennitaBaseModel()
-                                                {
-
-                                                    IndennitaBase = ci.IndennitaDiBase,
-                                                    DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
-                                                    //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString()
-                                                    DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
-                                                    DescLivello = ci.Livello.LIVELLO
-
-                                                };
-
-                                                rpt.Add(rpts);
-                                            }
-                                        }
-                                    }
-                                }
-
-
-                                ReportViewer reportViewer = new ReportViewer();
-
-                                reportViewer.ProcessingMode = ProcessingMode.Local;
-                                reportViewer.SizeToReportContent = true;
-                                reportViewer.Width = Unit.Percentage(100);
-                                reportViewer.Height = Unit.Percentage(100);
-
-                                var datasource = new ReportDataSource("DataSetIndennitaBase");
-
-                                reportViewer.Visible = true;
-                                reportViewer.ProcessingMode = ProcessingMode.Local;
-
-                                reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaBase.rdlc";
-                                reportViewer.LocalReport.DataSources.Clear();
-                                reportViewer.LocalReport.DataSources.Add(datasource);
-                                reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetIndennitaBase", rpt));
-                                reportViewer.LocalReport.Refresh();
-
-                                List<ReportParameter> parameterValues = new List<ReportParameter>();
-                                parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
-                                parameterValues.Add(new ReportParameter("Livello", Livello));
-                                parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
-                                parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
-
-                                reportViewer.LocalReport.SetParameters(parameterValues);
-                                ViewBag.ReportViewer = reportViewer;
-
                             }
-
                         }
                     }
 
 
+                    DateTime dataFine;
+
+                    if (trasferimento.DATARIENTRO < Utility.DataFineStop())
+                    {
+                        dataFine = trasferimento.DATARIENTRO;
+                    }
+                    else
+                    {
+                        dataFine = Utility.DataFineStop();
+                    }
+
+                    if (!lDateVariazioni.Contains(dataFine))
+                    {
+                        lDateVariazioni.Add(dataFine);
+                    }
+
+
+                    if (lDateVariazioni?.Any() ?? false)
+                    {
+                        for (int j = 0; j < lDateVariazioni.Count; j++)
+                        {
+                            DateTime dv = lDateVariazioni[j];
+
+                            if (dv < dataFine)
+                            {
+                                DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                if (lDateVariazioni[j + 1] == dataFine)
+                                {
+                                    dvSucc = lDateVariazioni[j + 1];
+                                }
+
+                                using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db)
+                                    )
+                                {
+                                    RptIndennitaBaseModel rpts = new RptIndennitaBaseModel()
+                                    {
+
+                                        IndennitaBase = ci.IndennitaDiBase,
+                                        DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                        //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString()
+                                        DataFineValidita =
+                                            (dvSucc < Utility.DataFineStop())
+                                                ? Convert.ToDateTime(dvSucc).ToShortDateString()
+                                                : null,
+                                        DescLivello = ci.Livello.LIVELLO
+
+                                    };
+
+                                    rpt.Add(rpts);
+                                }
+                            }
+                        }
+                    }
+
+
+                    ReportViewer reportViewer = new ReportViewer();
+
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                    reportViewer.SizeToReportContent = true;
+                    reportViewer.Width = Unit.Percentage(100);
+                    reportViewer.Height = Unit.Percentage(100);
+
+                    var datasource = new ReportDataSource("DataSetIndennitaBase");
+
+                    reportViewer.Visible = true;
+                    reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) +
+                                                          @"/Report/RptIndennitaBase.rdlc";
+                    reportViewer.LocalReport.DataSources.Clear();
+                    reportViewer.LocalReport.DataSources.Add(datasource);
+                    reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetIndennitaBase", rpt));
+                    reportViewer.LocalReport.Refresh();
+
+                    List<ReportParameter> parameterValues = new List<ReportParameter>();
+                    parameterValues.Add(new ReportParameter("Nominativo", nominativo));
+                    parameterValues.Add(new ReportParameter("Livello", livello));
+                    parameterValues.Add(new ReportParameter("Decorrenza", decorrenza));
+                    parameterValues.Add(new ReportParameter("Ufficio", ufficio));
+
+                    reportViewer.LocalReport.SetParameters(parameterValues);
+                    ViewBag.ReportViewer = reportViewer;
 
                 }
-            }
 
+                return PartialView("RptIndennitaBase");
+
+
+            }
             catch (Exception ex)
             {
+
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
-
-            return PartialView("RptIndennitaBase");
 
         }
         #endregion
@@ -399,11 +375,9 @@ namespace NewISE.Controllers
                 using (dtEvoluzioneIndennita dtei = new dtEvoluzioneIndennita())
                 {
                     eim = dtei.GetIndennitaEvoluzione(idTrasferimento).ToList();
-
                 }
 
                 ViewBag.idTrasferimento = idTrasferimento;
-
 
                 return PartialView("IndennitaServizio", eim);
 
@@ -415,13 +389,10 @@ namespace NewISE.Controllers
 
         }
 
-        DataSetIndennitaServizio DataSetIndennitaServizio = new DataSetIndennitaServizio();
+
         public ActionResult RptIndennitaServizio(decimal idTrasferimento)
         {
-            List<EvoluzioneIndennitaModel> eim = new List<EvoluzioneIndennitaModel>();
 
-            List<IndennitaBaseModel> libm = new List<IndennitaBaseModel>();
-            List<LivelloDipendenteModel> ldm = new List<LivelloDipendenteModel>();
             List<RptIndennitaServizioModel> rpt = new List<RptIndennitaServizioModel>();
 
 
@@ -429,204 +400,217 @@ namespace NewISE.Controllers
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    using (dtTrasferimento dtt = new dtTrasferimento())
+
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var dipendente = trasferimento.DIPENDENTI;
+                    var indennita = trasferimento.INDENNITA;
+
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
                     {
-                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                        ViewBag.idTrasferimento = idTrasferimento;
 
-                        using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.OrderBy(a => a.dataInizioValdita).Last();
+
+                        string Nominativo = dipendente.COGNOME + " " + dipendente.NOME;
+                        string Decorrenza = Convert.ToDateTime(trasferimento.DATAPARTENZA).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = trasferimento.UFFICI.DESCRIZIONEUFFICIO;
+
+                        List<DateTime> lDateVariazioni = new List<DateTime>();
+
+                        #region Variazioni di indennità di base
+
+                        var ll =
+                            indennita.INDENNITABASE
+                                .Where(
+                                    a =>
+                                        a.ANNULLATO == false && a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
+                                        a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
+                                .OrderBy(a => a.DATAINIZIOVALIDITA)
+                                .ToList();
+
+
+                        foreach (var ib in ll)
                         {
-                            ViewBag.idTrasferimento = idTrasferimento;
+                            DateTime dtVar = new DateTime();
 
-                            var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                            var liv1 = liv.First();
-
-                            string Nominativo = tm.Dipendente.Nominativo;
-                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                            string Livello = liv1.Livello.DescLivello;
-                            string Ufficio = tm.Ufficio.descUfficio;
-
-                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
-                            var indennita = trasferimento.INDENNITA;
-
-                            List<DateTime> lDateVariazioni = new List<DateTime>();
-
-                            #region Variazioni di indennità di base
-
-                            var ll =
-                                db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
-                                .Where(a => a.ANNULLATO == false).OrderBy(a => a.IDLIVELLO)
-                                    .ThenBy(a => a.DATAINIZIOVALIDITA)
-                                    .ThenBy(a => a.DATAFINEVALIDITA).ToList();
-
-
-                            foreach (var ib in ll)
+                            if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
                             {
-                                DateTime dtVar = new DateTime();
-
-                                if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                {
-                                    dtVar = trasferimento.DATAPARTENZA;
-                                }
-                                else
-                                {
-                                    dtVar = ib.DATAINIZIOVALIDITA;
-                                }
-
-
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                }
+                                dtVar = trasferimento.DATAPARTENZA;
+                            }
+                            else
+                            {
+                                dtVar = ib.DATAINIZIOVALIDITA;
                             }
 
-                            #endregion
-
-                            #region Variazioni del coefficiente di sede
-
-                            var lrd =
-                                db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.COEFFICIENTESEDE
-                                .Where(a => a.ANNULLATO == false)
-                                .OrderBy(a => a.IDCOEFFICIENTESEDE)
-                                .ThenBy(a => a.DATAINIZIOVALIDITA)
-                                .ThenBy(a => a.DATAFINEVALIDITA).ToList();
-
-                            foreach (var cs in lrd)
+                            if (!lDateVariazioni.Contains(dtVar))
                             {
-                                DateTime dtVar = new DateTime();
+                                lDateVariazioni.Add(dtVar);
+                            }
+                        }
 
-                                if (cs.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                {
-                                    dtVar = trasferimento.DATAPARTENZA;
-                                }
-                                else
-                                {
-                                    dtVar = cs.DATAINIZIOVALIDITA;
-                                }
+                        #endregion
 
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                }
+                        #region Variazioni del coefficiente di sede
+
+                        var lrd =
+                            indennita.COEFFICIENTESEDE
+                                .Where(
+                                    a =>
+                                        a.ANNULLATO == false && a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
+                                        a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
+                                .OrderBy(a => a.DATAINIZIOVALIDITA)
+                                .ToList();
+
+                        foreach (var cs in lrd)
+                        {
+                            DateTime dtVar = new DateTime();
+
+                            if (cs.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                            {
+                                dtVar = trasferimento.DATAPARTENZA;
+                            }
+                            else
+                            {
+                                dtVar = cs.DATAINIZIOVALIDITA;
                             }
 
-                            #endregion
-
-                            #region Variazioni percentuale di disagio
-
-                            var perc =
-                                db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.PERCENTUALEDISAGIO
-                                .Where(a => a.ANNULLATO == false)
-                                .OrderBy(a => a.IDPERCENTUALEDISAGIO)
-                                .ThenBy(a => a.DATAINIZIOVALIDITA)
-                                .ThenBy(a => a.DATAFINEVALIDITA).ToList();
-
-
-                            foreach (var pd in perc)
+                            if (!lDateVariazioni.Contains(dtVar))
                             {
-                                DateTime dtVar = new DateTime();
+                                lDateVariazioni.Add(dtVar);
+                            }
+                        }
 
-                                if (pd.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                {
-                                    dtVar = trasferimento.DATAPARTENZA;
-                                }
-                                else
-                                {
-                                    dtVar = pd.DATAINIZIOVALIDITA;
-                                }
+                        #endregion
 
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                }
+                        #region Variazioni percentuale di disagio
+
+                        var perc =
+                            indennita.PERCENTUALEDISAGIO
+                                .Where(
+                                    a =>
+                                        a.ANNULLATO == false && a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
+                                        a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
+                                .OrderBy(a => a.DATAINIZIOVALIDITA)
+                                .ToList();
+
+                        foreach (var pd in perc)
+                        {
+                            DateTime dtVar = new DateTime();
+
+                            if (pd.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                            {
+                                dtVar = trasferimento.DATAPARTENZA;
+                            }
+                            else
+                            {
+                                dtVar = pd.DATAINIZIOVALIDITA;
                             }
 
-
-
-
-
-
-                            #endregion
-
-                            lDateVariazioni.Add(new DateTime(9999, 12, 31));
-
-                            if (lDateVariazioni?.Any() ?? false)
+                            if (!lDateVariazioni.Contains(dtVar))
                             {
-                                for (int j = 0; j < lDateVariazioni.Count; j++)
-                                {
-                                    DateTime dv = lDateVariazioni[j];
+                                lDateVariazioni.Add(dtVar);
+                            }
+                        }
 
-                                    if (dv < Utility.DataFineStop())
+                        #endregion
+
+                        DateTime dataFine;
+
+                        if (trasferimento.DATARIENTRO < Utility.DataFineStop())
+                        {
+                            dataFine = Utility.GetDtFineMese(trasferimento.DATARIENTRO);
+                        }
+                        else
+                        {
+                            dataFine = Utility.DataFineStop();
+                        }
+
+                        if (!lDateVariazioni.Contains(dataFine))
+                        {
+                            lDateVariazioni.Add(dataFine);
+                        }
+
+                        if (lDateVariazioni?.Any() ?? false)
+                        {
+                            for (int j = 0; j < lDateVariazioni.Count; j++)
+                            {
+                                DateTime dv = lDateVariazioni[j];
+
+                                if (dv < dataFine)
+                                {
+                                    DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+                                    //DateTime dvSucc = lDateVariazioni[(j + 1)];
+
+                                    if (lDateVariazioni[j + 1] == dataFine)
                                     {
-                                        DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
-                                        //DateTime dvSucc = lDateVariazioni[(j + 1)];
+                                        dvSucc = lDateVariazioni[j + 1];
+                                    }
 
-                                        if (lDateVariazioni[j + 1] == Utility.DataFineStop())
-                                        {
-                                            dvSucc = lDateVariazioni[j + 1];
-                                        }
+                                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                    {
 
-                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        RptIndennitaServizioModel rpts = new RptIndennitaServizioModel()
                                         {
 
-                                            RptIndennitaServizioModel rpts = new RptIndennitaServizioModel()
-                                            {
+                                            DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                            //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
+                                            DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
+                                            IndennitaBase = ci.IndennitaDiBase,
+                                            CoefficenteSede = ci.CoefficienteDiSede,
+                                            PercentualeDisagio = ci.PercentualeDisagio,
+                                            IndennitaServizio = ci.IndennitaDiServizio
 
-                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
-                                                //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
-                                                DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
-                                                IndennitaBase = ci.IndennitaDiBase,
-                                                CoefficenteSede = ci.CoefficienteDiSede,
-                                                PercentualeDisagio = ci.PercentualeDisagio,
-                                                IndennitaServizio = ci.IndennitaDiServizio
+                                        };
 
-                                            };
-
-                                            rpt.Add(rpts);
-
-                                        }
-
-
-
-                                        ReportViewer reportViewer = new ReportViewer();
-
-                                        reportViewer.ProcessingMode = ProcessingMode.Local;
-                                        reportViewer.SizeToReportContent = true;
-                                        reportViewer.Width = Unit.Percentage(100);
-                                        reportViewer.Height = Unit.Percentage(100);
-
-                                        var datasource = new ReportDataSource("DataSetIndennitaServizio");
-
-                                        reportViewer.Visible = true;
-                                        reportViewer.ProcessingMode = ProcessingMode.Local;
-
-                                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaServizio.rdlc";
-                                        reportViewer.LocalReport.DataSources.Clear();
-                                        reportViewer.LocalReport.DataSources.Add(datasource);
-                                        reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetIndennitaServizio", rpt));
-                                        reportViewer.LocalReport.Refresh();
-
-                                        List<ReportParameter> parameterValues = new List<ReportParameter>();
-                                        parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
-                                        parameterValues.Add(new ReportParameter("Livello", Livello));
-                                        parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
-                                        parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
-
-                                        reportViewer.LocalReport.SetParameters(parameterValues);
-                                        ViewBag.ReportViewer = reportViewer;
-
+                                        rpt.Add(rpts);
 
                                     }
+
+
+
+                                    ReportViewer reportViewer = new ReportViewer();
+
+                                    reportViewer.ProcessingMode = ProcessingMode.Local;
+                                    reportViewer.SizeToReportContent = true;
+                                    reportViewer.Width = Unit.Percentage(100);
+                                    reportViewer.Height = Unit.Percentage(100);
+
+                                    var datasource = new ReportDataSource("DataSetIndennitaServizio");
+
+                                    reportViewer.Visible = true;
+                                    reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                                    reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptIndennitaServizio.rdlc";
+                                    reportViewer.LocalReport.DataSources.Clear();
+                                    reportViewer.LocalReport.DataSources.Add(datasource);
+                                    reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetIndennitaServizio", rpt));
+                                    reportViewer.LocalReport.Refresh();
+
+                                    List<ReportParameter> parameterValues = new List<ReportParameter>();
+                                    parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                                    parameterValues.Add(new ReportParameter("Livello", Livello));
+                                    parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                                    parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+
+                                    reportViewer.LocalReport.SetParameters(parameterValues);
+                                    ViewBag.ReportViewer = reportViewer;
+
+
                                 }
                             }
-
                         }
+
                     }
+
                 }
             }
             catch (Exception ex)
             {
                 return PartialView("ErrorPartial", new MsgErr() { msg = ex.Message });
             }
+
             return PartialView("RptIndennitaServizio");
         }
         #endregion
@@ -666,43 +650,35 @@ namespace NewISE.Controllers
                 {
                     using (dtTrasferimento dtt = new dtTrasferimento())
                     {
-                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                        var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                        var dipendente = trasferimento.DIPENDENTI;
 
                         using (dtLivelliDipendente dld = new dtLivelliDipendente())
                         {
                             ViewBag.idTrasferimento = idTrasferimento;
 
                             var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                            var liv1 = liv.First();
+                            var liv1 = liv.OrderBy(a => a.dataInizioValdita).Last();
 
-                            string Nominativo = tm.Dipendente.Nominativo;
-                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
+                            string Nominativo = dipendente.COGNOME + " " + dipendente.NOME;
+                            string Decorrenza = Convert.ToDateTime(trasferimento.DATAPARTENZA).ToShortDateString();
                             string Livello = liv1.Livello.DescLivello;
-                            string Ufficio = tm.Ufficio.descUfficio;
+                            string Ufficio = trasferimento.UFFICI.DESCRIZIONEUFFICIO;
 
-                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
                             List<DateTime> lDateVariazioni = new List<DateTime>();
 
                             var mf = trasferimento.MAGGIORAZIONIFAMILIARI;
 
-                            //using (dtConiuge dtc = new dtConiuge())
-                            //{
-                            //    var cm = dtc.GetConiugebyID(coniuge.IDCONIUGE);
-
-
-                            //    DateTime dtIni = cm.dataInizio.Value;
-                            //    DateTime dtFin = cm.dataFine.HasValue ? cm.dataFine.Value : Utility.DataFineStop();
-                            //}
-
 
                             #region Variazioni Coniuge
+
                             var lc =
                                 mf.CONIUGE.Where(
                                     a =>
-                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
-                                        .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-
+                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                        a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
+                                        a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
+                                    .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
 
                             if (lc?.Any() ?? false)
                             {
@@ -720,267 +696,90 @@ namespace NewISE.Controllers
                                         dtVar = c.DATAINIZIOVALIDITA;
                                     }
 
-                                    //if (!lDateVariazioni.Contains(dtVar))
-                                    //{
-                                    //    lDateVariazioni.Add(dtVar);
-                                    //    //lDateVariazioni.Sort();
-                                    //}
-
-                                    //if (c.DATAFINEVALIDITA < trasferimento.DATARIENTRO)
-                                    //{
-                                    //    dtVar = c.DATAFINEVALIDITA;
-                                    //}
-                                    //else
-                                    //{
-                                    //    dtVar = trasferimento.DATARIENTRO;
-                                    //}
-
                                     if (!lDateVariazioni.Contains(dtVar))
                                     {
                                         lDateVariazioni.Add(dtVar);
-                                        //lDateVariazioni.Sort();
                                     }
 
-
-                                }
-                            }
-                            #endregion
-
-                            if (lc?.Any() ?? false)
-                            {
-                                #region Variazione Percentuale Maggiorazione Coniuge
-                                foreach (var c in lc)
-                                {
-                                    var coniuge = lc.First();
+                                    #region Variazione Percentuale Maggiorazione Coniuge
 
                                     var lpmc =
-                                           coniuge.PERCENTUALEMAGCONIUGE.Where(
-                                               a =>
-                                                   a.ANNULLATO == false).ToList();
-                                    DateTime dtVar = new DateTime();
-
-                                    if (c.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                        c.PERCENTUALEMAGCONIUGE.Where(
+                                            a =>
+                                                a.ANNULLATO == false && a.DATAINIZIOVALIDITA <= c.DATAFINEVALIDITA &&
+                                                a.DATAFINEVALIDITA >= c.DATAINIZIOVALIDITA)
+                                            .OrderBy(a => a.DATAINIZIOVALIDITA)
+                                            .ToList();
+                                    if (lpmc?.Any() ?? false)
                                     {
-                                        dtVar = trasferimento.DATAPARTENZA;
-                                    }
-                                    else
-                                    {
-                                        dtVar = c.DATAINIZIOVALIDITA;
-                                    }
+                                        foreach (var pmc in lpmc)
+                                        {
+                                            if (pmc.DATAINIZIOVALIDITA < c.DATAINIZIOVALIDITA)
+                                            {
+                                                dtVar = c.DATAINIZIOVALIDITA;
+                                            }
+                                            else
+                                            {
+                                                dtVar = pmc.DATAINIZIOVALIDITA;
+                                            }
 
-                                    if (!lDateVariazioni.Contains(dtVar))
-                                    {
-                                        lDateVariazioni.Add(dtVar);
-                                        //lDateVariazioni.Sort();
-                                    }
-
-                                }
-                                #endregion
-                            }
-                            if (lc?.Any() ?? false)
-                            {
-                                #region Variazione Pensione
-                                foreach (var p in lc)
-                                {
-                                    DateTime dtVar = new DateTime();
-
-                                    var pensione = p.PENSIONE.Where(a =>
-                                                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                                                                a.NASCONDI == false).ToList();
-
-                                    if (p.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                    {
-                                        dtVar = trasferimento.DATAPARTENZA;
-                                    }
-                                    else
-                                    {
-                                        dtVar = p.DATAINIZIOVALIDITA;
-                                    }
-                                    if (!lDateVariazioni.Contains(dtVar))
-                                    {
-                                        lDateVariazioni.Add(dtVar);
-                                        //lDateVariazioni.Sort();
-                                    }
-                                }
-                                #endregion
-                            }
-
-                            if (lc?.Any() ?? false)
-                            {
-                                foreach (var fc in lc)
-                                {
-
-                                    DateTime dtVar = new DateTime();
-
-                                    //if (c.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                    //{
-                                    //    dtVar = trasferimento.DATAPARTENZA;
-                                    //}
-                                    //else
-                                    //{
-                                    //    dtVar = c.DATAINIZIOVALIDITA;
-                                    //}
-
-                                    //if (!lDateVariazioni.Contains(dtVar))
-                                    //{
-                                    //    lDateVariazioni.Add(dtVar);
-                                    //    //lDateVariazioni.Sort();
-                                    //}
-
-                                    if (fc.DATAFINEVALIDITA < trasferimento.DATARIENTRO)
-                                    {
-                                        dtVar = fc.DATAFINEVALIDITA.AddDays(1);
-                                    }
-                                    else
-                                    {
-                                        dtVar = trasferimento.DATARIENTRO;
+                                            if (!lDateVariazioni.Contains(dtVar))
+                                            {
+                                                lDateVariazioni.Add(dtVar);
+                                            }
+                                        }
                                     }
 
-                                    if (!lDateVariazioni.Contains(dtVar))
-                                    {
-                                        lDateVariazioni.Add(dtVar);
+                                    #endregion
 
-                                    }
+                                    #region Variazioni Pensioni
 
-
-                                }
-                            }
-
-                            #region Variazioni di indennità di base
-
-                            var ll =
-                                db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
-                                .Where(a => a.ANNULLATO == false &&
-                                        a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
-                                        a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
-                                .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-
-                            foreach (var ib in ll)
-                            {
-                                DateTime dtVar = new DateTime();
-
-                                if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                {
-                                    dtVar = trasferimento.DATAPARTENZA;
-                                }
-                                else
-                                {
-                                    dtVar = ib.DATAINIZIOVALIDITA;
-                                }
-
-
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                    //lDateVariazioni.Sort();
-                                }
-                            }
-
-                            #endregion
-
-                            #region Variazioni del coefficiente di sede
-
-                            var lrd =
-                                db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.COEFFICIENTESEDE
-                                .Where(a => a.ANNULLATO == false &&
-                                        a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
-                                        a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
-                                .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-                            foreach (var cs in lrd)
-                            {
-                                DateTime dtVar = new DateTime();
-
-                                if (cs.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                {
-                                    dtVar = trasferimento.DATAPARTENZA;
-                                }
-                                else
-                                {
-                                    dtVar = cs.DATAINIZIOVALIDITA;
-                                }
-
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                    //lDateVariazioni.Sort();
-                                }
-                            }
-
-                            #endregion
-
-                            #region Variazioni percentuale di disagio
-
-                            var perc =
-                                db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.PERCENTUALEDISAGIO
-                                .Where(a => a.ANNULLATO == false &&
-                                        a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
-                                        a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
-                                .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-
-                            foreach (var pd in perc)
-                            {
-                                DateTime dtVar = new DateTime();
-
-                                if (pd.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                {
-                                    dtVar = trasferimento.DATAPARTENZA;
-                                }
-                                else
-                                {
-                                    dtVar = pd.DATAINIZIOVALIDITA;
-                                }
-
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                    //lDateVariazioni.Sort();
-                                }
-                            }
-
-                            #endregion
-
-                            #region Variazioni Livelli
-
-                            var llliv =
-                                trasferimento.INDENNITA.LIVELLIDIPENDENTI
-                                        .Where(a => a.ANNULLATO == false &&
-                                        a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
-                                        a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
-                                        .OrderBy(a => a.IDLIVELLO)
-                                        .ThenBy(a => a.DATAINIZIOVALIDITA)
-                                        .ThenBy(a => a.DATAFINEVALIDITA)
+                                    var lp = c.PENSIONE.Where(a =>
+                                        a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                        a.DATAINIZIO <= c.DATAFINEVALIDITA && a.DATAFINE >= c.DATAINIZIOVALIDITA)
+                                        .OrderBy(a => a.DATAINIZIO)
                                         .ToList();
 
+                                    if (lp?.Any() ?? false)
+                                    {
+                                        foreach (var p in lp)
+                                        {
+                                            if (p.DATAINIZIO < c.DATAINIZIOVALIDITA)
+                                            {
+                                                dtVar = c.DATAINIZIOVALIDITA;
+                                            }
+                                            else
+                                            {
+                                                dtVar = p.DATAINIZIO;
+                                            }
 
+                                            if (!lDateVariazioni.Contains(dtVar))
+                                            {
+                                                lDateVariazioni.Add(dtVar);
+                                            }
+                                        }
+                                    }
 
-                            foreach (var liv2 in llliv)
-                            {
-                                DateTime dtVar = new DateTime();
-
-                                if (liv2.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                {
-                                    dtVar = trasferimento.DATAPARTENZA;
-                                }
-                                else
-                                {
-                                    dtVar = liv2.DATAINIZIOVALIDITA;
-                                }
-
-
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                    //lDateVariazioni.Sort();
+                                    #endregion
                                 }
                             }
-
                             #endregion
 
+                            DateTime dataFine;
 
-                            lDateVariazioni.Add(new DateTime(9999, 12, 31));
+                            if (trasferimento.DATARIENTRO < Utility.DataFineStop())
+                            {
+                                dataFine = Utility.GetDtFineMese(trasferimento.DATARIENTRO);
+                            }
+                            else
+                            {
+                                dataFine = Utility.DataFineStop();
+                            }
+
+                            if (!lDateVariazioni.Contains(dataFine))
+                            {
+                                lDateVariazioni.Add(dataFine);
+                            }
 
                             lDateVariazioni = lDateVariazioni.OrderBy(a => a.Year).ThenBy(a => a.Month).ThenBy(a => a.Day).ToList();
 
@@ -990,11 +789,11 @@ namespace NewISE.Controllers
                                 {
                                     DateTime dv = lDateVariazioni[j];
 
-                                    if (dv < Utility.DataFineStop())
+                                    if (dv < dataFine)
                                     {
                                         DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
 
-                                        if (lDateVariazioni[j + 1] == Utility.DataFineStop())
+                                        if (lDateVariazioni[j + 1] == dataFine)
                                         {
                                             dvSucc = lDateVariazioni[j + 1];
                                         }
@@ -1004,22 +803,17 @@ namespace NewISE.Controllers
                                             RptMaggiorazioniConiuge rpts = new RptMaggiorazioniConiuge()
                                             {
                                                 DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
-                                                //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
                                                 DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
                                                 IndennitaServizio = ci.IndennitaDiServizio,
                                                 PercentualeMaggiorazioniConiuge = ci.PercentualeMaggiorazioneConiuge,
                                                 MaggiorazioniConiuge = ci.MaggiorazioneConiuge
-
                                             };
 
                                             rpt.Add(rpts);
-
                                         }
-
                                     }
                                 }
                             }
-
 
                             ReportViewer reportViewer = new ReportViewer();
 
@@ -1048,7 +842,6 @@ namespace NewISE.Controllers
 
                             reportViewer.LocalReport.SetParameters(parameterValues);
                             ViewBag.ReportViewer = reportViewer;
-
 
                         }
                     }
@@ -1127,363 +920,210 @@ namespace NewISE.Controllers
             {
                 using (ModelDBISE db = new ModelDBISE())
                 {
+                    var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
+                    var dipendente = trasferimento.DIPENDENTI;
 
-                    using (dtTrasferimento dtt = new dtTrasferimento())
+                    using (dtLivelliDipendente dld = new dtLivelliDipendente())
                     {
-                        var tm = dtt.GetTrasferimentoById(idTrasferimento);
+                        ViewBag.idTrasferimento = idTrasferimento;
 
-                        using (dtLivelliDipendente dld = new dtLivelliDipendente())
+                        var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
+                        var liv1 = liv.OrderBy(a => a.dataInizioValdita).Last();
+
+                        string Nominativo = dipendente.COGNOME + " " + dipendente.NOME;
+                        string Decorrenza = Convert.ToDateTime(trasferimento.DATAPARTENZA).ToShortDateString();
+                        string Livello = liv1.Livello.DescLivello;
+                        string Ufficio = trasferimento.UFFICI.DESCRIZIONEUFFICIO;
+
+                        List<DateTime> lDateVariazioni = new List<DateTime>();
+                        var mf = trasferimento.MAGGIORAZIONIFAMILIARI;
+
+                        #region Variazioni Maggiorazioni Figli
+
+                        var lf =
+                            mf.FIGLI.Where(
+                                a =>
+                                    a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
+                                    a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
+                                    a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
+                                .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
+
+                        if (lf?.Any() ?? false)
                         {
-                            ViewBag.idTrasferimento = idTrasferimento;
-
-                            var liv = dld.GetLivelloDipendenteByIdTrasferimento(idTrasferimento);
-                            var liv1 = liv.First();
-
-                            string Nominativo = tm.Dipendente.Nominativo;
-                            string Decorrenza = Convert.ToDateTime(tm.dataPartenza).ToShortDateString();
-                            string Livello = liv1.Livello.DescLivello;
-                            string Ufficio = tm.Ufficio.descUfficio;
-
-                            var trasferimento = db.TRASFERIMENTO.Find(idTrasferimento);
-
-                            List<DateTime> lDateVariazioni = new List<DateTime>();
-                            var mf = trasferimento.MAGGIORAZIONIFAMILIARI;
-
-                            #region Variazioni Maggiorazioni Figli
-                            var lf =
-                                        mf.FIGLI.Where(
-                                            a =>
-                                                a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato)
-                                                .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-                            if (lf?.Any() ?? false)
-                            {
-                                foreach (var f in lf)
-                                {
-
-                                    DateTime dtVar = new DateTime();
-
-                                    if (f.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                    {
-                                        dtVar = trasferimento.DATAPARTENZA;
-                                    }
-                                    else
-                                    {
-                                        dtVar = f.DATAINIZIOVALIDITA;
-                                    }
-
-                                    if (!lDateVariazioni.Contains(dtVar))
-                                    {
-                                        lDateVariazioni.Add(dtVar);
-                                    }
-
-
-
-                                }
-                            }
-
-
-                            #endregion
-
-                            #region Variazioni Percentuale Maggiorazioni Figli
-                            if (lf?.Any() ?? false)
+                            foreach (var f in lf)
                             {
 
-                                foreach (var f in lf)
-                                {
-
-                                    var lpmf =
-                                        f.PERCENTUALEMAGFIGLI.Where(
-                                            a =>
-                                                a.ANNULLATO == false).ToList();
-
-                                    DateTime dtVar = new DateTime();
-
-                                    if (f.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                    {
-                                        dtVar = trasferimento.DATAPARTENZA;
-                                    }
-                                    else
-                                    {
-                                        dtVar = f.DATAINIZIOVALIDITA;
-                                    }
-
-                                    if (!lDateVariazioni.Contains(dtVar))
-                                    {
-                                        lDateVariazioni.Add(dtVar);
-                                        //lDateVariazioni.Sort();
-                                    }
-                                }
-
-                            }
-                            #endregion
-
-                            #region Variazione Indennità Primo Segretario
-                            if (lf?.Any() ?? false)
-                            {
-
-                                foreach (var f in lf)
-                                {
-
-                                    var lips =
-                                                f.INDENNITAPRIMOSEGRETARIO.Where(
-                                                    a =>
-                                                        a.ANNULLATO == false).ToList();
-
-                                    DateTime dtVar = new DateTime();
-
-                                    if (f.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                    {
-                                        dtVar = trasferimento.DATAPARTENZA;
-                                    }
-                                    else
-                                    {
-                                        dtVar = f.DATAINIZIOVALIDITA;
-                                    }
-
-                                    if (!lDateVariazioni.Contains(dtVar))
-                                    {
-                                        lDateVariazioni.Add(dtVar);
-                                        //lDateVariazioni.Sort();
-                                    }
-
-
-
-                                }
-
-                            }
-                            #endregion
-
-                            if (lf?.Any() ?? false)
-                            {
-                                foreach (var ff in lf)
-                                {
-
-                                    DateTime dtVar = new DateTime();
-
-
-
-                                    if (ff.DATAFINEVALIDITA < trasferimento.DATARIENTRO)
-                                    {
-                                        dtVar = ff.DATAFINEVALIDITA.AddDays(1);
-                                    }
-                                    else
-                                    {
-                                        dtVar = trasferimento.DATARIENTRO;
-                                    }
-
-                                    if (!lDateVariazioni.Contains(dtVar))
-                                    {
-                                        lDateVariazioni.Add(dtVar);
-
-                                    }
-
-
-                                }
-                            }
-
-                            #region Variazioni di indennità di base
-
-                            var ll =
-                                db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.INDENNITABASE
-                                .Where(a => a.ANNULLATO == false &&
-                                        a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
-                                        a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
-                                .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-
-                            foreach (var ib in ll)
-                            {
                                 DateTime dtVar = new DateTime();
 
-                                if (ib.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                if (f.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
                                 {
                                     dtVar = trasferimento.DATAPARTENZA;
                                 }
                                 else
                                 {
-                                    dtVar = ib.DATAINIZIOVALIDITA;
-                                }
-
-
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                    //lDateVariazioni.Sort();
-                                }
-                            }
-
-                            #endregion
-
-                            #region Variazioni del coefficiente di sede
-
-                            var lrd =
-                                db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.COEFFICIENTESEDE
-                                .Where(a => a.ANNULLATO == false &&
-                                        a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
-                                        a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
-                                .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-                            foreach (var cs in lrd)
-                            {
-                                DateTime dtVar = new DateTime();
-
-                                if (cs.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                {
-                                    dtVar = trasferimento.DATAPARTENZA;
-                                }
-                                else
-                                {
-                                    dtVar = cs.DATAINIZIOVALIDITA;
+                                    dtVar = f.DATAINIZIOVALIDITA;
                                 }
 
                                 if (!lDateVariazioni.Contains(dtVar))
                                 {
                                     lDateVariazioni.Add(dtVar);
-                                    //lDateVariazioni.Sort();
-                                }
-                            }
-
-                            #endregion
-
-                            #region Variazioni percentuale di disagio
-
-                            var perc =
-                                db.TRASFERIMENTO.Find(idTrasferimento).INDENNITA.PERCENTUALEDISAGIO
-                                .Where(a => a.ANNULLATO == false &&
-                                        a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
-                                        a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
-                                .OrderBy(a => a.DATAINIZIOVALIDITA).ToList();
-
-
-                            foreach (var pd in perc)
-                            {
-                                DateTime dtVar = new DateTime();
-
-                                if (pd.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
-                                {
-                                    dtVar = trasferimento.DATAPARTENZA;
-                                }
-                                else
-                                {
-                                    dtVar = pd.DATAINIZIOVALIDITA;
                                 }
 
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                    //lDateVariazioni.Sort();
-                                }
-                            }
+                                #region Variazioni Percentuale Maggiorazioni Figli
 
-                            #endregion
-
-                            #region Variazioni Livelli
-
-                            var llliv =
-                                trasferimento.INDENNITA.LIVELLIDIPENDENTI
-                                        .Where(a => a.ANNULLATO == false &&
-                                        a.DATAINIZIOVALIDITA <= trasferimento.DATARIENTRO &&
-                                        a.DATAFINEVALIDITA >= trasferimento.DATAPARTENZA)
-                                        .OrderBy(a => a.IDLIVELLO)
-                                        .ThenBy(a => a.DATAINIZIOVALIDITA)
-                                        .ThenBy(a => a.DATAFINEVALIDITA)
+                                var lpmf =
+                                    f.PERCENTUALEMAGFIGLI.Where(
+                                        a =>
+                                            a.ANNULLATO == false && a.DATAINIZIOVALIDITA <= f.DATAFINEVALIDITA &&
+                                            a.DATAFINEVALIDITA >= f.DATAINIZIOVALIDITA)
+                                        .OrderBy(a => a.DATAINIZIOVALIDITA)
                                         .ToList();
 
-
-
-                            foreach (var liv2 in llliv)
-                            {
-                                DateTime dtVar = new DateTime();
-
-                                if (liv2.DATAINIZIOVALIDITA < trasferimento.DATAPARTENZA)
+                                if (lpmf?.Any() ?? false)
                                 {
-                                    dtVar = trasferimento.DATAPARTENZA;
-                                }
-                                else
-                                {
-                                    dtVar = liv2.DATAINIZIOVALIDITA;
-                                }
-
-
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                    //lDateVariazioni.Sort();
-                                }
-                            }
-
-                            #endregion
-
-                            lDateVariazioni.Add(new DateTime(9999, 12, 31));
-
-                            lDateVariazioni = lDateVariazioni.OrderBy(a => a.Year).ThenBy(a => a.Month).ThenBy(a => a.Day).ToList();
-
-                            if (lDateVariazioni?.Any() ?? false)
-                            {
-                                for (int j = 0; j < lDateVariazioni.Count; j++)
-                                {
-                                    DateTime dv = lDateVariazioni[j];
-
-                                    if (dv < Utility.DataFineStop())
+                                    foreach (var pmf in lpmf)
                                     {
-                                        DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
-
-                                        if (lDateVariazioni[j + 1] == Utility.DataFineStop())
+                                        if (pmf.DATAINIZIOVALIDITA < f.DATAINIZIOVALIDITA)
                                         {
-                                            dvSucc = lDateVariazioni[j + 1];
+                                            dtVar = f.DATAINIZIOVALIDITA;
+                                        }
+                                        else
+                                        {
+                                            dtVar = pmf.DATAINIZIOVALIDITA;
                                         }
 
-                                        using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                        if (!lDateVariazioni.Contains(dtVar))
                                         {
-
-                                            RptMaggiorazioniFigli rpts = new RptMaggiorazioniFigli()
-                                            {
-
-                                                DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
-                                                //DataFineValidita = Convert.ToDateTime(dvSucc).ToShortDateString(),
-                                                DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
-                                                IndennitaServizioPrimoSegretario = ci.IndennitaServizioPrimoSegretario,
-                                                PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli,
-                                                MaggiorazioniFigli = ci.MaggiorazioneFigli
-
-                                            };
-                                            rpt.Add(rpts);
+                                            lDateVariazioni.Add(dtVar);
                                         }
-
                                     }
+
                                 }
+
+                                #endregion
+
+                                #region Variazione Indennità Primo Segretario
+                                var lips =
+                                            f.INDENNITAPRIMOSEGRETARIO.Where(
+                                                a =>
+                                                    a.ANNULLATO == false &&
+                                                    a.DATAINIZIOVALIDITA <= f.DATAFINEVALIDITA &&
+                                                    a.DATAFINEVALIDITA >= f.DATAINIZIOVALIDITA)
+                                                .OrderBy(a => a.DATAINIZIOVALIDITA)
+                                                .ToList();
+
+                                if (lips?.Any() ?? false)
+                                {
+                                    foreach (var ips in lips)
+                                    {
+                                        if (ips.DATAINIZIOVALIDITA < f.DATAINIZIOVALIDITA)
+                                        {
+                                            dtVar = f.DATAINIZIOVALIDITA;
+                                        }
+                                        else
+                                        {
+                                            dtVar = ips.DATAINIZIOVALIDITA;
+                                        }
+
+                                        if (!lDateVariazioni.Contains(dtVar))
+                                        {
+                                            lDateVariazioni.Add(dtVar);
+                                        }
+                                    }
+
+
+                                }
+                                #endregion
+
+
                             }
-
-                            ReportViewer reportViewer = new ReportViewer();
-
-                            reportViewer.ProcessingMode = ProcessingMode.Local;
-                            reportViewer.SizeToReportContent = true;
-                            reportViewer.Width = Unit.Percentage(100);
-                            reportViewer.Height = Unit.Percentage(100);
-
-                            var datasource = new ReportDataSource("DataSetMaggiorazioniFigli");
-
-                            reportViewer.Visible = true;
-                            reportViewer.ProcessingMode = ProcessingMode.Local;
-
-                            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioniFigli.rdlc";
-                            reportViewer.LocalReport.DataSources.Clear();
-                            reportViewer.LocalReport.DataSources.Add(datasource);
-                            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetMaggiorazioniFigli", rpt));
-                            reportViewer.LocalReport.Refresh();
-
-                            List<ReportParameter> parameterValues = new List<ReportParameter>();
-                            parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
-                            parameterValues.Add(new ReportParameter("Livello", Livello));
-                            parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
-                            parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
-
-                            reportViewer.LocalReport.SetParameters(parameterValues);
-                            ViewBag.ReportViewer = reportViewer;
                         }
 
+
+                        #endregion
+
+                        DateTime dataFine;
+
+                        if (trasferimento.DATARIENTRO < Utility.DataFineStop())
+                        {
+                            dataFine = Utility.GetDtFineMese(trasferimento.DATARIENTRO);
+                        }
+                        else
+                        {
+                            dataFine = Utility.DataFineStop();
+                        }
+
+                        if (!lDateVariazioni.Contains(dataFine))
+                        {
+                            lDateVariazioni.Add(dataFine);
+                        }
+
+                        lDateVariazioni = lDateVariazioni.OrderBy(a => a.Year).ThenBy(a => a.Month).ThenBy(a => a.Day).ToList();
+
+                        if (lDateVariazioni?.Any() ?? false)
+                        {
+                            for (int j = 0; j < lDateVariazioni.Count; j++)
+                            {
+                                DateTime dv = lDateVariazioni[j];
+
+                                if (dv < dataFine)
+                                {
+                                    DateTime dvSucc = lDateVariazioni[(j + 1)].AddDays(-1);
+
+                                    if (lDateVariazioni[j + 1] == dataFine)
+                                    {
+                                        dvSucc = lDateVariazioni[j + 1];
+                                    }
+
+                                    using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
+                                    {
+
+                                        RptMaggiorazioniFigli rpts = new RptMaggiorazioniFigli()
+                                        {
+
+                                            DataInizioValidita = Convert.ToDateTime(dv).ToShortDateString(),
+                                            DataFineValidita = (dvSucc < Utility.DataFineStop()) ? Convert.ToDateTime(dvSucc).ToShortDateString() : null,
+                                            IndennitaServizioPrimoSegretario = ci.IndennitaServizioPrimoSegretario,
+                                            PercentualeMaggiorazioniFigli = ci.PercentualeMaggiorazioneFigli,
+                                            MaggiorazioniFigli = ci.MaggiorazioneFigli
+
+                                        };
+                                        rpt.Add(rpts);
+                                    }
+
+                                }
+                            }
+                        }
+
+                        ReportViewer reportViewer = new ReportViewer();
+
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        reportViewer.SizeToReportContent = true;
+                        reportViewer.Width = Unit.Percentage(100);
+                        reportViewer.Height = Unit.Percentage(100);
+
+                        var datasource = new ReportDataSource("DataSetMaggiorazioniFigli");
+
+                        reportViewer.Visible = true;
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+
+                        reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"/Report/RptMaggiorazioniFigli.rdlc";
+                        reportViewer.LocalReport.DataSources.Clear();
+                        reportViewer.LocalReport.DataSources.Add(datasource);
+                        reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSetMaggiorazioniFigli", rpt));
+                        reportViewer.LocalReport.Refresh();
+
+                        List<ReportParameter> parameterValues = new List<ReportParameter>();
+                        parameterValues.Add(new ReportParameter("Nominativo", Nominativo));
+                        parameterValues.Add(new ReportParameter("Livello", Livello));
+                        parameterValues.Add(new ReportParameter("Decorrenza", Decorrenza));
+                        parameterValues.Add(new ReportParameter("Ufficio", Ufficio));
+
+                        reportViewer.LocalReport.SetParameters(parameterValues);
+                        ViewBag.ReportViewer = reportViewer;
                     }
+
+
                 }
 
             }
