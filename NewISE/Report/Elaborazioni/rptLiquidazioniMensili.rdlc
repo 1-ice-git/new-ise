@@ -6,10 +6,10 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>3.51896cm</Width>
+              <Width>3.33375cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.42187cm</Width>
+              <Width>2.89812cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -85,6 +85,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
@@ -106,6 +107,7 @@
                             <TextRun>
                               <Value>=Fields!DataRiferimento.Value</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
                                 <Format>y</Format>
                               </Style>
                             </TextRun>
@@ -140,6 +142,8 @@
                             <TextRun>
                               <Value>=Fields!Importo.Value</Value>
                               <Style>
+                                <FontSize>9pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
                                 <Format>#,0.00</Format>
                                 <Language>it-IT</Language>
                               </Style>
@@ -178,7 +182,7 @@
           <TablixMembers>
             <TablixMember>
               <TablixHeader>
-                <Size>8.8791cm</Size>
+                <Size>6.34527cm</Size>
                 <CellContents>
                   <Textbox Name="Textbox1">
                     <CanGrow>true</CanGrow>
@@ -214,7 +218,7 @@
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>8.67172cm</Size>
+                    <Size>5.44271cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox3">
                         <CanGrow>true</CanGrow>
@@ -286,7 +290,7 @@
                       <TablixMembers>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>6.39427cm</Size>
+                            <Size>3.08081cm</Size>
                             <CellContents>
                               <Textbox Name="Textbox7">
                                 <CanGrow>true</CanGrow>
@@ -322,7 +326,7 @@
                           <TablixMembers>
                             <TablixMember>
                               <TablixHeader>
-                                <Size>5cm</Size>
+                                <Size>2.35417cm</Size>
                                 <CellContents>
                                   <Textbox Name="Textbox9">
                                     <CanGrow>true</CanGrow>
@@ -358,7 +362,7 @@
                               <TablixMembers>
                                 <TablixMember>
                                   <TablixHeader>
-                                    <Size>5.14521cm</Size>
+                                    <Size>2.52583cm</Size>
                                     <CellContents>
                                       <Textbox Name="Textbox11">
                                         <CanGrow>true</CanGrow>
@@ -392,19 +396,33 @@
                                     </CellContents>
                                   </TablixHeader>
                                   <TablixMembers>
-                                    <TablixMember />
+                                    <TablixMember>
+                                      <KeepWithGroup>After</KeepWithGroup>
+                                      <RepeatOnNewPage>true</RepeatOnNewPage>
+                                    </TablixMember>
                                   </TablixMembers>
+                                  <KeepWithGroup>After</KeepWithGroup>
+                                  <RepeatOnNewPage>true</RepeatOnNewPage>
                                 </TablixMember>
                               </TablixMembers>
+                              <KeepWithGroup>After</KeepWithGroup>
+                              <RepeatOnNewPage>true</RepeatOnNewPage>
                             </TablixMember>
                           </TablixMembers>
+                          <KeepWithGroup>After</KeepWithGroup>
+                          <RepeatOnNewPage>true</RepeatOnNewPage>
                         </TablixMember>
                       </TablixMembers>
+                      <KeepWithGroup>After</KeepWithGroup>
+                      <RepeatOnNewPage>true</RepeatOnNewPage>
                     </TablixMember>
                   </TablixMembers>
+                  <KeepWithGroup>After</KeepWithGroup>
+                  <RepeatOnNewPage>true</RepeatOnNewPage>
                 </TablixMember>
               </TablixMembers>
               <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
             </TablixMember>
             <TablixMember>
               <Group Name="Nominativo">
@@ -418,7 +436,7 @@
                 </SortExpression>
               </SortExpressions>
               <TablixHeader>
-                <Size>8.8791cm</Size>
+                <Size>6.34527cm</Size>
                 <CellContents>
                   <Textbox Name="Nominativo1">
                     <CanGrow>true</CanGrow>
@@ -428,7 +446,9 @@
                         <TextRuns>
                           <TextRun>
                             <Value>=Fields!Nominativo.Value</Value>
-                            <Style />
+                            <Style>
+                              <FontSize>9pt</FontSize>
+                            </Style>
                           </TextRun>
                         </TextRuns>
                         <Style />
@@ -461,7 +481,7 @@
                     </SortExpression>
                   </SortExpressions>
                   <TablixHeader>
-                    <Size>8.67172cm</Size>
+                    <Size>5.44271cm</Size>
                     <CellContents>
                       <Textbox Name="DescrizioneVoce1">
                         <CanGrow>true</CanGrow>
@@ -471,7 +491,9 @@
                             <TextRuns>
                               <TextRun>
                                 <Value>=Fields!DescrizioneVoce.Value</Value>
-                                <Style />
+                                <Style>
+                                  <FontSize>9pt</FontSize>
+                                </Style>
                               </TextRun>
                             </TextRuns>
                             <Style />
@@ -514,7 +536,9 @@
                                 <TextRuns>
                                   <TextRun>
                                     <Value>=Fields!Voce.Value</Value>
-                                    <Style />
+                                    <Style>
+                                      <FontSize>9pt</FontSize>
+                                    </Style>
                                   </TextRun>
                                 </TextRuns>
                                 <Style />
@@ -547,7 +571,7 @@
                             </SortExpression>
                           </SortExpressions>
                           <TablixHeader>
-                            <Size>6.39427cm</Size>
+                            <Size>3.08081cm</Size>
                             <CellContents>
                               <Textbox Name="Movimento1">
                                 <CanGrow>true</CanGrow>
@@ -557,7 +581,9 @@
                                     <TextRuns>
                                       <TextRun>
                                         <Value>=Fields!Movimento.Value</Value>
-                                        <Style />
+                                        <Style>
+                                          <FontSize>9pt</FontSize>
+                                        </Style>
                                       </TextRun>
                                     </TextRuns>
                                     <Style />
@@ -590,7 +616,7 @@
                                 </SortExpression>
                               </SortExpressions>
                               <TablixHeader>
-                                <Size>5cm</Size>
+                                <Size>2.35417cm</Size>
                                 <CellContents>
                                   <Textbox Name="Inserimento1">
                                     <CanGrow>true</CanGrow>
@@ -600,7 +626,9 @@
                                         <TextRuns>
                                           <TextRun>
                                             <Value>=Fields!Inserimento.Value</Value>
-                                            <Style />
+                                            <Style>
+                                              <FontSize>9pt</FontSize>
+                                            </Style>
                                           </TextRun>
                                         </TextRuns>
                                         <Style />
@@ -633,7 +661,7 @@
                                     </SortExpression>
                                   </SortExpressions>
                                   <TablixHeader>
-                                    <Size>5.14521cm</Size>
+                                    <Size>2.52583cm</Size>
                                     <CellContents>
                                       <Textbox Name="Liquidazione1">
                                         <CanGrow>true</CanGrow>
@@ -643,7 +671,9 @@
                                             <TextRuns>
                                               <TextRun>
                                                 <Value>=Fields!Liquidazione.Value</Value>
-                                                <Style />
+                                                <Style>
+                                                  <FontSize>9pt</FontSize>
+                                                </Style>
                                               </TextRun>
                                             </TextRuns>
                                             <Style />
@@ -681,16 +711,14 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <RepeatColumnHeaders>true</RepeatColumnHeaders>
         <RepeatRowHeaders>true</RepeatRowHeaders>
-        <FixedColumnHeaders>true</FixedColumnHeaders>
         <FixedRowHeaders>true</FixedRowHeaders>
         <KeepTogether>true</KeepTogether>
         <DataSetName>DataSet1</DataSetName>
         <Top>0.24137cm</Top>
         <Left>0.24849cm</Left>
         <Height>1.2cm</Height>
-        <Width>41.78175cm</Width>
+        <Width>27.73129cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -698,10 +726,14 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>0.70833in</Height>
-    <Style />
+    <Height>0.64583in</Height>
+    <Style>
+      <Border>
+        <Style>Solid</Style>
+      </Border>
+    </Style>
   </Body>
-  <Width>16.54734in</Width>
+  <Width>11.01566in</Width>
   <Page>
     <PageHeader>
       <Height>2.94633cm</Height>
@@ -806,7 +838,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>0.97896cm</Height>
+      <Height>1cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -947,9 +979,9 @@
       </Style>
     </PageFooter>
     <PageHeight>21cm</PageHeight>
-    <PageWidth>29.7cm</PageWidth>
-    <LeftMargin>1cm</LeftMargin>
-    <RightMargin>1cm</RightMargin>
+    <PageWidth>29.5cm</PageWidth>
+    <LeftMargin>0.5cm</LeftMargin>
+    <RightMargin>0.5cm</RightMargin>
     <TopMargin>0.5cm</TopMargin>
     <BottomMargin>0.5cm</BottomMargin>
     <ColumnSpacing>0.13cm</ColumnSpacing>
@@ -1056,6 +1088,7 @@ RSNWXKRjokVuo1M9Uzt80PGnYhvQ8qcZ3Zo1maubuL8xYneGGprdaNR5pgpafSKijUDTYY4I49dug37m
 k+knx+DOzXkxblLestrlOWueGaodjqdSaKsMkkY69/ZTrUL9Co0SjQAceEvybbCeZlpzYtNGVseI4hHUlR5qXCmQKd2nRTUU4jdR3u8U7dTr7rVJUSUtSlJKsdW0bBGI3BXIO1iuo3AHQkajUDTXjFOWOcuL7VU2S65s0q2yZdsiQ0Ii7RT3qzLJv2n5yhgGHQgjpx9xtd/y7pv2Z/8Ae4w/gHOvD9DR2yHNmknoYFVVE1AJHCLoAvaGTe2gGgLMx+vxXSK4T22vhtNWkFzeFxFI6doschUhHZNRvCtoSuo1A014xBl5nXiS11Vnrc2aSKhnQpIIaARM6MNGUusm8BgdCFZdR0PQnjkEqhyY5ixY5u6fZ6FWnPYw/ere3UklMPPfth5pff73qBp6deM1+aHlgzmv7Yqxry1XA4ldVWSpp7waaSYIAqdsIoBHIyqAodkMgUBd21VAtmMuXyizSkxFVZO3KpywFIqx2p7rJ2vlQ2ayyViRq7xHR9YQF98PO0Ghw/4TPLXClgocLYb5fpaLDlNF2cdNDWQJCqHXUBBSaHcSS5OpdizOSxJOeOP8jseyQXHKzJ2fC14epaSp+/mqKaRGU+ZDTbFSnO/RvatsYGqqgGmnGBLhg21Yptldj/DtTdsJp2nb0tPUeSSy6xOse2cI+zZKUdvNO5VKajdqMnudrILImlutNlry6V9HJXFDUSvdu3mlEe7s1aSaByETexCJtXViSCevGNfCRZVZjYdrsJY45ep7lh2p03wzV8RUlTqrqwpg8ciHqkkbK6HqrA8Zi3XAt6xZcLjlxhSosmE5Fj7KkmqWq3jYIokPbuAzB5AzKDqVBC6nT8V+jj0+yH5l6fifX2ev5gf/2Q==</ImageData>
     </EmbeddedImage>
   </EmbeddedImages>
+  <Language>it-IT</Language>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>880054ca-8ce9-43b2-8ad0-b9e14c06f6b6</rd:ReportID>
 </Report>
