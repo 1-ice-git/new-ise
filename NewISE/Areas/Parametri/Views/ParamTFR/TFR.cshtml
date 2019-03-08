@@ -53,16 +53,16 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                        @if (item.dataFineValidita != Utility.DataFineStop())
-                        {
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.dataFineValidita)
-                            </td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.tassoCambio)
                 </td>
@@ -102,7 +102,7 @@
 
 <script type="text/javascript">
     $('.display').DataTable({
-        "ordering":false,
+        //"ordering":false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -125,7 +125,22 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        }
+        },
+        "info": true,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 400,
+        "scrollCollapse": true,
+        "columnDefs": [
+                { "targets": [1, 2, 4], "type": 'date-euro' },
+                { "targets": [3], "type": 'numeric-comma' },
+                { "targets": [5, 6], "orderable": false },
+        ],
+        "order": [[1, "desc"]]
     });
 
     $("#idValuta").select2({
@@ -203,7 +218,7 @@
             return false;
         }
 
-         var chk = false;
+        var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;
         }
@@ -247,7 +262,7 @@
         var rotta = "/Parametri/ParamTFR/EliminaTFR";
 
         var idValuta = parseInt($("#idValuta").select2('val'));
-      
+
 
         if (isNaN(idValuta)) {
             $("#divPViewParametri").empty();

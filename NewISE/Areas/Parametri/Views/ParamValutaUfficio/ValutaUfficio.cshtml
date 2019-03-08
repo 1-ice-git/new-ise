@@ -29,15 +29,15 @@
     </div>
 </p>
 @*<p>
-    <div class="form-group">
-        @Html.Label("lblValuta00", "Seleziona Valuta", new { @class = "control-label" })
-        <div id="divCombo">
-            <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idValuta", ViewBag.ValutaList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPValutaUfficio();", @onClick = "PrelevaPValutaUfficio();" })
+        <div class="form-group">
+            @Html.Label("lblValuta00", "Seleziona Valuta", new { @class = "control-label" })
+            <div id="divCombo">
+                <div class="select2-container select2-container--classic">
+                    @Html.DropDownList("idValuta", ViewBag.ValutaList as IEnumerable<SelectListItem>, new { @class = "form-control select2 select2-select", @onchange = "PrelevaPValutaUfficio();", @onClick = "PrelevaPValutaUfficio();" })
+                </div>
             </div>
         </div>
-    </div>
-</p>*@
+    </p>*@
 
 <table id="tbParValutaUfficio" class="display" cellspacing="0">
     <thead>
@@ -52,8 +52,8 @@
                 @Html.DisplayNameFor(model => model.dataFineValidita)
             </th>
             <th class="text-center">
-                    @Html.DisplayNameFor(model => model.Valuta.descrizioneValuta)
-             </th>               
+                @Html.DisplayNameFor(model => model.Valuta.descrizioneValuta)
+            </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataAggiornamento)
             </th>
@@ -83,8 +83,8 @@
                 {
                     <td></td>
                 }
-               <td style="text-align:center;">
-                        @Html.DisplayFor(modelItem => item.Valuta.descrizioneValuta)
+                <td style="text-align:center;">
+                    @Html.DisplayFor(modelItem => item.Valuta.descrizioneValuta)
                 </td>
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataAggiornamento)
@@ -122,7 +122,7 @@
 
 <script type="text/javascript">
     $('.display').DataTable({
-        "ordering":false,
+        //"ordering":false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -145,7 +145,22 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        }
+        },
+        "info": true,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 400,
+        "scrollCollapse": true,
+        "columnDefs": [
+                { "targets": [0, 1, 3], "type": 'date-euro' },
+                //{ "targets": [3], "type": 'numeric-comma' },
+                { "targets": [4, 5], "orderable": false },
+        ],
+        "order": [[0, "desc"]]
     });
 
     $("#idValuta").select2({

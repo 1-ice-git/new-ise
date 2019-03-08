@@ -111,7 +111,7 @@
 
 <script type="text/javascript">
     $('.display').DataTable({
-        "ordering": false,
+        //"ordering": false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -134,7 +134,22 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        }
+        },
+        "info": true,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 400,
+        "scrollCollapse": true,
+        "columnDefs": [
+                { "targets": [1, 2], "type": 'date-euro' },
+                { "targets": [3], "type": 'numeric-comma' },
+                { "targets": [4, 5], "orderable": false },
+        ],
+        "order": [[1, "desc"]]
     });
 
     $("#idTipoContributo").select2({
