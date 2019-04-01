@@ -215,7 +215,8 @@ namespace NewISE.Controllers
                     }
 
                     ldescrizioneTipoDoc = r;
-                    ViewBag.ldescrizioneTipoDoc = ldescrizioneTipoDoc;
+
+                    ViewBag.ldescrizioneTipoDoc = ldescrizioneTipoDoc.OrderBy(a => a.Text).ToList();
                     if (idTipo > 0)
                     {
                         vdm.idTipoDocumento = idTipo;
@@ -261,9 +262,9 @@ namespace NewISE.Controllers
                             {
                                 using (dtTrasferimento dtt = new dtTrasferimento())
                                 {
-                                    var r = new List<SelectListItem>();
+                                    //var r = new List<SelectListItem>();
 
-                                    List<SelectListItem> lValute = new List<SelectListItem>();
+                                    //List<SelectListItem> lValute = new List<SelectListItem>();
 
                                     CanoneMABViewModel cmabvm = new CanoneMABViewModel();
 
