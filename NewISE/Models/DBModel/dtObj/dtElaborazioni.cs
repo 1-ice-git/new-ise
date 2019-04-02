@@ -3744,8 +3744,7 @@ namespace NewISE.Models.DBModel.dtObj
         /// <param name="idAttivitaAnticipi">The idAttivitaAnticipi<see cref="decimal"/></param>
         /// <param name="db">The db<see cref="ModelDBISE"/></param>
         /// <param name="MeseAnnoElabmaealb">The MeseAnnoElabmaealb<see cref="MESEANNOELABORAZIONE"/></param>
-        public void InviaAnticipoPrimaSistemazione(decimal idAttivitaAnticipi, ModelDBISE db,
-            MESEANNOELABORAZIONE MeseAnnoElabmaealb = null)
+        public void InviaAnticipoPrimaSistemazione(decimal idAttivitaAnticipi, ModelDBISE db, MESEANNOELABORAZIONE MeseAnnoElabmaealb = null)
         {
             try
             {
@@ -6822,13 +6821,21 @@ namespace NewISE.Models.DBModel.dtObj
             {
                 var aliqIse = dtai.GetAliquotaIse(matricola, imponibileFiscale);
 
-                outAliqIse = aliqIse.Aliquota;
+                if (aliqIse.Aliquota > 0)
+                {
+                    outAliqIse = aliqIse.Aliquota;
 
-                var RitenutaIperf = (ImponibilePrevidenziale - RitenutePrevidenziali) * aliqIse.Aliquota / 100;
+                    var RitenutaIperf = (ImponibilePrevidenziale - RitenutePrevidenziali) * aliqIse.Aliquota / 100;
 
-                var Netto = imponibileLordo - RitenutePrevidenziali - RitenutaIperf;
+                    var Netto = imponibileLordo - RitenutePrevidenziali - RitenutaIperf;
 
-                ret = Netto;
+                    ret = Netto;
+                }
+                else
+                {
+                    throw new Exception("Errore: Aliquota ISE risulta valorizzata a zero.");
+                }
+
             }
 
             return ret;
