@@ -1120,9 +1120,6 @@
           <Property Name="CTB_IMPORTO" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="CTB_IMPORTO_RIF" Type="number" Precision="18" Scale="8" Nullable="false" />
           <Property Name="CTB_OPER_99" Type="varchar2" MaxLength="2" Nullable="false" />
-          <Property Name="CTB_DTINI_MAB" Type="date" />
-          <Property Name="CTB_DTFIN_MAB" Type="date" />
-          <Property Name="CTB_GIORNI_MAB" Type="number" Precision="4" Scale="0" />
         </EntityType>
         <EntityType Name="PAGATOCONDIVISOMAB">
           <Key>
@@ -1603,7 +1600,7 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
             <PropertyRef Name="IDTIPODOCUMENTO" />
           </Key>
           <Property Name="IDTIPODOCUMENTO" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="DESCRIZIONE" Type="varchar2" MaxLength="250" Nullable="false" />
         </EntityType>
         <EntityType Name="TIPOLIQUIDAZIONE">
           <Key>
@@ -6969,6 +6966,14 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
     <edmx:ConceptualModels>
       <Schema Namespace="DBISE" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ModelDBISE" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="ALLINEA">
+            <Parameter Name="AVVIO" Mode="In" Type="DateTime" />
+            <Parameter Name="EMAIL" Mode="In" Type="String" />
+            <Parameter Name="WRK" Mode="Out" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="ANNULLA_ALLINEA">
+          <Parameter Name="WRK" Mode="Out" Type="String" />
+          </FunctionImport>
           <EntitySet Name="ACCESSI" EntityType="DBISE.ACCESSI" />
           <EntitySet Name="ALIQUOTECONTRIBUTIVE" EntityType="DBISE.ALIQUOTECONTRIBUTIVE" />
           <EntitySet Name="ALTRIDATIFAM" EntityType="DBISE.ALTRIDATIFAM" />
@@ -7968,14 +7973,6 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
             <End Role="DOCUMENTI" EntitySet="DOCUMENTI" />
             <End Role="TITOLIVIAGGIORICHIEDENTE" EntitySet="TITOLIVIAGGIORICHIEDENTE" />
           </AssociationSet>
-          <FunctionImport Name="ALLINEA">
-            <Parameter Name="AVVIO" Mode="In" Type="DateTime" />
-            <Parameter Name="EMAIL" Mode="In" Type="String" />
-            <Parameter Name="WRK" Mode="Out" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="ANNULLA_ALLINEA">
-            <Parameter Name="WRK" Mode="Out" Type="String" />
-          </FunctionImport>
         </EntityContainer>
         <EntityType Name="ACCESSI">
           <Key>
@@ -9004,9 +9001,6 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
           <Property Name="CTB_IMPORTO" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="CTB_IMPORTO_RIF" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
           <Property Name="CTB_OPER_99" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="CTB_DTINI_MAB" Type="DateTime" Precision="0" />
-          <Property Name="CTB_DTFIN_MAB" Type="DateTime" Precision="0" />
-          <Property Name="CTB_GIORNI_MAB" Type="Int16" />
           <NavigationProperty Name="TEORICI" Relationship="DBISE.R_T_OA" FromRole="OA" ToRole="TEORICI" />
         </EntityType>
         <EntityType Name="PAGATOCONDIVISOMAB">
@@ -9493,7 +9487,7 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
             <PropertyRef Name="IDTIPODOCUMENTO" />
           </Key>
           <Property Name="IDTIPODOCUMENTO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
-          <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIZIONE" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="DOCUMENTI" Relationship="DBISE.R_TD_D" FromRole="TIPODOCUMENTI" ToRole="DOCUMENTI" />
         </EntityType>
         <EntityType Name="TIPOLIQUIDAZIONE">
@@ -12245,6 +12239,8 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="DBISEStoreContainer" CdmEntityContainer="ModelDBISE">
+          <FunctionImportMapping FunctionImportName="ALLINEA" FunctionName="DBISE.Store.ALLINEA" />
+          <FunctionImportMapping FunctionImportName="ANNULLA_ALLINEA" FunctionName="DBISE.Store.ANNULLA_ALLINEA" />
           <EntitySetMapping Name="ACCESSI">
             <EntityTypeMapping TypeName="DBISE.ACCESSI">
               <MappingFragment StoreEntitySet="ACCESSI">
@@ -13058,9 +13054,6 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
           <EntitySetMapping Name="OA">
             <EntityTypeMapping TypeName="DBISE.OA">
               <MappingFragment StoreEntitySet="OA">
-                <ScalarProperty Name="CTB_GIORNI_MAB" ColumnName="CTB_GIORNI_MAB" />
-                <ScalarProperty Name="CTB_DTFIN_MAB" ColumnName="CTB_DTFIN_MAB" />
-                <ScalarProperty Name="CTB_DTINI_MAB" ColumnName="CTB_DTINI_MAB" />
                 <ScalarProperty Name="CTB_OPER_99" ColumnName="CTB_OPER_99" />
                 <ScalarProperty Name="CTB_IMPORTO_RIF" ColumnName="CTB_IMPORTO_RIF" />
                 <ScalarProperty Name="CTB_IMPORTO" ColumnName="CTB_IMPORTO" />
@@ -14133,8 +14126,6 @@ warning 6013: The table/view 'ISEPRO.PRIMO_CAR' does not have a primary key defi
               <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
             </EndProperty>
           </AssociationSetMapping>
-          <FunctionImportMapping FunctionImportName="ALLINEA" FunctionName="DBISE.Store.ALLINEA" />
-          <FunctionImportMapping FunctionImportName="ANNULLA_ALLINEA" FunctionName="DBISE.Store.ANNULLA_ALLINEA" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

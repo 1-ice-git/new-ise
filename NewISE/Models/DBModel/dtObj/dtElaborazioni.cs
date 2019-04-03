@@ -1834,8 +1834,7 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 if (j > 0)
                                 {
-                                    EmailElaborazione.EmailInviiDirettiPrimaSistemazione(trasferimento.IDTRASFERIMENTO,
-                                        db);
+                                    EmailElaborazione.EmailInviiDirettiPrimaSistemazione(trasferimento.IDTRASFERIMENTO, db);
                                 }
                             }
                         }
@@ -4424,7 +4423,8 @@ namespace NewISE.Models.DBModel.dtObj
 
                     if (t.ELABORATO == false)
                     {
-                        this.InserimentoAnticipoPrimaSistemazioneCedolino(t, meseAnnoElaborazione, db);
+                        //this.InserimentoAnticipoPrimaSistemazioneCedolino(t, meseAnnoElaborazione, db);
+                        this.InserimentoAnticipoPrimaSistemazioneCedolino_2(t, meseAnnoElaborazione, db);
 
                         #region Commentato
 
@@ -6782,7 +6782,7 @@ namespace NewISE.Models.DBModel.dtObj
         /// <returns></returns>
         private decimal NettoPrimaSistemazione(int matricola, decimal imponibileLordo, decimal aliqPrev,
             decimal detrazioni, decimal detrazioniUsufruite, ContributoAggiuntivo ca, out decimal outAliqIse,
-            out decimal detrazioneApplicate)
+            out decimal detrazioneApplicate, decimal oldAliqISE = 0)
         {
             decimal ret = 0;
             decimal ImponibilePrevidenziale = 0;
@@ -6825,7 +6825,7 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     outAliqIse = aliqIse.Aliquota;
 
-                    var RitenutaIperf = (ImponibilePrevidenziale - RitenutePrevidenziali) * aliqIse.Aliquota / 100;
+                    var RitenutaIperf = (ImponibilePrevidenziale - RitenutePrevidenziali) * (oldAliqISE > 0 ? oldAliqISE / 100 : aliqIse.Aliquota / 100);
 
                     var Netto = imponibileLordo - RitenutePrevidenziali - RitenutaIperf;
 
@@ -10415,7 +10415,185 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
         /// <summary>
-        /// The InserimentoAnticipoPrimaSistemazioneCedolino
+        /// InserimentoAnticipoPrimaSistemazioneCedolino_2
+        /// </summary>
+        /// <param name="teorici"></param>
+        /// <param name="meseAnnoElaborazione"></param>
+        /// <param name="db"></param>
+        private void InserimentoAnticipoPrimaSistemazioneCedolino_2(TEORICI teorici, MESEANNOELABORAZIONE meseAnnoElaborazione, ModelDBISE db)
+        {
+            decimal outMaggiorazioniFamiliari = 0;
+
+            decimal annoMeseElab =
+                Convert.ToDecimal(meseAnnoElaborazione.ANNO.ToString() + meseAnnoElaborazione.MESE.ToString());
+
+            var eis = teorici.ELABINDSISTEMAZIONE;
+            var primaSistemazione = eis.PRIMASITEMAZIONE;
+            var trasferimento = primaSistemazione.TRASFERIMENTO;
+
+            decimal annoMeseTrasf =
+                Convert.ToDecimal(trasferimento.DATAPARTENZA.Year.ToString() +
+                                  trasferimento.DATAPARTENZA.Month.ToString());
+
+            bool elaborazionePaghe = false;
+
+            elaborazionePaghe =
+                eis.TEORICI.Any(
+                    a =>
+                        a.ANNULLATO == false && a.DIRETTO == false && a.INSERIMENTOMANUALE == false &&
+                        a.ELABORATO == true && a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe);
+
+            if (elaborazionePaghe)
+            {
+                return;
+            }
+
+            var teoriciOLD =
+                eis.TEORICI.Where(
+                    a =>
+                        a.ANNULLATO == false && a.DIRETTO == false && a.INSERIMENTOMANUALE == false &&
+                        a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe && a.ELABORATO == false &&
+                        !a.FLUSSICEDOLINO.IfNotNull(b => b.IDTEORICI > 0)).ToList();
+
+            if (teoriciOLD?.Any() ?? false)
+            {
+                foreach (var teoricoOld in teoriciOLD)
+                {
+                    teoricoOld.ANNULLATO = true;
+                }
+
+                db.SaveChanges();
+
+            }
+
+            //decimal indPsAnticipabileLorda = 0;
+            //decimal indPsLorda = 0;
+
+            //CalcoliIndennita.ElaboraPrimaSistemazione(eis.INDENNITABASE,
+            //    eis.COEFFICENTESEDE, eis.PERCENTUALEDISAGIO, eis.PERCENTUALERIDUZIONE,
+            //    eis.COEFFICENTEINDSIST, eis.PERCENTUALEMAGCONIUGE, eis.PENSIONECONIUGE,
+            //    eis.ELABDATIFIGLI, out indPsAnticipabileLorda, out indPsLorda, out outMaggiorazioniFamiliari);
+
+            //decimal ImportoAnticipoLordo = indPsAnticipabileLorda * (eis.PERCANTSALDOUNISOL / 100);
+
+            //var dip = trasferimento.DIPENDENTI;
+            decimal outAliqIse = teorici.ALIQUOTAFISCALE;
+            decimal detrazioniApplicate = teorici.DETRAZIONIAPPLICATE;
+            decimal importoNetto = teorici.IMPORTO;
+            decimal importoLordo = teorici.IMPORTOLORDO;
+
+
+            EnumTipoMovimento tipoMov;
+
+            if (annoMeseTrasf < annoMeseElab)
+            {
+                tipoMov = EnumTipoMovimento.Conguaglio_C;
+            }
+            else
+            {
+                tipoMov = EnumTipoMovimento.MeseCorrente_M;
+            }
+
+
+            TEORICI teoriciLordo = new TEORICI()
+            {
+                IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
+                IDINDSISTLORDA = eis.IDINDSISTLORDA,
+                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Lorda_086_380,
+                IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
+                ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
+                ALIQUOTAFISCALE = 0,
+                DETRAZIONIAPPLICATE = 0,
+                CONTRIBUTOAGGIUNTIVO = 0,
+                MASSIMALECA = 0,
+                IMPORTO = importoLordo,
+                IMPORTOLORDO = 0,
+                DATAOPERAZIONE = DateTime.Now,
+                ANNULLATO = false,
+                GIORNI = 0
+            };
+
+            eis.TEORICI.Add(teoriciLordo);
+
+            int j = db.SaveChanges();
+
+            if (j <= 0)
+            {
+                throw new Exception(
+                    "Errore nella fase d'inderimento del lordo a cedolino per la prima sistemazione (086-380).");
+            }
+
+
+            TEORICI teoriciNetto = new TEORICI()
+            {
+                IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
+                IDINDSISTLORDA = eis.IDINDSISTLORDA,
+                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                IDVOCI = (decimal)EnumVociCedolino.Sistemazione_Richiamo_Netto_086_383,
+                IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
+                ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
+                ALIQUOTAFISCALE = outAliqIse,
+                DETRAZIONIAPPLICATE = detrazioniApplicate,
+                CONTRIBUTOAGGIUNTIVO = teorici.CONTRIBUTOAGGIUNTIVO,
+                MASSIMALECA = teorici.MASSIMALECA,
+                IMPORTO = importoNetto,
+                IMPORTOLORDO = importoLordo,
+                DATAOPERAZIONE = DateTime.Now,
+                ANNULLATO = false,
+                GIORNI = 0
+            };
+
+            eis.TEORICI.Add(teoriciNetto);
+
+            int k = db.SaveChanges();
+
+            if (k <= 0)
+            {
+                throw new Exception(
+                    "Errore nella fase d'inderimento del netto a cedolino per la prima sistemazione (086-383).");
+            }
+
+
+            TEORICI teoriciDetrazioni = new TEORICI()
+            {
+                IDTRASFERIMENTO = trasferimento.IDTRASFERIMENTO,
+                IDINDSISTLORDA = eis.IDINDSISTLORDA,
+                IDTIPOMOVIMENTO = (decimal)tipoMov,
+                IDVOCI = (decimal)EnumVociCedolino.Detrazione_086_384,
+                IDMESEANNOELAB = meseAnnoElaborazione.IDMESEANNOELAB,
+                MESERIFERIMENTO = trasferimento.DATAPARTENZA.Month,
+                ANNORIFERIMENTO = trasferimento.DATAPARTENZA.Year,
+                ALIQUOTAFISCALE = 0,
+                DETRAZIONIAPPLICATE = 0,
+                CONTRIBUTOAGGIUNTIVO = 0,
+                MASSIMALECA = 0,
+                IMPORTO = detrazioniApplicate,
+                IMPORTOLORDO = 0,
+                DATAOPERAZIONE = DateTime.Now,
+                ANNULLATO = false,
+                GIORNI = 0
+            };
+
+            eis.TEORICI.Add(teoriciDetrazioni);
+
+            int y = db.SaveChanges();
+
+            if (y <= 0)
+            {
+                throw new Exception(
+                    "Errore nella fase d'inderimento della detrazione a cedolino per la prima sistemazione (086-384).");
+            }
+
+
+        }
+
+
+
+        /// <summary>
+        /// The InserimentoAnticipoPrimaSistemazioneCedolino ---Deprecata---
         /// </summary>
         /// <param name="teorici">The teorici<see cref="TEORICI"/></param>
         /// <param name="meseAnnoElaborazione">The meseAnnoElaborazione<see cref="MESEANNOELABORAZIONE"/></param>
@@ -10442,6 +10620,7 @@ namespace NewISE.Models.DBModel.dtObj
                     a =>
                         a.ANNULLATO == false && a.DIRETTO == false && a.INSERIMENTOMANUALE == false &&
                         a.ELABORATO == true && a.VOCI.IDTIPOLIQUIDAZIONE == (decimal)EnumTipoLiquidazione.Paghe);
+
             if (elaborazionePaghe)
             {
                 return;
@@ -10460,8 +10639,6 @@ namespace NewISE.Models.DBModel.dtObj
                 {
                     teoricoOld.ANNULLATO = true;
                 }
-
-
 
                 db.SaveChanges();
 
