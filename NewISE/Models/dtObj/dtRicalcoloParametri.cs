@@ -48,6 +48,7 @@ namespace NewISE.Models.dtObj
                             tfr.CANONEMAB.Add(cmab);
 
                             var t = cmab.ATTIVAZIONEMAB.MAB.INDENNITA.TRASFERIMENTO;
+
                             using (dtDipendenti dtd = new dtDipendenti())
                             {
                                 dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
@@ -88,7 +89,7 @@ namespace NewISE.Models.dtObj
                     var lcir =
                         db.COEFFICIENTEINDRICHIAMO.Where(
                             a =>
-                                a.ANNULLATO == false && 
+                                a.ANNULLATO == false &&
                                 a.DATAFINEVALIDITA >= riduzioni.DATAINIZIOVALIDITA &&
                                 a.DATAINIZIOVALIDITA <= riduzioni.DATAFINEVALIDITA)
                             .OrderBy(a => a.DATAINIZIOVALIDITA)
@@ -104,8 +105,8 @@ namespace NewISE.Models.dtObj
                             var nConta =
                                 riduzioni.COEFFICIENTEINDRICHIAMO
                                     .Count(
-                                            a => 
-                                                a.ANNULLATO == false && 
+                                            a =>
+                                                a.ANNULLATO == false &&
                                                 a.IDCOEFINDRICHIAMO == cir.IDCOEFINDRICHIAMO);
 
                             if (nConta <= 0)
@@ -164,10 +165,10 @@ namespace NewISE.Models.dtObj
                             a.IDTIPOLOGIACONIUGE == pmc.IDTIPOLOGIACONIUGE &&
                             a.ATTIVAZIONIMAGFAM.Where(
                                 b =>
-                                    b.ANNULLATO == false && 
+                                    b.ANNULLATO == false &&
                                     b.RICHIESTAATTIVAZIONE == true &&
                                     b.ATTIVAZIONEMAGFAM == true)
-                                .Any() && 
+                                .Any() &&
                             a.DATAFINEVALIDITA >= pmc.DATAINIZIOVALIDITA &&
                             a.DATAINIZIOVALIDITA <= pmc.DATAFINEVALIDITA)
                         .OrderBy(a => a.DATAINIZIOVALIDITA)
@@ -182,7 +183,7 @@ namespace NewISE.Models.dtObj
                     {
                         var nConta =
                             pmc.CONIUGE.Count(
-                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && 
+                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                 a.IDCONIUGE == c.IDCONIUGE);
 
                         if (nConta <= 0)
@@ -246,7 +247,7 @@ namespace NewISE.Models.dtObj
                     {
                         var nConta =
                             pmf.FIGLI.Count(
-                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && 
+                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                 a.IDFIGLI == f.IDFIGLI);
                         if (nConta <= 0)
                         {
@@ -304,7 +305,7 @@ namespace NewISE.Models.dtObj
                     {
                         var nConta =
                             ips.FIGLI.Count(
-                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato && 
+                                a => a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
                                 a.IDFIGLI == f.IDFIGLI);
 
                         if (nConta <= 0)
@@ -349,7 +350,7 @@ namespace NewISE.Models.dtObj
                         a =>
                             a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
                             a.IDUFFICIO == pd.IDUFFICIO &&
-                            a.DATARIENTRO >= pd.DATAINIZIOVALIDITA && 
+                            a.DATARIENTRO >= pd.DATAINIZIOVALIDITA &&
                             a.DATAPARTENZA <= pd.DATAFINEVALIDITA)
                         .OrderBy(a => a.DATAPARTENZA)
                         .ToList();
@@ -403,7 +404,7 @@ namespace NewISE.Models.dtObj
                     db.TRASFERIMENTO.Where(
                         a =>
                             a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-                            a.DATARIENTRO >= ib.DATAINIZIOVALIDITA && 
+                            a.DATARIENTRO >= ib.DATAINIZIOVALIDITA &&
                             a.DATAPARTENZA <= ib.DATAFINEVALIDITA &&
                             a.INDENNITA.LIVELLIDIPENDENTI.Any(
                                 b =>
@@ -439,7 +440,7 @@ namespace NewISE.Models.dtObj
                                 using (dtDipendenti dtd = new dtDipendenti())
                                 {
                                     dtd.DataInizioRicalcoliDipendente(t.IDTRASFERIMENTO, dataVariazione, db);
-                                }                            
+                                }
                             }
                         }
                     }
@@ -475,7 +476,7 @@ namespace NewISE.Models.dtObj
                     var lib =
                         db.INDENNITABASE.Where(
                             a =>
-                                a.ANNULLATO == false && 
+                                a.ANNULLATO == false &&
                                 a.DATAFINEVALIDITA >= r.DATAINIZIOVALIDITA &&
                                 a.DATAINIZIOVALIDITA <= r.DATAFINEVALIDITA)
                             .OrderBy(a => a.DATAINIZIOVALIDITA)
@@ -617,7 +618,7 @@ namespace NewISE.Models.dtObj
                         a =>
                             a.IDUFFICIO == cs.IDUFFICIO &&
                             a.IDSTATOTRASFERIMENTO != (decimal)EnumStatoTraferimento.Annullato &&
-                            a.DATARIENTRO >= cs.DATAINIZIOVALIDITA && 
+                            a.DATARIENTRO >= cs.DATAINIZIOVALIDITA &&
                             a.DATAPARTENZA <= cs.DATAFINEVALIDITA)
                         .OrderBy(a => a.DATAPARTENZA)
                         .ToList();
@@ -923,7 +924,7 @@ namespace NewISE.Models.dtObj
                     db.PAGATOCONDIVISOMAB.Where(
                         a =>
                             a.IDSTATORECORD == (decimal)EnumStatoRecord.Attivato &&
-                            a.DATAFINEVALIDITA >= pc.DATAINIZIOVALIDITA && 
+                            a.DATAFINEVALIDITA >= pc.DATAINIZIOVALIDITA &&
                             a.DATAINIZIOVALIDITA <= pc.DATAFINEVALIDITA)
                         .OrderBy(a => a.DATAINIZIOVALIDITA)
                         .ToList();
@@ -1296,7 +1297,7 @@ namespace NewISE.Models.dtObj
                         pfkm.RICHIAMO.Count(
                             a =>
                                 a.ANNULLATO == false &&
-                                a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato && 
+                                a.TRASFERIMENTO.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato &&
                                 a.IDRICHIAMO == r.IDRICHIAMO);
 
                     if (nConta <= 0)
@@ -1392,7 +1393,7 @@ namespace NewISE.Models.dtObj
             var lr =
                 db.RIDUZIONI.Where(
                     a =>
-                        a.ANNULLATO == false && 
+                        a.ANNULLATO == false &&
                         a.DATAFINEVALIDITA >= cr.DATAINIZIOVALIDITA &&
                         a.DATAINIZIOVALIDITA <= cr.DATAFINEVALIDITA &&
                         a.IDFUNZIONERIDUZIONE == (decimal)EnumFunzioniRiduzione.Coefficente_Richiamo)
@@ -1407,8 +1408,8 @@ namespace NewISE.Models.dtObj
                 foreach (var r in lr)
                 {
                     var nConta = cr.RIDUZIONI
-                            .Count(a => 
-                                        a.ANNULLATO == false && 
+                            .Count(a =>
+                                        a.ANNULLATO == false &&
                                         a.IDRIDUZIONI == r.IDRIDUZIONI);
 
                     if (nConta <= 0)
@@ -1451,7 +1452,7 @@ namespace NewISE.Models.dtObj
             var lr =
                 db.RIDUZIONI.Where(
                     a =>
-                        a.ANNULLATO == false && 
+                        a.ANNULLATO == false &&
                         a.DATAFINEVALIDITA >= indSist.DATAINIZIOVALIDITA &&
                         a.DATAINIZIOVALIDITA <= indSist.DATAFINEVALIDITA &&
                         a.IDFUNZIONERIDUZIONE == (decimal)EnumFunzioniRiduzione.Indennita_Sistemazione)

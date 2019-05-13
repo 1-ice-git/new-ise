@@ -567,34 +567,35 @@ namespace NewISE.Models.DBModel.dtObj
             try
             {
 
-                dtIniRicalcoli = Utility.GetDataInizioMese(dtIniRicalcoli);
+                DateTime dtIniRicalcoliLav = Utility.GetDataInizioMese(dtIniRicalcoli);
 
                 var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
-                var d = t.DIPENDENTI;
-
-                if (d.DATAINIZIORICALCOLI > dtIniRicalcoli)
+                if (t.DATAPARTENZA <= dtIniRicalcoli && t.DATARIENTRO >= dtIniRicalcoli)
                 {
-                    d.DATAINIZIORICALCOLI = dtIniRicalcoli;
-                }
+                    var d = t.DIPENDENTI;
 
-                d.RICALCOLARE = true;
-
-                if (saveDb)
-                {
-                    int i = db.SaveChanges();
-
-                    if (d.DATAINIZIORICALCOLI > dtIniRicalcoli)
+                    if (d.DATAINIZIORICALCOLI > dtIniRicalcoliLav)
                     {
-                        if (i <= 0)
-                        {
-                            throw new Exception("Impossibile aggiornare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
-                        }
+                        d.DATAINIZIORICALCOLI = dtIniRicalcoliLav;
                     }
 
+                    d.RICALCOLARE = true;
+
+                    if (saveDb)
+                    {
+                        int i = db.SaveChanges();
+
+                        if (d.DATAINIZIORICALCOLI > dtIniRicalcoliLav)
+                        {
+                            if (i <= 0)
+                            {
+                                throw new Exception("Impossibile aggiornare la data di inizio ricalcoli per il dipendente " + d.COGNOME + " " + d.NOME + "(" + d.MATRICOLA + ")");
+                            }
+                        }
+
+                    }
                 }
-
-
             }
             catch (Exception ex)
             {

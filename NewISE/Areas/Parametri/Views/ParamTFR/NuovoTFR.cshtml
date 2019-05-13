@@ -59,16 +59,14 @@
                 @Html.ValidationMessageFor(model => model.tassoCambio, "", new { @class = "text-danger" })
             </div>
             <div id="divChkAgg" class="col-xs-5">
-                <div style="display:inline-block;">
-                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick="AggiornaTutto()" />
+                <div style="display: inline-block;">
+                    <input type="checkbox" id="aggiornaTuttoX" name="aggiornaTuttoX" onclick=" AggiornaTutto() " />
                 </div>
-                <div style="vertical-align:middle; display:inline-block;">
+                <div style="vertical-align: middle; display: inline-block;">
                     <label>Aggiorna tutto</label>
                 </div>
             </div>
         </div>
-
-
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -87,8 +85,6 @@
 <script type="text/javascript">
     Globalize.culture("it-IT");
 
-
-
     anElement = new AutoNumeric('#tassoCambioUI', autoNumericOptionsEuroOttoDec);
 
     $("#tassoCambioUI").blur(function () {
@@ -96,8 +92,6 @@
         var val = anElement.getNumber();
         $("#tassoCambio").val(val.toString().replace(".", ","));
     });
-
-
 
     $.validator.methods.number = function (value, element) {
         //debugger;
