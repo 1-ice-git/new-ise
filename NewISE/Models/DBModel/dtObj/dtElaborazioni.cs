@@ -5072,6 +5072,11 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     dataFineElaborazione = dataFineTrasferimento;
                                 }
+
+                                if (dataFineElaborazione > periodoMab.DATAFINEMAB)
+                                {
+                                    dataFineElaborazione = periodoMab.DATAFINEMAB;
+                                }
                             }
 
                             decimal progMax =

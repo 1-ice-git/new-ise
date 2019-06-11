@@ -230,7 +230,6 @@ namespace NewISE.Controllers
                 using (dtElaborazioni dte = new dtElaborazioni())
                 {
                     ledcm = dte.PrelevaDipendentiDaElaborare(idMeseAnnoElaborato).ToList();
-
                 }
             }
             catch (Exception ex)
