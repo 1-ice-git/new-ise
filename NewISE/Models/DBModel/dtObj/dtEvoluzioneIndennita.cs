@@ -2612,8 +2612,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     xx.dataFineValidita = trasferimento.DATARIENTRO;
                                     //xx.dtRientro = DataRichiamo.ToString();
                                     xx.IndennitaBase = ci.IndennitaDiBase;
-                                    xx.MaggiorazioneConiuge = ci.MaggiorazioneConiuge;
-                                    xx.MaggiorazioniFigli = ci.MaggiorazioneFigli;
+                                    xx.MaggiorazioneConiuge = ci.MaggiorazioneConiugeRichiamo;
+                                    xx.MaggiorazioniFigli = ci.MaggiorazioneFigliRichiamo;
                                     xx.IndennitaRichiamo = ci.IndennitaRichiamoLordo;
                                     xx.CoeffIndennitadiRichiamo = ci.CoefficenteIndennitaRichiamo;
                                     xx.CoeffMaggIndennitadiRichiamo = ci.CoefficenteMaggiorazioneRichiamo;
