@@ -1022,19 +1022,24 @@ namespace NewISE.Models.DBModel.dtObj
                             if (lpmf?.Any() ?? false)
                             {
 
-                                if (f.DATAINIZIOVALIDITA < f.DATAINIZIOVALIDITA)
+                                foreach (var pmf in lpmf)
                                 {
-                                    dtVar = f.DATAINIZIOVALIDITA;
-                                }
-                                else
-                                {
-                                    dtVar = f.DATAINIZIOVALIDITA;
+                                    if (pmf.DATAINIZIOVALIDITA < f.DATAINIZIOVALIDITA)
+                                    {
+                                        dtVar = f.DATAINIZIOVALIDITA;
+                                    }
+                                    else
+                                    {
+                                        dtVar = pmf.DATAINIZIOVALIDITA;
+                                    }
+
+                                    if (!lDateVariazioni.Contains(dtVar))
+                                    {
+                                        lDateVariazioni.Add(dtVar);
+                                    }
                                 }
 
-                                if (!lDateVariazioni.Contains(dtVar))
-                                {
-                                    lDateVariazioni.Add(dtVar);
-                                }
+
                             }
 
                             var lips =
@@ -1046,19 +1051,52 @@ namespace NewISE.Models.DBModel.dtObj
                                     .ToList();
                             if (lips?.Any() ?? false)
                             {
-                                if (f.DATAINIZIOVALIDITA < f.DATAINIZIOVALIDITA)
+
+                                foreach (var ips in lips)
                                 {
-                                    dtVar = f.DATAINIZIOVALIDITA;
-                                }
-                                else
-                                {
-                                    dtVar = f.DATAINIZIOVALIDITA;
+                                    if (ips.DATAINIZIOVALIDITA < f.DATAINIZIOVALIDITA)
+                                    {
+                                        dtVar = f.DATAINIZIOVALIDITA;
+                                    }
+                                    else
+                                    {
+                                        dtVar = ips.DATAINIZIOVALIDITA;
+                                    }
+
+                                    if (!lDateVariazioni.Contains(dtVar))
+                                    {
+                                        lDateVariazioni.Add(dtVar);
+                                    }
                                 }
 
-                                if (!lDateVariazioni.Contains(dtVar))
+                            }
+
+                            var lcs =
+                                db.COEFFICIENTESEDE.Where(
+                                    a =>
+                                        a.ANNULLATO == false && a.DATAINIZIOVALIDITA <= f.DATAFINEVALIDITA &&
+                                        a.DATAFINEVALIDITA >= f.DATAINIZIOVALIDITA && a.IDUFFICIO == trasferimento.IDUFFICIO)
+                                    .OrderBy(a => a.DATAINIZIOVALIDITA)
+                                    .ToList();
+                            if (lcs?.Any() ?? false)
+                            {
+                                foreach (var cs in lcs)
                                 {
-                                    lDateVariazioni.Add(dtVar);
+                                    if (cs.DATAINIZIOVALIDITA < f.DATAINIZIOVALIDITA)
+                                    {
+                                        dtVar = f.DATAINIZIOVALIDITA;
+                                    }
+                                    else
+                                    {
+                                        dtVar = cs.DATAINIZIOVALIDITA;
+                                    }
+
+                                    if (!lDateVariazioni.Contains(dtVar))
+                                    {
+                                        lDateVariazioni.Add(dtVar);
+                                    }
                                 }
+
                             }
 
 
@@ -1112,6 +1150,8 @@ namespace NewISE.Models.DBModel.dtObj
                                     {
                                         dvSucc = lDateVariazioni[j + 1];
                                     }
+
+                                    //dv = Convert.ToDateTime("01/01/2018");
 
                                     using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dv, db))
                                     {

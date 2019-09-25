@@ -1006,13 +1006,14 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                                 ///5826,90 * 12,5 % = 728,36(maggiorazione di famiglia per un figlio corretta)
 
 
-                                //indennitaServizioPrimoSegretario = (((indennitaPrimoSegretario *
-                                //                                      _coefficenteMaggiorazioneRichiamo) +
-                                //                                      indennitaPrimoSegretario) +
-                                //                                     (((_indennitaPrimoSegretario *
-                                //                                        _coefficenteMaggiorazioneRichiamo) +
-                                //                                       indennitaPrimoSegretario)
-                                //                                      * (_percentualeDisagio / 100))); 
+                                indennitaServizioPrimoSegretario = (((indennitaPrimoSegretario *
+                                                                      _coefficenteMaggiorazioneRichiamo) +
+                                                                      indennitaPrimoSegretario) +
+                                                                     (((_indennitaPrimoSegretario *
+                                                                        _coefficenteMaggiorazioneRichiamo) +
+                                                                       indennitaPrimoSegretario)
+                                                                      * (_percentualeDisagio / 100)));
+
                                 indennitaServizioPrimoSegretario = (indennitaPrimoSegretario * _coefficenteMaggiorazioneRichiamo) + indennitaPrimoSegretario;
                                 #endregion
 

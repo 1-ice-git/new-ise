@@ -1061,6 +1061,34 @@ namespace NewISE.Controllers
                                 #endregion
 
 
+                                var lcs =
+                                db.COEFFICIENTESEDE.Where(
+                                    a =>
+                                        a.ANNULLATO == false && a.DATAINIZIOVALIDITA <= f.DATAFINEVALIDITA &&
+                                        a.DATAFINEVALIDITA >= f.DATAINIZIOVALIDITA && a.IDUFFICIO == trasferimento.IDUFFICIO)
+                                    .OrderBy(a => a.DATAINIZIOVALIDITA)
+                                    .ToList();
+                                if (lcs?.Any() ?? false)
+                                {
+                                    foreach (var cs in lcs)
+                                    {
+                                        if (cs.DATAINIZIOVALIDITA < f.DATAINIZIOVALIDITA)
+                                        {
+                                            dtVar = f.DATAINIZIOVALIDITA;
+                                        }
+                                        else
+                                        {
+                                            dtVar = cs.DATAINIZIOVALIDITA;
+                                        }
+
+                                        if (!lDateVariazioni.Contains(dtVar))
+                                        {
+                                            lDateVariazioni.Add(dtVar);
+                                        }
+                                    }
+
+                                }
+
                             }
 
                             DateTime dataFine;
