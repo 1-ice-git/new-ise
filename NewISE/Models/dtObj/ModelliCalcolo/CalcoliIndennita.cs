@@ -993,13 +993,24 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                                 var ips = lips.First();
                                 indennitaPrimoSegretario = ips.INDENNITA;
 
-                                indennitaServizioPrimoSegretario = (((indennitaPrimoSegretario *
-                                                                       _coefficienteDiSede) +
-                                                                      indennitaPrimoSegretario) +
-                                                                     (((_indennitaPrimoSegretario *
-                                                                        _coefficienteDiSede) +
-                                                                       indennitaPrimoSegretario)
-                                                                      * (_percentualeDisagio / 100)));
+                                #region Modifica della formula per il calcolo delle maggiorazioni figli
+                                ///Modificato il calcolo delle maggiorazioni figli dato da un richiamo.
+                                /// La formula sottostante ci è stata data dalla Velardi.
+                                ///indennità base lorda 770,55 * 6,562(coefficiente di maggiorazione richiamo) = 5056.35
+                                ///770.55 + 5056,35 = 5.826,90
+                                ///5826,90 * 12,5 % = 728,36(maggiorazione di famiglia per un figlio corretta)
+
+
+                                //indennitaServizioPrimoSegretario = (((indennitaPrimoSegretario *
+                                //                                      _coefficenteMaggiorazioneRichiamo) +
+                                //                                      indennitaPrimoSegretario) +
+                                //                                     (((_indennitaPrimoSegretario *
+                                //                                        _coefficenteMaggiorazioneRichiamo) +
+                                //                                       indennitaPrimoSegretario)
+                                //                                      * (_percentualeDisagio / 100))); 
+                                indennitaServizioPrimoSegretario = (indennitaPrimoSegretario * _coefficenteMaggiorazioneRichiamo) + indennitaPrimoSegretario;
+                                #endregion
+
 
                                 maggiorazioneFigli += indennitaServizioPrimoSegretario *
                                                        percentualeMaggiorazioniFigli / 100;
