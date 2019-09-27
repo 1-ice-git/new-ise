@@ -132,6 +132,10 @@
         return this.optional(element) || !isNaN(Globalize.parseFloat(value));
     };
 
+    $.validator.methods.date = function (value, element) {
+        return this.optional(element) || Globalize.parseDate(value, "dd/MM/yyyy", "it-IT");
+    }
+
     $.validator.setDefaults({
         ignore: ".ignore"
     });
@@ -141,7 +145,7 @@
         changeMonth: true,
         changeYear: true,
     });
-  
+
 
     function AggiornaTutto() {
         var chk = false;
@@ -168,7 +172,7 @@
         $.ajax({
             type: "POST",
             url: rotta,
-            data: { escludiAnnullati: chk, idlivello:idlivello },
+            data: { escludiAnnullati: chk, idlivello: idlivello },
             dataType: 'html',
             beforeSend: function () {
                 //debugger;

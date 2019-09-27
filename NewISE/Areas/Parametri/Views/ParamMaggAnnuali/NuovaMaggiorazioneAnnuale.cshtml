@@ -38,7 +38,7 @@
             </div>
             <div class="col-xs-10">
                 <div class="panel panel-default">
-                    <label style="padding-left:5px; padding-top:5px; font:bold;">@descrizioneUfficio.ToString()</label>
+                    <label style="padding-left:5px; padding-top:5px; font: bold;">@descrizioneUfficio.ToString()</label>
                 </div>
             </div>
         </div>
@@ -119,6 +119,10 @@
 
     Globalize.culture("it-IT");
 
+    $.validator.methods.date = function (value, element) {
+        return this.optional(element) || Globalize.parseDate(value, "dd/MM/yyyy", "it-IT");
+    }
+
     $('#dataInizioValidita').datepicker({
         inline: true,
         changeMonth: true,
@@ -186,5 +190,7 @@
 
         });
     }
+
+
 
 </script>
