@@ -54,6 +54,7 @@
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
   </ReportParameters>
+  <Language>it-IT</Language>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>221ece67-d320-400c-86ae-b3eebf5a6df9</rd:ReportID>
 </Report>
