@@ -328,7 +328,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
@@ -440,6 +439,7 @@
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
+  <Language>it-IT</Language>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>27705b31-840c-4df9-acc1-1d15e50cd618</rd:ReportID>
 </Report>

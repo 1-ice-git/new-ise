@@ -4535,13 +4535,7 @@ namespace NewISE.Models.DBModel.dtObj
             }
         }
 
-
-
-
-
-
-
-
+        
 
 
 
@@ -4690,7 +4684,7 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             #region ATTIVAZIONE MAB
                             ATTIVAZIONEMAB amab = new ATTIVAZIONEMAB();
-                            MABModel mabm = new MABModel();
+                            //MABModel mabm = new MABModel();
                             MAB mab = new MAB();
                             TrasferimentoModel tm = new TrasferimentoModel();
 
@@ -4939,7 +4933,7 @@ namespace NewISE.Models.DBModel.dtObj
                                             DATAFINEMAB = dtFin,
                                             DATAAGGIORNAMENTO = DateTime.Now,
                                             IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
-                                            FK_IDPERIODOMAB = periodoMAB_old.FK_IDPERIODOMAB
+                                            FK_IDPERIODOMAB = periodoMAB_old.IDPERIODOMAB
                                         };
                                         db.PERIODOMAB.Add(new_periodoMAB);
                                         if (db.SaveChanges() <= 0)
@@ -5001,7 +4995,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         DATAAGGIORNAMENTO = DateTime.Now,
                                         IDVALUTA = canoneMAB_curr.IDVALUTA,
                                         IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
-                                        FK_IDCANONE = canoneMAB_curr.FK_IDCANONE,
+                                        FK_IDCANONE = canoneMAB_curr.IDCANONE,
                                         NASCONDI = false
                                     };
                                     db.CANONEMAB.Add(new_canoneMAB);
@@ -5065,7 +5059,7 @@ namespace NewISE.Models.DBModel.dtObj
                                         CONDIVISO = pagatocondivisoMAB_curr.CONDIVISO,
                                         DATAAGGIORNAMENTO = DateTime.Now,
                                         IDSTATORECORD = (decimal)EnumStatoRecord.In_Lavorazione,
-                                        FK_IDPAGATOCONDIVISO = pagatocondivisoMAB_curr.FK_IDPAGATOCONDIVISO,
+                                        FK_IDPAGATOCONDIVISO = pagatocondivisoMAB_curr.IDPAGATOCONDIVISO,
                                         NASCONDI = false
                                     };
                                     db.PAGATOCONDIVISOMAB.Add(new_pagatocondiviso);
@@ -6224,8 +6218,6 @@ namespace NewISE.Models.DBModel.dtObj
                                         throw new Exception("Impossibile annullare le modifiche al Periodo MAB.");
                                     }
                                 }
-
-
 
                                 //elimino eventuali modifiche canone
                                 var lcmab = mab.CANONEMAB.Where(a => a.IDSTATORECORD == (decimal)EnumStatoRecord.In_Lavorazione).ToList();

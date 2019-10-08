@@ -43,7 +43,6 @@ namespace NewISE.Controllers
                 return View("Error", her);
             }
 
-
             return View();
         }
 
@@ -231,7 +230,6 @@ namespace NewISE.Controllers
                 using (dtElaborazioni dte = new dtElaborazioni())
                 {
                     ledcm = dte.PrelevaDipendentiDaElaborare(idMeseAnnoElaborato).ToList();
-
                 }
             }
             catch (Exception ex)
@@ -856,7 +854,7 @@ namespace NewISE.Controllers
                     using (dtElaborazioni dte = new dtElaborazioni())
                     {
                         //lLm = dte.PrelevaLiquidazioniMensili(idAnnoMeseElaborato).ToList();
-                        lLm = dte.PrelevaLiquidazioniMensili(Teorici).ToList();
+                        lLm = dte.PrelevaLiquidazioniMensili(Teorici).OrderBy(a => a.Nominativo).ThenBy(a => a.Voci.descrizione).ThenBy(a => a.TipoMovimento.DescMovimento).ThenBy(a => a.annoRiferimento).ThenBy(a => a.meseRiferimento).ToList();
                     }
 
                     if (lLm?.Any() ?? false)

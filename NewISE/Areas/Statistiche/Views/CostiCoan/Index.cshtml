@@ -5,7 +5,7 @@
         <div class="form-group">
             <div class="panel panel-default">
                 <div class="panel-heading text-center" style="background-color:lightgrey"><h4><b>Consuntivo dei Costi per codice Co.An</b></h4></div>
-                <div class="panel-body"  style="font-size:1.2em">
+                <div class="panel-body" style="font-size:1.2em">
                     <div class="row">
                         <div class="col-xs-3 date">
                             <strong>Mese Inizio Elaborazione</strong>
@@ -50,186 +50,186 @@
                                 </button>
                             </center>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    $("#cbMesiAnniElaboratiDa").select2({
-        placeholder: "Seleziona il mese-anno",
-        allowClear: false,
-        language: "it",
-        width: '150',
-        ajax: {
-            delay: 250,
-            url: "/Statistiche/CostiCoan/PrelevaMesiAnniElab",
-            data: function (dati) {
-                //debugger;
-                var query = {
-                    search: dati.term,
-                    type: 'public'
-                }
-                // Query parameters will be ?search=[term]&type=public
-                return query;
-            },
-            dataType: 'json',
-            type: "post",
-            processResults: function (data) {
-                //debugger;
-                return {
-                    results: data.results
-                }
-            }
-        }
-    });
-
-    $("#cbMesiAnniElaboratiDa").change(function () {
-        //debugger;
-        if (this.value != "") {
-            var valore = this.value;
-        }
-    });
-
-    $("#cbMesiAnniElaboratiA").select2({
-        placeholder: "Seleziona il mese-anno",
-        allowClear: false,
-        language: "it",
-        width: '150',
-        ajax: {
-            delay: 250,
-            url: "/Statistiche/CostiCoan/PrelevaMesiAnniElab",
-            data: function (dati) {
-                //debugger;
-                var query = {
-                    search: dati.term,
-                    type: 'public'
-                }
-                // Query parameters will be ?search=[term]&type=public
-                return query;
-            },
-            dataType: 'json',
-            type: "post",
-            processResults: function (data) {
-                //debugger;
-                return {
-                    results: data.results
+        $("#cbMesiAnniElaboratiDa").select2({
+            placeholder: "Seleziona il mese-anno",
+            allowClear: false,
+            language: "it",
+            width: '150',
+            ajax: {
+                delay: 250,
+                url: "/Statistiche/CostiCoan/PrelevaMesiAnniElab",
+                data: function (dati) {
+                    //debugger;
+                    var query = {
+                        search: dati.term,
+                        type: 'public'
+                    }
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                },
+                dataType: 'json',
+                type: "post",
+                processResults: function (data) {
+                    //debugger;
+                    return {
+                        results: data.results
+                    }
                 }
             }
-        }
-    });
+        });
 
-    $("#cbMesiAnniElaboratiA").change(function () {
-        //debugger;
+        $("#cbMesiAnniElaboratiDa").change(function () {
+            //debugger;
+            if (this.value != "") {
+                var valore = this.value;
+            }
+        });
 
-        if (this.value != "") {
-            var valore = this.value;
-        }
-    });
+        $("#cbMesiAnniElaboratiA").select2({
+            placeholder: "Seleziona il mese-anno",
+            allowClear: false,
+            language: "it",
+            width: '150',
+            ajax: {
+                delay: 250,
+                url: "/Statistiche/CostiCoan/PrelevaMesiAnniElab",
+                data: function (dati) {
+                    //debugger;
+                    var query = {
+                        search: dati.term,
+                        type: 'public'
+                    }
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                },
+                dataType: 'json',
+                type: "post",
+                processResults: function (data) {
+                    //debugger;
+                    return {
+                        results: data.results
+                    }
+                }
+            }
+        });
 
-    $("#idMesiAnniElaboratiDa").select2({
-        placeholder: "Seleziona mese anno Dal",
-        allowClear: true,
-        language: "it",
-        width: '170',
-        allowClear: false
-    });
+        $("#cbMesiAnniElaboratiA").change(function () {
+            //debugger;
+
+            if (this.value != "") {
+                var valore = this.value;
+            }
+        });
+
+        $("#idMesiAnniElaboratiDa").select2({
+            placeholder: "Seleziona mese anno Dal",
+            allowClear: true,
+            language: "it",
+            width: '170',
+            allowClear: false
+        });
 
 
-    $("#idMesiAnniElaboratiA").select2({
-        placeholder: "Seleziona mese anno Al",
-        allowClear: true,
-        language: "it",
-        width: '170',
-        allowClear: false
-    });
+        $("#idMesiAnniElaboratiA").select2({
+            placeholder: "Seleziona mese anno Al",
+            allowClear: true,
+            language: "it",
+            width: '170',
+            allowClear: false
+        });
 
 
-    //$(".form-control:input").datepicker();
-    var windowWidth = $(window).width();
-    var windowHeight = $(window).height();
+        //$(".form-control:input").datepicker();
+        var windowWidth = $(window).width();
+        var windowHeight = $(window).height();
 
-    $("#divReport").dialog({
-        autoOpen: false,
-        show: {
-            //effect: "blind",
-            //duration: 1000
-        },
-        hide: {
-            //effect: "explode",
-            //duration: 1000
-        },
-        close: function (event, ui) {
-            $('.container').removeClass("NoOverflow");
-        },
-        height: windowHeight,
-        width: windowWidth
-    });
+        $("#divReport").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight,
+            width: windowWidth
+        });
 
-    $("#btStampa").on("click", function () {
-        //debugger;
-        if (ValidazioneCostiCoan()) {
-            $('.container').addClass("NoOverflow");
-            $("#divReport").dialog("open");
-            $("#divReport").css("background-color", "#ffffff");
-            var rotta = "/Statistiche/CostiCoan/RptCostiCoan";
+        $("#btStampa").on("click", function () {
+            //debugger;
+            if (ValidazioneCostiCoan()) {
+
+                var rotta = "/Statistiche/CostiCoan/RptCostiCoan";
+                var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
+                var meseAnnoA = $("#idMesiAnniElaboratiA").val();
+                var codiceCoan = $("#codiceCoan").val()
+
+                $.ajax({
+                    type: "POST",
+                    url: rotta,
+                    data: {
+                        meseAnnoDa: meseAnnoDa,
+                        meseAnnoA: meseAnnoA,
+                        codiceCoan: codiceCoan
+                    },
+                    dataType: 'html',
+                    beforeSend: function () {
+                        //debugger;
+                        $("#divReport").empty();
+
+                    },
+                    success: function (result) {
+                        //debugger;
+                        $('.container').addClass("NoOverflow");
+                        $("#divReport").dialog("open");
+                        $("#divReport").css("background-color", "#ffffff");
+                        $("#divReport").html(result);
+                    },
+                    complete: function () {
+                        //$("#divEffettoLoadAutNoDoc").hide("slow");
+                        //                $("#Centro").getNiceScroll().resize();
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        //debugger;
+                        var msg = errorThrow.err;
+                        AlertDialog(msg);
+                    }
+
+                });
+            } else {
+                $("#msgModalStatistiche").html("Mese Inizio Elaborazione non può essere superiore a Mese Fine Elaborazione");
+                $('#myModalErrorStatistiche').modal('toggle');
+            }
+        });
+
+        function ValidazioneCostiCoan() {
+            //debugger;
             var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
             var meseAnnoA = $("#idMesiAnniElaboratiA").val();
-            var codiceCoan = $("#codiceCoan").val()
-
-            $.ajax({
-                type: "POST",
-                url: rotta,
-                data: {
-                    meseAnnoDa: meseAnnoDa,
-                    meseAnnoA: meseAnnoA,
-                    codiceCoan: codiceCoan
-                },
-                dataType: 'html',
-                beforeSend: function () {
-                    //debugger;
-                    $("#divReport").empty();
-
-                },
-                success: function (result) {
-                    //debugger;
-                    $("#divReport").html(result);
-                },
-                complete: function () {
-                    //$("#divEffettoLoadAutNoDoc").hide("slow");
-                    //                $("#Centro").getNiceScroll().resize();
-                },
-                error: function (jqXHR, textStatus, errorThrow) {
-                    //debugger;
-                    var msg = errorThrow.err;
-                    AlertDialog(msg);
-                }
-
-            });
-        } else {
-            $("#msgModalStatistiche").html("Mese Inizio Elaborazione non può essere superiore a Mese Fine Elaborazione");
-            $('#myModalErrorStatistiche').modal('toggle');
+            if (parseInt(meseAnnoA) < parseInt(meseAnnoDa)) {
+                return false;
+            } else {
+                return true;
+            }
         }
-    });
 
-    function ValidazioneCostiCoan() {
-        //debugger;
-        var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
-        var meseAnnoA = $("#idMesiAnniElaboratiA").val();
-        if (parseInt(meseAnnoA) < parseInt(meseAnnoDa))
-        {
-            return false;
-        } else {
-            return true;
-        }
-    }
+        $("#codiceCoan").select2({
+            placeholder: "Seleziona Co.An.",
+            allowClear: true,
+            language: "it"
+        });
 
-    $("#codiceCoan").select2({
-        placeholder: "Seleziona Co.An.",
-        allowClear: true,
-        language: "it"
-    });
-
-</script>
+    </script>

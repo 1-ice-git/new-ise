@@ -4,7 +4,7 @@
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
     decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
-    
+
 }
 
 <p>
@@ -95,17 +95,17 @@
                     {
                         if (dtib.PercMaggAbitazioneAnnullato(item))
                         {
-                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
                         else
                         {
                             if (item.idPercMabAbitaz == idMinimoNonAnnullato)
                             {
-                                 <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                             }
                             else
                             {
-                                 <a href="#" onclick="EliminaMaggiorazioneAbitazione(@item.idPercMabAbitaz)"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                                <a href="#" onclick="EliminaMaggiorazioneAbitazione(@item.idPercMabAbitaz)"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                             }
                         }
                     }
@@ -120,7 +120,7 @@
 
 <script type="text/javascript">
     $('.display').DataTable({
-        "ordering":false,
+        //"ordering":false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -143,7 +143,22 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        }
+        },
+        "info": true,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 400,
+        "scrollCollapse": true,
+        "columnDefs": [
+                { "targets": [0, 1, 4], "type": 'date-euro' },
+                //{ "targets": [2], "type": 'numeric-comma' },
+                { "targets": [5, 6], "orderable": false },
+        ],
+        "order": [[1, "desc"]]
     });
 
     $("#idLivello").select2({
@@ -286,7 +301,7 @@
         //debugger;
         var rotta = "/Parametri/ParamPercMaggAbitaz/EliminaMaggiorazioneAbitazione";
 
-    
+
         var idLivello = parseInt($("#idLivello").select2('val'));
         var idUfficio = parseInt($("#idUfficio").select2('val'));
 
@@ -311,7 +326,7 @@
                         $.ajax({
                             type: "POST",
                             url: rotta,
-                            data: { escludiAnnullati: chk, idLivello: idLivello, idPercMabAbitaz: id ,idUfficio: idUfficio}, 
+                            data: { escludiAnnullati: chk, idLivello: idLivello, idPercMabAbitaz: id ,idUfficio: idUfficio},
                             dataType: 'html',
                             beforeSend: function () {
                                 //debugger;

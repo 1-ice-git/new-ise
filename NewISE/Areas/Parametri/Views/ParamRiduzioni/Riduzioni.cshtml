@@ -24,8 +24,8 @@
     <thead>
         <tr>
             @*<th class="text-center">
-                @Html.DisplayNameFor(model => model.RegolaCalcolo.formulaRegolaCalcolo)
-            </th>*@
+                    @Html.DisplayNameFor(model => model.RegolaCalcolo.formulaRegolaCalcolo)
+                </th>*@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -49,21 +49,21 @@
         {
             <tr>
                 @*<td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.RegolaCalcolo.formulaRegolaCalcolo)
-                </td>*@
+                        @Html.DisplayFor(modelItem => item.RegolaCalcolo.formulaRegolaCalcolo)
+                    </td>*@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                    @if (item.dataFineValidita != Utility.DataFineStop())
-                    {
-                        <td class="text-center">
-                            @Html.DisplayFor(modelItem => item.dataFineValidita)
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.percentuale) %
                 </td>
@@ -103,7 +103,7 @@
 
 <script type="text/javascript">
     $('.display').DataTable({
-        "ordering":false,
+        //"ordering":false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -126,7 +126,22 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             },
-        }
+        },
+        "info": true,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 400,
+        "scrollCollapse": true,
+        "columnDefs": [
+                { "targets": [0, 1, 3], "type": 'date-euro' },
+                //{ "targets": [2], "type": 'numeric-comma' },
+                { "targets": [4, 5], "orderable": false },
+        ],
+        "order": [[0, "desc"]]
     });
 
     $("#idFunzioneRiduzione").select2({
@@ -190,7 +205,7 @@
     }
 
     function NuoveRiduzioni() {
-    //    debugger;
+        //    debugger;
 
         var rotta = "/Parametri/ParamRiduzioni/NuoveRiduzioni";
         var idFunzioneRiduzione = parseInt($("#idFunzioneRiduzione").select2('val'));
@@ -257,7 +272,7 @@
             return false;
         }
 
-        
+
 
         $('#dialog-confirm').dialog({
             autoOpen: true,

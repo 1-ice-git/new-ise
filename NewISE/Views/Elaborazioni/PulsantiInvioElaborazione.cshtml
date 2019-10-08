@@ -254,7 +254,7 @@
                     type: "POST", //Le info testuali saranno passate in POST
                     data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
                     dataType: 'json',
-                    async: false,
+                    async: true,
                     beforeSend: function () {
                         //debugger;
                         //VerificaAutenticazione();
@@ -274,6 +274,10 @@
                             ErroreElaborazioneAjax(result.err);
                         }
 
+                    },
+                    complete: function () {
+                        //$("#divEffettoLoadAutNoDoc").hide("slow");
+                        //                $("#Centro").getNiceScroll().resize();
                     },
                     error: function (error) {
                         //debugger;

@@ -24,7 +24,7 @@
         <div class="form-horizontal">
             <h4>Modifica Dati Maggiorazione Abitazione</h4>
             <hr />
-            @Html.Hidden("idTrasferimento",Model.idTrasferimento)
+            @Html.Hidden("idTrasferimento", Model.idTrasferimento)
             @*@Html.Hidden("dataPartenza", Model.dataPartenza)*@
             @Html.Hidden("idMagAnnuali", Model.idMagAnnuali)
             @Html.Hidden("dataFineMAB", Model.dataFineMAB)
@@ -69,7 +69,7 @@
                                                 <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "false", new { disabled = "disabled" }) Semestrale</label>
                                             </div>
                                             <div class="col-xs-2">
-                                                <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "true", new { @checked = true, disabled = "disabled"}) Annuale</label>
+                                                <label>@Html.RadioButtonFor(Model => Model.anticipoAnnuale, "true", new { @checked = true, disabled = "disabled" }) Annuale</label>
                                             </div>
                                         }
                                         else
@@ -167,7 +167,7 @@
         if (e.Value.Errors.Count > 0)
         {
             @:DialogModalError('True');
-            break;
+                break;
         }
     }
 
@@ -203,6 +203,4 @@
 
 
 </script>
-
-
 

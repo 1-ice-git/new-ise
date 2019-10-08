@@ -54,16 +54,16 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                        @if (item.dataFineValidita != Utility.DataFineStop())
-                        {
-                            <td class="text-center">
-                                @Html.DisplayFor(modelItem => item.dataFineValidita)
-                            </td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.percentualeFigli)  %
                 </td>
@@ -75,7 +75,7 @@
                 </td>
                 <td style="text-align:center;">
                     @using (dtMaggFigli dtib = new dtMaggFigli())
-                    {                        
+                    {
                         if (dtib.PercMaggiorazioneFiglioAnnullato(item))
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
@@ -126,10 +126,21 @@
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
         },
+        "info": true,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 400,
+        "scrollCollapse": true,
         "columnDefs": [
-                          { "targets": [1, 2, 4], "type": 'date-euro' },
-                          { "targets": [3, 5, 6], "orderable": false },
+                { "targets": [1, 2, 4], "type": 'date-euro' },
+                //{ "targets": [2], "type": 'numeric-comma' },
+                { "targets": [5, 6], "orderable": false },
         ],
+        "order": [[1, "desc"]]
     });
 
     $("#idTipologiaFiglio").select2({
@@ -246,7 +257,7 @@
 
     function EliminaMaggiorazioneFiglio(id) {
         // debugger;
-         var rotta = "/Parametri/ParamMaggFigli/EliminaPercMaggiorazioneFiglio";
+        var rotta = "/Parametri/ParamMaggFigli/EliminaPercMaggiorazioneFiglio";
 
         var idTipologiaFiglio = parseInt($("#idTipologiaFiglio").select2('val'));
 

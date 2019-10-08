@@ -45,12 +45,14 @@ namespace NewISE.EF
         public bool DIRETTO { get; set; }
         public bool ANNULLATO { get; set; }
         public bool RECUPERO { get; set; }
+        public Nullable<decimal> IDMAB { get; set; }
     
         public virtual AUTOMATISMOVOCIMANUALI AUTOMATISMOVOCIMANUALI { get; set; }
         public virtual ELABINDRICHIAMO ELABINDRICHIAMO { get; set; }
         public virtual ELABINDSISTEMAZIONE ELABINDSISTEMAZIONE { get; set; }
         public virtual ELABTRASPEFFETTI ELABTRASPEFFETTI { get; set; }
         public virtual FLUSSICEDOLINO FLUSSICEDOLINO { get; set; }
+        public virtual MAB MAB { get; set; }
         public virtual MESEANNOELABORAZIONE MESEANNOELABORAZIONE { get; set; }
         public virtual OA OA { get; set; }
         public virtual TRASFERIMENTO TRASFERIMENTO { get; set; }

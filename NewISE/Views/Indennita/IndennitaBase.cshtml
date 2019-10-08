@@ -16,16 +16,16 @@
 @Html.Hidden("hididLivello")
 
 @*<div id="divContentpartial" class="row">
-    <div id="divPViewIndennita1" class="col-xs-12">
-    </div>
-</div>*@
+        <div id="divPViewIndennita1" class="col-xs-12">
+        </div>
+    </div>*@
 
 <div id="dialog" title=""></div>
 
 <div class="row">
     <div class="col-md-12">
         <div>
-            <h4>Indennità Base</h4>                                   
+            <h4>Indennità Base</h4>
         </div>
     </div>
 </div>
@@ -37,8 +37,8 @@
                 @Html.DisplayNameFor(model => model.DescLivello)
             </th>
             @*<th class="text-center">
-                @Html.DisplayNameFor(model => model.RuoloUfficio.DescrizioneRuolo)
-            </th>*@
+                    @Html.DisplayNameFor(model => model.RuoloUfficio.DescrizioneRuolo)
+                </th>*@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -50,29 +50,29 @@
                 @Html.DisplayNameFor(model => model.IndennitaBase)
             </th>
             @*@if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
-            {
-                <th class="text-center">
-                    @Html.DisplayNameFor(model => model.valore)
-                </th>
-            }
-            else
-            {
+                {
+                    <th class="text-center">
+                        @Html.DisplayNameFor(model => model.valore)
+                    </th>
+                }
+                else
+                {
+                    <td></td>
+                }
+
+                @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Dirigente || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Responsabile)
+                {
+
+                    <th class="text-center">
+
+                        @Html.DisplayNameFor(model => model.valoreResponsabile)
+                    </th>
+                }
+                else
+                {
                 <td></td>
-            }
+                }*@
 
-            @if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Dirigente || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Responsabile)
-            {
-
-                <th class="text-center">
-                    
-                    @Html.DisplayNameFor(model => model.valoreResponsabile)
-                </th>
-            }
-            else
-            {
-            <td></td>
-            }*@
-           
         </tr>
     </thead>
     <tbody>
@@ -83,9 +83,9 @@
                     @Html.DisplayFor(modelItem => item.DescLivello)
                 </td>
                 @*<td style="text-align:center;">
-                    
-                    @Html.DisplayFor(modelItem => item.RuoloUfficio.DescrizioneRuolo)
-                </td>*@
+
+                        @Html.DisplayFor(modelItem => item.RuoloUfficio.DescrizioneRuolo)
+                    </td>*@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
@@ -95,15 +95,15 @@
                     <td style="text-align:center;"></td>
                 }
                 else
-                { 
-                <td style="text-align:center;">
-                    @Html.DisplayFor(modelItem => item.dataFineValidita)
-                </td>
+                {
+                    <td style="text-align:center;">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
                 }
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.IndennitaBase)
                 </td>
-                    @*@if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
+                @*@if (idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Collaboratore || idRuoloUfficio == (decimal)EnumFaseRuoloDipendente.Assistente)
                     {
                         <td style="text-align:center;">
                             @Html.DisplayFor(modelItem => item.valore)
@@ -119,13 +119,13 @@
                         <td style="text-align:center;">
                             @Html.DisplayFor(modelItem => item.valoreResponsabile)
                         </td>
-                        
+
                     }
                     else
                     {
                         <td></td>
                     }*@
-                
+
             </tr>
         }
     </tbody>
@@ -133,11 +133,11 @@
 
 <div class="row">
     <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
-       
+
         @*<button class="btn btn-default btn-sm" onclick="DownloadReport();">
-            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-            Stampa
-        </button>*@
+                <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+                Stampa
+            </button>*@
 
         <button class="btn btn-default btn-sm" id="opener">
             <i aria-hidden="true" class="fa fa-2x fa-print"></i>
@@ -204,128 +204,128 @@
                 { "targets": [1, 2], "type": 'date-euro' },
                 { "targets": [3], "type": 'numeric-comma' }
         ],
-        "order": [[0, "asc"]]
+        "order": [[1, "desc"]]
     });
 
     function DownloadReport() {
         $('#ModalReport').modal().show();
-        
+
     }
-    
+
 
     function myFunction() {
         window.print();
     }
 
-     function invia() {
+    function invia() {
         //debugger
-         var idTrasferimento = $("#hidTrasferimento").val();
+        var idTrasferimento = $("#hidTrasferimento").val();
 
-         window.location.href = "/Indennita/RptIndennitaBase?idTrasferimento=" + idTrasferimento;
-         target = "_blank";
-     };
+        window.location.href = "/Indennita/RptIndennitaBase?idTrasferimento=" + idTrasferimento;
+        target = "_blank";
+    };
 
-     var windowWidth = $(window).width();
-     var windowHeight = $(window).height();
+    var windowWidth = $(window).width();
+    var windowHeight = $(window).height();
 
-     $(function () {
-         $("#dialog").dialog({
-             autoOpen: false,
-             show: {
-                 //effect: "blind",
-                 //duration: 1000
-             },
-             hide: {
-                 //effect: "explode",
-                 //duration: 1000
-             },
-             close: function (event, ui) {
-                 $('.container').removeClass("NoOverflow");
-             },
-             height: windowHeight, width: windowWidth
-
-
-         });
-
-         $("#opener").on("click", function () {
-             $('.container').addClass("NoOverflow");
-
-             $("#dialog").dialog("open");
-             $("#dialog").css("background-color", "#ffffff");
-
-             var rotta = "/Indennita/RptIndennitaBase";
-
-             var idTrasferimento = $("#hidTrasferimento").val();
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            show: {
+                //effect: "blind",
+                //duration: 1000
+            },
+            hide: {
+                //effect: "explode",
+                //duration: 1000
+            },
+            close: function (event, ui) {
+                $('.container').removeClass("NoOverflow");
+            },
+            height: windowHeight, width: windowWidth
 
 
-             $.ajax({
-                 type: "POST",
-                 url: rotta,
-                 data: { idTrasferimento: idTrasferimento },
-                 dataType: 'html',
-                 beforeSend: function () {
-                     //debugger;
-                     $("#dialog").empty();
+        });
 
-                 },
-                 success: function (result) {
-                     //debugger;
-                     $("#dialog").html(result);
+        $("#opener").on("click", function () {
+            $('.container').addClass("NoOverflow");
+
+            $("#dialog").dialog("open");
+            $("#dialog").css("background-color", "#ffffff");
+
+            var rotta = "/Indennita/RptIndennitaBase";
+
+            var idTrasferimento = $("#hidTrasferimento").val();
 
 
-                 },
-                 complete: function () {
-                     //$("#divEffettoLoadAutNoDoc").hide("slow");
-                     //                $("#Centro").getNiceScroll().resize();
-                 },
-                 error: function (jqXHR, textStatus, errorThrow) {
-                     //debugger;
-                     var msg = errorThrow.err;
-                     AlertDialog(msg);
-                 }
+            $.ajax({
+                type: "POST",
+                url: rotta,
+                data: { idTrasferimento: idTrasferimento },
+                dataType: 'html',
+                beforeSend: function () {
+                    //debugger;
+                    $("#dialog").empty();
 
-             });
+                },
+                success: function (result) {
+                    //debugger;
+                    $("#dialog").html(result);
 
-         });
-     });
 
-     function RptIndennitaBase() {
-         //debugger;
-         var rotta = "/Indennita/RptIndennitaBase";
+                },
+                complete: function () {
+                    //$("#divEffettoLoadAutNoDoc").hide("slow");
+                    //                $("#Centro").getNiceScroll().resize();
+                },
+                error: function (jqXHR, textStatus, errorThrow) {
+                    //debugger;
+                    var msg = errorThrow.err;
+                    AlertDialog(msg);
+                }
 
-         var idTrasferimento = 0;
+            });
 
-         if (!isNaN(idTrasf)) {
-             idTrasferimento = idTrasf;
-         } else {
-             idTrasferimento = $("#hidTrasferimento").val();
-         }
-         @*var idTrasferimento = parseInt('@idTrasferimento');*@
+        });
+    });
 
-                 $.ajax({
-                     type: "POST",
-                     url: rotta,
-                     data: { idTrasferimento: idTrasferimento },
-                     dataType: 'html',
-                     beforeSend: function () {
-                         //debugger;
-                         VerificaAutenticazione();
-                     },
-                     success: function (result) {
-                         //debugger;
+    function RptIndennitaBase() {
+        //debugger;
+        var rotta = "/Indennita/RptIndennitaBase";
 
-                         $("#divPViewIndennita1").empty();
-                         $("#divPViewIndennita1").html(result);
-                     },
-                     complete: function () {
-                     },
-                     error: function (jqXHR, textStatus, errorThrow) {
-                         //debugger;
-                         var msg = errorThrow.err;
-                         ErroreElaborazioneAjax(msg);
-                     }
+        var idTrasferimento = 0;
 
-                 });
+        if (!isNaN(idTrasf)) {
+            idTrasferimento = idTrasf;
+        } else {
+            idTrasferimento = $("#hidTrasferimento").val();
+        }
+        @*var idTrasferimento = parseInt('@idTrasferimento');*@
 
-     }
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
+
+                $("#divPViewIndennita1").empty();
+                $("#divPViewIndennita1").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
+
+        });
+
+    }
 </script>

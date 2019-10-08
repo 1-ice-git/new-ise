@@ -138,19 +138,14 @@
         },
         close: function (event, ui) {
             $('.container').removeClass("NoOverflow");
-            
+
         },
         height: windowHeight, width: windowWidth
     });
 
     $("#opener").on("click", function () {
         //debugger;
-        if (ValidazioneMAB()) { 
-            $('.container').addClass("NoOverflow");
-
-            $("#dialog").dialog("open");
-            $("#dialog").css("background-color", "#ffffff");
-
+        if (ValidazioneMAB()) {
             var rotta = "/Statistiche/RiepiloghiMaggAbitazione/RptRiepiloghiMaggAbitazione";
 
             var idElabIni = $("#mesiAnniElaboratiDa").val();
@@ -171,6 +166,9 @@
                 },
                 success: function (result) {
                     //debugger;
+                    $('.container').addClass("NoOverflow");
+                    $("#dialog").dialog("open");
+                    $("#dialog").css("background-color", "#ffffff");
                     $("#dialog").html(result);
                 },
                 complete: function () {
@@ -188,7 +186,7 @@
             $('#myModalErrorStatistiche').modal('toggle');
         }
     });
-  
+
     function ValidazioneMAB() {
         //debugger;
         var meseAnnoDa = $("#mesiAnniElaboratiDa").val();

@@ -158,9 +158,7 @@
     $("#btStampa").on("click", function () {
         //debugger;
         if (ValidazioneDateAvvicendamento()) {
-            $('.container').addClass("NoOverflow");
-            $("#divReport").dialog("open");
-            $("#divReport").css("background-color", "#ffffff");
+
             var rotta = "/Statistiche/SpeseAvvicendamentoNew/RptSpeseAvvicendamento";
             var meseAnnoDa = $("#idMesiAnniElaboratiDa").val();
             var meseAnnoA = $("#idMesiAnniElaboratiA").val();
@@ -180,6 +178,9 @@
                 },
                 success: function (result) {
                     //debugger;
+                    $('.container').addClass("NoOverflow");
+                    $("#divReport").dialog("open");
+                    $("#divReport").css("background-color", "#ffffff");
                     $("#divReport").html(result);
                 },
                 complete: function () {

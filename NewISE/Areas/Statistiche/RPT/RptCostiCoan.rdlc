@@ -597,6 +597,7 @@
                 <Value>=Parameters!paramTotaleImporto.Value</Value>
                 <Style>
                   <FontSize>9pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
                   <Format>#,0.00;- #,0.00</Format>
                 </Style>
               </TextRun>
@@ -624,7 +625,7 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>1.10417in</Height>
+    <Height>0.98959in</Height>
     <Style />
   </Body>
   <Width>11.64021in</Width>
@@ -883,7 +884,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>1.19063cm</Height>
+      <Height>0.84667cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -904,7 +905,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>PageNumber</rd:DefaultName>
-          <Top>0.34823cm</Top>
+          <Top>0.12598cm</Top>
           <Left>27.49891cm</Left>
           <Height>0.6cm</Height>
           <Width>0.86841cm</Width>
@@ -936,7 +937,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>0.34823cm</Top>
+          <Top>0.12598cm</Top>
           <Left>26.27302cm</Left>
           <Height>0.6cm</Height>
           <Width>1.19062cm</Width>
@@ -969,7 +970,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox14</rd:DefaultName>
-          <Top>0.34823cm</Top>
+          <Top>0.12598cm</Top>
           <Left>28.4026cm</Left>
           <Height>0.6cm</Height>
           <Width>0.52916cm</Width>
@@ -1002,7 +1003,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>TotalPages</rd:DefaultName>
-          <Top>0.34823cm</Top>
+          <Top>0.12598cm</Top>
           <Left>28.93176cm</Left>
           <Height>0.6cm</Height>
           <Width>0.63438cm</Width>

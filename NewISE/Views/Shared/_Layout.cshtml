@@ -65,6 +65,24 @@
 
     }
 
+    <link rel="apple-touch-icon" sizes="57x57" href="/Immagini/Favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/Immagini/Favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/Immagini/Favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/Immagini/Favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/Immagini/Favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/Immagini/Favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/Immagini/Favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/Immagini/Favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/Immagini/Favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/Immagini/Favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/Immagini/Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/Immagini/Favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/Immagini/Favicon/favicon-16x16.png">
+    <link rel="manifest" href="/Immagini/Favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/Immagini/Favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
 
@@ -169,9 +187,6 @@
 
     <script src="~/Scripts/_Layout.js"></script>
 
-
-
-
     <script type="text/javascript">
 
         $(document).tooltip();
@@ -188,10 +203,10 @@
 
         <div id="intestazioneLayout" class="row">
             <div class="col-xs-6">
-                <a id="LinklogoIce" href="@Url.RouteUrl("Home")" title="Home page ISE"><img src="~/Immagini/Logo ISE.png" alt="Logo ISE" height="5%" /></a>
+                <a onclick="Blocca();" id="LinklogoIce" href="@Url.RouteUrl("Home")" title="Home page ISE"><img src="~/Immagini/Logo ISE.png" alt="Logo ISE" height="5%" /></a>
             </div>
             <div class="col-lg-6 text-right">
-                <a href="http://www.ice.gov.it" target="_blank" title="Agenzia ICE"><img src="~/Immagini/logo_ITA_rgb (1).jpg" height="50px" alt="Logo ICE" /></a>
+                <a onclick="Blocca();" href="http://www.ice.gov.it" target="_blank" title="Agenzia ICE"><img src="~/Immagini/logo_ITA_rgb (1).jpg" height="50px" alt="Logo ICE" /></a>
             </div>
         </div>
         <div id="RealeSimulazione" class="row">
@@ -253,19 +268,19 @@
                             <span class="caret"></span>
                         </span>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li class="dropdown-item"><a style="font-size:1.2rem" href="@Url.RouteUrl("Statistiche")">Statistiche</a></li>
+                            <li class="dropdown-item"><a onclick="Blocca();" style="font-size:1.2rem" href="@Url.RouteUrl("Statistiche")">Statistiche</a></li>
                             <li role="presentation" class="divider"></li>
-                            <li role="presentation"><a href="@Url.RouteUrl("Allineamento")" style="font-size:1.2rem">Import Dati da ISEPRO a ISESIM</a></li>
+                            <li role="presentation"><a onclick="Blocca();" href="@Url.RouteUrl("Allineamento")" style="font-size:1.2rem">Import Dati da ISEPRO a ISESIM</a></li>
                         </ul>
                     </span>
                     <span> | </span>
                 }
 
-                <a class="btn_link" href="@Url.RouteUrl("CalendariEventi")">Calendario</a> | <a class="btn_link" href="@Url.RouteUrl("Notifiche")">Notifiche</a>&nbsp;
+                <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("CalendariEventi")">Calendario</a> | <a onclick="Blocca();" class="btn_link" href="@Url.RouteUrl("Notifiche")">Notifiche</a>&nbsp;
                 @if (admin)
                 {
                     <span>| </span>
-                    <a class="btn_link" href="@Url.RouteUrl("UtenzeDipendenti")">Utenze</a>
+                    <a class="btn_link" onclick="Blocca();" href="@Url.RouteUrl("UtenzeDipendenti")">Utenze</a>
                     <span>&nbsp;</span>
                 }
             </div>
@@ -291,6 +306,7 @@
             </div>
             <div class="col-xs-8">
             </div>
+
             <div class="col-xs-2 text-right">
                 <a onclick="Blocca();" href="@Url.RouteUrl("Logout")"><img src="~/Immagini/LogOut.png" height="40" alt="Logout (Disconnetti dall'applicazione)" title="Disconnettersi" /></a>
             </div>

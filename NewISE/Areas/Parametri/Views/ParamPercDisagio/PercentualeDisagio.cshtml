@@ -45,7 +45,7 @@
             </th>
             <th class="text-center"></th>
         </tr>
-</thead>
+    </thead>
     <tbody>
         @foreach (var item in Model)
         {
@@ -56,16 +56,16 @@
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                    @if (item.dataFineValidita != Utility.DataFineStop())
-                    {
-                        <td class="text-center">
-                            @Html.DisplayFor(modelItem => item.dataFineValidita)
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.percentuale) %
                 </td>
@@ -91,10 +91,10 @@
                             else
                             {
                                 <a href="#" onclick="EliminaPercdisagio(@item.idPercentualeDisagio);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                                }
                             }
                         }
-                  
+                    }
+
                 </td>
             </tr>
         }
@@ -130,10 +130,21 @@
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
         },
+        "info": true,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 400,
+        "scrollCollapse": true,
         "columnDefs": [
-                          { "targets": [1, 2, 4], "type": 'date-euro' },
-                          { "targets": [3, 5, 6], "orderable": false },
+                { "targets": [1, 2, 4], "type": 'date-euro' },
+                //{ "targets": [2], "type": 'numeric-comma' },
+                { "targets": [5, 6], "orderable": false },
         ],
+        "order": [[1, "desc"]]
     });
 
     $("#idUfficio").select2({
@@ -164,7 +175,7 @@
             return false;
         }
 
-        
+
         $.ajax({
             type: "POST",
             url: rotta,
@@ -200,7 +211,7 @@
     }
 
     function NuovaPercentualeDisagio() {
-       // debugger;
+        // debugger;
 
         var rotta = "/Parametri/ParamPercDisagio/NuovaPercentualeDisagio";
         var idUfficio = parseInt($("#idUfficio").select2('val'));
@@ -214,7 +225,7 @@
             AlertDialog("Selezionare un ufficio per procedere.");
             return false;
         }
-                
+
 
         $.ajax({
             type: "POST",
@@ -265,7 +276,7 @@
             return false;
         }
 
-       
+
 
         $('#dialog-confirm').dialog({
             autoOpen: true,

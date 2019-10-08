@@ -24,8 +24,8 @@
 
         <tr>
             @*<th class="text-center">
-                @Html.DisplayNameFor(model => model.DescrizioneUfficio.descUfficio)
-            </th>*@
+                    @Html.DisplayNameFor(model => model.DescrizioneUfficio.descUfficio)
+                </th>*@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -49,21 +49,21 @@
         {
             <tr>
                 @*<td>
-                    @Html.DisplayFor(model => item.DescrizioneUfficio.descUfficio)
-                </td>*@
+                        @Html.DisplayFor(model => item.DescrizioneUfficio.descUfficio)
+                    </td>*@
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                    @if (item.dataFineValidita != Utility.DataFineStop())
-                    {
-                        <td class="text-center">
-                            @Html.DisplayFor(modelItem => item.dataFineValidita)
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.annualita)
                 </td>
@@ -106,7 +106,7 @@
 <script type="text/javascript">
 
     $('.display').DataTable({
-        "ordering":false,
+        //"ordering":false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -129,7 +129,22 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        }
+        },
+        "info": true,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 400,
+        "scrollCollapse": true,
+        "columnDefs": [
+                { "targets": [0, 1, 3], "type": 'date-euro' },
+                { "targets": [2], "type": 'numeric-comma' },
+                { "targets": [4, 5], "orderable": false },
+        ],
+        "order": [[0, "desc"]]
     });
 
     $("#idUfficio").select2({
@@ -155,7 +170,7 @@
             return false;
         }
 
-         var chk = false;
+        var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;
         }
@@ -207,7 +222,7 @@
             return false;
         }
 
-          var chk = false;
+        var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;
         }
@@ -258,7 +273,7 @@
             return false;
         }
 
-          var chk = false;
+        var chk = false;
         if ($("#escludiAnnullati").is(":checked")) {
             chk = true;
         }

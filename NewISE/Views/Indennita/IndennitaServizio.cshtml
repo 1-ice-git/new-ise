@@ -6,7 +6,7 @@
 @{
 
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
-    
+
 }
 
 @Html.Hidden("hidTrasferimento")
@@ -88,9 +88,9 @@
     <div class="pull-right" style="margin-top: 10px; margin-bottom: 10px;margin-right:35px ">
 
         @*<button class="btn btn-default btn-sm" onclick="DownloadReportIndennitaServizio();">
-            <i aria-hidden="true" class="fa fa-2x fa-print"></i>
-            Stampa
-        </button>*@
+                <i aria-hidden="true" class="fa fa-2x fa-print"></i>
+                Stampa
+            </button>*@
 
         <button class="btn btn-default btn-sm" id="opener">
             <i aria-hidden="true" class="fa fa-2x fa-print"></i>
@@ -160,7 +160,7 @@
                 { "targets": [3, 4], "type": 'numeric-comma' },
                 { "targets": [2, 5], "orderable": false }
         ],
-        "order": [[0, "asc"]]
+        "order": [[0, "desc"]]
     });
 
     function DownloadReportIndennitaServizio() {
@@ -232,44 +232,44 @@
         });
     });
 
-     function RptIndennitaServizio() {
-         //debugger;
-         var rotta = "/Indennita/RptIndennitaServizio";
+    function RptIndennitaServizio() {
+        //debugger;
+        var rotta = "/Indennita/RptIndennitaServizio";
 
-         var idTrasferimento = 0;
+        var idTrasferimento = 0;
 
-         if (!isNaN(idTrasf)) {
-             idTrasferimento = idTrasf;
-         } else {
-             idTrasferimento = $("#hidTrasferimento").val();
-         }
-         @*var idTrasferimento = parseInt('@idTrasferimento');*@
+        if (!isNaN(idTrasf)) {
+            idTrasferimento = idTrasf;
+        } else {
+            idTrasferimento = $("#hidTrasferimento").val();
+        }
+        @*var idTrasferimento = parseInt('@idTrasferimento');*@
 
-                 $.ajax({
-                     type: "POST",
-                     url: rotta,
-                     data: { idTrasferimento: idTrasferimento },
-                     dataType: 'html',
-                     beforeSend: function () {
-                         //debugger;
-                         VerificaAutenticazione();
-                     },
-                     success: function (result) {
-                         //debugger;
+        $.ajax({
+            type: "POST",
+            url: rotta,
+            data: { idTrasferimento: idTrasferimento },
+            dataType: 'html',
+            beforeSend: function () {
+                //debugger;
+                VerificaAutenticazione();
+            },
+            success: function (result) {
+                //debugger;
 
-                         $("#divViewIndennitaServizio").empty();
-                         $("#divViewIndennitaServizio").html(result);
-                     },
-                     complete: function () {
-                     },
-                     error: function (jqXHR, textStatus, errorThrow) {
-                         //debugger;
-                         var msg = errorThrow.err;
-                         ErroreElaborazioneAjax(msg);
-                     }
+                $("#divViewIndennitaServizio").empty();
+                $("#divViewIndennitaServizio").html(result);
+            },
+            complete: function () {
+            },
+            error: function (jqXHR, textStatus, errorThrow) {
+                //debugger;
+                var msg = errorThrow.err;
+                ErroreElaborazioneAjax(msg);
+            }
 
-                 });
+        });
 
-     }
+    }
 </script>
 

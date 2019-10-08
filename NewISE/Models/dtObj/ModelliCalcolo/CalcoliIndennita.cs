@@ -46,12 +46,14 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         private decimal _indennitaDiServizio = 0;
         private decimal _percentualeMaggiorazioneConiuge = 0;
         private decimal _maggiorazioneConiuge = 0;
+        private decimal _maggiorazioneConiugeRichiamo = 0;
         private decimal _pensioneConiuge = 0;
         private decimal _maggiorazioneConiugeMenoPensione = 0;
         private decimal _percentualeMaggiorazioniFigli = 0;
         private decimal _indennitaPrimoSegretario = 0;
         private decimal _indennitaServizioPrimoSegretario = 0;
         private decimal _maggiorazioneFigli = 0;
+        private decimal _maggiorazioneFigliRichiamo = 0;
         private decimal _maggiorazioniFimailiri = 0;
         private decimal _indennitaPersonale = 0;
         private decimal _indennitaPersonaleInValuta = 0;
@@ -136,8 +138,9 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         [ReadOnly(true)]
         public decimal PercentualeMaggiorazioneFigli => _percentualeMaggiorazioniFigli;
         [ReadOnly(true)]
-
         public decimal MaggiorazioneConiuge => _maggiorazioneConiuge;
+        [ReadOnly(true)]
+        public decimal MaggiorazioneConiugeRichiamo => _maggiorazioneConiugeRichiamo;
         [ReadOnly(true)]
         public decimal PensioneConiuge => _pensioneConiuge;
         [ReadOnly(true)]
@@ -150,6 +153,8 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
         public decimal IndennitaServizioPrimoSegretario => _indennitaServizioPrimoSegretario;
         [ReadOnly(true)]
         public decimal MaggiorazioneFigli => _maggiorazioneFigli;
+        [ReadOnly(true)]
+        public decimal MaggiorazioneFigliRichiamo => _maggiorazioneFigliRichiamo;
         [ReadOnly(true)]
         public decimal MaggiorazioniFamiliari => _maggiorazioniFimailiri;
         [ReadOnly(true)]
@@ -747,11 +752,9 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                         _percentualeMaggiorazioneConiuge = percentualeMaggiorazioneConiuge.PERCENTUALECONIUGE;
 
-
                         _maggiorazioneConiuge = _indennitaDiServizio *
                                                 _percentualeMaggiorazioneConiuge /
                                                 100;
-
                     }
 
                     var lpensioni =
@@ -777,7 +780,6 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         {
                             _maggiorazioneConiugeMenoPensione = MaggiorazioneConiuge - _pensioneConiuge;
                         }
-
                     }
                     else
                     {
@@ -866,14 +868,14 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
         private Decimal CalcolaMaggiorazioneFamiliareRichiamo(decimal indennitaServizioRichiamo)
         {
-            decimal maggiorazioneConiuge = 0;
+            //decimal maggiorazioneConiuge = 0;
             decimal maggiorazioneConiugeMenoPensione = 0;
             decimal ImppercentualeMaggiorazioneConiuge = 0;
             decimal pensioneConiuge = 0;
             decimal percentualeMaggiorazioniFigli = 0;
             decimal indennitaPrimoSegretario = 0;
             decimal indennitaServizioPrimoSegretario = 0;
-            decimal maggiorazioneFigli = 0;
+            //decimal maggiorazioneFigli = 0;
             List<DatiFigli> lDatiFigli = new List<DatiFigli>();
             decimal maggiorazioniFimailiri = 0;
 
@@ -917,9 +919,9 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
 
                         ImppercentualeMaggiorazioneConiuge = percentualeMaggiorazioneConiuge.PERCENTUALECONIUGE;
 
-                        maggiorazioneConiuge = indennitaServizioRichiamo *
-                                                    ImppercentualeMaggiorazioneConiuge /
-                                                    100;
+                        _maggiorazioneConiugeRichiamo = indennitaServizioRichiamo *
+                                                        ImppercentualeMaggiorazioneConiuge /
+                                                        100;
                     }
 
                     var lpensioni =
@@ -937,19 +939,19 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                         var pens = lpensioni.First();
                         pensioneConiuge = pens.IMPORTOPENSIONE;
 
-                        if (pensioneConiuge >= maggiorazioneConiuge)
+                        if (pensioneConiuge >= _maggiorazioneConiugeRichiamo)
                         {
                             maggiorazioneConiugeMenoPensione = 0;
                         }
                         else
                         {
-                            maggiorazioneConiugeMenoPensione = maggiorazioneConiuge - pensioneConiuge;
+                            maggiorazioneConiugeMenoPensione = _maggiorazioneConiugeRichiamo - pensioneConiuge;
                         }
 
                     }
                     else
                     {
-                        maggiorazioneConiugeMenoPensione = maggiorazioneConiuge;
+                        maggiorazioneConiugeMenoPensione = _maggiorazioneConiugeRichiamo;
                     }
                 }
                 #endregion
@@ -996,16 +998,28 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                                 var ips = lips.First();
                                 indennitaPrimoSegretario = ips.INDENNITA;
 
+                                #region Modifica della formula per il calcolo delle maggiorazioni figli
+                                ///Modificato il calcolo delle maggiorazioni figli dato da un richiamo.
+                                /// La formula sottostante ci è stata data dalla Velardi.
+                                ///indennità base lorda 770,55 * 6,562(coefficiente di maggiorazione richiamo) = 5056.35
+                                ///770.55 + 5056,35 = 5.826,90
+                                ///5826,90 * 12,5 % = 728,36(maggiorazione di famiglia per un figlio corretta)
+
+
                                 indennitaServizioPrimoSegretario = (((indennitaPrimoSegretario *
-                                                                       _coefficienteDiSede) +
+                                                                      _coefficenteMaggiorazioneRichiamo) +
                                                                       indennitaPrimoSegretario) +
                                                                      (((_indennitaPrimoSegretario *
-                                                                        _coefficienteDiSede) +
+                                                                        _coefficenteMaggiorazioneRichiamo) +
                                                                        indennitaPrimoSegretario)
                                                                       * (_percentualeDisagio / 100)));
 
-                                maggiorazioneFigli += indennitaServizioPrimoSegretario *
-                                                       percentualeMaggiorazioniFigli / 100;
+                                indennitaServizioPrimoSegretario = (indennitaPrimoSegretario * _coefficenteMaggiorazioneRichiamo) + indennitaPrimoSegretario;
+                                #endregion
+
+
+                                _maggiorazioneFigliRichiamo += indennitaServizioPrimoSegretario *
+                                                               percentualeMaggiorazioniFigli / 100;
 
 
                                 datiFigli.indennitaPrimoSegretario = indennitaPrimoSegretario;
@@ -1026,7 +1040,7 @@ namespace NewISE.Models.dtObj.ModelliCalcolo
                 }
                 #endregion
 
-                maggiorazioniFimailiri = Math.Round(maggiorazioneConiugeMenoPensione + maggiorazioneFigli, 8);
+                maggiorazioniFimailiri = Math.Round(maggiorazioneConiugeMenoPensione + _maggiorazioneFigliRichiamo, 8);
 
 
             }

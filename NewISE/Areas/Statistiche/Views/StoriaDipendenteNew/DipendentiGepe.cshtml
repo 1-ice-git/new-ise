@@ -22,7 +22,7 @@
                             <div id="divNominativo" hidden>
                                 <i class="fa fa-asterisk text-danger"></i>
                                 <span class="text-danger">Campo obbligatorio</span>
-                            </div>         
+                            </div>
                         </div>
 
                         <div class="col-xs-4 date">
@@ -96,11 +96,6 @@
     $("#opener").on("click", function () {
         //debugger;
         if (Validazione()) {
-            $('.container').addClass("NoOverflow");
-
-            $("#dialog").dialog("open");
-            $("#dialog").css("background-color", "#ffffff");
-
 
             var rotta = "/Statistiche/StoriaDipendenteNew/RptStoriaDipendenteNew";
 
@@ -120,6 +115,9 @@
                 },
                 success: function (result) {
                     //debugger;
+                    $('.container').addClass("NoOverflow");
+                    $("#dialog").dialog("open");
+                    $("#dialog").css("background-color", "#ffffff");
                     $("#dialog").html(result);
 
 
@@ -147,7 +145,7 @@
 
     });
 
-   
+
 
 </script>
 

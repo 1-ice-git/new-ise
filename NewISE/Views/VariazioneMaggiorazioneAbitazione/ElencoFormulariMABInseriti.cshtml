@@ -1,7 +1,9 @@
-﻿@{
+﻿@using NewISE.Models.Enumeratori
+@{
     decimal idTrasferimento = Convert.ToDecimal(ViewData["idTrasferimento"]);
     decimal idMab = Convert.ToDecimal(ViewData["idMab"]);
     bool solaLettura = Convert.ToBoolean(ViewData["solaLettura"]);
+
 }
 
 @Html.Hidden("hdIdMab", idMab)
@@ -45,7 +47,7 @@
 <div class="row">
     <div class="col-xs-12">
         <div id="divTabElencoFormulariMAB_Var">
-            @Html.Action("TabFormulariMABInseriti", "VariazioneMaggiorazioneAbitazione", new { idMab=idMab })
+            @Html.Action("TabFormulariMABInseriti", "VariazioneMaggiorazioneAbitazione", new { idMab = idMab })
         </div>
     </div>
 </div>
@@ -54,26 +56,7 @@
     @Ajax.ActionLink("Torna indietro", "AttivitaMAB_var", "VariazioneMaggiorazioneAbitazione", new { idTrasferimento = idTrasferimento }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "tabAttivitaMAB_var", OnFailure = "ErroreElaborazioneAjax", InsertionMode = InsertionMode.Replace })
 </p>
 
-<div class="modal fade" id="ModalEliminaFormularioMAB" tabindex="-1" role="dialog" aria-labelledby="ModalEliminaFormularioMABLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h3 class="modal-title alert alert-info text-info" id="EliminaFormularioMABLabel">Eliminazione Formulario Maggiorazione Abitazione</h3>
-            </div>
-            <div class="modal-body alert alert-info text-info" style="font-size: 1em;">
-                <input type="hidden" id="hIdDocFormularioMAB" />
-                <p><label>Eliminare il formulario selezionato?</label></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="ConfermaEliminaFormularioMAB();">Ok</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 
 
@@ -101,6 +84,10 @@
     //    //debugger;
     //    ElencoFormulariMABInseriti();
     //});
+
+
+
+
 
 </script>
 

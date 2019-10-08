@@ -1,5 +1,6 @@
 ﻿using NewISE.Models.ModelRest;
 using System;
+using System.Net;
 
 namespace NewISE.Models.dtObj
 {
@@ -22,6 +23,11 @@ namespace NewISE.Models.dtObj
                 req.AddParameter("matricola", matricola);
 
                 RestSharp.IRestResponse<RetDipendenteJson> resp = client.Execute<RetDipendenteJson>(req);
+
+                if (resp.StatusCode == HttpStatusCode.BadRequest || resp.StatusCode == HttpStatusCode.InternalServerError || resp.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return dr;
+                }
 
                 RestSharp.Deserializers.JsonDeserializer deserial = new RestSharp.Deserializers.JsonDeserializer();
 

@@ -105,7 +105,7 @@ namespace NewISE.Models.DBModel.dtObj
             List<UtentiAutorizzatiModel> tmp = new List<UtentiAutorizzatiModel>();
             using (ModelDBISE db = new ModelDBISE())
             {
-                var ld = db.UTENTIAUTORIZZATI.ToList();
+                var ld = db.UTENTIAUTORIZZATI.Where(a => a.DIPENDENTI.NOSISTEMA == false).ToList();
                 tmp = (from e in ld
                        where e.IDDIPENDENTE != null && (decimal)e.IDDIPENDENTE != 0
                        select new UtentiAutorizzatiModel()

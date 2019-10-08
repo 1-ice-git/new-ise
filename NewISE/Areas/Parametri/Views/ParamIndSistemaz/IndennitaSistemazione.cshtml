@@ -24,7 +24,7 @@
     <thead>
         <tr>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.TipoTrasferimento.descTipoTrasf)               
+                @Html.DisplayNameFor(model => model.TipoTrasferimento.descTipoTrasf)
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
@@ -54,7 +54,7 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                
+
                 @if (item.dataFineValidita != Utility.DataFineStop())
                 {
                     <td class="text-center">
@@ -80,20 +80,20 @@
                     {
                         if (dtib.IndennitaSistemazioneAnnullato(item))
                         {
+                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
+                        }
+                        else
+                        {
+                            if (item.idIndSist == idMinimoNonAnnullato)
+                            {
                                 <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                             }
                             else
                             {
-                                if (item.idIndSist == idMinimoNonAnnullato)
-                                {
-                                    <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
-                                }
-                                else
-                                {
-                                    <a href="#" onclick="EliminaIndSist(@item.idIndSist);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
-                                }
+                                <a href="#" onclick="EliminaIndSist(@item.idIndSist);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
                             }
                         }
+                    }
                 </td>
             </tr>
         }
@@ -105,7 +105,7 @@
 
 <script type="text/javascript">
     $('.display').DataTable({
-        "ordering": false,
+        //"ordering": false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -128,7 +128,22 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        }
+        },
+        "info": true,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 400,
+        "scrollCollapse": true,
+        "columnDefs": [
+                { "targets": [1, 2, 4], "type": 'date-euro' },
+                { "targets": [3], "type": 'numeric-comma' },
+                { "targets": [5, 6], "orderable": false },
+        ],
+        "order": [[1, "desc"]]
     });
 
     $("#idTipoTrasferimento").select2({
@@ -194,10 +209,10 @@
     }
 
     function NuovaIndennitaSistemazione() {
-    //    debugger;
+        //    debugger;
         var rotta = "/Parametri/ParamIndSistemaz/NuovaIndennitaSistemazione";
         var idTipoTrasferimento = parseInt($("#idTipoTrasferimento").select2('val'));
-    
+
         if (isNaN(idTipoTrasferimento)) {
             //$("#divPViewParametri").empty();
             AlertDialog("Selezionare un indennita per procedere.");

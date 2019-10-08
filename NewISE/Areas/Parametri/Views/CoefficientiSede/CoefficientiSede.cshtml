@@ -26,8 +26,8 @@
 
         <tr>
             @*<th class="text-center">
-                @Html.DisplayNameFor(model => model.Ufficio.descUfficio)
-            </th>*@
+                    @Html.DisplayNameFor(model => model.Ufficio.descUfficio)
+                </th>*@
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.dataInizioValidita)
             </th>
@@ -36,7 +36,7 @@
             </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.valore)
-            </th>            
+            </th>
             <th class="text-center">
                 @Html.DisplayNameFor(model => model.annullato)
             </th>
@@ -64,28 +64,28 @@
 
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.valore)
-                </td>                
+                </td>
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
                     @using (dtParCoefficientiSede dtib = new dtParCoefficientiSede())
-                    {                       
+                    {
                         if (dtib.CoefficientiSedeAnnullato(item))
                         {
                             <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                         }
                         else
                         {
-                        if (item.idCoefficientiSede == idMinimoNonAnnullato)
-                        {
-                            <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
-                        }
-                        else
+                            if (item.idCoefficientiSede == idMinimoNonAnnullato)
                             {
-                            <a href="#" onclick="EliminaCoefficientiSede(@item.idCoefficientiSede);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                                <a href="#" class="disabled"><img alt="Elimina" src="~/Immagini/EliminazioneDisable.png" width="25" /></a>
                             }
-                    }
+                            else
+                            {
+                                <a href="#" onclick="EliminaCoefficientiSede(@item.idCoefficientiSede);"><img alt="Elimina" src="~/Immagini/Eliminazione.png" width="25" /></a>
+                            }
+                        }
                     }
                 </td>
             </tr>
@@ -99,7 +99,6 @@
 
 <script type="text/javascript">
     $('.display').DataTable({
-        "ordering": false,
         "language": {
             "sEmptyTable": "Nessun dato presente nella tabella",
             "sInfo": "Vista da _START_ a _END_ di _TOTAL_ elementi",
@@ -122,7 +121,22 @@
                 "sSortAscending": ": attiva per ordinare la colonna in ordine crescente",
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
-        }
+        },
+        "info": true,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 400,
+        "scrollCollapse": true,
+        "columnDefs": [
+                { "targets": [0, 1], "type": 'date-euro' },
+                { "targets": [2], "type": 'numeric-comma' },
+                { "targets": [3, 4], "orderable": false },
+        ],
+        "order": [[0, "desc"]]
     });
 
     $("#idUfficio").select2({
@@ -187,7 +201,7 @@
     }
 
     function NuovoCoefficienteSede() {
-       
+
         var rotta = "/Parametri/CoefficientiSede/NuovoCoefficienteSede";
         var idUfficio = parseInt($("#idUfficio").select2('val'));
 
@@ -236,7 +250,7 @@
     }
 
     function EliminaCoefficientiSede(id) {
-    //    debugger;
+        //    debugger;
         var rotta = "/Parametri/CoefficientiSede/EliminaCoefficienteSede";
 
         var idUfficio = parseInt($("#idUfficio").select2('val'));
@@ -306,7 +320,4 @@
 
     }
 </script>
-
-
-
 

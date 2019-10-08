@@ -164,10 +164,8 @@
 
     $("#btStampa").on("click", function () {
         //debugger;
-        if (ValidazioneGenerale()) { 
-            $('.container').addClass("NoOverflow");
-            $("#divReport").dialog("open");
-            $("#divReport").css("background-color", "#ffffff");
+        if (ValidazioneGenerale()) {
+
             var rotta = "/Statistiche/RiepilogoGenerale/RptRiepilogoGenerale";
             var idMeseAnnoDa = $("#idMesiAnniElaboratiDa").val();
             var idMeseAnnoA = $("#idMesiAnniElaboratiA").val();
@@ -187,6 +185,9 @@
                 },
                 success: function (result) {
                     //debugger;
+                    $('.container').addClass("NoOverflow");
+                    $("#divReport").dialog("open");
+                    $("#divReport").css("background-color", "#ffffff");
                     $("#divReport").html(result);
                 },
                 complete: function () {

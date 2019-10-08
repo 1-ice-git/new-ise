@@ -15,7 +15,7 @@ using NewISE.Models.DBModel;
 using NewISE.Models.Enumeratori;
 
 namespace NewISE.Areas.Statistiche.Controllers
-{ 
+{
     public class CostiController : Controller
     {
         // GET: Statistiche/OpDipEsteroNew
@@ -120,12 +120,12 @@ namespace NewISE.Areas.Statistiche.Controllers
                 {
 
                     var annoMeseElabDa = db.MESEANNOELABORAZIONE.Find(meseAnnoDa);
-                    decimal annoMeseDa = Convert.ToDecimal(annoMeseElabDa.ANNO.ToString() + annoMeseElabDa.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+                    //decimal annoMeseDa = Convert.ToDecimal(annoMeseElabDa.ANNO.ToString() + annoMeseElabDa.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
                     decimal annoDa = annoMeseElabDa.ANNO;
                     decimal meseDa = annoMeseElabDa.MESE;
 
                     var annoMeseElabA = db.MESEANNOELABORAZIONE.Find(meseAnnoA);
-                    decimal annoMeseA = Convert.ToDecimal(annoMeseElabA.ANNO.ToString() + annoMeseElabA.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
+                    //decimal annoMeseA = Convert.ToDecimal(annoMeseElabA.ANNO.ToString() + annoMeseElabA.MESE.ToString().PadLeft(2, Convert.ToChar("0")));
                     decimal annoA = annoMeseElabA.ANNO;
                     decimal meseA = annoMeseElabA.MESE;
 
@@ -139,11 +139,11 @@ namespace NewISE.Areas.Statistiche.Controllers
                     string strTotaleImporto = lrpt.Sum(a => a.Importo).ToString("#,##0.##");
                     string strDataOdierna = DateTime.Now.ToShortDateString();
 
-                    using (dtElaborazioni dte = new dtElaborazioni())
-                    {
-                        strMeseAnnoDa = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseDa) + " " + annoDa.ToString();
-                        strMeseAnnoA = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseA) + " " + annoA.ToString();
-                    }
+                    //using (dtElaborazioni dte = new dtElaborazioni())
+                    //{
+                    strMeseAnnoDa = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseDa) + " " + annoDa.ToString();
+                    strMeseAnnoA = CalcoloMeseAnnoElaborazione.NomeMese((EnumDescrizioneMesi)meseA) + " " + annoA.ToString();
+                    //}
 
                     ReportViewer reportViewer = new ReportViewer();
 

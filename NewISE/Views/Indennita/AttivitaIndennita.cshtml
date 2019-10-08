@@ -4,8 +4,9 @@
     decimal idTrasferimento = Convert.ToDecimal(ViewBag.idTrasferimento);
     decimal idLivello = Convert.ToDecimal(ViewBag.idLivello);
     bool vedi_PS_TE = Convert.ToBoolean(ViewBag.vedi_PS_TE);
+    DateTime dtRifInd = Convert.ToDateTime(ViewBag.DataRifIndennita);
 }
-    
+
 <div class="panel-group" id="accordion">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -16,7 +17,7 @@
             </h4>
         </div>
 
-        <div id="PrimoMenù" class="panel-collapse collapse">                        
+        <div id="PrimoMenù" class="panel-collapse collapse">
             <div class="list-group">
                 <div class="list-group">
                     <div class="list-group-item">
@@ -41,7 +42,7 @@
             </div>
         </div>
     </div>
-                
+
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
@@ -62,28 +63,28 @@
                         }
                         else
                         {
-                            <span class="text-muted">Anticipo Indennità di Prima Sistemazione</span>
+                            <span data-toggle="tooltip" title="Dati non visibili perché antecedenti al: @dtRifInd.ToShortDateString()" class="text-muted">Anticipo Indennità di Prima Sistemazione</span>
                         }
                     </div>
                     <div class="list-group-item">
-                    @if (vedi_PS_TE)
-                    {
-                        @Ajax.ActionLink("Saldo Indennità di Prima Sistemazione", "IndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    }
-                    else
-                    {
-                        <span class="text-muted">Saldo Indennità di Prima Sistemazione</span>
-                    }
+                        @if (vedi_PS_TE)
+                        {
+                            @Ajax.ActionLink("Saldo Indennità di Prima Sistemazione", "IndennitadiSistemazioneLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                        }
+                        else
+                        {
+                            <span data-toggle="tooltip" title="Dati non visibili perché antecedenti al: @dtRifInd.ToShortDateString()" class="text-muted">Saldo Indennità di Prima Sistemazione</span>
+                        }
                     </div>
                     <div class="list-group-item">
-                    @if (vedi_PS_TE)
-                    {
-                        @Ajax.ActionLink("Unica Soluzione Indennità di Prima Sistemazione", "UnicaSoluzioneIndennitadiPrimaSistemazione", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
-                    }
-                    else
-                    {
-                        <span class="text-muted">Unica Soluzione Indennità di Prima Sistemazione</span>
-                    }
+                        @if (vedi_PS_TE)
+                        {
+                            @Ajax.ActionLink("Unica Soluzione Indennità di Prima Sistemazione", "UnicaSoluzioneIndennitadiPrimaSistemazione", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
+                        }
+                        else
+                        {
+                            <span data-toggle="tooltip" title="Dati non visibili perché antecedenti al: @dtRifInd.ToShortDateString()" class="text-muted">Unica Soluzione Indennità di Prima Sistemazione</span>
+                        }
                     </div>
                     <div class="list-group-item">
                         @Ajax.ActionLink("Indennità di Richiamo Lorda", "IndennitadiRichiamoLorda", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
@@ -95,17 +96,17 @@
                         }
                         else
                         {
-                            <span class="text-muted">Contributo Omnicomprensivo Trasferimento</span>
+                            <span data-toggle="tooltip" title="Dati non visibili perché antecedenti al: @dtRifInd.ToShortDateString()" class="text-muted">Contributo Omnicomprensivo Trasferimento</span>
                         }
-                        </div>
-                        <div class="list-group-item">
+                    </div>
+                    <div class="list-group-item">
                         @if (vedi_PS_TE)
                         {
                             @Ajax.ActionLink("Contributo Omnicomprensivo Rientro", "ContributoOmnicomprensivoRientro", "Indennita", new { idTrasferimento = idTrasferimento }, new AjaxOptions { UpdateTargetId = "divOperazioniAttivitaIndennita", InsertionMode = InsertionMode.Replace, HttpMethod = "POST", OnFailure = "ErroreElaborazioneAjax(this);" })
                         }
                         else
                         {
-                            <span class="text-muted">Contributo Omnicomprensivo Rientro</span>
+                            <span data-toggle="tooltip" title="Dati non visibili perché antecedenti al: @dtRifInd.ToShortDateString()" class="text-muted">Contributo Omnicomprensivo Rientro</span>
                         }
                     </div>
                 </div>
@@ -114,5 +115,8 @@
     </div>
 </div>
 
-
-   
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

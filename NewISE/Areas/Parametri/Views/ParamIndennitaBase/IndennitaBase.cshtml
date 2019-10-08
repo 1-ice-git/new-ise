@@ -3,10 +3,10 @@
 @using NewISE.Models.Tools;
 @{
     bool escludiAnnullati = (bool)ViewBag.escludiAnnullati;
-   // decimal idLivello = ViewBag.idLivello==null?0: (decimal)ViewBag.idLivello;
+    // decimal idLivello = ViewBag.idLivello==null?0: (decimal)ViewBag.idLivello;
     IEnumerable<SelectListItem> Gruppo = (IEnumerable<SelectListItem>)ViewBag.LivelliList;
     string idLivello = Gruppo.Where(x => x.Selected).FirstOrDefault().Value;
-    
+
     decimal idMinimoNonAnnullato = (decimal)ViewBag.idMinimoNonAnnullato;
 }
 
@@ -19,7 +19,7 @@
         @Html.Label("lblLivello0", "Seleziona Livello", new { @class = "control-label" })
         <div id="divCombo">
             <div class="select2-container select2-container--classic">
-                @Html.DropDownList("idLivello", ViewBag.LivelliList  as IEnumerable<SelectListItem>
+                @Html.DropDownList("idLivello", ViewBag.LivelliList as IEnumerable<SelectListItem>
                , new { @class = "form-control select2 select2-select", @onchange = "PrelevaPVIndBase();", @onClick = "PrelevaPVIndBase();" })
             </div>
         </div>
@@ -59,16 +59,16 @@
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.dataInizioValidita)
                 </td>
-                    @if (item.dataFineValidita != Utility.DataFineStop())
-                    {
-                        <td class="text-center">
-                            @Html.DisplayFor(modelItem => item.dataFineValidita)
-                        </td>
-                    }
-                    else
-                    {
-                        <td></td>
-                    }
+                @if (item.dataFineValidita != Utility.DataFineStop())
+                {
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.dataFineValidita)
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
                 <td style="text-align:center;">
                     @Html.DisplayFor(modelItem => item.valore)
                 </td>
@@ -79,7 +79,7 @@
                     @Html.DisplayFor(modelItem => item.annullato)
                 </td>
                 <td style="text-align:center;">
-                    
+
                     @using (dtParIndennitaBase dtib = new dtParIndennitaBase())
                     {
                         if (dtib.IndennitaBaseAnnullato(item))
@@ -132,11 +132,21 @@
                 "sSortDescending": ": attiva per ordinare la colonna in ordine decrescente"
             }
         },
+        "info": true,
+        "lengthChange": false,
+        "pageLength": 5,
+        "searching": false,
+        "paging": false,
+        "bJQueryUI": true,
+        "sDom": 'lfrtip',
+        "scrollY": 400,
+        "scrollCollapse": true,
         "columnDefs": [
-                    { "targets": [1, 2], "type": 'date-euro' },
-                    { "targets": [3,4], "type": 'numeric-comma' },
-                    { "targets": [5, 6], "orderable": false },
+                { "targets": [1, 2], "type": 'date-euro' },
+                { "targets": [3, 4], "type": 'numeric-comma' },
+                { "targets": [5, 6], "orderable": false },
         ],
+        "order": [[1, "desc"]]
     });
 
     $("#idLivello").select2({
@@ -155,10 +165,10 @@
     $("#btnInsNuovaInd").button();
 
     function PrelevaPVIndBase() {
-      // debugger;
+        // debugger;
         rotta = "/Parametri/ParamIndennitaBase/IndennitaBaseLivello";
         var idLivello = parseInt($("#idLivello").select2('val'));
-        
+
         $("#hiTipoContributo").val(idLivello);
 
         if (isNaN(idLivello)) {
@@ -205,11 +215,11 @@
     }
 
     function NuovaIndennitaDiBase() {
-     //  debugger;
+        //  debugger;
 
         var rotta = "/Parametri/ParamIndennitaBase/NuovaIndennitaBase";
         var idLivello = parseInt($("#idLivello").select2('val'));
-      
+
         if (isNaN(idLivello)) {
             idLivello = parseInt($("#hiTipoContributo").val());
         }
@@ -217,7 +227,7 @@
         if (isNaN(idLivello)) {
             idLivello = parseInt('@idLivello');
         }
-        
+
         if (isNaN(idLivello)) {
             //$("#divPViewParametri").empty();
             AlertDialog("Selezionare un livello per procedere.");
@@ -264,7 +274,7 @@
     }
 
     function EliminaIndbase(id) {
-    //    debugger;
+        //    debugger;
         var rotta = "/Parametri/ParamIndennitaBase/EliminaIndennitaBase";
 
         var idLivello = parseInt($("#idLivello").select2('val'));
@@ -279,9 +289,9 @@
         }
 
         var chk = false;
-            if ($("#escludiAnnullati").is(":checked")) {
-                chk = true;
-            }
+        if ($("#escludiAnnullati").is(":checked")) {
+            chk = true;
+        }
 
         $('#dialog-confirm').dialog({
             autoOpen: true,

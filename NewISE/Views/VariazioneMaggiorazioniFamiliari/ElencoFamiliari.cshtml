@@ -83,7 +83,7 @@
                 <th>
 
                 </th>
-                
+
             </tr>
         </thead>
         <tbody>
@@ -113,21 +113,21 @@
                         <td></td>
                     }
                     <td style="text-align: center;">
-                    @if (item.parentela == EnumParentela.Coniuge)
-                    {
-                        if (item.HasPensione)
+                        @if (item.parentela == EnumParentela.Coniuge)
                         {
-                            <a href="#" onclick="Pensione(@item.idFamiliare);" id="linkPensione">
-                                <img src='~/Immagini/Simbolo semplice Euro Green.png' width='17' title="Pensione" />
-                            </a>
+                            if (item.HasPensione)
+                            {
+                                <a href="#" onclick="Pensione(@item.idFamiliare);" id="linkPensione">
+                                    <img src='~/Immagini/Simbolo semplice Euro Green.png' width='17' title="Pensione" />
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" onclick="Pensione(@item.idFamiliare);" id="linkPensione">
+                                    <img src="~/Immagini/Simbolo semplice Euro Red.png" width="17" title="Pensione" />
+                                </a>
+                            }
                         }
-                        else
-                        {
-                            <a href="#" onclick="Pensione(@item.idFamiliare);" id="linkPensione">
-                                <img src="~/Immagini/Simbolo semplice Euro Red.png" width="17" title="Pensione" />
-                            </a>
-                        }
-                    }
                     </td>
                     @if (item.idAltriDati > 0)
                     {
@@ -155,8 +155,8 @@
                             <td style="text-align: center;">
                                 <a href="#" onclick="AltriDatiFamiliariConiuge(@item.idFamiliare, @idMaggiorazioniFamiliari);" id="linkAltriDatiFam">
                                     <img src="~/Immagini/Plus_Red.png" width="17" title="Altri Dati @Html.DisplayFor(modelItem => item.parentela)" />
-                                    </a>
-                                </td>
+                                </a>
+                            </td>
                         }
                         if (item.parentela == EnumParentela.Figlio)
                         {
@@ -185,94 +185,94 @@
                         </td>
                     }
                     <td style="text-align: center;">
-                    @if (!trasfSolaLettura)
-                    {
-                        if (!solaLettura)
+                        @if (!trasfSolaLettura)
                         {
-                            if (item.modificabile)
+                            if (!solaLettura)
                             {
-                                if (item.parentela == EnumParentela.Coniuge)
+                                if (item.modificabile)
                                 {
-                                    <a href="#" onclick="ModificaConiuge(@item.idFamiliare); ">
-                                        <img width="17" src="../../Immagini/edit.png" title="Modifica&nbsp;Coniuge" /> 
-                                    </a>
-                                }
-                                if (item.parentela == EnumParentela.Figlio)
-                                {
-                                    <a href="#" onclick="ModificaFiglio(@item.idFamiliare); ">
-                                        <img width="17" src="../../Immagini/edit.png" title="Modifica&nbsp;Figlio" />
-                                    </a>
+                                    if (item.parentela == EnumParentela.Coniuge)
+                                    {
+                                        <a href="#" onclick="ModificaConiuge(@item.idFamiliare); ">
+                                            <img width="17" src="../../Immagini/edit.png" title="Modifica&nbsp;Coniuge" />
+                                        </a>
+                                    }
+                                    if (item.parentela == EnumParentela.Figlio)
+                                    {
+                                        <a href="#" onclick="ModificaFiglio(@item.idFamiliare); ">
+                                            <img width="17" src="../../Immagini/edit.png" title="Modifica&nbsp;Figlio" />
+                                        </a>
+                                    }
                                 }
                             }
                         }
-                    }
                     </td>
                     <td style="text-align: center;">
-                    @if (!trasfSolaLettura)
-                    {
-                        if (!solaLettura)
+                        @if (!trasfSolaLettura)
                         {
-                            if (item.eliminabile && visualizzaGestModifiche)
+                            if (!solaLettura)
                             {
-                                if (item.parentela == EnumParentela.Coniuge)
+                                if (item.eliminabile && visualizzaGestModifiche)
                                 {
-                                    <a href="#" onclick="EliminaConiuge(@item.idFamiliare);">
-                                        <img width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Coniuge" />
-                                    </a>
+                                    if (item.parentela == EnumParentela.Coniuge)
+                                    {
+                                        <a href="#" onclick="EliminaConiuge(@item.idFamiliare);">
+                                            <img width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Coniuge" />
+                                        </a>
+                                    }
+                                    if (item.parentela == EnumParentela.Figlio)
+                                    {
+                                        <a href="#" onclick="EliminaFiglio(@item.idFamiliare);">
+                                            <img width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Figlio" />
+                                        </a>
+                                    }
                                 }
-                                if (item.parentela == EnumParentela.Figlio)
+                                if (item.modificato && visualizzaGestModifiche)
                                 {
-                                    <a href="#" onclick="EliminaFiglio(@item.idFamiliare);">
-                                        <img width="17" src="../../Immagini/delete.png" title="Elimina&nbsp;Figlio" />
-                                    </a>
+                                    if (item.parentela == EnumParentela.Coniuge)
+                                    {
+                                        <a href="#" onclick="AnnullaModificaConiuge(@item.idFamiliare);">
+                                            <img width="17" src="../../Immagini/undo.png" title="Annulla tutte le modifiche del coniuge" />
+                                        </a>
+                                    }
+                                    if (item.parentela == EnumParentela.Figlio)
+                                    {
+                                        <a href="#" onclick="AnnullaModificaFiglio(@item.idFamiliare);">
+                                            <img width="17" src="../../Immagini/undo.png" title="Annulla tutte le modifiche del figlio" />
+                                        </a>
+                                    }
+
                                 }
                             }
+                        }
+
+                    </td>
+                    <td>
+                        @if (!trasfSolaLettura)
+                        {
                             if (item.modificato && visualizzaGestModifiche)
                             {
                                 if (item.parentela == EnumParentela.Coniuge)
                                 {
-                                    <a href="#" onclick="AnnullaModificaConiuge(@item.idFamiliare);">
-                                        <img width="17" src="../../Immagini/undo.png" title="Annulla tutte le modifiche del coniuge" />
+                                    <a href="#" onclick="VisualizzaModificheConiuge(@item.idFamiliare); ">
+                                        <img width="17" src="../../Immagini/user.png" title="Visualizza dettaglio variazioni coniuge" />
                                     </a>
                                 }
                                 if (item.parentela == EnumParentela.Figlio)
                                 {
-                                    <a href="#" onclick="AnnullaModificaFiglio(@item.idFamiliare);">
-                                        <img width="17" src="../../Immagini/undo.png" title="Annulla tutte le modifiche del figlio" />
+                                    <a href="#" onclick="VisualizzaModificheFiglio(@item.idFamiliare); ">
+                                        <img width="17" src="../../Immagini/user.png" title="Visualizza dettaglio variazioni Figlio" />
                                     </a>
                                 }
+                            }
+                            if (item.nuovo && visualizzaGestModifiche)
+                            {
+                                <img width="23" src="../../Immagini/new-icon.png" title="Nuovo familiare inserito" />
+                            }
 
-                            }
                         }
-                    }
-                    
                     </td>
-                    <td>
-                    @if (!trasfSolaLettura)
-                    {
-                        if (item.modificato && visualizzaGestModifiche)
-                        {
-                            if (item.parentela == EnumParentela.Coniuge)
-                            {
-                                <a href="#" onclick="VisualizzaModificheConiuge(@item.idFamiliare); ">
-                                    <img width="17" src="../../Immagini/user.png" title="Visualizza dettaglio variazioni coniuge" />
-                                </a>
-                            }
-                            if (item.parentela == EnumParentela.Figlio)
-                            {
-                                <a href="#" onclick="VisualizzaModificheFiglio(@item.idFamiliare); ">
-                                    <img width="17" src="../../Immagini/user.png" title="Visualizza dettaglio variazioni Figlio" />
-                                </a>
-                            }
-                        }
-                        if (item.nuovo && visualizzaGestModifiche)
-                        {
-                            <img width="23" src="../../Immagini/new-icon.png" title="Nuovo familiare inserito" />
-                        }
-                            
-                    }
-                    </td>
-                    
+
                 </tr>
             }
         </tbody>
@@ -409,7 +409,7 @@
     });
 
     PulsantiNotificaAttivaMagFam();
-    
+
     function EliminaConiuge(idConiuge) {
         $('#DelConiugeModal').modal('show');
         $('#hiEliminaConiuge').val(idConiuge);
@@ -437,7 +437,7 @@
         $.ajax({
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
-            data: {idConiuge:idConiuge},
+            data: { idConiuge: idConiuge },
             dataType: 'html',
             async: false,
             beforeSend: function () {
@@ -511,8 +511,8 @@
             url: rotta,
             type: "POST", //Le info testuali saranno passate in POST
             data: {
-                    idFiglio: idFiglio,
-                    idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
+                idFiglio: idFiglio,
+                idMaggiorazioniFamiliari: idMaggiorazioniFamiliari
             },
             dataType: 'html',
             async: false,
@@ -620,7 +620,7 @@
     }
 
     function ModificaFiglio(idFamiliare) {
-        //debugger;
+        debugger;
         var rotta = "/VariazioneMaggiorazioniFamiliari/ModificaFiglio";
 
         $.ajax({
@@ -911,7 +911,7 @@
             }
         });
     }
-    
+
     $('#AnnullaModConiugeModal').on('hidden.bs.modal', function (e) {
         //debugger;
         ElencoFamiliari();
@@ -931,6 +931,6 @@
         //debugger;
         ElencoFamiliari();
     });
-  
+
 
 </script>
