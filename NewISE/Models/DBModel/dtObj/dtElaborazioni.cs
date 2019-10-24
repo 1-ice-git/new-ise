@@ -30,6 +30,27 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
         /// <summary>
+        /// Elimina i teorici annullati con un mese di scarto per mantenere la tabella il più leggera possibile.
+        /// </summary>
+        /// <param name="mesiDiScarto"></param>
+        public void EliminaTeoriciAnnullati(int mesiDiScarto)
+        {
+            DateTime basePartenza = DateTime.Now.AddMonths(-3);
+
+            basePartenza = Utility.GetDtFineMese(basePartenza);
+
+            //int annoMesePartenza = Convert.ToInt32(DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString().PadLeft(2, '0'));
+
+            using (ModelDBISE db = new ModelDBISE())
+            {
+                db.TEORICI.RemoveRange(db.TEORICI.Where(a => a.ANNULLATO == true && a.DATAOPERAZIONE <= basePartenza).ToList());
+
+                db.SaveChanges();
+            }
+        }
+
+
+        /// <summary>
         /// The ConguagliaAnticipoPrimaSistemazioneDaAnnullaTrasf
         /// </summary>
         /// <param name="idTrasferimento">The idTrasferimento<see cref="decimal"/></param>
@@ -4239,20 +4260,25 @@ namespace NewISE.Models.DBModel.dtObj
 
                 var ldip =
                     db.DIPENDENTI.ToList().Where(
-                            a =>
-                                a.TRASFERIMENTO.Any(
-                                    b =>
-                                        (b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
-                                         b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
-                                        (Convert.ToDecimal(b.DATAPARTENZA.Year.ToString() +
-                                                           b.DATAPARTENZA.Month.ToString()
-                                                               .PadLeft(2, Convert.ToChar("0"))) <=
-                                         annoMese &&
-                                         Convert.ToDecimal(b.DATARIENTRO.Year.ToString() +
-                                                           b.DATARIENTRO.Month.ToString()
-                                                               .PadLeft(2, Convert.ToChar("0"))) >=
-                                         annoMese)) ||
-                                a.RICALCOLARE == true)
+                        a =>
+                            a.TRASFERIMENTO.Any(
+                                b =>
+                                    (b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                     b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
+                                    (Convert.ToDecimal(b.DATAPARTENZA.Year.ToString() +
+                                                       b.DATAPARTENZA.Month.ToString()
+                                                           .PadLeft(2, Convert.ToChar("0"))) <=
+                                     annoMese &&
+                                     Convert.ToDecimal(b.DATARIENTRO.Year.ToString() +
+                                                       b.DATARIENTRO.Month.ToString()
+                                                           .PadLeft(2, Convert.ToChar("0"))) >=
+                                     annoMese)) ||
+                            a.TRASFERIMENTO.Any(
+                                b => (b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
+                                      b.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato) &&
+                                     (b.AUTOMATISMOVOCIMANUALI.Any(c => c.ANNOMESEINIZIO <= annoMese &&
+                                                                        c.ANNOMESEFINE >= annoMese))) ||
+                            a.RICALCOLARE == true)
                         .OrderBy(a => a.NOME)
                         .ThenBy(a => a.COGNOME)
                         .ThenBy(a => a.MATRICOLA)
@@ -4462,13 +4488,16 @@ namespace NewISE.Models.DBModel.dtObj
                         .Where(a => (a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Attivo ||
                                      a.IDSTATOTRASFERIMENTO == (decimal)EnumStatoTraferimento.Terminato)
                                     &&
-                                    (Convert.ToDecimal(string.Concat(a.DATARIENTRO.Year.ToString(),
+                                    ((Convert.ToDecimal(string.Concat(a.DATARIENTRO.Year.ToString(),
                                         a.DATARIENTRO.Month.ToString().PadLeft(2, Convert.ToChar("0")))) >=
-                                     annoMese
-                                     &&
-                                     Convert.ToDecimal(string.Concat(a.DATAPARTENZA.Year.ToString(),
-                                         a.DATAPARTENZA.Month.ToString().PadLeft(2, Convert.ToChar("0")))) <=
-                                     annoMese) || a.DIPENDENTI.RICALCOLARE == true
+                                      annoMese
+                                      &&
+                                      Convert.ToDecimal(string.Concat(a.DATAPARTENZA.Year.ToString(),
+                                          a.DATAPARTENZA.Month.ToString().PadLeft(2, Convert.ToChar("0")))) <=
+                                      annoMese) ||
+                                     a.AUTOMATISMOVOCIMANUALI.Any(
+                                         b => b.ANNOMESEINIZIO <= annoMese && b.ANNOMESEFINE >= annoMese)) ||
+                                    a.DIPENDENTI.RICALCOLARE == true
                         )
                         .Where(
                             a =>
@@ -10043,9 +10072,12 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             var lcoefRichiamo =
                                 richiamo.COEFFICIENTEINDRICHIAMO.Where(
-                                        a =>
-                                            a.ANNULLATO == false && dataFineTrasf >= a.DATAINIZIOVALIDITA &&
-                                            dataFineTrasf <= a.DATAFINEVALIDITA).OrderBy(a => a.DATAINIZIOVALIDITA)
+                                    a =>
+                                        a.ANNULLATO == false && dataFineTrasf >= a.DATAINIZIOVALIDITA &&
+                                        dataFineTrasf <= a.DATAFINEVALIDITA &&
+                                        a.IDTIPOCOEFFICIENTERICHIAMO ==
+                                        (decimal)EnumTipoCoefficienteRichiamo.CoefficienteRichiamo)
+                                    .OrderBy(a => a.DATAINIZIOVALIDITA)
                                     .ToList();
 
 
@@ -10108,6 +10140,16 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     using (CalcoliIndennita ci = new CalcoliIndennita(trasferimento.IDTRASFERIMENTO, dataFineTrasf, db))
                                     {
+                                        using (dtRichiamo dtr = new dtRichiamo())
+                                        {
+                                            bool verRic = dtr.VerificaElaborazioneRichiamo(trasferimento.IDTRASFERIMENTO, db);
+
+                                            if (verRic)
+                                            {
+                                                return;
+                                            }
+                                        }
+
                                         ELABINDRICHIAMO eir = new ELABINDRICHIAMO()
                                         {
                                             IDRICHIAMO = richiamo.IDRICHIAMO,
