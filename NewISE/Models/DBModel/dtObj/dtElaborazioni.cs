@@ -9043,7 +9043,7 @@ namespace NewISE.Models.DBModel.dtObj
                             {
                                 foreach (var f in lf)
                                 {
-                                    DateTime dtIniFigli = f.DATAFINEVALIDITA;
+                                    DateTime dtIniFigli = f.DATAINIZIOVALIDITA;
                                     DateTime dtFinFigli = f.DATAFINEVALIDITA;
 
                                     if (dtIniFigli < dataInizioCiclo)
