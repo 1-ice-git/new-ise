@@ -19,13 +19,47 @@ namespace NewISE.Models.DBModel.dtObj
             GC.SuppressFinalize(this);
         }
 
+        public bool VerificaElaborazioneRichiamo(decimal idTrasferimento, ModelDBISE db)
+        {
+            bool ret = false;
+
+            try
+            {
+                int nRic =
+                    db.TEORICI.Count(
+                        a =>
+                            a.IDTRASFERIMENTO == idTrasferimento && a.IDVOCI == 13 && a.ANNULLATO == false &&
+                            a.ELABORATO == true);
+
+                if (nRic > 0)
+                {
+                    ret = true;
+                }
+                else
+                {
+                    ret = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return ret;
+
+        }
+
+
+
         public decimal Restituisci_ID_CoeffIndRichiamo_Da_Data(RichiamoModel ri, ModelDBISE db)
         {
             decimal tmp = 0;
             var lCIR = db.COEFFICIENTEINDRICHIAMO.Where(a =>
                 a.ANNULLATO == false && ri.DataRichiamo >= a.DATAINIZIOVALIDITA &&
                 ri.DataRichiamo <= a.DATAFINEVALIDITA && a.IDTIPOCOEFFICIENTERICHIAMO ==
-                (decimal) EnumTipoCoefficienteRichiamo.CoefficienteRichiamo).ToList();
+                (decimal)EnumTipoCoefficienteRichiamo.CoefficienteRichiamo).ToList();
             if (lCIR?.Any() ?? false)
             {
                 tmp = lCIR.First().IDCOEFINDRICHIAMO;
@@ -39,7 +73,7 @@ namespace NewISE.Models.DBModel.dtObj
             var lCIR = db.COEFFICIENTEINDRICHIAMO.Where(a =>
                 a.ANNULLATO == false && ri.DataRichiamo >= a.DATAINIZIOVALIDITA &&
                 ri.DataRichiamo <= a.DATAFINEVALIDITA && a.IDTIPOCOEFFICIENTERICHIAMO ==
-                (decimal) EnumTipoCoefficienteRichiamo.CoefficienteMaggiorazione).ToList();
+                (decimal)EnumTipoCoefficienteRichiamo.CoefficienteMaggiorazione).ToList();
             if (lCIR?.Any() ?? false)
             {
                 tmp = lCIR.First().IDCOEFINDRICHIAMO;
@@ -188,7 +222,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
 
             decimal tmp = 0;
-            if (idCoeffIndRichiamo == 0 || idPercentualeFKM == 0 || idCoeffMagIndRichiamo==0)
+            if (idCoeffIndRichiamo == 0 || idPercentualeFKM == 0 || idCoeffMagIndRichiamo == 0)
                 return 0;
 
             try
@@ -231,7 +265,7 @@ namespace NewISE.Models.DBModel.dtObj
         {
 
             decimal tmp = 0;
-            if (idCoeffIndRichiamo == 0 || idPercentualeFKM == 0 || idCoeffMaggRichiamo==0)
+            if (idCoeffIndRichiamo == 0 || idPercentualeFKM == 0 || idCoeffMaggRichiamo == 0)
                 return 0;
 
             try
@@ -298,7 +332,7 @@ namespace NewISE.Models.DBModel.dtObj
         public void RimuoviAsscoiazioni_Richiamo_CoeffIndRichiamo(decimal idRichiamo, ModelDBISE db)
         {
             var i = db.RICHIAMO.Find(idRichiamo);
-            var lCoefIndRick = i.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false && a.IDTIPOCOEFFICIENTERICHIAMO==(decimal)EnumTipoCoefficienteRichiamo.CoefficienteRichiamo).ToList();
+            var lCoefIndRick = i.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false && a.IDTIPOCOEFFICIENTERICHIAMO == (decimal)EnumTipoCoefficienteRichiamo.CoefficienteRichiamo).ToList();
             if (lCoefIndRick?.Any() ?? false)
             {
                 foreach (var z in lCoefIndRick)
@@ -312,7 +346,7 @@ namespace NewISE.Models.DBModel.dtObj
         public void RimuoviAssociazioni_Richiamo_CoeffMagRichiamo(decimal idRichiamo, ModelDBISE db)
         {
             var i = db.RICHIAMO.Find(idRichiamo);
-            var lCoefIndRick = i.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false && a.IDTIPOCOEFFICIENTERICHIAMO==(decimal)EnumTipoCoefficienteRichiamo.CoefficienteMaggiorazione).ToList();
+            var lCoefIndRick = i.COEFFICIENTEINDRICHIAMO.Where(a => a.ANNULLATO == false && a.IDTIPOCOEFFICIENTERICHIAMO == (decimal)EnumTipoCoefficienteRichiamo.CoefficienteMaggiorazione).ToList();
             if (lCoefIndRick?.Any() ?? false)
             {
                 foreach (var z in lCoefIndRick)
@@ -381,61 +415,61 @@ namespace NewISE.Models.DBModel.dtObj
                     if (lt?.Any() ?? false)
                     {
                         ltm = (from t in lt
-                                select new TrasferimentoModel()
-                                {
-                                    idTrasferimento = t.IDTRASFERIMENTO,
-                                    idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
-                                    idUfficio = t.IDUFFICIO,
-                                    idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
-                                    idDipendente = t.IDDIPENDENTE,
-                                    idTipoCoan = t.IDTIPOCOAN,
-                                    dataPartenza = t.DATAPARTENZA,
-                                    dataRientro = t.DATARIENTRO,
-                                    coan = t.COAN,
-                                    protocolloLettera = t.PROTOCOLLOLETTERA,
-                                    dataLettera = t.DATALETTERA,
-                                    notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
-                                    dataAggiornamento = t.DATAAGGIORNAMENTO,
-                                    StatoTrasferimento = new StatoTrasferimentoModel()
-                                    {
-                                        idStatoTrasferimento = t.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
-                                        descrizioneStatoTrasferimento = t.STATOTRASFERIMENTO.DESCRIZIONE
-                                    },
-                                    TipoTrasferimento = new TipoTrasferimentoModel()
-                                    {
-                                        idTipoTrasferimento = t.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
-                                        descTipoTrasf = t.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
-                                    },
-                                    Ufficio = new UfficiModel()
-                                    {
-                                        idUfficio = t.UFFICI.IDUFFICIO,
-                                        codiceUfficio = t.UFFICI.CODICEUFFICIO,
-                                        descUfficio = t.UFFICI.DESCRIZIONEUFFICIO
-                                    },
-                                    Dipendente = new DipendentiModel()
-                                    {
-                                        idDipendente = t.DIPENDENTI.IDDIPENDENTE,
-                                        matricola = t.DIPENDENTI.MATRICOLA,
-                                        nome = t.DIPENDENTI.NOME,
-                                        cognome = t.DIPENDENTI.COGNOME,
-                                        dataAssunzione = t.DIPENDENTI.DATAASSUNZIONE,
-                                        dataCessazione = t.DIPENDENTI.DATACESSAZIONE,
-                                        indirizzo = t.DIPENDENTI.INDIRIZZO,
-                                        cap = t.DIPENDENTI.CAP,
-                                        citta = t.DIPENDENTI.CITTA,
-                                        provincia = t.DIPENDENTI.PROVINCIA,
-                                        email = t.DIPENDENTI.EMAIL,
-                                        telefono = t.DIPENDENTI.TELEFONO,
-                                        fax = t.DIPENDENTI.FAX,
-                                        abilitato = t.DIPENDENTI.ABILITATO,
-                                        dataInizioRicalcoli = t.DIPENDENTI.DATAINIZIORICALCOLI
-                                    },
-                                    TipoCoan = new TipologiaCoanModel()
-                                    {
-                                        idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
-                                        descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
-                                    },
-                                }).ToList();
+                               select new TrasferimentoModel()
+                               {
+                                   idTrasferimento = t.IDTRASFERIMENTO,
+                                   idTipoTrasferimento = t.IDTIPOTRASFERIMENTO,
+                                   idUfficio = t.IDUFFICIO,
+                                   idStatoTrasferimento = (EnumStatoTraferimento)t.IDSTATOTRASFERIMENTO,
+                                   idDipendente = t.IDDIPENDENTE,
+                                   idTipoCoan = t.IDTIPOCOAN,
+                                   dataPartenza = t.DATAPARTENZA,
+                                   dataRientro = t.DATARIENTRO,
+                                   coan = t.COAN,
+                                   protocolloLettera = t.PROTOCOLLOLETTERA,
+                                   dataLettera = t.DATALETTERA,
+                                   notificaTrasferimento = t.NOTIFICATRASFERIMENTO,
+                                   dataAggiornamento = t.DATAAGGIORNAMENTO,
+                                   StatoTrasferimento = new StatoTrasferimentoModel()
+                                   {
+                                       idStatoTrasferimento = t.STATOTRASFERIMENTO.IDSTATOTRASFERIMENTO,
+                                       descrizioneStatoTrasferimento = t.STATOTRASFERIMENTO.DESCRIZIONE
+                                   },
+                                   TipoTrasferimento = new TipoTrasferimentoModel()
+                                   {
+                                       idTipoTrasferimento = t.TIPOTRASFERIMENTO.IDTIPOTRASFERIMENTO,
+                                       descTipoTrasf = t.TIPOTRASFERIMENTO.TIPOTRASFERIMENTO1
+                                   },
+                                   Ufficio = new UfficiModel()
+                                   {
+                                       idUfficio = t.UFFICI.IDUFFICIO,
+                                       codiceUfficio = t.UFFICI.CODICEUFFICIO,
+                                       descUfficio = t.UFFICI.DESCRIZIONEUFFICIO
+                                   },
+                                   Dipendente = new DipendentiModel()
+                                   {
+                                       idDipendente = t.DIPENDENTI.IDDIPENDENTE,
+                                       matricola = t.DIPENDENTI.MATRICOLA,
+                                       nome = t.DIPENDENTI.NOME,
+                                       cognome = t.DIPENDENTI.COGNOME,
+                                       dataAssunzione = t.DIPENDENTI.DATAASSUNZIONE,
+                                       dataCessazione = t.DIPENDENTI.DATACESSAZIONE,
+                                       indirizzo = t.DIPENDENTI.INDIRIZZO,
+                                       cap = t.DIPENDENTI.CAP,
+                                       citta = t.DIPENDENTI.CITTA,
+                                       provincia = t.DIPENDENTI.PROVINCIA,
+                                       email = t.DIPENDENTI.EMAIL,
+                                       telefono = t.DIPENDENTI.TELEFONO,
+                                       fax = t.DIPENDENTI.FAX,
+                                       abilitato = t.DIPENDENTI.ABILITATO,
+                                       dataInizioRicalcoli = t.DIPENDENTI.DATAINIZIORICALCOLI
+                                   },
+                                   TipoCoan = new TipologiaCoanModel()
+                                   {
+                                       idTipoCoan = t.TIPOLOGIACOAN.IDTIPOCOAN,
+                                       descrizione = t.TIPOLOGIACOAN.DESCRIZIONE
+                                   },
+                               }).ToList();
 
                     }
                     else

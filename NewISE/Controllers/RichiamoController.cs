@@ -45,7 +45,7 @@ namespace NewISE.Controllers
             return PartialView("AttivitaRichiamo");
         }
 
-        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]      
+        [AcceptVerbs(HttpVerbs.Post | HttpVerbs.Get)]
         public ActionResult ElencoRichiamo(decimal idTrasferimento)
         {
             ViewData["idTrasferimento"] = idTrasferimento;
@@ -417,8 +417,12 @@ namespace NewISE.Controllers
                 string errore = "";
                 var lstr = new List<SelectListItem>();
 
+
                 try
                 {
+
+
+
                     ViewData["idTrasferimento"] = idTrasferimento;
                     ViewData["idFKm"] = idFasciaFKM;
                     DateTime dataPartenza = new DateTime();
@@ -441,7 +445,7 @@ namespace NewISE.Controllers
                             decimal idCoeffIndRichiamo = dtric.Restituisci_ID_CoeffIndRichiamo_Da_Data(ri, db);
                             decimal idCoeffMaggRichiamo = dtric.Restituisci_ID_CoeffMagIndRichiamo_Da_Data(ri, db);
                             decimal IDPFKM = dtric.Restituisci_ID_PercentualeFKM_Da_Data(ri, db);
-                            if (idCoeffIndRichiamo == 0 || IDPFKM == 0 || idCoeffMaggRichiamo==0)
+                            if (idCoeffIndRichiamo == 0 || IDPFKM == 0 || idCoeffMaggRichiamo == 0)
                             {
                                 errore = "Non esistono coefficenti corrispondenti ai criteri del Richiamo";
                                 ViewData["errore"] = errore;

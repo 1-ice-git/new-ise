@@ -674,6 +674,7 @@ namespace NewISE.Controllers
                                     }
                                 }
                                 dte.ChiudiPeridoElaborazione(idAnnoMeseElaborato, db);
+                                dte.EliminaTeoriciAnnullati(3);
                             }
 
                             db.Database.CurrentTransaction.Commit();
