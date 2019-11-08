@@ -27,6 +27,7 @@ namespace NewISE.Models.DBModel.dtObj
 
             if (cm != null)
             {
+
                 using (ModelDBISE db = new ModelDBISE())
                 {
                     var t = db.ATTIVAZIONIMAGFAM.Find(cm.idAttivazioneMagFam).MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
@@ -39,7 +40,7 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         List<CONIUGE> lc_prec = new List<CONIUGE>();
                         //verifica se esiste un coniuge precedente verificando se è nuovo o modificato
-                        if (cm.FK_idConiuge > 0)
+                        if (cm.FK_idConiuge > 0 || cm.idConiuge > 0)
                         {
                             //modificato
                             lc_prec = t.MAGGIORAZIONIFAMILIARI.CONIUGE
@@ -403,7 +404,7 @@ namespace NewISE.Models.DBModel.dtObj
                         cognome = c.COGNOME,
                         codiceFiscale = c.CODICEFISCALE,
                         dataInizio = c.DATAINIZIOVALIDITA,
-                        dataFine = c.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:c.DATAFINEVALIDITA,
+                        dataFine = c.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : c.DATAFINEVALIDITA,
                         dataAggiornamento = c.DATAAGGIORNAMENTO,
                         idStatoRecord = c.IDSTATORECORD,
                         FK_idConiuge = c.FK_IDCONIUGE
@@ -456,8 +457,8 @@ namespace NewISE.Models.DBModel.dtObj
                 var amf = db.ATTIVAZIONIMAGFAM.Find(idAttivazioneMagFam);
                 var t = amf.MAGGIORAZIONIFAMILIARI.TRASFERIMENTO;
 
-                lc = amf.CONIUGE.Where(a=>
-                            (a.DATAINIZIOVALIDITA<=t.DATARIENTRO && a.DATAFINEVALIDITA>=t.DATARIENTRO) || a.DATAFINEVALIDITA<t.DATARIENTRO)
+                lc = amf.CONIUGE.Where(a =>
+                            (a.DATAINIZIOVALIDITA <= t.DATARIENTRO && a.DATAFINEVALIDITA >= t.DATARIENTRO) || a.DATAFINEVALIDITA < t.DATARIENTRO)
                             .OrderByDescending(a => a.DATAINIZIOVALIDITA).ThenBy(a => a.DATAFINEVALIDITA).ToList();
 
 
@@ -473,7 +474,7 @@ namespace NewISE.Models.DBModel.dtObj
                                cognome = e.COGNOME,
                                codiceFiscale = e.CODICEFISCALE,
                                dataInizio = e.DATAINIZIOVALIDITA,
-                               dataFine = e.DATAFINEVALIDITA>t.DATARIENTRO?t.DATARIENTRO:e.DATAFINEVALIDITA,
+                               dataFine = e.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : e.DATAFINEVALIDITA,
                                dataAggiornamento = e.DATAAGGIORNAMENTO,
                                FK_idConiuge = e.FK_IDCONIUGE,
                                idAttivazioneMagFam = idAttivazioneMagFam,
@@ -610,11 +611,11 @@ namespace NewISE.Models.DBModel.dtObj
                     {
                         foreach (var c in lc)
                         {
-                            if (db.CONIUGE.Where(a => 
-                                a.FK_IDCONIUGE == c.IDCONIUGE && 
-                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato && 
-                                ((a.DATAINIZIOVALIDITA<=t.DATARIENTRO &&
-                                a.DATAFINEVALIDITA>=t.DATARIENTRO) || a.DATAFINEVALIDITA<t.DATARIENTRO))
+                            if (db.CONIUGE.Where(a =>
+                                a.FK_IDCONIUGE == c.IDCONIUGE &&
+                                a.IDSTATORECORD != (decimal)EnumStatoRecord.Annullato &&
+                                ((a.DATAINIZIOVALIDITA <= t.DATARIENTRO &&
+                                a.DATAFINEVALIDITA >= t.DATARIENTRO) || a.DATAFINEVALIDITA < t.DATARIENTRO))
                                 .Count() == 0)
                             {
 
@@ -629,7 +630,7 @@ namespace NewISE.Models.DBModel.dtObj
                                     cognome = c.COGNOME,
                                     codiceFiscale = c.CODICEFISCALE,
                                     dataInizio = c.DATAINIZIOVALIDITA,
-                                    dataFine = c.DATAFINEVALIDITA>t.DATARIENTRO? t.DATARIENTRO :c.DATAFINEVALIDITA,
+                                    dataFine = c.DATAFINEVALIDITA > t.DATARIENTRO ? t.DATARIENTRO : c.DATAFINEVALIDITA,
                                     dataAggiornamento = c.DATAAGGIORNAMENTO,
                                     idStatoRecord = c.IDSTATORECORD,
                                     FK_idConiuge = c.FK_IDCONIUGE,
