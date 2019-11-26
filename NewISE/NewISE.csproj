@@ -6814,6 +6814,7 @@
     <Content Include="Views\Ruolodipendente\ElencoRuoliDipendente.cshtml" />
     <Content Include="Views\Ruolodipendente\TabElencoRuoliDipendente.cshtml" />
     <Content Include="Views\Ruolodipendente\NuovoRuoloDipendente.cshtml" />
+    <Content Include="Views\Shared\ErrorNoGest.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
