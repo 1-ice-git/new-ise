@@ -169,7 +169,7 @@ namespace NewISE.Models.DBModel.dtObj
                                 {
                                     invia_file = true;
 
-                                    outputFile.WriteLine(Scheda + CodAzienda + CodGruppo + CodMatr + Filler1 + NrDato + Filler2 + Valore + CodCosto + codformula + Filler3);
+                                    outputFile.Write(Scheda + CodAzienda + CodGruppo + CodMatr + Filler1 + NrDato + Filler2 + Valore + CodCosto + codformula + Filler3);
                                 }
                                 #endregion
                             }
