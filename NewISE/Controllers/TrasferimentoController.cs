@@ -1243,9 +1243,6 @@ namespace NewISE.Controllers
                         {
                             ModelState.AddModelError("", "Impossibile inserire un nuovo trasferimento che abbia la data di partenza inferiore e/o uguale alla data di partenza oppure minore della data rientro del trasferimento precedente.");
                         }
-
-
-
                     }
                 }
 
