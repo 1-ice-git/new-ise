@@ -5849,6 +5849,7 @@
     <Compile Include="Models\DBModel\dtObj\dtIndennitaServizio.cs" />
     <Compile Include="Areas\Statistiche\Models\dtObj\dtCostiCoan.cs" />
     <Compile Include="Models\DBModel\dtObj\dtInvioFileFTP.cs" />
+    <Compile Include="Models\DBModel\dtObj\dtMeseElaborazione.cs" />
     <Compile Include="Models\DBModel\dtObj\dtOpDipEsteroNew.cs" />
     <Compile Include="Models\DBModel\dtObj\dtProvvidenzeScolastiche.cs" />
     <Compile Include="Models\DBModel\dtObj\dtReportTrasportoEffetti.cs" />
@@ -6814,6 +6815,7 @@
     <Content Include="Views\Ruolodipendente\ElencoRuoliDipendente.cshtml" />
     <Content Include="Views\Ruolodipendente\TabElencoRuoliDipendente.cshtml" />
     <Content Include="Views\Ruolodipendente\NuovoRuoloDipendente.cshtml" />
+    <Content Include="Views\Shared\ErrorNoGest.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

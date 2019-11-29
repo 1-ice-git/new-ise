@@ -237,7 +237,6 @@ namespace NewISE.Controllers
 
         }
 
-
         public ActionResult InfoTrasferimento(decimal idTrasferimento)
         {
             dipInfoTrasferimentoModel dit = new dipInfoTrasferimentoModel();
@@ -1228,23 +1227,33 @@ namespace NewISE.Controllers
                         bool ret = false;
                         string matr = matricola.ToString();
                         var t = dtt.GetTrasferimentoById(idTrasferimentoOld);
-                        if(t.idStatoTrasferimento==EnumStatoTraferimento.Annullato)
+                        if (t.idStatoTrasferimento == EnumStatoTraferimento.Annullato)
                         {
                             //var trasfTerminato = dtt.GetUltimoTrasferimentoTerminatoByMatricola(matr);
                             var trasfPrercedente = dtt.GetUltimoTrasferimentoValidoByMatricola(matr);
-                            if(trasfPrercedente.idTrasferimento>0)
+                            if (trasfPrercedente.idTrasferimento > 0)
                             {
                                 idTrasferimentoOld = trasfPrercedente.idTrasferimento;
                             }
                         }
-                        
+
                         ret = dtt.VerificaDataInizioTrasferimentoNew(idTrasferimentoOld, trm.dataPartenza);
 
                         if (ret)
                         {
                             ModelState.AddModelError("", "Impossibile inserire un nuovo trasferimento che abbia la data di partenza inferiore e/o uguale alla data di partenza oppure minore della data rientro del trasferimento precedente.");
                         }
+                    }
+                }
 
+                using (dtMeseElaborazione dtme = new dtMeseElaborazione())
+                {
+                    int annoMeseElab = dtme.MeseAnnoDaElaborare();
+                    int annoMeseTrasf = Convert.ToInt32(trm.dataPartenza.Year.ToString() + trm.dataPartenza.Month.ToString().PadLeft(2, '0'));
+
+                    if (annoMeseTrasf < annoMeseElab)
+                    {
+                        ModelState.AddModelError("", "Impossibile inserire un nuovo trasferimento che abbia la data di partenza inferiore alla data di elaborazione mensile.");
                     }
                 }
 
@@ -1565,7 +1574,7 @@ namespace NewISE.Controllers
                         ViewBag.ListFasciaKM = lFasciaKM;
 
                         ViewBag.ricaricaInfoTrasf = ricaricaInfoTrasf;
-                        ViewBag.Matricola = matricola;                      
+                        ViewBag.Matricola = matricola;
 
                         using (dtDipendenti dtd = new dtDipendenti())
                         {
@@ -1800,7 +1809,7 @@ namespace NewISE.Controllers
                                 var rm = dtr.GetRichiamoByIdTrasf(idTrasferimentoPrecedente);
                                 if (rm.IdRichiamo > 0 == false)
                                 {
-                                    dtt.RipristinaTrasferimento(idTrasferimentoPrecedente,db);
+                                    dtt.RipristinaTrasferimento(idTrasferimentoPrecedente, db);
                                 }
                             }
                         }
@@ -1812,7 +1821,7 @@ namespace NewISE.Controllers
                             idTrasferimentoPrecedente = idTrasferimentoPrecedente
                         });
                     }
-                    
+
                 }
             }
             catch (Exception ex)
@@ -2545,7 +2554,7 @@ namespace NewISE.Controllers
                 return Json(new { err = ex.Message });
             }
         }
-        
+
         public JsonResult InserisceEventoTrasferimentoDattivare(decimal idTrasferimento)
         {
             try
@@ -2567,17 +2576,17 @@ namespace NewISE.Controllers
                                 if (dtce.EsisteEventoTrasferimentoDaAttivare(idTrasferimento, EnumFunzioniEventi.TrasferimentoDaAttivare, db) == false)
                                 {
                                     var t = dtt.GetSoloTrasferimentoById(idTrasferimento);
-    
+
                                     DateTime dtMax = dtt.GetDataAttivazioneMassimaPartenza(t.idTrasferimento, db);
-    
+
                                     CalendarioEventiModel cem = new CalendarioEventiModel()
-                                    {   
+                                    {
                                         idFunzioneEventi = EnumFunzioniEventi.TrasferimentoDaAttivare,
                                         idTrasferimento = idTrasferimento,
                                         DataInizioEvento = dtMax,
                                         DataScadenza = t.dataPartenza < dtMax ? dtMax : t.dataPartenza,
                                     };
-                                    dtce.InsertCalendarioEvento(ref cem, db);                               
+                                    dtce.InsertCalendarioEvento(ref cem, db);
                                 }
                             }
                         }

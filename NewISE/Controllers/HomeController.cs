@@ -17,6 +17,26 @@ namespace NewISE.Controllers
 
     public class HomeController : Controller
     {
+
+        //public ActionResult TestErrore()
+        //{
+
+
+        //    try
+        //    {
+        //        throw new Exception("Test errore");
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+
+
+        //    return null;
+        //}
+
+
         // GET: Home
         bool admin = false;
         public ActionResult Index()

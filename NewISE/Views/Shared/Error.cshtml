@@ -1,23 +1,72 @@
 ﻿@model System.Web.Mvc.HandleErrorInfo
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Errore</title>
-</head>
-<body>
-    <hgroup>
-        <h1>Errore.</h1>
-        <h2>Si è verificato un errore durante l'elaborazione della richiesta.</h2>
-    </hgroup>
-    <div id="divCorpoErrore" class="margineSinistro10px">
-        @if (Model != null && Model.Exception != null)
-        {
-            <span>Model.Exception.Message</span>
-        }
+@{
+    ViewBag.Title = "Errore";
+}
 
+@*<link href="https://fonts.googleapis.com/css?family=Bangers&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">*@
+
+<style>
+    #btTestoErrore {
+        margin-bottom: 0.5em;
+    }
+
+    #divCorpoErrore {
+        color: red;
+    }
+
+    #divTestoErrore {
+        /*font-family: 'Lato', sans-serif;*/
+        display: none;
+        padding: 0.5em 0.5em 0.5em 0.5em;
+        font-weight: 700;
+        font-size: 1.5rem;
+    }
+
+    #divTestoTitolo {
+        /*font-family: 'Lato', sans-serif;*/
+        color: red;
+    }
+</style>
+
+
+@*<hgroup>*@
+<div id="divTestoTitolo">
+    <h1>OPS!!!</h1>
+    <h2> Si è verificato un errore durante l'elaborazione della richiesta.</h2>
+</div>
+@*</hgroup>*@
+
+<div class="row">
+    <div class="col-xs-12">
+        <button id="btTestoErrore">Vedi dettagli errore</button>
     </div>
-</body>
-</html>
+</div>
+<div id="divCorpoErrore" class="margineSinistro10px">
+    <div id="divTestoErrore">
+        @if (Model != null && Model.Exception != null)
+            {
+            <span>@Model.Exception.Message</span>
+        }
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(function ()
+    {
+
+        $("#btTestoErrore").button();
+
+        $("#btTestoErrore").click(function ()
+        {
+            $("#divTestoErrore").toggle("slow", function ()
+            {
+                // ---
+            });
+        });
+    });
+
+</script>

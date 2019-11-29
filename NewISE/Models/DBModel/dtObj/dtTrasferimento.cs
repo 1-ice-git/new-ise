@@ -34,6 +34,38 @@ namespace NewISE.Models.DBModel.dtObj
         {
             GC.SuppressFinalize(this);
         }
+        //VerificaDataElab
+
+        public static ValidationResult VerificaDataElab(string v, ValidationContext context)
+        {
+            ValidationResult vr = ValidationResult.Success;
+            var tr = context.ObjectInstance as TrasferimentoModel;
+
+            if (tr != null)
+            {
+                using (dtMeseElaborazione dtma = new dtMeseElaborazione())
+                {
+                    int annoMeseElab = dtma.MeseAnnoDaElaborare();
+                    int annoMeseTrasf = Convert.ToInt32(tr.dataPartenza.Year.ToString() + tr.dataPartenza.Month.ToString().PadLeft(2, '0'));
+
+                    if (annoMeseTrasf < annoMeseElab)
+                    {
+                        vr = new ValidationResult("L'anno, mese di trasferimento non può essere minore del anno, mese di elaborazione.");
+                    }
+                    else
+                    {
+                        vr = ValidationResult.Success;
+                    }
+
+                }
+            }
+            else
+            {
+                vr = new ValidationResult("La data di trasferimento è obbligatoria.");
+            }
+
+            return vr;
+        }
 
         public static ValidationResult VerificaRequiredCoan(string v, ValidationContext context)
         {
@@ -68,15 +100,12 @@ namespace NewISE.Models.DBModel.dtObj
         }
 
 
-
         public TrasferimentoModel GetTrasferimentoByIdTeorico(decimal idTeorico)
         {
-
-
             using (ModelDBISE db = new ModelDBISE())
             {
                 var t = db.TEORICI.Find(idTeorico).TRASFERIMENTO;
-                
+
                 TrasferimentoModel tm = new TrasferimentoModel()
                 {
                     idTrasferimento = t.IDTRASFERIMENTO,
@@ -1358,7 +1387,7 @@ namespace NewISE.Models.DBModel.dtObj
                         dit.statoTrasferimento = tm.idStatoTrasferimento;
                         dit.UfficioDestinazione = tm.Ufficio;
                         dit.Decorrenza = tm.dataPartenza;
-                        if (tm.dataRientro<Utility.DataFineStop())
+                        if (tm.dataRientro < Utility.DataFineStop())
                         {
                             dtDatiParametri = tm.dataRientro.Value;
                         }
@@ -3961,12 +3990,12 @@ namespace NewISE.Models.DBModel.dtObj
 
         public DateTime GetDataAttivazioneMassimaPartenza(decimal idTrasferimento, ModelDBISE db)
         {
-            DateTime dtMax=DateTime.Now;
+            DateTime dtMax = DateTime.Now;
 
             var t = db.TRASFERIMENTO.Find(idTrasferimento);
 
             var lamf = t.MAGGIORAZIONIFAMILIARI.ATTIVAZIONIMAGFAM.Where(a => a.ANNULLATO == false && a.ATTIVAZIONEMAGFAM && a.RICHIESTAATTIVAZIONE).OrderBy(a => a.IDATTIVAZIONEMAGFAM).ToList();
-            if(lamf?.Any()??false)
+            if (lamf?.Any() ?? false)
             {
                 dtMax = lamf.First().DATAATTIVAZIONEMAGFAM.Value;
             }
@@ -3975,10 +4004,10 @@ namespace NewISE.Models.DBModel.dtObj
             if (lap?.Any() ?? false)
             {
                 DateTime dt = lap.First().DATAPRATICACONCLUSA.Value;
-                if(dt > dtMax)
+                if (dt > dtMax)
                 {
                     dtMax = dt;
-                }               
+                }
             }
 
             var latv = t.TITOLIVIAGGIO.ATTIVAZIONETITOLIVIAGGIO.Where(a => a.ANNULLATO == false && a.ATTIVAZIONERICHIESTA && a.NOTIFICARICHIESTA).OrderBy(a => a.IDATTIVAZIONETITOLIVIAGGIO).ToList();

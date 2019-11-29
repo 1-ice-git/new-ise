@@ -164,7 +164,7 @@ namespace NewISE.Models.DBModel.dtObj
                 var t = db.ATTIVITAANTICIPI.Find(idAttivitaAnticipi).PRIMASITEMAZIONE.TRASFERIMENTO;
                 var idTrasferimento = t.IDTRASFERIMENTO;
 
-                using (CalcoliIndennita ci = new CalcoliIndennita(idTrasferimento,t.DATAPARTENZA))
+                using (CalcoliIndennita ci = new CalcoliIndennita(idTrasferimento, t.DATAPARTENZA))
                 {
                     //verifica se è l'importo è stato gia pagato
 
@@ -177,8 +177,8 @@ namespace NewISE.Models.DBModel.dtObj
                                           x.ANNULLATO == false &&
                                           x.ELABINDSISTEMAZIONE.CONGUAGLIO == false &&
                                           x.ELABINDSISTEMAZIONE.ANTICIPO &&
-                                          x.ANNORIFERIMENTO==t.DATAPARTENZA.Year &&
-                                          x.MESERIFERIMENTO==t.DATAPARTENZA.Month)
+                                          x.ANNORIFERIMENTO == t.DATAPARTENZA.Year &&
+                                          x.MESERIFERIMENTO == t.DATAPARTENZA.Month)
                                       .ToList();
 
                     decimal importoPrevisto = 0;

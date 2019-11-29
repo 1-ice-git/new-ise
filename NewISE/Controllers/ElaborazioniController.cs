@@ -659,10 +659,7 @@ namespace NewISE.Controllers
 
                                 using (dtInvioFileFTP dtFile = new dtInvioFileFTP())
                                 {
-
                                     dtFile.FlUpload(lTeorici);
-
-
                                 }
 
                                 using (dtDipendenti dtd = new dtDipendenti())

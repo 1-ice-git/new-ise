@@ -147,14 +147,6 @@ namespace NewISE.Controllers
         #endregion
 
 
-
-
-
-
-
-
-
-
         private IAuthenticationManager Authentication
         {
             get { return HttpContext.GetOwinContext().Authentication; }

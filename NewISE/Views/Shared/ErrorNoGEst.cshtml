@@ -1,0 +1,166 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Errore";
+}
+
+<link href="https://fonts.googleapis.com/css?family=Bangers&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        background-color: rgb(213,213,213);
+        font-family: 'Lato', sans-serif;
+    }
+
+    #intestazione {
+        background-color: #007D57;
+        padding: 0.5em 0.5em 0.5em 0.5em;
+        color: #DAA520;
+    }
+
+    #logoErrore {
+        font-family: 'Bangers', cursive;
+        color: red;
+        margin-top: 3em;
+        margin-bottom: 2em;
+    }
+
+    #divCorpoErrore {
+        color: red;
+        margin-bottom: 1em;
+    }
+
+    #divTestoErrore {
+        display: none;
+        padding: 0.5em 0.5em 0.5em 0.5em;
+    }
+
+    a {
+        text-decoration: none;
+        color: rgb(199, 187, 187)rgb(58, 51, 51);
+    }
+
+    a:visited {
+        color: rgb(244, 133, 15);
+    }
+
+    a:hover {
+        color: rgb(96, 89, 89);
+    }
+
+    .SizeOps {
+        font-size: 12em;
+    }
+
+    .SizeEr {
+        font-size: 2.5em;
+    }
+
+    #divBtTornaHome {
+        margin-top: 2em;
+    }
+</style>
+
+<div id="intestazione" class="row middle-xs">
+    <div class="col-xs-4">
+        <div class="box">
+            <img id="imgLogo" src="~/Immagini/logo_ITA_rgb.png" title="Logo Agenzia ICE" alt="Logo Agenzia ICE" />
+        </div>
+    </div>
+    <div class="col-xs-4">
+        <div class="box">
+            <div class="row middle-xs">
+                <div class="col-xs-4">
+                    <div class="box end-xs">
+                        <img src="~/Immagini/aperta.jpg" />
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="box center-xs">
+                        <h2>Indennità Sede Estera</h2>
+                    </div>
+                </div>
+                <div class="col-xs-4 ">
+                    <div class="box first-xs">
+                        <img src="~/Immagini/chiusa.jpg" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-4">
+        <div class="box end-xs">
+            <img id="imgLogoRight" src="~/Immagini/Logo ISE.png" alt="Logo Indennità sede estera" />
+        </div>
+    </div>
+
+</div>
+
+<div class="row center-xs">
+    <div class="col-xs-12">
+        <div id="logoErrore" class="box">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <label class="SizeOps">OOPS!</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <label class="SizeEr">Qualcosa è andato storto.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row center-xs">
+    <div class="col-xs-12">
+        <div id="divCorpoErrore" class="box">
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <button id="btTestoErrore">Vedi dettagli errore</button>
+                </div>
+            </div>
+            <div id="divTestoErrore">
+                @Model.Exception.Message
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div id="divBtTornaHome" class="row center-xs">
+    <div class="col-xs-3">
+        <div class="box">
+            <a id="btTornaHome" href="/Home/Index">Torna alla Home page</a>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(function () {
+
+        $("#btTestoErrore").button();
+
+
+        $("#btTestoErrore").click(function () {
+            $("#divTestoErrore").toggle("slow", function () {
+                // ---
+            });
+        });
+
+    });
+
+
+</script>
+
+
+
+
