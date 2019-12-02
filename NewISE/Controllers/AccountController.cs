@@ -198,6 +198,7 @@ namespace NewISE.Controllers
                     return View(account);
                 }
 
+                #region Code comment
                 //using (Config cfg = new Config())
                 //{
                 //    sad = cfg.SuperAmministratore();
@@ -308,12 +309,15 @@ namespace NewISE.Controllers
                 //        }
                 //    }
 
-                //}
+                //} 
+                #endregion
 
                 bool test = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Ambiente"]);
+                string userTest = System.Configuration.ConfigurationManager.AppSettings["userTest"].ToString();
+
                 using (ModelDBISE db = new ModelDBISE())
                 {
-                    if (test)
+                    if (test || account.username == userTest)
                     {
 
                         if (db.UTENTIAUTORIZZATI?.Any(a => a.UTENTE == account.username && a.PSW == account.password) ?? false)
@@ -383,7 +387,7 @@ namespace NewISE.Controllers
                     }
                     else
                     {
-                        var client = new RestSharp.RestClient("http://indennita-estera-ws.ice.it");
+                        var client = new RestSharp.RestClient("https://indennita-estera-ws.ice.it");
                         var req = new RestSharp.RestRequest("api/login", RestSharp.Method.POST);
                         req.RequestFormat = RestSharp.DataFormat.Json;
                         req.AddParameter("username", account.username);
@@ -465,6 +469,7 @@ namespace NewISE.Controllers
                 }
 
 
+                #region Code comment
                 //if (test)
                 //{
                 //    using (dtDipendenti dtdip = new dtDipendenti())
@@ -650,7 +655,8 @@ namespace NewISE.Controllers
                 //    {
                 //        throw new Exception(resp.StatusDescription);
                 //    }
-                //}
+                //} 
+                #endregion
 
             }
             catch (Exception ex)

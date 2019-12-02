@@ -16,9 +16,12 @@
 
     }
 
+    string msgGoogle = string.Empty;
 
-
-    string msgGoogle = ViewData["msgGoogle"].ToString();
+    if (ViewData["msgGoogle"] != null)
+    {
+        msgGoogle = ViewData["msgGoogle"].ToString();
+    }
 
 }
 <div class="row">
@@ -73,20 +76,25 @@
     @Scripts.Render("~/bundles/jqueryval")
 
     <script type="text/javascript">
-        $(function () {
-            if (parseInt('@CountError') > 0) {
+        $(function ()
+        {
+            if (parseInt('@CountError') > 0)
+            {
                 $("#Alert").removeClass("hide");
                 $("#Alert").css("show");
             }
 
-            $("#frmLogin").submit(function () {
-                if ($("#frmLogin").valid()) {
+            $("#frmLogin").submit(function ()
+            {
+                if ($("#frmLogin").valid())
+                {
                     Blocca();
                 }
 
             });
 
-            $("#LoginGoogle").submit(function () {
+            $("#LoginGoogle").submit(function ()
+            {
                 Blocca();
 
             });
