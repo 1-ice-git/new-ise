@@ -38,6 +38,11 @@ namespace NewISE.Models.DBModel.dtObj
                         {
                             var teorici_row = db.TEORICI.Find(teorici);
 
+                            //if (teorici_row.TRASFERIMENTO.DIPENDENTI.MATRICOLA == 2871)
+                            //{
+
+                            //}
+
                             //verifica che la riga è relativa a PAGHE
                             if (
                                     teorici_row.ANNULLATO == false &&
@@ -136,8 +141,10 @@ namespace NewISE.Models.DBModel.dtObj
 
                                 #region imposta importo
                                 var Importo = Math.Abs(Math.Round(teorici_row.IMPORTO, 2));
-                                var importosenzavirgola = Importo.ToString().Replace(",", "");
-                                var importoPadded = importosenzavirgola.PadLeft(9, '0');
+                                string impNumDueDecimali = Importo.ToString("N2");
+                                string importosenzavirgola = impNumDueDecimali.Replace(",", "");
+                                string importoPadded = importosenzavirgola.PadLeft(9, '0');
+
                                 var Valore = importoPadded;
                                 //var Valore = Importo.ToString().PadLeft(10, '0').Replace(",", "");
                                 #endregion
