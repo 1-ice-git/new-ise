@@ -43,11 +43,10 @@
 
 <script type="text/javascript">
 
-
-
     ValorizzazioneIniziale();
 
-    function DatiLiquidazioniDirette(idAnnoMeseElaborato) {
+    function DatiLiquidazioniDirette(idAnnoMeseElaborato)
+    {
         //debugger;
         var rotta = "/Elaborazioni/DatiLiquidazioniDirette";
 
@@ -57,18 +56,21 @@
             data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
             dataType: 'html',
             async: false,
-            beforeSend: function () {
+            beforeSend: function ()
+            {
                 //debugger;
                 //VerificaAutenticazione();
                 //$('#inviaDocModal').modal('show');
                 //Blocca();
             },
-            success: function (result) {
+            success: function (result)
+            {
                 //debugger;
                 $("#ContElencoElaborazioniDirette").empty();
                 $("#ContElencoElaborazioniDirette").html(result);
             },
-            error: function (error) {
+            error: function (error)
+            {
                 //debugger;
                 //Sblocca();
                 var msg = error.responseText;
@@ -77,7 +79,8 @@
         });
     }
 
-    function DatiLiquidazioniMensili(idAnnoMeseElaborato) {
+    function DatiLiquidazioniMensili(idAnnoMeseElaborato)
+    {
         //debugger;
         var rotta = "/Elaborazioni/DatiLiquidazioneMensile";
 
@@ -88,20 +91,23 @@
             data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
             dataType: 'html',
             async: false,
-            beforeSend: function () {
+            beforeSend: function ()
+            {
                 //debugger;
                 //VerificaAutenticazione();
                 //$('#inviaDocModal').modal('show');
                 //Blocca();
 
             },
-            success: function (result) {
+            success: function (result)
+            {
                 //debugger;
                 $("#ContElencoElaborazioniMensili").empty();
                 $("#ContElencoElaborazioniMensili").html(result);
 
             },
-            error: function (error) {
+            error: function (error)
+            {
                 //debugger;
                 //Sblocca();
                 var msg = error.responseText;
@@ -110,7 +116,8 @@
         });
     }
 
-    function PulsantiInvioElaborazione(idAnnoMeseElaborato) {
+    function PulsantiInvioElaborazione(idAnnoMeseElaborato)
+    {
         var rotta = "/Elaborazioni/PulsantiInvioElaborazione";
 
         $.ajax({
@@ -119,20 +126,23 @@
             data: { idAnnoMeseElaborato: idAnnoMeseElaborato },
             dataType: 'html',
             async: false,
-            beforeSend: function () {
+            beforeSend: function ()
+            {
                 //debugger;
                 //VerificaAutenticazione();
                 //$('#inviaDocModal').modal('show');
                 //Blocca();
 
             },
-            success: function (result) {
+            success: function (result)
+            {
                 //debugger;
                 $("#ContBtElab").empty();
                 $("#ContBtElab").html(result);
 
             },
-            error: function (error) {
+            error: function (error)
+            {
                 //debugger;
                 //Sblocca();
                 var msg = error.responseText;
@@ -141,7 +151,8 @@
         });
     }
 
-    function GesionePulsanteCalcola() {
+    function GesionePulsanteCalcola()
+    {
         //debugger;
 
         var rotta = "/Elaborazioni/GestionePulsanteCalcola";
@@ -151,7 +162,8 @@
         //var lIdDipSel = new Array();
         var lDip = new Array();
 
-        for (var i = 0; i < lidDipAll.length; i++) {
+        for (var i = 0; i < lidDipAll.length; i++)
+        {
             lDip.push(lidDipAll[i].value);
         }
 
@@ -161,41 +173,51 @@
             data: { lDipendenti: lDip, idAnnoMeseElab: valore },
             dataType: 'json',
             async: false,
-            beforeSend: function () {
+            beforeSend: function ()
+            {
                 //debugger;
                 //VerificaAutenticazione();
                 //$("#DialogNewDoc").dialog("destroy");
                 //$("#divEffettoLoadAutNoDoc").show("slow");
 
             },
-            success: function (result) {
+            success: function (result)
+            {
                 //debugger;
-                if (result.err == "") {
-                    if (result.gpMeseChiuso == true) {
+                if (result.err == "")
+                {
+                    if (result.gpMeseChiuso == true)
+                    {
                         $("#btInvioFm").attr("disabled", "disabled");
                         $("#btCalcola").attr("disabled", "disabled");
                         $("#btInvioFD").attr("disabled", "disabled");
-                    } else {
+                    } else
+                    {
                         $("#btInvioFm").removeAttr('disabled');
-                        if (result.gpDaCalcolare == false) {
+                        if (result.gpDaCalcolare == false)
+                        {
                             $("#btCalcola").removeAttr('disabled');
                             //$("#btInvioFm").attr("disabled", "disabled");
-                        } else {
+                        } else
+                        {
                             $("#btCalcola").attr("disabled", "disabled");
                             //$("#btInvioFm").removeAttr('disabled');
                         }
 
                     }
                     //GestionePulsanteInviaFlussiMensili();
-                } else {
+                } else
+                {
                     ErroreElaborazioneAjax(result.err);
                 }
 
             },
-            complete: function () {
+            complete: function ()
+            {
 
             },
-            error: function (jqXHR, textStatus, errorThrow) {
+            error: function (jqXHR, textStatus, errorThrow)
+            {
                 //debugger;
                 var msg = errorThrow.err;
                 ErroreElaborazioneAjax(msg);

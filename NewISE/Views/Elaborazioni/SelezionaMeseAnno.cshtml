@@ -18,7 +18,7 @@
 <div class="row">
     <div class="col-xs-12">
         <ul class="nav nav-tabs nav-justified">
-            <li class="active"><a data-toggle="tab" href="#avvioCalcolo">Avvia calcolo</a></li>
+            <li class="active"><a onclick="RefreshDipendentiDaElaborare();" data-toggle="tab" href="#avvioCalcolo">Avvia calcolo</a></li>
             <li><a data-toggle="tab" href="#inputManualeVoci">Input manuale voci</a></li>
         </ul>
         <div class="tab-content">
@@ -39,7 +39,14 @@
 
 <script type="text/javascript">
 
-    function ValorizzazioneIniziale() {
+    function RefreshDipendentiDaElaborare()
+    {
+        var valore = $("#mesiAnniElaborati").val();
+        DipendentiDaElaborare(valore);
+    }
+
+    function ValorizzazioneIniziale()
+    {
         //debugger;
         var valore = $("#mesiAnniElaborati").val();
         DipendentiDaElaborare(valore);
@@ -61,7 +68,8 @@
         ajax: {
             delay: 250,
             url: "/Elaborazioni/PrelevaMesiAnniElab",
-            data: function (dati) {
+            data: function (dati)
+            {
                 //debugger;
                 var query = {
                     search: dati.term,
@@ -73,7 +81,8 @@
             },
             dataType: 'json',
             type: "post",
-            processResults: function (data) {
+            processResults: function (data)
+            {
                 //debugger;
                 return {
                     results: data.results
@@ -82,10 +91,12 @@
         }
     });
 
-    $("#mesiAnniElaborati").change(function () {
+    $("#mesiAnniElaborati").change(function ()
+    {
         //debugger;
 
-        if (this.value != "") {
+        if (this.value != "")
+        {
             var valore = this.value;
             DipendentiDaElaborare(valore);
             DatiLiquidazioniDirette(valore);
@@ -99,7 +110,8 @@
 
     });
 
-    function VerificaDipendentiInvioFlussiMensili(idMeseAnnoElab) {
+    function VerificaDipendentiInvioFlussiMensili(idMeseAnnoElab)
+    {
         var rotta = "/Elaborazioni/VerificaDipendentiCalcolati";
 
         $.ajax({
@@ -108,30 +120,38 @@
             data: { idMeseAnnoElab: idMeseAnnoElab },
             dataType: 'json',
             async: false,
-            beforeSend: function () {
+            beforeSend: function ()
+            {
                 //debugger;
                 //VerificaAutenticazione();
                 //$("#DialogNewDoc").dialog("destroy");
                 //$("#divEffettoLoadAutNoDoc").show("slow");
 
             },
-            success: function (result) {
+            success: function (result)
+            {
                 //debugger;
-                if (result.err == "") {
-                    if (result.Calcolati == false) {
+                if (result.err == "")
+                {
+                    if (result.Calcolati == false)
+                    {
                         $("#btInvioFm").attr("disabled", "disabled");
-                    } else {
+                    } else
+                    {
                         $("#btInvioFm").removeAttr('disabled');
                     }
-                } else {
+                } else
+                {
                     ErroreElaborazioneAjax(result.err);
                 }
 
             },
-            complete: function () {
+            complete: function ()
+            {
 
             },
-            error: function (jqXHR, textStatus, errorThrow) {
+            error: function (jqXHR, textStatus, errorThrow)
+            {
                 //debugger;
                 var msg = errorThrow.err;
                 ErroreElaborazioneAjax(msg);
@@ -140,7 +160,8 @@
         });
     }
 
-    function DipendentiDaElaborare(idMeseAnnoElaborato) {
+    function DipendentiDaElaborare(idMeseAnnoElaborato)
+    {
         var rotta = "/Elaborazioni/DipendentiDaElaborare";
 
         $.ajax({
@@ -149,18 +170,21 @@
             data: { idMeseAnnoElaborato: idMeseAnnoElaborato },
             dataType: 'html',
             async: false,
-            beforeSend: function () {
+            beforeSend: function ()
+            {
                 //debugger;
                 //VerificaAutenticazione();
                 //$('#inviaDocModal').modal('show');
                 //Blocca();
             },
-            success: function (result) {
+            success: function (result)
+            {
                 //debugger;
                 $("#divViewDipDaElab").empty();
                 $("#divViewDipDaElab").html(result);
             },
-            error: function (error) {
+            error: function (error)
+            {
                 //debugger;
                 //Sblocca();
                 var msg = error.responseText;
@@ -170,7 +194,8 @@
 
     }
 
-    function VerificaChiusuraMese(valore) {
+    function VerificaChiusuraMese(valore)
+    {
         var rotta = "/Elaborazioni/VerificaChiusuraMeseElab";
 
         $.ajax({
@@ -179,28 +204,36 @@
             data: { idAnnoMeseElab: valore },
             dataType: 'json',
             async: false,
-            beforeSend: function () {
+            beforeSend: function ()
+            {
 
             },
-            success: function (result) {
+            success: function (result)
+            {
                 //debugger;
                 //style = "border: red solid 2px;"
-                if (result.err == "") {
-                    if (result.pc == true) {
+                if (result.err == "")
+                {
+                    if (result.pc == true)
+                    {
                         $('#divSelect2ME').addClass("BordoRossoS2");
-                    } else {
+                    } else
+                    {
                         $('#divSelect2ME').removeClass("BordoRossoS2");
                     }
-                } else {
+                } else
+                {
                     ErroreElaborazioneAjax(result.err);
                 }
 
 
             },
-            complete: function () {
+            complete: function ()
+            {
 
             },
-            error: function (jqXHR, textStatus, errorThrow) {
+            error: function (jqXHR, textStatus, errorThrow)
+            {
                 //debugger;
                 var msg = errorThrow.err;
                 ErroreElaborazioneAjax(msg);
