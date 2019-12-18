@@ -32,7 +32,7 @@ namespace NewISE.Models.Tools
 
                 if (RealeSimulazione == EnumTipoAmbiente.Reale)
                 {
-                    bool test = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Ambiente"]);
+                    //bool test = Convert.ToBoolean(System.Configuration.ConfigurationManager.AppSettings["Ambiente"]);
 
                     AccountModel am = new AccountModel();
                     am = Utility.UtenteAutorizzato();
@@ -74,43 +74,40 @@ namespace NewISE.Models.Tools
                         {
                             return false;
                         }
-
                     }
 
+                    //if (test)
+                    //{
+                    //    msgMail.destinatario.Clear();
 
+                    //    foreach (var acm in lacm)
+                    //    {
+                    //        msgMail.destinatario.Add(new Destinatario()
+                    //        {
+                    //            Nominativo = acm.cognome + " " + acm.nome,
+                    //            EmailDestinatario = acm.eMail
+                    //        });
+                    //    }
 
-                    if (test)
-                    {
-                        msgMail.destinatario.Clear();
+                    //    msgMail.cc.Clear();
+                    //}
+                    //else if (am.idRuoloUtente ==(decimal)EnumRuoloAccesso.SuperAmministratore)
+                    //{
+                    //    msgMail.destinatario.Clear();
+                    //    msgMail.destinatario.Add(new Destinatario()
+                    //    {
+                    //        Nominativo = am.nominativo,
+                    //        EmailDestinatario = am.eMail
+                    //    });
 
-                        foreach (var acm in lacm)
-                        {
-                            msgMail.destinatario.Add(new Destinatario()
-                            {
-                                Nominativo = acm.cognome + " " + acm.nome,
-                                EmailDestinatario = acm.eMail
-                            });
-                        }
-
-                        msgMail.cc.Clear();
-                    }
-                    else if (am.idRuoloUtente ==(decimal)EnumRuoloAccesso.SuperAmministratore)
-                    {
-                        msgMail.destinatario.Clear();
-                        msgMail.destinatario.Add(new Destinatario()
-                        {
-                            Nominativo = am.nominativo,
-                            EmailDestinatario = am.eMail
-                        });
-
-                        msgMail.cc.Clear();
-                    }
+                    //    msgMail.cc.Clear();
+                    //}
 
 
                     MailMessage messaggio = new MailMessage();
                     //string NomeMittente = string.Empty;
 
-                    if (msgMail.mittente == null || string.IsNullOrWhiteSpace(msgMail.mittente.EmailMittente) || test)
+                    if (msgMail.mittente == null || string.IsNullOrWhiteSpace(msgMail.mittente.EmailMittente))
                     {
                         string mittenteIse = System.Configuration.ConfigurationManager.AppSettings["EmailISE"];
                         messaggio.From = new MailAddress(mittenteIse, "ISE");
@@ -125,6 +122,21 @@ namespace NewISE.Models.Tools
                     foreach (var d in Destinatari)
                     {
                         messaggio.To.Add(new MailAddress(d.EmailDestinatario, d.Nominativo));
+                    }
+
+                    if (lacm.Count > 0)
+                    {
+                        foreach (var dipAdmin in lacm)
+                        {
+                            if (dipAdmin.idRuoloUtente == (decimal)EnumRuoloAccesso.SuperAmministratore)
+                            {
+                                messaggio.Bcc.Add(new MailAddress(dipAdmin.eMail, dipAdmin.nominativo));
+                            }
+                            else
+                            {
+                                messaggio.CC.Add(new MailAddress(dipAdmin.eMail, dipAdmin.nominativo));
+                            }
+                        }
                     }
 
                     if (msgMail.cc?.Any() ?? false)
